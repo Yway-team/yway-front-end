@@ -1,17 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+} from "@apollo/client";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import App from './Components/App.js';
+
+const client = new ApolloClient({
+  uri: 'http://3.129.119.115:4000/',
+  cache: new InMemoryCache()
+});
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#fae1d9',
+      main: '#ff5a1d',
+      contrastText: '#fff',
+    },
+  },
+});
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </React.StrictMode>
+  </ApolloProvider>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
