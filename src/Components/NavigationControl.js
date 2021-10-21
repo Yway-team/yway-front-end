@@ -11,11 +11,11 @@ import {
   Button,
   Grid
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Menu } from '@mui/icons-material';
-import { Fragment, useState } from 'react';
-import { GoogleLogin } from 'react-google-login';
+import { Fragment, useState, useEffect } from 'react';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { LOGIN } from '../Queries/mutations.js';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../State/UserState';
@@ -27,12 +27,15 @@ function NavigationControl() {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [login] = useMutation(LOGIN);
+  const history = useHistory();
+  const [hisString, setHisString] = useState(history.location.pathname);
   const toggleDrawer = () => {
     setOpen(!open);
   }
 
   const handleLogin = async (response) => {
     const idToken = response.getAuthResponse().id_token;
+    console.log(response.getAuthResponse());
     console.log('Attempting to log in...');
     const { data } = (await login({ variables: { idToken: idToken } }));
     if (data) {
@@ -55,8 +58,15 @@ function NavigationControl() {
       _id: ""
     });
     console.log(`Logged out`);
-
   }
+
+  useEffect(() => {
+    return history.listen((location) => {
+      console.log(`You changed the page to: ${location.pathname}`);
+      setHisString(location.pathname.toString());
+    })
+  }, [history])
+
   return (
     <Fragment>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background: theme.palette.common.white, boxShadow: theme.shadows, }}>
@@ -68,10 +78,32 @@ function NavigationControl() {
             <Typography variant="h5" noWrap component="div" sx={{ color: 'primary.main', marginLeft: 5 }}>
               Yway
             </Typography>
-            {user.loggedin ? <Button variant='outlined' onClick={handleLogout}> LOG OUT</Button>
+            {user.loggedin ?
+              <GoogleLogout
+                clientId={process.env.REACT_APP_CLIENT_ID}
+                buttonText="Logout"
+                onLogoutSuccess={handleLogout}
+                render={renderProps => (
+                  <Button onClick={renderProps.onClick} sx={
+                    {
+                      background: theme.palette.primary.main,
+                      color: 'common.white',
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                      "&:hover": {
+                        backgroundColor: theme.palette.primary.light,
+                        color: theme.palette.primary.main,
+                      }
+
+                    }
+                  }>Sign out</Button>
+                )}
+              >
+              </GoogleLogout>
               :
               <GoogleLogin
                 clientId={process.env.REACT_APP_CLIENT_ID}
+                isSignedIn={true}
                 render={renderProps => (
                   <Button onClick={renderProps.onClick} sx={
                     {
@@ -105,6 +137,7 @@ function NavigationControl() {
           [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
         }}>
         <Box sx={{ overflow: 'auto', marginTop: 8 }}>
+          <Typography color={'primary'}> {hisString} </Typography>
           <List>
             {[['Explore', '/'], ['Create', './create'], ['Favorites', './favorites']].map((text, index) => (
               <ListItem button key={text[0]}>
