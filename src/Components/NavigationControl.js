@@ -11,7 +11,7 @@ import {
   Button,
   Grid
 } from '@mui/material';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { Menu } from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
@@ -28,15 +28,13 @@ function NavigationControl() {
   const [open, setOpen] = useState(true);
   const [login] = useMutation(LOGIN);
   const history = useHistory();
-  const [hisString, setHisString] = useState(history.location.pathname);
+  const [currentURL, setcurrentURL] = useState(history.location.pathname);
   const toggleDrawer = () => {
     setOpen(!open);
   }
 
   const handleLogin = async (response) => {
     const idToken = response.getAuthResponse().id_token;
-    console.log(response.getAuthResponse());
-    console.log('Attempting to log in...');
     const { data } = (await login({ variables: { idToken: idToken } }));
     if (data) {
       globalState({
@@ -47,6 +45,8 @@ function NavigationControl() {
       });
     }
     console.log(`Logged in as`);
+    console.log(response.getAuthResponse());
+    console.log(`global after logging in`);
     console.log(globalState());
   }
 
@@ -63,7 +63,7 @@ function NavigationControl() {
   useEffect(() => {
     return history.listen((location) => {
       console.log(`You changed the page to: ${location.pathname}`);
-      setHisString(location.pathname.toString());
+      setcurrentURL(location.pathname.toString());
     })
   }, [history])
 
@@ -81,7 +81,6 @@ function NavigationControl() {
             {user.loggedin ?
               <GoogleLogout
                 clientId={process.env.REACT_APP_CLIENT_ID}
-                buttonText="Logout"
                 onLogoutSuccess={handleLogout}
                 render={renderProps => (
                   <Button onClick={renderProps.onClick} sx={
@@ -119,7 +118,6 @@ function NavigationControl() {
                     }
                   }>Sign in with Google</Button>
                 )}
-                buttonText="Sign in with Google"
                 onSuccess={handleLogin}
                 onFailure={() => { }}
                 cookiePolicy={'single_host_origin'}
@@ -137,11 +135,11 @@ function NavigationControl() {
           [`& .MuiDrawer-paper`]: { width: 240, boxSizing: 'border-box' },
         }}>
         <Box sx={{ overflow: 'auto', marginTop: 8 }}>
-          <Typography color={'primary'}> {hisString} </Typography>
           <List>
-            {[['Explore', '/'], ['Create', './create'], ['Favorites', './favorites']].map((text, index) => (
-              <ListItem button key={text[0]}>
-                <Link to={text[1]} > <ListItemText primary={text[0]} /></Link>
+            {[['Explore', '/'], ['Create', '/create'], ['Favorites', '/favorites']].map((text, index) => (
+              <ListItem button key={text[0]} onClick={() => history.push(text[1])}>
+
+                <ListItemText disableTypography primary={<Typography variant={'h6'} color={text[1] === currentURL ? 'primary' : 'grey'}> {text[0]}</Typography>} />
               </ListItem>
             ))}
           </List>
