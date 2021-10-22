@@ -4,7 +4,7 @@ const emptyUserState =
 {
     loggedin: false,
     googleId: '',
-    number: null,
+    numbers: null,
     _id: ''
 };
 

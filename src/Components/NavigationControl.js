@@ -36,11 +36,12 @@ function NavigationControl() {
   const handleLogin = async (response) => {
     const idToken = response.getAuthResponse().id_token;
     const { data } = (await login({ variables: { idToken: idToken } }));
+    console.log(data);
     if (data) {
       globalState({
         loggedin: true,
         googleId: data.login.googleId.toString(),
-        number: Number(data.login.number),
+        numbers: data.login.numbers,
         _id: data.login._id.toString()
       });
     }
@@ -138,7 +139,6 @@ function NavigationControl() {
           <List>
             {[['Explore', '/'], ['Create', '/create'], ['Favorites', '/favorites']].map((text, index) => (
               <ListItem button key={text[0]} onClick={() => history.push(text[1])}>
-
                 <ListItemText disableTypography primary={<Typography variant={'h6'} color={text[1] === currentURL ? 'primary' : 'grey'}> {text[0]}</Typography>} />
               </ListItem>
             ))}

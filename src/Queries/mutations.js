@@ -35,7 +35,7 @@ export const APPEND_NUMBER = gql`
 `;
 
 export const DELETE_NUMBER = gql`
-    mutation DeleteNumber($_id: String, $index: Int!) {
+    mutation DeleteNumber($_id: String!, $index: Int!) {
         deleteNumber(_id: $_id, index: $index)
     }
 `;
