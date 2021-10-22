@@ -1,3 +1,4 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -9,9 +10,9 @@ import {
 } from "@apollo/client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import App from './Components/App.js';
-
+require('dotenv').config();
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env,
   cache: new InMemoryCache()
 });
 

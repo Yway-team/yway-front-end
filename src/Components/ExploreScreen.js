@@ -77,7 +77,7 @@ export default function ExploreScreen() {
                 <Grid item xs={4} direction='row-reverse' container >
                     <Button variant="contained" onClick={handleAppend}>Append Number</Button>
                 </Grid>
-                <Typography variant='h5' style={{ margin: 20 }}>{user.numbers.length === 0 ? 'You do not have any number at the moment' : ''}</Typography>
+
                 {user.loggedin ?
                     (user.numbers.map((number, index) => (
                         <Grid item  >
@@ -90,6 +90,7 @@ export default function ExploreScreen() {
                                     <Button variant="outlined" onClick={() => handleDelete(index)}>Delete</Button>
                                 </CardActions>
                             </Card>
+                            <Typography variant='h5' style={{ margin: 20 }}>{user.numbers.length === 0 ? 'You do not have any number at the moment' : ''}</Typography>
                         </Grid>
                     ))) : <Typography variant='h5'>{user.numbers == null ? 'Please log in to see the numbers' : user.numbers[0]}</Typography>}
 
