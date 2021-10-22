@@ -10,9 +10,9 @@ import {
 } from "@apollo/client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import App from './Components/App.js';
-require('dotenv').config();
+
 const client = new ApolloClient({
-  uri: process.env,
+  uri: 'http://3.129.119.115:4000/graphql',
   cache: new InMemoryCache()
 });
 
