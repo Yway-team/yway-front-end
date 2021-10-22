@@ -11,7 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import App from './Components/App.js';
 
 const client = new ApolloClient({
-  uri: 'http://3.129.119.115:4000/',
+  uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache()
 });
 

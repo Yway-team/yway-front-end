@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-export const GET_NUMBER = gql`
-    query GetNumber($_id: String!) {
-        getNumber(_id: $_id)
+export const GET_NUMBERS = gql`
+    query GetNumbers($_id: String!) {
+        getNumbers(_id: $_id)
     }
 `;
