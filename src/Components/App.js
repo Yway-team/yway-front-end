@@ -1,6 +1,7 @@
 import ExploreScreen from './ExploreScreen';
 import CreateScreen from './CreateScreen';
 import FavoritesScreen from './FavoritesScreen';
+import ProfilePage from '../Pages/ProfilePage';
 import NavigationControl from './NavigationControl';
 import {
   BrowserRouter as Router,
@@ -21,6 +22,9 @@ export default function App() {
         </Route>
         <Route exact path="/favorites">
           <FavoritesScreen />
+        </Route>
+        <Route exact path="/profile">
+          <ProfilePage />
         </Route>
       </Switch>
     </Router>
