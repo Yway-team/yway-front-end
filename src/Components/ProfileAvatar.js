@@ -17,8 +17,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import { GoogleLogout } from 'react-google-login';
 import { useState } from 'react';
 import { globalState } from '../State/UserState';
+import { useHistory } from 'react-router-dom';
 
 function ProfileAvatar() {
+    const history = useHistory()
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleProfileClick = (event) => {
@@ -81,7 +83,7 @@ function ProfileAvatar() {
                 <MenuItem>
                     <Avatar /> Manage Google Account
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => { history.push('/profile'); }}>
                     <ListItemIcon>
                         <PersonIcon fontSize="small" />
                     </ListItemIcon>
