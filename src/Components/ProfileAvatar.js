@@ -32,7 +32,6 @@ function ProfileAvatar() {
         globalState({
             loggedin: false,
             googleId: "",
-            number: null,
             _id: ""
         });
         console.log(`Logged out`);
