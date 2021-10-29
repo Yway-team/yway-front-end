@@ -48,27 +48,28 @@ export default function ProfilePage() {
 
   return (
     <Box sx={{ paddingTop: "200px", paddingLeft: "400px", height: '100%', width: '100%'}}>
-      <Box sx={{display: "relative"}}>
+      <Box sx={{position: "relative"}}>
         <Box sx={{height: "300px", overflow: "hidden"}}>
           <img src="https://picsum.photos/1000"/>
         </Box>
-        <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/300" sx={{width:"200px", height: "200px"}}/>
+        <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/300" sx={{position: "absolute", width:"200px", height: "200px", top:"50%", left:"400px"}}/>
       </Box>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', paddingTop:"50px"}}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Item One" {...a11yProps(0)} />
-          <Tab label="Item Two" {...a11yProps(1)} />
-          <Tab label="Item Three" {...a11yProps(2)} />
+          <Tab label="Overview" {...a11yProps(0)} />
+          <Tab label="Achievements" {...a11yProps(1)} />
+          <Tab label="My Quizzes" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Item One
+        <h1>History</h1>
+        <h1>Friends</h1>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        Put Achievements Here!
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        Put My Quizzes Here!
       </TabPanel>
     </Box>
   );
