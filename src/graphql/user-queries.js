@@ -31,3 +31,14 @@ export const GET_USER = gql`
         }
     }
 `;
+
+export const GET_USER_PUBLIC_INFO = gql`
+    query GetUserPublicInfo($_id: String!) {
+        getUserPublicInfo(_id: $_id) {
+            _id
+            username
+            avatar
+            privacySettings
+        }
+    }
+`;
