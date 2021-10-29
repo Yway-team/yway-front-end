@@ -24,6 +24,13 @@ const theme = createTheme({
       contrastText: '#fff',
     },
   },
+  typography: {
+    fontFamily: "'Montserrat', sans-serif",
+    button:
+    {
+      textTransform: "none"
+    }
+  }
 });
 
 

@@ -1,18 +1,22 @@
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import Avatar from "@mui/material/Avatar";
+import {
+    Menu,
+    MenuItem,
+    ListItemIcon,
+    Divider,
+    Avatar,
+    IconButton
+} from "@mui/material";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsIcon from "@mui/icons-material/NotificationsOutlined";
 import GroupsIcon from "@mui/icons-material/Groups";
 import DynamicFormIcon from "@mui/icons-material/DynamicForm";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import HistoryIcon from "@mui/icons-material/History";
 import PersonIcon from "@mui/icons-material/Person";
-import IconButton from "@mui/icons-material";
-import Menu from "@mui/material";
+import { GoogleLogout } from 'react-google-login';
 import { useState } from 'react';
+import { globalState } from '../State/UserState';
 
 function ProfileAvatar() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -20,20 +24,32 @@ function ProfileAvatar() {
     const handleProfileClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleMenuClose = () => {
+    const handleProfileMenuClose = () => {
         setAnchorEl(null);
     };
 
+    const handleLogout = () => {
+        globalState({
+            loggedin: false,
+            googleId: "",
+            number: null,
+            _id: ""
+        });
+        console.log(`Logged out`);
+    }
+
     return (
-        <><IconButton size="small" sx={{ ml: 2 }}>
-            <NotificationsIcon sx={{ width: 32, height: 32 }}></NotificationsIcon>
-        </IconButton><IconButton onClick={handleProfileClick} size="small" sx={{ ml: 2 }}>
+        <><IconButton size='small' sx={{ ml: 2 }}>
+            <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
+        </IconButton>
+            <IconButton onClick={handleProfileClick} size="small" sx={{ ml: 2 }}>
                 <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-            </IconButton><Menu
+            </IconButton>
+            <Menu
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleMenuClose}
-                onClick={handleMenuClose}
+                onClose={handleProfileMenuClose}
+                onClick={handleProfileMenuClose}
                 PaperProps={{
                     elevation: 0,
                     sx: {
@@ -103,12 +119,24 @@ function ProfileAvatar() {
                     History
                 </MenuItem>
                 <Divider />
-                <MenuItem>
-                    <ListItemIcon>
-                        <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Sign Out
-                </MenuItem>
+
+
+                <GoogleLogout
+                    clientId={process.env.REACT_APP_CLIENT_ID}
+                    onLogoutSuccess={handleLogout}
+                    render={renderProps => (
+                        <MenuItem onClick={renderProps.onClick}>
+                            <ListItemIcon>
+                                <Logout fontSize="small" />
+                            </ListItemIcon>
+                            Sign Out
+                        </MenuItem>
+                    )}
+                >
+                </GoogleLogout>
+
             </Menu></>
     )
 }
+
+export default ProfileAvatar;

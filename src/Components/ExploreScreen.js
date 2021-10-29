@@ -80,7 +80,7 @@ export default function ExploreScreen() {
 
                 {user.loggedin ?
                     (user.numbers.map((number, index) => (
-                        <Grid item  >
+                        <Grid item key={index}>
                             <Card key={index} variant='outlined'  >
                                 <CardContent>
                                     <Typography >{number}</Typography></CardContent>
