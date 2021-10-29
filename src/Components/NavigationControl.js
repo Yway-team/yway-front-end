@@ -16,7 +16,7 @@ import { useTheme } from '@mui/material/styles';
 import { Menu } from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { LOGIN } from '../Queries/mutations.js';
+import { LOGIN } from '../graphql/mutations.js';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../State/UserState';
 import { useReactiveVar } from "@apollo/client";

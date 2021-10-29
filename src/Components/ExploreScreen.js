@@ -1,5 +1,5 @@
 import { Box, Typography, Button, Grid, Card, CardContent, CardActions } from '@mui/material';
-import { DECREMENT_NUMBER, INCREMENT_NUMBER, APPEND_NUMBER, DELETE_NUMBER } from '../Queries/mutations';
+import { DECREMENT_NUMBER, INCREMENT_NUMBER, APPEND_NUMBER, DELETE_NUMBER } from '../graphql/mutations';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../State/UserState';
 import { useReactiveVar } from "@apollo/client";
