@@ -5,6 +5,9 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
+import SettingsIcon from '@mui/icons-material/Settings';
+import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,23 +57,42 @@ export default function ProfilePage() {
         </Box>
         <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/300" sx={{position: "absolute", width:"200px", height: "200px", top:"50%", left:"400px"}}/>
       </Box>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', paddingTop:"50px"}}>
+      <Typography variant = 'h5' sx={{ position:"absolute", top:550, left: 810}}> happysnake594</Typography>
+        <Typography variant = 'h6' sx={{ position:"absolute", top:580, left: 830}}> This is my bio.</Typography>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', paddingTop:"125px"}}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Overview" {...a11yProps(0)} />
+        <Tab label="Overview" {...a11yProps(0)} />
           <Tab label="Achievements" {...a11yProps(1)} />
           <Tab label="My Quizzes" {...a11yProps(2)} />
+          <Tab label="My Platforms" {...a11yProps(3)} />
+          <Tab label="History" {...a11yProps(4)} />
+          <Tab label="Friends" {...a11yProps(5)} />
+          <Button variant="text" startIcon={<SettingsIcon />}>
+            Settings
+          </Button>
+          <Button variant="contained" startIcon={<EditIcon />}>
+            Edit Profile
+          </Button>
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0}>
-        <h1>History</h1>
-        <h1>Friends</h1>
+      <TabPanel value={value} index={0} >
+        Overview
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Put Achievements Here!
+        Achievements
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Put My Quizzes Here!
+        My Quizzes
       </TabPanel>
-    </Box>
+      <TabPanel value={value} index={3}>
+        My Platforms
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        History
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        Friends
+      </TabPanel>
+    </Box >
   );
 }
