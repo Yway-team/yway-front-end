@@ -84,19 +84,16 @@ function NavigationControl() {
                 clientId={process.env.REACT_APP_CLIENT_ID}
                 onLogoutSuccess={handleLogout}
                 render={renderProps => (
-                  <Button onClick={renderProps.onClick} sx={
-                    {
-                      background: theme.palette.primary.main,
-                      color: 'common.white',
-                      paddingLeft: 5,
-                      paddingRight: 5,
-                      "&:hover": {
-                        backgroundColor: theme.palette.primary.light,
-                        color: theme.palette.primary.main,
-                      }
-
+                  <Button onClick={renderProps.onClick} sx={{
+                    background: theme.palette.primary.main,
+                    color: 'common.white',
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                    "&:hover": {
+                      backgroundColor: theme.palette.primary.light,
+                      color: theme.palette.primary.main,
                     }
-                  }>Sign out</Button>
+                  }}>Sign out</Button>
                 )}
               >
               </GoogleLogout>
@@ -105,29 +102,24 @@ function NavigationControl() {
                 clientId={process.env.REACT_APP_CLIENT_ID}
                 isSignedIn={true}
                 render={renderProps => (
-                  <Button onClick={renderProps.onClick} sx={
-                    {
-                      background: theme.palette.primary.main,
-                      color: 'common.white',
-                      paddingLeft: 5,
-                      paddingRight: 5,
-                      "&:hover": {
-                        backgroundColor: theme.palette.primary.light,
-                        color: theme.palette.primary.main,
-                      }
-
+                  <Button onClick={renderProps.onClick} sx={{
+                    background: theme.palette.primary.main,
+                    color: 'common.white',
+                    paddingLeft: 5,
+                    paddingRight: 5,
+                    "&:hover": {
+                      backgroundColor: theme.palette.primary.light,
+                      color: theme.palette.primary.main,
                     }
-                  }>Sign in with Google</Button>
+                  }}>Sign in with Google</Button>
                 )}
                 onSuccess={handleLogin}
                 onFailure={() => { }}
-                cookiePolicy={'single_host_origin'}
-              />}
+                cookiePolicy={'single_host_origin'} />}
           </Grid>
         </Toolbar>
 
-      </AppBar>
-      <Drawer
+      </AppBar><Drawer
         variant="persistent"
         open={open}
         sx={{
@@ -145,7 +137,7 @@ function NavigationControl() {
           </List>
         </Box>
       </Drawer>
-    </Fragment >
+    </Fragment>
   );
 }
 
