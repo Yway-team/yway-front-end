@@ -42,3 +42,39 @@ export const GET_USER_PUBLIC_INFO = gql`
         }
     }
 `;
+
+export const GET_USER_INFO = gql`
+    query GetUserInfo($_id: String!) {
+        getUserInfo(_id: $_id) {
+            __typename
+            ... on UserPublicInfo {
+                _id
+                username
+                avatar
+                privacySettings
+            }
+            ... on UserPrivateInfo {
+                _id
+                username
+                bio
+                avatar
+                privacySettings
+                playPoints
+                creatorPoints
+                moderator
+                friends
+                quizzes
+                platforms
+                achievements {
+                    name
+                  }
+                history {
+                    name
+                }
+                notifications {
+                    name
+                }
+            }
+        }
+    }
+`;
