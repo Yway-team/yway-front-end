@@ -42,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilePage() {
+export default function ProfileScreen() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -50,18 +50,18 @@ export default function ProfilePage() {
   };
 
   return (
-    <Box sx={{ paddingTop: "200px", paddingLeft: "400px", height: '100%', width: '100%'}}>
-      <Box sx={{position: "relative"}}>
-        <Box sx={{height: "300px", overflow: "hidden"}}>
-          <img src="https://picsum.photos/1000"/>
+    <Box sx={{ paddingTop: "200px", paddingLeft: "400px", height: '100%', width: '100%' }}>
+      <Box sx={{ position: "relative" }}>
+        <Box sx={{ height: "300px", overflow: "hidden" }}>
+          <img src="https://picsum.photos/1000" />
         </Box>
-        <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/300" sx={{position: "absolute", width:"200px", height: "200px", top:"50%", left:"400px"}}/>
+        <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/300" sx={{ position: "absolute", width: "200px", height: "200px", top: "50%", left: "400px" }} />
       </Box>
-      <Typography variant = 'h5' sx={{ position:"absolute", top:550, left: 810}}> happysnake594</Typography>
-        <Typography variant = 'h6' sx={{ position:"absolute", top:580, left: 830}}> This is my bio.</Typography>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', paddingTop:"125px"}}>
+      <Typography variant='h5' sx={{ position: "absolute", top: 550, left: 810 }}> happysnake594</Typography>
+      <Typography variant='h6' sx={{ position: "absolute", top: 580, left: 830 }}> This is my bio.</Typography>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', paddingTop: "125px" }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-        <Tab label="Overview" {...a11yProps(0)} />
+          <Tab label="Overview" {...a11yProps(0)} />
           <Tab label="Achievements" {...a11yProps(1)} />
           <Tab label="My Quizzes" {...a11yProps(2)} />
           <Tab label="My Platforms" {...a11yProps(3)} />

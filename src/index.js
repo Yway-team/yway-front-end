@@ -9,7 +9,18 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import App from './Components/App.js';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import {
+  ExploreScreen,
+  FavoritesScreen,
+  CreateScreen,
+  ProfileScreen,
+} from './Screens';
+import NavigationControl from './Components/NavigationControl';
 
 const client = new ApolloClient({
   uri: 'http://3.129.119.115:4000/graphql',
@@ -38,7 +49,23 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <React.StrictMode>
       <ThemeProvider theme={theme}>
-        <App />
+        <Router>
+          <NavigationControl />
+          <Switch>
+            <Route exact path="/">
+              <ExploreScreen />
+            </Route>
+            <Route exact path="/create">
+              <CreateScreen />
+            </Route>
+            <Route exact path="/favorites">
+              <FavoritesScreen />
+            </Route>
+            <Route exact path="/profile">
+              <ProfileScreen />
+            </Route>
+          </Switch>
+        </Router>
       </ThemeProvider>
     </React.StrictMode>
   </ApolloProvider>,
