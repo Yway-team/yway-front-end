@@ -15,12 +15,12 @@ import {
 import ListItem, { listItemClasses } from "@mui/material/ListItem";
 import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { Menu, AutoAwesome, QuizOutlined, TrendingUp, History } from '@mui/icons-material';
+import { Menu, AutoAwesome, QuizOutlined, TrendingUp, History, PostAddOutlined, GroupAddRounded, Source, People, DynamicForm } from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { LOGIN } from '../Graphql/user-mutations.js';
+import { LOGIN } from '../graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../State/UserState';
+import { globalState } from '../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import ProfileAvatar from './ProfileAvatar';
 import logo from '../Images/logo.svg';
@@ -34,8 +34,36 @@ function NavigationControl(props) {
   const [login] = useMutation(LOGIN);
   const history = useHistory();
   const [currentURL, setcurrentURL] = useState(history.location.pathname);
+
+  const exploreTabLists = [
+    ['Highlights', <AutoAwesome sx={{ fontSize: 14, fill: theme.palette.primary.main }} />, '/highlights'],
+    ['Top Platforms', <QuizOutlined sx={{ fontSize: 16 }} />, '/platform'],
+    ['Top quizzes', <TrendingUp sx={{ fontSize: 16 }} />, '/quiz'],
+    ['History', <History sx={{ fontSize: 15 }} />, '/user/:userId/history'],
+  ];
+  //GroupAddRounded,  Source, People, Drafts 
+  const createTabLists = [
+    ['Create quiz', <PostAddOutlined sx={{ fontSize: 16, fill: theme.palette.primary.main }} />, '/quiz/create'],
+    ['Creat platform', <GroupAddRounded sx={{ fontSize: 17 }} />, '/platform/create'],
+    ['Drafts', <Source sx={{ fontSize: 16 }} />, '/user/:userId/drafts'],
+    ['My platforms', <People sx={{ fontSize: 15 }} />, '/user/:userId/platforms'],
+    ['My quizzes', <DynamicForm sx={{ fontSize: 15 }} />, '/user/:userId/quizzes'],
+  ];
+
+
   const toggleDrawer = () => {
     setOpen(!open);
+  }
+
+  const handleNextRoute = (newRoute) => {
+    history.push(newRoute);
+  }
+
+  const checkUrl = (url) => {
+    if (currentURL === '/' && url === '/highlights') {
+      return true;
+    }
+    return currentURL.endsWith(url);
   }
 
   const handleLogin = async (response) => {
@@ -85,18 +113,20 @@ function NavigationControl(props) {
 
   const title = (title) => <Typography sx={{ fontWeight: '700', fontSize: 16, color: theme.palette.primary.main, my: 2, marginLeft: '22px' }}>{title}</Typography>;
 
-  const tabTile = (tabName, icon) =>
-    <ListItem button sx={{
-      display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '3px'
-    }}>
-      <ListItemIcon sx={{ minWidth: 25 }
+  const tabTile = (tabName, icon, url, index) => {
+    console.log(typeof (icon));
+    var isActive = checkUrl(url);
+    return (<ListItem key={index} button selected={isActive} onClick={() => handleNextRoute(url)}
+      sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '3px', }}>
+      <ListItemIcon sx={{ minWidth: 30 }
       } >
         {icon}
       </ListItemIcon >
       <ListItemText
         disableTypography={true} primary={tabName}>
       </ListItemText>
-    </ListItem >;
+    </ListItem >);
+  };
 
   return (
     <Fragment>
@@ -161,33 +191,28 @@ function NavigationControl(props) {
                 fill: theme.palette.grey['500'],
               }
             },
-            [`& .active, & .${listItemClasses.root}:hover`]: {
+            [`& .active, & .Mui-selected, `
+            ]: {
               color: theme.palette.primary.main,
-              backgroundColor: theme.palette.primary.light,
               "& svg": {
                 fill: theme.palette.primary.main,
               }
-
             }
           }}>
             {title('EXPLORE')}
-            {tabTile('Highlights', <AutoAwesome sx={{ fontSize: 14, fill: theme.palette.primary.main }} />)}
-            {tabTile('Top Platforms', <QuizOutlined sx={{ fontSize: 16 }} />)}
-            {tabTile('Top quizzes', <TrendingUp sx={{ fontSize: 16 }} />)}
-            {tabTile('History', <History sx={{ fontSize: 15 }} />)}
-            {[['Explore', '/'], ['Create', '/create'], ['Favorites', '/favorites'], ['Profile', '/profile'],].map((text, index) => (
-              <ListItem button key={text[0]} onClick={() => history.push(text[1])}>
-                <ListItemText disableTypography primary={<Typography variant={'h6'} color={text[1] === currentURL ? 'primary' : 'grey'}> {text[0]}</Typography>} />
-              </ListItem>
-            ))}
+            {exploreTabLists.map(
+              (data, index) => tabTile(...data, index)
+            )}
+            {title('CREATE')}
+            {createTabLists.map(
+              (data, index) => tabTile(...data, index)
+            )}
+            {title('FAVORITES')}
           </List>
         </Box>
       </Drawer>
       <Main open={open}>
-        <div>
-          {props.switch}
-        </div>
-
+        {props.switch}
       </Main>
     </Fragment >
   );

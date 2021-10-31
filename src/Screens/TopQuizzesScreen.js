@@ -1,9 +1,9 @@
 import { Box, Typography } from '@mui/material';
-export default function FavoritesScreen() {
+export default function TopQuizzesScreen() {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%' }}>
             <Typography variant='h5' color='primary'>
-                Explore
+                Top Quizzes Screen
             </Typography>
             <Typography paragraph>
                 Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper

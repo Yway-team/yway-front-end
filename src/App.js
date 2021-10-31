@@ -9,13 +9,16 @@ import {
     Route,
 } from "react-router-dom";
 import {
-    ExploreScreen,
+    HighlightsScreen,
+    TopPlatformsScreen,
+    TopQuizzesScreen,
     FavoritesScreen,
     CreateScreen,
     ProfileScreen,
-} from './Screens';
+
+} from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavigationControl from './Components/NavigationControl';
+import NavigationControl from './components/NavigationControl';
 
 const client = new ApolloClient({
     uri: 'http://3.129.119.115:4000/graphql',
@@ -43,15 +46,6 @@ const theme = createTheme({
             fontSize: '14px',
         }
     }, components: {
-        // MuiListItemText: {
-        //     styleOverrides: {
-        //         root: {
-        //             fontSize: '14px',
-        //             fontWeight: 600,
-        //             fontFamily: "'Montserrat', sans-serif",
-        //         },
-        //     },
-        // },
     },
 
 });
@@ -63,20 +57,30 @@ export default function App() {
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
                 <Router>
-                    <NavigationControl switch={<Switch>
-                        <Route exact path="/">
-                            <ExploreScreen />
-                        </Route>
-                        <Route exact path="/create">
-                            <CreateScreen />
-                        </Route>
-                        <Route exact path="/favorites">
-                            <FavoritesScreen />
-                        </Route>
-                        <Route exact path="/profile">
-                            <ProfileScreen />
-                        </Route>
-                    </Switch>} />
+                    <NavigationControl
+                        switch={<Switch>
+                            <Route exact path="/">
+                                <HighlightsScreen />
+                            </Route>
+                            <Route exact path="/highlights">
+                                <HighlightsScreen />
+                            </Route>
+                            <Route exact path="/platform">
+                                <TopPlatformsScreen />
+                            </Route>
+                            <Route exact path="/quiz">
+                                <TopQuizzesScreen />
+                            </Route>
+                            <Route exact path="/create">
+                                <CreateScreen />
+                            </Route>
+                            <Route exact path="/favorites">
+                                <FavoritesScreen />
+                            </Route>
+                            <Route exact path="/profile">
+                                <ProfileScreen />
+                            </Route>
+                        </Switch>} />
                 </Router>
             </ThemeProvider>
         </ApolloProvider>
