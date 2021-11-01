@@ -20,7 +20,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../state/UserState';
+import { globalState } from '../State/UserState';
 import { useReactiveVar } from "@apollo/client";
 import ProfileAvatar from './ProfileAvatar';
 import logo from '../Images/logo.svg';
