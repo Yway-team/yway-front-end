@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { globalState } from '../state/UserState';
 import { useHistory } from 'react-router-dom';
 
-function ProfileAvatar() {
+function AppBarMenus(props) {
     const history = useHistory()
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -40,11 +40,12 @@ function ProfileAvatar() {
     }
 
     return (
-        <><IconButton size='small' sx={{ ml: 2 }}>
-            <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
-        </IconButton>
+        <>
+            <IconButton size='small' sx={{ ml: 2 }}>
+                <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
+            </IconButton>
             <IconButton onClick={handleProfileClick} size="small" sx={{ ml: 2 }}>
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Avatar sx={{ width: 32, height: 32, mr: 2 }} src={props.avatarSrc}></Avatar>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -136,8 +137,9 @@ function ProfileAvatar() {
                 >
                 </GoogleLogout>
 
-            </Menu></>
+            </Menu>
+        </>
     )
 }
 
-export default ProfileAvatar;
+export default AppBarMenus;

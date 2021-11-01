@@ -22,7 +22,7 @@ import { LOGIN } from '../graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../state/UserState';
 import { useReactiveVar } from "@apollo/client";
-import ProfileAvatar from './ProfileAvatar';
+import AppBarMenus from './AppBarMenus';
 import logo from '../Images/logo.svg';
 
 
@@ -36,14 +36,14 @@ function NavigationControl(props) {
   const [currentURL, setcurrentURL] = useState(history.location.pathname);
 
   const exploreTabLists = [
-    ['Highlights', <AutoAwesome sx={{ fontSize: 14, fill: theme.palette.primary.main }} />, '/highlights'],
+    ['Highlights', <AutoAwesome sx={{ fontSize: 14 }} />, '/highlights'],
     ['Top Platforms', <QuizOutlined sx={{ fontSize: 16 }} />, '/platform'],
     ['Top quizzes', <TrendingUp sx={{ fontSize: 16 }} />, '/quiz'],
-    ['History', <History sx={{ fontSize: 15 }} />, '/user/:userId/history'],
+    ['History', <History sx={{ fontSize: 17 }} />, '/user/:userId/history'],
   ];
   //GroupAddRounded,  Source, People, Drafts 
   const createTabLists = [
-    ['Create quiz', <PostAddOutlined sx={{ fontSize: 16, fill: theme.palette.primary.main }} />, '/quiz/create'],
+    ['Create quiz', <PostAddOutlined sx={{ fontSize: 17 }} />, '/quiz/create'],
     ['Creat platform', <GroupAddRounded sx={{ fontSize: 17 }} />, '/platform/create'],
     ['Drafts', <Source sx={{ fontSize: 16 }} />, '/user/:userId/drafts'],
     ['My platforms', <People sx={{ fontSize: 15 }} />, '/user/:userId/platforms'],
@@ -70,15 +70,14 @@ function NavigationControl(props) {
     const authResponse = response.getAuthResponse();
     const idToken = authResponse.id_token;
     const { data } = (await login({ variables: { idToken: idToken } }));
-    console.log(data);
     if (data) {
       globalState({
         loggedin: true,
-        googleId: data.login.googleId.toString(),
-        _id: data.login._id.toString()
+        ...data.login,
       });
     }
     console.log(`Logged in as`);
+    console.log(data);
     console.log(response.getAuthResponse());
     console.log(`global after logging in`);
     console.log(globalState());
@@ -111,15 +110,13 @@ function NavigationControl(props) {
     }),
   );
 
-  const title = (title) => <Typography sx={{ fontWeight: '700', fontSize: 16, color: theme.palette.primary.main, my: 2, marginLeft: '22px' }}>{title}</Typography>;
+  const title = (title) => <Typography sx={{ fontWeight: '700', fontSize: 14, color: theme.palette.primary.main, my: 2, marginLeft: '22px' }}>{title}</Typography>;
 
   const tabTile = (tabName, icon, url, index) => {
-    console.log(typeof (icon));
     var isActive = checkUrl(url);
     return (<ListItem key={index} button selected={isActive} onClick={() => handleNextRoute(url)}
       sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '3px', }}>
-      <ListItemIcon sx={{ minWidth: 30 }
-      } >
+      <ListItemIcon sx={{ minWidth: 30 }}>
         {icon}
       </ListItemIcon >
       <ListItemText
@@ -135,7 +132,7 @@ function NavigationControl(props) {
           <Grid container justifyContent='space-between'>
             <Grid container item xs={4}>
               <IconButton onClick={toggleDrawer} sx={{ mx: '14px', }}>
-                <Menu sx={{ fill: theme.palette.grey['600'] }} />
+                <Menu sx={{ fill: theme.palette.grey['500'] }} />
               </IconButton>
               <img src={logo} style={{ height: 40, marginTop: 'auto' }} alt={"logo"} />
             </Grid>
@@ -143,10 +140,10 @@ function NavigationControl(props) {
             <Grid container item xs={4} justifyContent='flex-end'>
               <div>
                 {user.loggedin ?
-                  <ProfileAvatar />
+                  <AppBarMenus avatarSrc={user.avatar} />
                   : <GoogleLogin
                     clientId={process.env.REACT_APP_CLIENT_ID}
-                    isSignedIn={false}
+                    isSignedIn={true}
                     render={renderProps => (
                       <Button onClick={renderProps.onClick} sx={{
                         background: theme.palette.primary.main,
