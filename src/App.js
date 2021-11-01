@@ -16,7 +16,7 @@ import {
     CreateScreen,
     ProfileScreen,
 
-} from './screens';
+} from './Screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl';
 
