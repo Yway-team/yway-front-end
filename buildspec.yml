@@ -13,7 +13,7 @@ phases:
   build:
     commands:
         # run build script
-        - yarn run build
+        - npm run build
      
 artifacts:
   files:
