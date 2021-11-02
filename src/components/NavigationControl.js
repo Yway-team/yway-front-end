@@ -16,12 +16,12 @@ import { useTheme } from '@mui/material/styles';
 import { Menu } from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { LOGIN } from '../Graphql/user-mutations.js';
+import { LOGIN } from '../graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../State/UserState';
+import { globalState } from '../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import ProfileAvatar from './ProfileAvatar';
-import logo from '../Images/logo.svg';
+import logo from '../images/logo.svg';
 
 
 function NavigationControl() {
