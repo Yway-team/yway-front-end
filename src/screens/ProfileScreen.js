@@ -50,7 +50,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <Box sx={{ paddingTop: "200px", paddingLeft: "400px", height: '100%', width: '100%' }}>
+    <Box sx={{ height: '100%', width: '100%' }}>
       <Box sx={{ position: "relative" }}>
         <Box sx={{ height: "300px", overflow: "hidden" }}>
           <img src="https://picsum.photos/1000" />
