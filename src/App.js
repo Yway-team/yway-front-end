@@ -15,10 +15,9 @@ import {
     FavoritesScreen,
     CreateScreen,
     ProfileScreen,
-
-} from './Screens';
+} from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavigationControl from './Components/NavigationControl'
+import NavigationControl from './components/NavigationControl'
 
 const client = new ApolloClient({
     uri: 'http://3.129.119.115:4000/graphql',

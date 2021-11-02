@@ -20,10 +20,10 @@ import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../State/UserState';
+import { globalState } from '../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import AppBarMenus from './AppBarMenus';
-import logo from '../Images/logo.svg';
+import logo from '../images/logo.svg';
 
 
 function NavigationControl(props) {

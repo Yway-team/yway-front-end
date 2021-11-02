@@ -16,7 +16,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import PersonIcon from "@mui/icons-material/Person";
 import { GoogleLogout } from 'react-google-login';
 import { useState } from 'react';
-import { globalState } from '../State/UserState';
+import { globalState } from '../state/UserState';
 import { useHistory } from 'react-router-dom';
 
 function AppBarMenus(props) {
