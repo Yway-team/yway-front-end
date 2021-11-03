@@ -44,36 +44,31 @@ export const GET_USER_PUBLIC_INFO = gql`
 `;
 
 export const GET_USER_INFO = gql`
-    query GetUserInfo($_id: String!) {
-        getUserInfo(_id: $_id) {
+    query GetUserInfo($userId: String!) {
+        getUserInfo(userId: $userId) {
             __typename
-            ... on UserPublicInfo {
-                _id
-                username
-                avatar
-                privacySettings
+            _id
+            username
+            bio
+            avatar
+            privacySettings
+            playPoints
+            creatorPoints
+            moderator
+            friends
+            quizzes
+            platforms
+            achievements {
+                creatorPointValue
+                description
+                playPointValue
+                timestamp
+                type
             }
-            ... on UserPrivateInfo {
-                _id
-                username
-                bio
-                avatar
-                privacySettings
-                playPoints
-                creatorPoints
-                moderator
-                friends
-                quizzes
-                platforms
-                achievements {
-                    name
-                  }
-                history {
-                    name
-                }
-                notifications {
-                    name
-                }
+            history {
+                description
+                timestamp
+                type
             }
         }
     }
