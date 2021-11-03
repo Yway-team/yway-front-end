@@ -1,4 +1,4 @@
-export { default as HighlightsScreen } from './HighlighsScreen';
+export { default as HighlightsScreen } from './HighlightsScreen';
 export { default as CreateScreen } from './CreateScreen';
 export { default as FavoritesScreen } from './FavoritesScreen';
 export { default as ProfileScreen } from './ProfileScreen';
