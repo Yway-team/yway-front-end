@@ -24,7 +24,7 @@ const client = new ApolloClient({
     uri: 'http://3.129.119.115:4000/graphql',
     cache: new InMemoryCache(),
     credentials: 'include',
-    headers: { authentication: globalState._id }
+    headers: { authorization: globalState._id }
 });
 
 const theme = createTheme({
