@@ -15,10 +15,10 @@ import DynamicFormIcon from "@mui/icons-material/DynamicForm";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import HistoryIcon from "@mui/icons-material/History";
 import PersonIcon from "@mui/icons-material/Person";
-import { GoogleLogout } from 'react-google-login';
-import { useState } from 'react';
-import { globalState } from '../state/UserState';
-import { useHistory } from 'react-router-dom';
+import {GoogleLogout} from 'react-google-login';
+import {useState} from 'react';
+import {globalState} from '../state/UserState';
+import {useHistory} from 'react-router-dom';
 
 
 function AppBarMenus(props) {
@@ -42,17 +42,19 @@ function AppBarMenus(props) {
         console.log(`Logged out`);
     }
 
-    const menuTypography = (text) => <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
+    const menuTypography = (text) => <Typography
+        sx={{fontWeight: '500', fontSize: 14, color: '#858585', my: 1}}>{text}</Typography>;
 
 
     return (
 
         <>
-            <IconButton size='small' sx={{ ml: 2 }}>
-                <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
+            <IconButton size='small' sx={{ml: 2}}>
+                <NotificationsIcon sx={{width: 25, height: 25}}></NotificationsIcon>
             </IconButton>
-            <IconButton onClick={handleProfileClick} size="small" sx={{ mx: 2 }}>
-                <Avatar sx={{ width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent' }} src={props.avatar} imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }}></Avatar>
+            <IconButton onClick={handleProfileClick} size="small" sx={{mx: 2}}>
+                <Avatar sx={{width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent'}}
+                        src={props.avatar} imgProps={{style: {borderRadius: '50%', objectFit: 'fill'}}}></Avatar>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -97,60 +99,68 @@ function AppBarMenus(props) {
                         }
                     }
                 }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                transformOrigin={{horizontal: "right", vertical: "top"}}
+                anchorOrigin={{horizontal: "right", vertical: "bottom"}}
             >
-                <MenuItem sx={{ my: 1, py: 5 }}>
+                <MenuItem sx={{my: 1, py: 5}}>
                     <Avatar sx={{
                         width: 32, height: 32, border: '3px solid #FF5A1D'
-                    }} src={props.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
-                    <Typography sx={{ fontWeight: '700', fontSize: 16, color: 'palette.primary.main', my: 1 }}> {props.username}</Typography>
+                    }} src={props.avatar} imgProps={{style: {borderRadius: '50% ', objectFit: 'fill'}}}></Avatar>
+                    <Typography sx={{
+                        fontWeight: '700',
+                        fontSize: 16,
+                        color: 'palette.primary.main',
+                        my: 1
+                    }}> {props.username}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => { history.push('/user'); }}>
+                <MenuItem onClick={() => {
+                    history.push('/user');
+                }}>
                     <ListItemIcon>
-                        <PersonIcon />
+                        <PersonIcon/>
                     </ListItemIcon>
                     {menuTypography('My profile')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <GroupsIcon />
+                        <GroupsIcon/>
                     </ListItemIcon>
                     {menuTypography('My platforms')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <DynamicFormIcon />
+                        <DynamicFormIcon/>
                     </ListItemIcon>
                     {menuTypography('My quizzes')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <PersonAdd />
+                        <PersonAdd/>
                     </ListItemIcon>
                     {menuTypography('Friends')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <EmojiEventsIcon />
+                        <EmojiEventsIcon/>
                     </ListItemIcon>
                     {menuTypography('Achievements')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <HistoryIcon />
+                        <HistoryIcon/>
                     </ListItemIcon> {menuTypography('History')}
                 </MenuItem>
-                <Divider sx={{ background: '#FF5A1D' }} />
+                <Divider sx={{background: '#FF5A1D'}}/>
                 <GoogleLogout
                     clientId={process.env.REACT_APP_CLIENT_ID}
                     onLogoutSuccess={handleLogout}
                     render={renderProps => (
                         <MenuItem onClick={renderProps.onClick}>
                             <ListItemIcon>
-                                <Logout style={{ fill: '#FF5A1D' }} />
+                                <Logout style={{fill: '#FF5A1D'}}/>
                             </ListItemIcon>
-                            <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#FF5A1D', my: 1 }}>Sign out</Typography>
+                            <Typography sx={{fontWeight: '500', fontSize: 14, color: '#FF5A1D', my: 1}}>Sign
+                                out</Typography>
                         </MenuItem>
                     )}
                 >
