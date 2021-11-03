@@ -8,26 +8,9 @@ export const LOGIN = gql`
             username
             bio
             avatar
-            privacySettings
             playPoints
             creatorPoints
-            moderator
-            friends
             favorites
-            quizzes
-            platforms
-            achievements {
-              name
-            }
-            drafts {
-              name
-            }
-            history {
-              name
-            }
-            notifications {
-              name
-            }
         }
     }
 `;
