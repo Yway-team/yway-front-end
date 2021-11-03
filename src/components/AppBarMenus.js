@@ -4,7 +4,8 @@ import {
     ListItemIcon,
     Divider,
     Avatar,
-    IconButton
+    IconButton,
+    Typography
 } from "@mui/material";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
@@ -19,7 +20,9 @@ import { useState } from 'react';
 import { globalState } from '../state/UserState';
 import { useHistory } from 'react-router-dom';
 
+
 function AppBarMenus(props) {
+    console.log(props);
     const history = useHistory()
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -39,13 +42,17 @@ function AppBarMenus(props) {
         console.log(`Logged out`);
     }
 
+    const menuTypography = (text) => <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
+
+
     return (
+
         <>
             <IconButton size='small' sx={{ ml: 2 }}>
                 <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
             </IconButton>
-            <IconButton onClick={handleProfileClick} size="small" sx={{ ml: 2 }}>
-                <Avatar sx={{ width: 32, height: 32, mr: 2 }} src={props.avatarSrc}></Avatar>
+            <IconButton onClick={handleProfileClick} size="small" sx={{ mx: 2 }}>
+                <Avatar sx={{ width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent' }} src={props.avatar} imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }}></Avatar>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -56,13 +63,25 @@ function AppBarMenus(props) {
                     elevation: 0,
                     sx: {
                         overflow: "visible",
+                        minWidth: 270,
                         filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                        mt: 1.5,
+                        mt: 1,
                         "& .MuiAvatar-root": {
-                            width: 32,
-                            height: 32,
+                            width: 42,
+                            height: 42,
                             ml: -0.5,
                             mr: 1
+                        },
+                        '& .MuiMenuItem-root': {
+                            p: '7px',
+                            paddingLeft: '30px'
+                        },
+                        '& .MuiSvgIcon-root': {
+                            ml: 1,
+                            mr: 3,
+                            my: 0.5,
+                            fill: '#858585',
+                            fontSize: 19,
                         },
                         "&:before": {
                             content: '""',
@@ -81,62 +100,61 @@ function AppBarMenus(props) {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-                <MenuItem>
-                    <Avatar /> Manage Google Account
+                <MenuItem sx={{ my: 1, py: 5 }}>
+                    <Avatar sx={{
+                        width: 32, height: 32, border: '3px solid #FF5A1D'
+                    }} src={props.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
+                    <Typography sx={{ fontWeight: '700', fontSize: 16, color: 'palette.primary.main', my: 1 }}> {props.username}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => { history.push('/profile'); }}>
+                <MenuItem onClick={() => { history.push('/user'); }}>
                     <ListItemIcon>
-                        <PersonIcon fontSize="small" />
+                        <PersonIcon />
                     </ListItemIcon>
-                    My profile
+                    {menuTypography('My profile')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <GroupsIcon fontSize="small" />
+                        <GroupsIcon />
                     </ListItemIcon>
-                    My platforms
+                    {menuTypography('My platforms')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <DynamicFormIcon fontSize="small" />
+                        <DynamicFormIcon />
                     </ListItemIcon>
-                    My quizzes
+                    {menuTypography('My quizzes')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <PersonAdd fontSize="small" />
+                        <PersonAdd />
                     </ListItemIcon>
-                    Friends
+                    {menuTypography('Friends')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <EmojiEventsIcon fontSize="small" />
+                        <EmojiEventsIcon />
                     </ListItemIcon>
-                    Achievements
+                    {menuTypography('Achievements')}
                 </MenuItem>
                 <MenuItem>
                     <ListItemIcon>
-                        <HistoryIcon fontSize="small" />
-                    </ListItemIcon>{" "}
-                    History
+                        <HistoryIcon />
+                    </ListItemIcon> {menuTypography('History')}
                 </MenuItem>
-                <Divider />
-
-
+                <Divider sx={{ background: '#FF5A1D' }} />
                 <GoogleLogout
                     clientId={process.env.REACT_APP_CLIENT_ID}
                     onLogoutSuccess={handleLogout}
                     render={renderProps => (
                         <MenuItem onClick={renderProps.onClick}>
                             <ListItemIcon>
-                                <Logout fontSize="small" />
+                                <Logout style={{ fill: '#FF5A1D' }} />
                             </ListItemIcon>
-                            Sign Out
+                            <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#FF5A1D', my: 1 }}>Sign out</Typography>
                         </MenuItem>
                     )}
                 >
                 </GoogleLogout>
-
             </Menu>
         </>
     )

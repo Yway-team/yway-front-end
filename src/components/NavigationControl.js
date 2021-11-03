@@ -15,7 +15,7 @@ import {
 import ListItem, { listItemClasses } from "@mui/material/ListItem";
 import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { Menu, AutoAwesome, QuizOutlined, TrendingUp, History, PostAddOutlined, GroupAddRounded, Source, People, DynamicForm } from '@mui/icons-material';
+import { Menu, AutoAwesome, QuizOutlined, TrendingUp, History, PostAddOutlined, GroupAddRounded, Source, People, DynamicForm, TungstenRounded, Bolt } from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../graphql/user-mutations.js';
@@ -36,18 +36,18 @@ function NavigationControl(props) {
   const [currentURL, setcurrentURL] = useState(history.location.pathname);
 
   const exploreTabLists = [
-    ['Highlights', <AutoAwesome sx={{ fontSize: 14 }} />, '/highlights'],
-    ['Top Platforms', <QuizOutlined sx={{ fontSize: 16 }} />, '/platform'],
-    ['Top quizzes', <TrendingUp sx={{ fontSize: 16 }} />, '/quiz'],
-    ['History', <History sx={{ fontSize: 17 }} />, '/user/:userId/history'],
+    ['Highlights', <AutoAwesome sx={{ fontSize: 15 }} />, '/highlights'],
+    ['Top Platforms', <QuizOutlined sx={{ fontSize: 19 }} />, '/platform'],
+    ['Top quizzes', <TrendingUp sx={{ fontSize: 19 }} />, '/quiz'],
+    ['History', <History sx={{ fontSize: 19 }} />, '/user/:userId/history'],
   ];
   //GroupAddRounded,  Source, People, Drafts 
   const createTabLists = [
-    ['Create quiz', <PostAddOutlined sx={{ fontSize: 17 }} />, '/quiz/create'],
-    ['Creat platform', <GroupAddRounded sx={{ fontSize: 17 }} />, '/platform/create'],
-    ['Drafts', <Source sx={{ fontSize: 16 }} />, '/user/:userId/drafts'],
-    ['My platforms', <People sx={{ fontSize: 15 }} />, '/user/:userId/platforms'],
-    ['My quizzes', <DynamicForm sx={{ fontSize: 15 }} />, '/user/:userId/quizzes'],
+    ['Create quiz', <PostAddOutlined sx={{ fontSize: 20 }} />, '/quiz/create'],
+    ['Creat platform', <GroupAddRounded sx={{ fontSize: 20 }} />, '/platform/create'],
+    ['Drafts', <Source sx={{ fontSize: 18 }} />, '/user/:userId/drafts'],
+    ['My platforms', <People sx={{ fontSize: 17 }} />, '/user/:userId/platforms'],
+    ['My quizzes', <DynamicForm sx={{ fontSize: 16 }} />, '/user/:userId/quizzes'],
   ];
 
 
@@ -110,12 +110,12 @@ function NavigationControl(props) {
     }),
   );
 
-  const title = (title) => <Typography sx={{ fontWeight: '700', fontSize: 14, color: theme.palette.primary.main, my: 2, marginLeft: '22px' }}>{title}</Typography>;
+  const title = (title) => <Typography sx={{ fontWeight: '700', fontSize: 16, color: theme.palette.primary.main, my: 2, marginLeft: '22px' }}>{title}</Typography>;
 
   const tabTile = (tabName, icon, url, index) => {
     var isActive = checkUrl(url);
     return (<ListItem key={index} button selected={isActive} onClick={() => handleNextRoute(url)}
-      sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '3px', }}>
+      sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '7px', }}>
       <ListItemIcon sx={{ minWidth: 30 }}>
         {icon}
       </ListItemIcon >
@@ -127,7 +127,7 @@ function NavigationControl(props) {
 
   return (
     <Fragment>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background: theme.palette.common.white, boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 2, background: theme.palette.common.white, boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
         <Toolbar style={{ padding: 0 }}>
           <Grid container justifyContent='space-between'>
             <Grid container item xs={4}>
@@ -140,7 +140,7 @@ function NavigationControl(props) {
             <Grid container item xs={4} justifyContent='flex-end'>
               <div>
                 {user.loggedin ?
-                  <AppBarMenus avatarSrc={user.avatar} />
+                  <AppBarMenus {...user} />
                   : <GoogleLogin
                     clientId={process.env.REACT_APP_CLIENT_ID}
                     isSignedIn={true}
@@ -166,6 +166,25 @@ function NavigationControl(props) {
         </Toolbar>
 
       </AppBar>
+      <Grid container justifyContent='flex-end' sx={{ zIndex: theme.zIndex.drawer, position: 'fixed' }}>
+        <Grid item container direction='row' sx={{
+          backgroundColor: theme.palette.primary.main,
+          height: '40px',
+          width: '150px',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          pl: 1,
+          borderRadius: '0px 0px 0px 14px',
+          boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.15)'
+        }}>
+          <Grid container item xs={6} direction='row' alignItems='center' justifyContent='center'> <Typography sx={{ fontWeight: '700', fontSize: 15, color: theme.palette.common.white }}>1014</Typography>
+            <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} /></Grid>
+
+          <Grid container item xs={6} direction='row' alignItems='center' justifyContent='center'> <Typography sx={{ fontWeight: '700', fontSize: 15, color: theme.palette.common.white }}>1014</Typography>
+            <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} /></Grid>
+
+        </Grid>
+      </Grid>
 
       <Drawer
         variant="persistent"
