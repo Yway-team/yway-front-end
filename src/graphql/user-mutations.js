@@ -4,13 +4,17 @@ export const LOGIN = gql`
     mutation Login($idToken: String!) {
         login(idToken: $idToken) {
             _id
-            googleId
-            username
-            bio
             avatar
-            playPoints
             creatorPoints
             favorites
+            googleId
+            notifications {
+              name
+              type
+              timestamp
+            }
+            playPoints
+            username
         }
     }
 `;

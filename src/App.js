@@ -21,7 +21,7 @@ import NavigationControl from './components/NavigationControl'
 import {globalState} from "./state/UserState";
 
 const client = new ApolloClient({
-    uri: 'http://3.129.119.115:4000/graphql',
+    uri: 'http://localhost:4000/graphql',
     cache: new InMemoryCache(),
     credentials: 'include',
     headers: {authorization: globalState._id}
