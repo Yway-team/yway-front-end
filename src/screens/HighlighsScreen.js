@@ -1,7 +1,7 @@
 import { Grid, Typography } from '@mui/material';
 export default function HighlightsScreen() {
     return (
-        <Grid direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200%', width: '100%' }}>
+        <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200%', width: '100%' }}>
             <Typography variant='h5' color='primary'>
                 HighlightsScreen
             </Typography>
