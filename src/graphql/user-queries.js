@@ -46,7 +46,6 @@ export const GET_USER_PUBLIC_INFO = gql`
 export const GET_USER_INFO = gql`
     query GetUserInfo($userId: String!) {
         getUserInfo(userId: $userId) {
-            __typename
             _id
             username
             bio
