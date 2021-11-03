@@ -10,12 +10,29 @@ import {
   ListItemIcon,
   Button,
   Grid,
+  Paper,
+  InputBase
 } from '@mui/material';
 
 import ListItem, { listItemClasses } from "@mui/material/ListItem";
 import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { Menu, AutoAwesome, QuizOutlined, TrendingUp, History, PostAddOutlined, GroupAddRounded, Source, People, DynamicForm, TungstenRounded, Bolt } from '@mui/icons-material';
+import {
+  Menu,
+  MenuOpen,
+  AutoAwesome,
+  QuizOutlined,
+  TrendingUp,
+  History,
+  PostAddOutlined,
+  GroupAddRounded,
+  Source,
+  People,
+  DynamicForm,
+  TungstenRounded,
+  Bolt,
+  SearchRounded
+} from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../graphql/user-mutations.js';
@@ -41,7 +58,7 @@ function NavigationControl(props) {
     ['Top quizzes', <TrendingUp sx={{ fontSize: 19 }} />, '/quiz'],
     ['History', <History sx={{ fontSize: 19 }} />, '/user/:userId/history'],
   ];
-  //GroupAddRounded,  Source, People, Drafts 
+
   const createTabLists = [
     ['Create quiz', <PostAddOutlined sx={{ fontSize: 20 }} />, '/quiz/create'],
     ['Creat platform', <GroupAddRounded sx={{ fontSize: 20 }} />, '/platform/create'],
@@ -130,20 +147,44 @@ function NavigationControl(props) {
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 2, background: theme.palette.common.white, boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
         <Toolbar style={{ padding: 0 }}>
           <Grid container justifyContent='space-between'>
-            <Grid container item xs={4}>
+            <Grid container item xs={2} alignItems='center' >
               <IconButton onClick={toggleDrawer} sx={{ mx: '14px', }}>
-                <Menu sx={{ fill: theme.palette.grey['500'] }} />
+                {
+                  open ? <MenuOpen sx={{ fill: theme.palette.grey['500'] }} /> :
+                    <Menu sx={{ fill: theme.palette.grey['500'] }} />
+                }
               </IconButton>
               <img src={logo} style={{ height: 40, marginTop: 'auto' }} alt={"logo"} />
             </Grid>
-            <Grid container item xs={4} ></Grid>
-            <Grid container item xs={4} justifyContent='flex-end'>
+            <Grid container item xs={6} alignItems='center' sx={{
+              [`&:focus-within`]: {
+                '& svg': { fill: theme.palette.primary.main }
+              }
+            }} >
+              <Paper
+                elevation={0}
+                component="form"
+                sx={{ px: 2, display: 'flex', alignItems: 'center', width: '100%', height: '36px', background: theme.palette.grey[200] }}
+              >
+                <InputBase
+                  sx={{
+                    ml: 1, flex: 1, fontSize: 14, fontWeight: 500,
+                  }}
+                  placeholder="Search Yway"
+                  inputProps={{ 'aria-label': 'search Yway' }}
+                />
+                <IconButton type="submit" sx={{ p: '3px' }} aria-label="search">
+                  <SearchRounded sx={{ fill: theme.palette.grey['500'] }} />
+                </IconButton>
+              </Paper>
+            </Grid>
+            <Grid container item xs={2} justifyContent='flex-end' alignItems='center'>
               <div>
                 {user.loggedin ?
                   <AppBarMenus {...user} />
                   : <GoogleLogin
                     clientId={process.env.REACT_APP_CLIENT_ID}
-                    isSignedIn={true}
+                    isSignedIn={false}
                     render={renderProps => (
                       <Button onClick={renderProps.onClick} sx={{
                         background: theme.palette.primary.main,
@@ -164,12 +205,11 @@ function NavigationControl(props) {
             </Grid>
           </Grid>
         </Toolbar>
-
       </AppBar>
-      <Grid container justifyContent='flex-end' sx={{ zIndex: theme.zIndex.drawer, position: 'fixed' }}>
+      {user.loggedin ? <Grid container justifyContent='flex-end' sx={{ zIndex: theme.zIndex.drawer, position: 'fixed' }}>
         <Grid item container direction='row' sx={{
           backgroundColor: theme.palette.primary.main,
-          height: '40px',
+          height: '36px',
           width: '150px',
           justifyContent: 'space-around',
           alignItems: 'center',
@@ -184,8 +224,7 @@ function NavigationControl(props) {
             <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} /></Grid>
 
         </Grid>
-      </Grid>
-
+      </Grid> : <Fragment></Fragment>}
       <Drawer
         variant="persistent"
         open={open}
