@@ -73,15 +73,66 @@ export default function App() {
                             <Route exact path="/quiz">
                                 <TopQuizzesScreen />
                             </Route>
+                            {/*<Route exact path="/quiz/create">*/}
+                            {/*    <CreateQuizScreen />*/}
+                            {/*</Route>*/}
                             <Route exact path="/create">
                                 <CreateScreen />
+                            </Route>
+                            {/*<Route exact path="/quiz/create/:draftId">*/}
+                            {/*    <EditDraftScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/platform/create">*/}
+                            {/*    <CreatePlatformScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/drafts">*/}
+                            {/*    <DraftsScreen />*/}
+                            {/*</Route>*/}
+                            <Route exact path="/user">
+                                <ProfileScreen />
+                            </Route>
+                            <Route exact path="/user/:userId">
+                                <ProfileScreen />
                             </Route>
                             <Route exact path="/favorites">
                                 <FavoritesScreen />
                             </Route>
-                            <Route exact path="/profile">
-                                <ProfileScreen />
-                            </Route>
+                            {/*<Route exact path="/user/:userId/quizzes">*/}
+                            {/*    <MyQuizzesScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/platforms">*/}
+                            {/*    <MyPlatformsScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/history">*/}
+                            {/*    <HistoryScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/friends">*/}
+                            {/*    <FriendsScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/settings">*/}
+                            {/*    <UserPrivacyScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/edit">*/}
+                            {/*    <EditUserProfileScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/platform/:platformName">*/}
+                            {/*    <PlatformScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/platform/:platformName/leaderboard">*/}
+                            {/*    <PlatformLeaderboardScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/platform/:platformName/settings">*/}
+                            {/*    <PlatformSettingsScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/platform/:platformName/:quizName/:quizId">*/}
+                            {/*    <QuizInfoScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/quiz/:quizName/:quizId">*/}
+                            {/*    <AnswerQuestionScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/search/:query/:filter">*/}
+                            {/*    <SearchResultsScreen />*/}
+                            {/*</Route>*/}
                         </Switch>} />
                 </Router>
             </ThemeProvider>
