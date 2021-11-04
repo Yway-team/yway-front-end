@@ -35,6 +35,9 @@ const theme = createTheme({
             main: '#ff5a1d',
             contrastText: '#fff',
         },
+        common: {
+            black: '#333333',
+        }
     },
     typography: {
         fontFamily: "'Montserrat', sans-serif",
@@ -48,7 +51,9 @@ const theme = createTheme({
         {
             fontSize: '14px',
         }
-    }, components: {},
+    }, components: {
+
+    },
 
 });
 
