@@ -14,9 +14,7 @@ import {
     InputBase
 } from '@mui/material';
 
-import ListItem, { listItemClasses } from "@mui/material/ListItem";
-import { useHistory } from 'react-router-dom';
-import { styled, useTheme } from '@mui/material/styles';
+
 import {
     Menu,
     MenuOpen,
@@ -33,13 +31,17 @@ import {
     Bolt,
     SearchRounded
 } from '@mui/icons-material';
+import ListItem, { listItemClasses } from "@mui/material/ListItem";
+import { useHistory } from 'react-router-dom';
+import { styled, useTheme } from '@mui/material/styles';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../state/UserState';
 import { useReactiveVar } from "@apollo/client";
-import AppBarMenus from './AppBarMenus';
+import ProfileMenu from './ProfileMenu';
+import NotificationsPopUp from './NotificationsPopUp';
 import logo from '../images/logo.svg';
 
 
@@ -193,30 +195,29 @@ function NavigationControl(props) {
                             </Paper>
                         </Grid>
                         <Grid container item xs={3} justifyContent='flex-end' alignItems='center'>
-                            <div>
-                                {user.loggedin ?
-                                    <AppBarMenus {...user} />
-                                    : <GoogleLogin
-                                        clientId={process.env.REACT_APP_CLIENT_ID}
-                                        isSignedIn={true}
-                                        render={renderProps => (
-                                            <Button onClick={renderProps.onClick} sx={{
-                                                background: theme.palette.primary.main,
-                                                mx: '22px',
-                                                px: 3,
-                                                color: 'common.white',
-                                                "&:hover": {
-                                                    backgroundColor: theme.palette.primary.light,
-                                                    color: theme.palette.primary.main,
-                                                }
+                            {user.loggedin ?
+                                <><NotificationsPopUp /> <ProfileMenu /></>
+                                : <GoogleLogin
+                                    clientId={process.env.REACT_APP_CLIENT_ID}
+                                    isSignedIn={true}
+                                    render={renderProps => (
+                                        <Button onClick={renderProps.onClick} sx={{
+                                            background: theme.palette.primary.main,
+                                            mx: '22px',
+                                            px: 3,
+                                            color: 'common.white',
+                                            "&:hover": {
+                                                backgroundColor: theme.palette.primary.light,
+                                                color: theme.palette.primary.main,
                                             }
-                                            }>SIGN IN</Button>
-                                        )}
-                                        onSuccess={handleLogin}
-                                        onFailure={() => {
-                                        }}
-                                        cookiePolicy={'single_host_origin'} />}
-                            </div>
+                                        }
+                                        }>SIGN IN</Button>
+                                    )}
+                                    onSuccess={handleLogin}
+                                    onFailure={() => {
+                                    }}
+                                    cookiePolicy={'single_host_origin'} />}
+
                         </Grid>
                     </Grid>
                 </Toolbar>

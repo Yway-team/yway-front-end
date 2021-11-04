@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
-import NotificationsIcon from "@mui/icons-material/NotificationsOutlined";
 import GroupsIcon from "@mui/icons-material/Groups";
 import DynamicFormIcon from "@mui/icons-material/DynamicForm";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
@@ -18,11 +17,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import { GoogleLogout } from 'react-google-login';
 import { useState } from 'react';
 import { globalState } from '../state/UserState';
+import { useReactiveVar } from "@apollo/client";
 import { useHistory } from 'react-router-dom';
 
 
-function AppBarMenus(props) {
-    console.log(props);
+function ProfileMenu() {
+    const user = useReactiveVar(globalState);
     const history = useHistory()
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -50,12 +50,9 @@ function AppBarMenus(props) {
     return (
 
         <>
-            <IconButton size='small' sx={{ ml: 2 }}>
-                <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
-            </IconButton>
             <IconButton onClick={handleProfileClick} size="small" sx={{ mx: 2 }}>
                 <Avatar sx={{ width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent' }}
-                    src={props.avatar} imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }}></Avatar>
+                    src={user.avatar} imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }}></Avatar>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -106,8 +103,8 @@ function AppBarMenus(props) {
                 <MenuItem sx={{ my: 1, py: 5 }}>
                     <Avatar sx={{
                         width: 32, height: 32
-                    }} src={props.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
-                    <Typography sx={{ fontWeight: '700', fontSize: 16, color: 'palette.primary.main', my: 1 }}> {props.username}</Typography>
+                    }} src={user.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
+                    <Typography sx={{ fontWeight: '700', fontSize: 16, color: 'palette.primary.main', my: 1 }}> {user.username}</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => {
                     history.push('/user');
@@ -166,4 +163,4 @@ function AppBarMenus(props) {
     )
 }
 
-export default AppBarMenus;
+export default ProfileMenu;
