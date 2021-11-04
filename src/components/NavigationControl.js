@@ -107,7 +107,6 @@ function NavigationControl(props) {
     const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
             flexGrow: 1,
-            padding: theme.spacing(3),
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.sharp,
                 duration: theme.transitions.duration.leavingScreen,
@@ -199,7 +198,7 @@ function NavigationControl(props) {
                                 <><NotificationsPopUp /> <ProfileMenu /></>
                                 : <GoogleLogin
                                     clientId={process.env.REACT_APP_CLIENT_ID}
-                                    isSignedIn={true}
+                                    isSignedIn={false}
                                     render={renderProps => (
                                         <Button onClick={renderProps.onClick} sx={{
                                             background: theme.palette.primary.main,
