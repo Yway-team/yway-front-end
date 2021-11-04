@@ -43,7 +43,8 @@ function AppBarMenus(props) {
         console.log(`Logged out`);
     }
 
-    const menuTypography = (text) => <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
+    const menuTypography = (text) => <Typography
+        sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
 
 
     return (
@@ -53,7 +54,8 @@ function AppBarMenus(props) {
                 <NotificationsIcon sx={{ width: 25, height: 25 }}></NotificationsIcon>
             </IconButton>
             <IconButton onClick={handleProfileClick} size="small" sx={{ mx: 2 }}>
-                <Avatar sx={{ width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent' }} src={props.avatar} imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }}></Avatar>
+                <Avatar sx={{ width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent' }}
+                    src={props.avatar} imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }}></Avatar>
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -107,7 +109,9 @@ function AppBarMenus(props) {
                     }} src={props.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
                     <Typography sx={{ fontWeight: '700', fontSize: 16, color: 'palette.primary.main', my: 1 }}> {props.username}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => { history.push('/user'); }}>
+                <MenuItem onClick={() => {
+                    history.push('/user');
+                }}>
                     <ListItemIcon>
                         <PersonIcon />
                     </ListItemIcon>
@@ -151,7 +155,8 @@ function AppBarMenus(props) {
                             <ListItemIcon>
                                 <Logout style={{ fill: '#FF5A1D' }} />
                             </ListItemIcon>
-                            <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#FF5A1D', my: 1 }}>Sign out</Typography>
+                            <Typography sx={{ fontWeight: '500', fontSize: 14, color: '#FF5A1D', my: 1 }}>Sign
+                                out</Typography>
                         </MenuItem>
                     )}
                 >
