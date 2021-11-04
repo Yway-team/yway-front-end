@@ -9,7 +9,7 @@ export const LOGIN = gql`
             favorites
             googleId
             notifications {
-              name
+              description
               type
               timestamp
             }

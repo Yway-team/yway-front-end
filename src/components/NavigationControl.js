@@ -35,7 +35,7 @@ import {
 } from '@mui/icons-material';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { LOGIN } from '../graphql/user-mutations.js';
+import { LOGIN } from '../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../state/UserState';
 import { useReactiveVar } from "@apollo/client";
