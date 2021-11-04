@@ -16,15 +16,16 @@ import {
     CreateScreen,
     ProfileScreen,
 } from './screens';
-import {createTheme, ThemeProvider} from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
-import {globalState} from "./state/UserState";
+import { globalState } from "./state/UserState";
 
+console.log('Before' + globalState._id);
 const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',
     cache: new InMemoryCache(),
     credentials: 'include',
-    headers: {authorization: globalState._id}
+    headers: { authorization: globalState._id }
 });
 
 const theme = createTheme({
@@ -40,13 +41,13 @@ const theme = createTheme({
         htmlFontSize: 16,
         fontSize: 14,
         button:
-            {
-                textTransform: "none"
-            },
+        {
+            textTransform: "none"
+        },
         body1:
-            {
-                fontSize: '14px',
-            }
+        {
+            fontSize: '14px',
+        }
     }, components: {},
 
 });
@@ -60,22 +61,22 @@ export default function App() {
                     <NavigationControl
                         switch={<Switch>
                             <Route exact path="/">
-                                <HighlightsScreen/>
+                                <HighlightsScreen />
                             </Route>
                             <Route exact path="/highlights">
-                                <HighlightsScreen/>
+                                <HighlightsScreen />
                             </Route>
                             <Route exact path="/platform">
-                                <TopPlatformsScreen/>
+                                <TopPlatformsScreen />
                             </Route>
                             <Route exact path="/quiz">
-                                <TopQuizzesScreen/>
+                                <TopQuizzesScreen />
                             </Route>
                             {/*<Route exact path="/quiz/create">*/}
                             {/*    <CreateQuizScreen />*/}
                             {/*</Route>*/}
                             <Route exact path="/create">
-                                <CreateScreen/>
+                                <CreateScreen />
                             </Route>
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
@@ -87,13 +88,13 @@ export default function App() {
                             {/*    <DraftsScreen />*/}
                             {/*</Route>*/}
                             <Route exact path="/user">
-                                <ProfileScreen/>
+                                <ProfileScreen />
                             </Route>
                             <Route exact path="/user/:userId">
-                                <ProfileScreen/>
+                                <ProfileScreen />
                             </Route>
                             <Route exact path="/favorites">
-                                <FavoritesScreen/>
+                                <FavoritesScreen />
                             </Route>
                             {/*<Route exact path="/user/:userId/quizzes">*/}
                             {/*    <MyQuizzesScreen />*/}
@@ -131,7 +132,7 @@ export default function App() {
                             {/*<Route exact path="/search/:query/:filter">*/}
                             {/*    <SearchResultsScreen />*/}
                             {/*</Route>*/}
-                        </Switch>}/>
+                        </Switch>} />
                 </Router>
             </ThemeProvider>
         </ApolloProvider>

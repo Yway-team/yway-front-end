@@ -39,6 +39,7 @@ function AppBarMenus(props) {
             googleId: "",
             _id: ""
         });
+        history.replace('/');
         console.log(`Logged out`);
     }
 
@@ -67,10 +68,10 @@ function AppBarMenus(props) {
                         filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                         mt: 1,
                         "& .MuiAvatar-root": {
-                            width: 42,
-                            height: 42,
-                            ml: -0.5,
-                            mr: 1
+                            width: 36,
+                            height: 36,
+                            ml: 0.3,
+                            mr: 1.3
                         },
                         '& .MuiMenuItem-root': {
                             p: '7px',
@@ -102,7 +103,7 @@ function AppBarMenus(props) {
             >
                 <MenuItem sx={{ my: 1, py: 5 }}>
                     <Avatar sx={{
-                        width: 32, height: 32, border: '3px solid #FF5A1D'
+                        width: 32, height: 32
                     }} src={props.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
                     <Typography sx={{ fontWeight: '700', fontSize: 16, color: 'palette.primary.main', my: 1 }}> {props.username}</Typography>
                 </MenuItem>
