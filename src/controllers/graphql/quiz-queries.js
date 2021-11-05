@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require('@apollo/client');
 
 export const GET_QUIZ_INFO = gql`
     query GetQuizInfo($quizId: ID!) {
@@ -22,6 +22,7 @@ export const GET_QUIZ_INFO = gql`
 export const GET_QUIZ_HIGHLIGHTS = gql`
     query GetQuizHighlights($howMany: Int!) {
         getQuizHighlights(howMany: $howMany) {
+            _id
             bannerImg
             createdAt
             description
