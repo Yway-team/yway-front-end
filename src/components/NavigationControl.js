@@ -241,7 +241,7 @@ function NavigationControl(props) {
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>1014</Typography>
+                                }}>{user.creatorPoints}</Typography>
                                 <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} /></Grid>
 
                             <Grid container item xs={6} direction='row' alignItems='center' justifyContent='center'>
@@ -249,7 +249,7 @@ function NavigationControl(props) {
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>1014</Typography>
+                                }}>{user.playPoints}</Typography>
                                 <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} /></Grid>
 
                         </Grid>
