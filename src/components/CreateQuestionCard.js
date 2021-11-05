@@ -3,13 +3,31 @@ import CloseIcon from "@mui/icons-material/Close";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import {useTheme} from "@mui/material/styles";
+import React, {useState} from "react";
+
+    // index: Int
+    // answerOptions: [String]
+    // correctAnswer: String
+    // question: String
 
 
-export default function CreateQuestionCard({number}) {
+export default function CreateQuestionCard({index, question, answerOptions, correctAnswer}) {
     const theme = useTheme();
-    return (
+    const [options, setOptions] = useState([]);
 
-        <Card variant="outlined" sx={{maxWidth: 700, m: 2, borderColor: theme.palette.primary.main, borderRadius:2}}>
+    const handleAddOption = () => {
+        setOptions(options => [...options, `${options.length}`])
+        console.log(options);
+    }
+
+    const handleRemoveQuestion = (e) => {
+        const name = e.target.getAttribute("name");
+        setOptions(options.filter(item => item.name !== name));
+        console.log(options);
+    };
+
+    return (
+        <Card variant="outlined" sx={{maxWidth: 700, m: 2, borderColor: theme.palette.primary.main, borderRadius: 2}}>
             <Grid container justifyContent="space-between">
                 <Grid item container direction="row" sx={{
                     backgroundColor: theme.palette.primary.main,
@@ -36,7 +54,7 @@ export default function CreateQuestionCard({number}) {
                                 color: theme.palette.common.white
                             }}
                         >
-                            {number}
+                            {index}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -47,12 +65,9 @@ export default function CreateQuestionCard({number}) {
             <CardContent>
                 <Grid padding={2}>
                     <TextField label="Question" variant="standard" fullWidth/>
-                    <TextField label="Option 1" variant="standard" fullWidth/>
-                    <TextField label="Option 2" variant="standard" fullWidth/>
-                    <TextField label="Option 3" variant="standard" fullWidth/>
-                    <TextField label="Option 4" variant="standard" fullWidth/>
-                    <Stack direction="row" justifyContent="space-between" sx={{paddingTop:4}}>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>}> Add Option</Button>
+                    {options.map((data, index) => <TextField key={index} {...data} label="Option" variant="standard" fullWidth/>)}
+                    <Stack direction="row" justifyContent="space-between" sx={{paddingTop: 4}}>
+                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} onClick={handleAddOption}> Add Option</Button>
                         <IconButton aria-label="copy question" sx={{color: theme.palette.primary.main}}>
                             <ContentCopyIcon/>
                         </IconButton>

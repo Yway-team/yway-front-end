@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import {CommonTitle, CreateQuestionCard, LabelTextField, QuizCard} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 export default function CreateQuizScreen() {
@@ -10,6 +10,18 @@ export default function CreateQuizScreen() {
     const [numQuestions, setNumQuestions] = useState('')
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
+    const [questions, setQuestions] = useState([]);
+
+    const handleAddQuestion = () => {
+        setQuestions(questions => [...questions, `${questions.length}`])
+        console.log(questions);
+    }
+
+    const handleRemoveQuestion = (e) => {
+        const name = e.target.getAttribute("name");
+        setQuestions(questions.filter(item => item.name !== name));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault()
         if (platform && quizTitle && numQuestions)
@@ -64,14 +76,12 @@ export default function CreateQuizScreen() {
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
-                    <Grid item>
-                        <CreateQuestionCard number={1}></CreateQuestionCard>
+                    <Grid container item direction={"column"}>
+                        {questions.map((data) => <CreateQuestionCard key={data.id} {...data} />)}
                     </Grid>
-                    <Grid item>
-                        <CreateQuestionCard number={2}></CreateQuestionCard>
-                    </Grid>
-                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}> Add
-                        Option</Button>
+                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
+                            onClick={handleAddQuestion}> Add
+                        Question</Button>
                     <Stack direction={"row"} spacing={2} style={{paddingTop: '20px'}}>
                         <Button variant={"outlined"}>DISCARD</Button>
                         <Button variant={"contained"} type={"submit"}>SAVE</Button>
