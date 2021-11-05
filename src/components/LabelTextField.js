@@ -11,7 +11,7 @@ function LabelTextField({label, onChange, variant, type}) {
             <TextField label={label}
                        onChange={onChange}
                        variant={variant || 'standard'}
-                       style={{width: 300}}
+                       style={{width: 350}}
                        type={type || 'text'}>
             </TextField>
         </Stack>

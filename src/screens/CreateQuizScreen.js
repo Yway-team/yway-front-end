@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
 import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 export default function CreateQuizScreen() {
     // const classes = useStyles()
@@ -16,14 +17,18 @@ export default function CreateQuizScreen() {
     }
 
     return (
-        <Grid container direction="column" sx={{p: 2}}>
+        <Grid container direction="column" sx={{p: 2, pl: 10}}>
             <Grid item>
                 <CommonTitle title='CREATE QUIZ'/>
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Grid container item direction="column" sx={{p: 2}}>
                     <Grid item>
-                        <FormLabel>
+                        <FormLabel style={{
+                            fontWeight: '700',
+                            fontSize: 16,
+                            color: 'common.black'
+                        }}>
                             Quiz Details
                         </FormLabel>
                     </Grid>
@@ -33,8 +38,12 @@ export default function CreateQuizScreen() {
                     <Grid item>
                         <LabelTextField label={"Quiz Title"} onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
-                    <Grid item>
-                        <FormLabel>
+                    <Grid item marginTop={4}>
+                        <FormLabel style={{
+                            fontWeight: '700',
+                            fontSize: 16,
+                            color: 'common.black'
+                        }}>
                             Questions
                         </FormLabel>
                     </Grid>
@@ -61,6 +70,8 @@ export default function CreateQuizScreen() {
                     <Grid item>
                         <CreateQuestionCard number={2}></CreateQuestionCard>
                     </Grid>
+                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}> Add
+                        Option</Button>
                     <Stack direction={"row"} spacing={2} style={{paddingTop: '20px'}}>
                         <Button variant={"outlined"}>DISCARD</Button>
                         <Button variant={"contained"} type={"submit"}>SAVE</Button>
