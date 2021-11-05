@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
+import ProfilePrivacy from './ProfilePrivacy';
 import { useHistory, useRouteMatch, Switch, Route, Link } from 'react-router-dom';
 
 export default function ProfileScreen() {
@@ -71,6 +72,7 @@ export default function ProfileScreen() {
             <Tab label="My Platforms" {...a11yProps(3)} />
             <Tab label="History"{...a11yProps(4)} />
             <Tab label="Friends" {...a11yProps(5)} />
+            <Tab label="Settings" {...a11yProps(6)} />
 
           </Tabs>
           <Grid item>
@@ -100,6 +102,9 @@ export default function ProfileScreen() {
         </TabPanel>
         <TabPanel value={value} index={5}>
           Friends
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          <ProfilePrivacy/>
         </TabPanel>
         {/* <Link to={`${url}/quizzes`}>Props v. State</Link>
         <Grid>
