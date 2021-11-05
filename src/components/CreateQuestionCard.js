@@ -1,30 +1,56 @@
-import {Button, Card, CardContent, Grid, IconButton, Stack, TextField, Typography} from "@mui/material";
+import {
+    Button,
+    Card,
+    CardContent,
+    Checkbox,
+    FormControlLabel,
+    Grid,
+    IconButton,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import {useTheme} from "@mui/material/styles";
 import React, {useState} from "react";
 
-    // index: Int
-    // answerOptions: [String]
-    // correctAnswer: String
-    // question: String
+// index: Int
+// answerOptions: [String]
+// correctAnswer: String
+// question: String
 
 
-export default function CreateQuestionCard({index, question, answerOptions, correctAnswer}) {
+export default function CreateQuestionCard({
+                                               questionIndex,
+                                               questionStr,
+                                               answerOptions,
+                                               correctAnswer,
+                                               handleRemoveQuestion
+                                           }) {
     const theme = useTheme();
+    const [question, setQuestion] = useState('');
     const [options, setOptions] = useState([]);
+    const [correct, setCorrect] = useState('');
 
     const handleAddOption = () => {
-        setOptions(options => [...options, `${options.length}`])
+        setOptions(options => [...options, '']);
         console.log(options);
     }
 
-    const handleRemoveQuestion = (e) => {
-        const name = e.target.getAttribute("name");
-        setOptions(options.filter(item => item.name !== name));
-        console.log(options);
+    const handleRemoveOption = (index) => {
+        setOptions(options.filter((value, i) => i !== index));
+        // console.log(options);
     };
+
+    const updateOption = index => e => {
+        let newArr = [...options];
+        newArr[index] = e.target.value;
+        console.log(e.target.value);
+        setOptions(newArr);
+        // console.log("options", options);
+        // console.log("correct", correct);
+    }
 
     return (
         <Card variant="outlined" sx={{maxWidth: 700, m: 2, borderColor: theme.palette.primary.main, borderRadius: 2}}>
@@ -54,22 +80,40 @@ export default function CreateQuestionCard({index, question, answerOptions, corr
                                 color: theme.palette.common.white
                             }}
                         >
-                            {index}
+                            {questionIndex + 1}
                         </Typography>
                     </Grid>
                 </Grid>
-                <IconButton aria-label="delete question" sx={{color: theme.palette.primary.main}}>
+                <IconButton aria-label="delete question" sx={{color: theme.palette.primary.main}}
+                            onClick={() => handleRemoveQuestion(questionIndex)}>
                     <CloseIcon/>
                 </IconButton>
             </Grid>
             <CardContent>
                 <Grid padding={2}>
-                    <TextField label="Question" variant="standard" fullWidth/>
-                    {options.map((data, index) => <TextField key={index} {...data} label="Option" variant="standard" fullWidth/>)}
+                    <TextField label="Question" variant="standard" fullWidth
+                               onChange={(e) => setQuestion(e.target.value)}/>
+                    {options.map((data, index) =>
+                        <Stack direction={'row'} justifyItems={"baseline"}>
+                            <TextField key={index} {...data} value={options[index]} label={`Option ${index + 1}`} variant="standard"
+                                       onChange={updateOption(index)}
+                                       fullWidth/>
+                            <FormControlLabel label="Correct"
+                                              value={options[index]}
+                                              control={<Checkbox
+                                                  value={options[index]}
+                                                  onChange={(e) => setCorrect(e.target.value)}/>}>
+                            </FormControlLabel>
+                            <IconButton aria-label="delete option" sx={{color: theme.palette.primary.main}}
+                                        onClick={() => handleRemoveOption(index)}>
+                                <CloseIcon/>
+                            </IconButton>
+                        </Stack>
+                    )}
                     <Stack direction="row" justifyContent="space-between" sx={{paddingTop: 4}}>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} onClick={handleAddOption}> Add Option</Button>
+                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} onClick={handleAddOption}> Add
+                            Option</Button>
                         <IconButton aria-label="copy question" sx={{color: theme.palette.primary.main}}>
-                            <ContentCopyIcon/>
                         </IconButton>
                     </Stack>
                 </Grid>

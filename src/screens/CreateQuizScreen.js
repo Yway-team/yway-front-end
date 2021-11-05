@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {CommonTitle, CreateQuestionCard, LabelTextField, QuizCard} from "../components";
+import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 export default function CreateQuizScreen() {
@@ -13,19 +13,24 @@ export default function CreateQuizScreen() {
     const [questions, setQuestions] = useState([]);
 
     const handleAddQuestion = () => {
-        setQuestions(questions => [...questions, `${questions.length}`])
+        setQuestions(questions => [...questions, `${questions.length}`]);
         console.log(questions);
-    }
+    };
 
-    const handleRemoveQuestion = (e) => {
-        const name = e.target.getAttribute("name");
-        setQuestions(questions.filter(item => item.name !== name));
+    const handleRemoveQuestion = (index) => {
+        setQuestions(questions.filter((value, i) => i !== index));
+        console.log(questions);
+    };
+
+    const UpdateQuestion = index => e => {
+        let newArr = [...questions];
+        newArr[index] = e.target.value;
+        setQuestions(newArr);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (platform && quizTitle && numQuestions)
-            console.log(platform, quizTitle, numQuestions, shuffleQuestions, shuffleAnswer)
+        console.log(platform, quizTitle, numQuestions, shuffleQuestions, shuffleAnswer, questions)
     }
 
     return (
@@ -77,7 +82,8 @@ export default function CreateQuizScreen() {
                         </FormControlLabel>
                     </Grid>
                     <Grid container item direction={"column"}>
-                        {questions.map((data) => <CreateQuestionCard key={data.id} {...data} />)}
+                        {questions.map((data, index) => <CreateQuestionCard key={index} questionIndex={index}
+                                                                            handleRemoveQuestion={() => handleRemoveQuestion(index)} {...data} />)}
                     </Grid>
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
                             onClick={handleAddQuestion}> Add
