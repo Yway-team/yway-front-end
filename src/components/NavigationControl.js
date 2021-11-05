@@ -200,7 +200,7 @@ function NavigationControl(props) {
                                 <><NotificationsPopUp /> <ProfileMenu /></>
                                 : <GoogleLogin
                                     clientId={process.env.REACT_APP_CLIENT_ID}
-                                    isSignedIn={false}
+                                    isSignedIn={true}
                                     render={renderProps => (
                                         <Button onClick={renderProps.onClick}
                                             sx={{

@@ -10,7 +10,7 @@ export default function TopQuizzesScreen() {
             <CommonTitle title='TOP QUIZZES' />
             {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
-                {quizzes.map((data) => <QuizCard key={data.id} {...data} />)}
+                {quizzes.map((data) => <QuizCard key={data._id} {...data} />)}
             </Grid>
         </Grid>
     );
@@ -19,7 +19,7 @@ export default function TopQuizzesScreen() {
 
 const quizzes = [
     {
-        id: 1,
+        _id: 1,
         name: 'How much do you know your chinese cuisine',
         description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
         thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
@@ -32,7 +32,7 @@ const quizzes = [
         platform: 'Mcdonal123',
     },
     {
-        id: 2,
+        _id: 2,
         name: 'How much do you know your chinese cuisine',
         description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
         thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
@@ -45,7 +45,7 @@ const quizzes = [
         platform: 'Mcdonal123',
     },
     {
-        id: 3,
+        _id: 3,
         name: 'How much do you know your chinese cuisine',
         description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
         thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
@@ -58,7 +58,7 @@ const quizzes = [
         platform: 'Mcdonal123',
     },
     {
-        id: 4,
+        _id: 4,
         name: 'How much do you know your chinese cuisine',
         description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
         thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
@@ -71,7 +71,7 @@ const quizzes = [
         platform: 'Mcdonal123',
     },
     {
-        id: 5,
+        _id: 5,
         name: 'How much do you know your chinese cuisine',
         description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
         thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
@@ -84,7 +84,7 @@ const quizzes = [
         platform: 'Mcdonal123',
     },
     {
-        id: 6,
+        _id: 6,
         name: 'How much do you know your chinese cuisine',
         description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
         thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
