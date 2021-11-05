@@ -18,3 +18,22 @@ export const GET_QUIZ_INFO = gql`
         }
     }
 `;
+
+export const GET_QUIZ_HIGHLIGHTS = gql`
+    query GetQuizHighlights($howMany: Int!) {
+        getQuizHighlights(howMany: $howMany) {
+            bannerImg
+            createdAt
+            description
+            numQuestions
+            ownerAvatar
+            ownerId
+            ownerUsername
+            platformId
+            platformName
+            platformThumbnail
+            rating
+            title
+        }
+    }
+`;
