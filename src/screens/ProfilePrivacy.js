@@ -8,18 +8,17 @@ import Button from '@mui/material/Button';
 
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
+import { UPDATE_PRIVACY_SETTINGS } from '../controllers/graphql/user-mutations';
 
-export default function ProfilePrivacy() {
-  const { _id } = useReactiveVar(globalState);
-  const { data, loading, error } = useQuery(GET_USER_INFO, { variables: { userId: _id } });
-  let userInfo = null;
-  if (data) {
-    userInfo = data.getUserInfo;
-    console.log(userInfo);
-  }
+export default function ProfilePrivacy(props) {
+  // When the privacy settings are confirmed, call updatePrivacySettings to perform the mutation.
+  // This is untested and intended as a starting point for the implementer.
+  // let privacySettings = null;  // the new privacy settings should be in here
+  // const { userInfo } = props;  // passed from ProfileScreen
+  // const [updatePrivacySettings] = useMutation(UPDATE_PRIVACY_SETTINGS, { variables: { privacySettings: privacySettings } });
   return (
     <Stack spacing={3}>
       <h2>

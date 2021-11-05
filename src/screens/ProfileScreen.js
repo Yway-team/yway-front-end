@@ -49,7 +49,7 @@ export default function ProfileScreen() {
             fontSize: 25,
             color: 'common.black'
           }}>
-            User Name
+            {userInfo ? userInfo.username : null}
           </Typography>
           <Typography
             sx={{
@@ -57,7 +57,7 @@ export default function ProfileScreen() {
               fontSize: 14,
               mt: 1
             }} >
-            This is my bio
+            {userInfo ? userInfo.bio : null}
           </Typography>
           <Divider flexItem sx={{ mt: 3 }} />
         </Grid>
@@ -112,7 +112,7 @@ export default function ProfileScreen() {
           Friends
         </TabPanel>
         <TabPanel value={value} index={6}>
-          <ProfilePrivacy/>
+          <ProfilePrivacy userInfo={userInfo} />
         </TabPanel>
         {/* <Link to={`${url}/quizzes`}>Props v. State</Link>
         <Grid>
