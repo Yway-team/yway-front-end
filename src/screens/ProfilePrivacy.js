@@ -3,11 +3,10 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 
 import Stack from '@mui/material/Stack';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
@@ -20,13 +19,15 @@ export default function ProfilePrivacy(props) {
   // const { userInfo } = props;  // passed from ProfileScreen
   // const [updatePrivacySettings] = useMutation(UPDATE_PRIVACY_SETTINGS, { variables: { privacySettings: privacySettings } });
   return (
-    <Stack spacing={3}>
-      <h2>
+    <Stack spacing={3} sx={{ p: 5 }}>
+      <Typography variant='h5'>
         PRIVACY SETTINGS
-      </h2>
-      <div>
-        Who is allowed to see your quizzes, platforms, achievements, and history?
-      </div>
+      </Typography>
+      <Box>
+        <Typography>
+          Who is allowed to see your quizzes, platforms, achievements, and history?
+        </Typography>
+      </Box>
       <FormControl component="fieldset">
         <RadioGroup
           aria-label="privacy"
@@ -37,11 +38,11 @@ export default function ProfilePrivacy(props) {
           <FormControlLabel value="friends" control={<Radio />} label="Friends only" />
           <FormControlLabel value="private" control={<Radio />} label="Private (Only You)" />
         </RadioGroup>
-        </FormControl>
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained">Confirm</Button>
-          <Button variant="outlined">Cancel</Button>
-        </Stack>
+      </FormControl>
+      <Stack direction="row" spacing={2}>
+        <Button variant="contained">Confirm</Button>
+        <Button variant="outlined" onClick={props.handleClose} >Cancel</Button>
+      </Stack>
     </Stack>
   );
 }

@@ -91,11 +91,11 @@ export default function ProfileScreen() {
               <Tab label="My Platforms" {...a11yProps(3)} />
               <Tab label="History"{...a11yProps(4)} />
               <Tab label="Friends" {...a11yProps(5)} />
-              <Tab label="Settings" {...a11yProps(6)} />
+
 
             </Tabs>
             <Grid item>
-              <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}>
+              <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }} onClick={handleClickSettingsOpen}>
                 Settings
               </Button>
               <Button variant="contained" startIcon={<Edit />}>
@@ -122,9 +122,7 @@ export default function ProfileScreen() {
           <TabPanel value={value} index={5}>
             Friends
           </TabPanel>
-          <TabPanel value={value} index={6}>
-            <ProfilePrivacy userInfo={userInfo} />
-          </TabPanel>
+
 
 
           {/* <Link to={`${url}/quizzes`}>Props v. State</Link>
@@ -158,8 +156,8 @@ export default function ProfileScreen() {
       </Grid >
 
       <Dialog open={settingsOpen} onClose={handleSettingsClose}
-        aria-labelledby="quiz-details-dialog"  >
-
+        aria-labelledby="privacy-settings-dialog"  >
+        <ProfilePrivacy userInfo={userInfo} handleClose={handleSettingsClose} />
       </Dialog>
     </>
   )
