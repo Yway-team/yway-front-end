@@ -20,6 +20,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
 
+import PlatformScreen from "./screens/PlatformScreen";
 
 const client = new ApolloClient({
     uri: 'http://3.129.119.115:4000/graphql',
@@ -82,6 +83,9 @@ export default function App() {
                             {/*</Route>*/}
                             <Route exact path="/create">
                                 <CreateScreen />
+                            </Route>
+                            <Route exact path="/testplatform">
+                                <PlatformScreen />
                             </Route>
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
