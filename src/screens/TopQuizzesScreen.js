@@ -1,5 +1,4 @@
-import { Grid, Typography } from '@mui/material';
-
+import { Grid } from '@mui/material';
 import { QuizCard, CommonTitle } from "../components";
 
 

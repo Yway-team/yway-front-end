@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
-import { useHistory, useRouteMatch, useParams, Switch, Route, Link } from 'react-router-dom';
+import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 

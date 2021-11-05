@@ -1,18 +1,16 @@
 import {
     Card,
     CardContent,
-    CardMedia,
     Typography,
     CardActionArea,
     Grid,
     Box,
     Avatar,
-    Dialog,
     Button
 } from '@mui/material';
 import logoIcon from '../images/logoIcon.svg';
 import { FavoriteRounded } from '@mui/icons-material';
-import { useState } from 'react';
+// import { useState } from 'react';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -36,8 +34,8 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
         <Card onClick={handleClickOpen} sx={{ maxWidth: 600, elevation: 0, boxShadow: 'none', height: 130, m: 2, position: 'relative' }}>
 
             <CardActionArea >
-                <CardContent sx={{ py: 2, px: 2 }}>
-                    <Grid container direction='row' justifyContent='flex-start' alignItems='center' spacing={1} >
+                <CardContent sx={{ p: 1 }}>
+                    <Grid container direction='row' justifyContent='flex-start' alignItems='center' spacing={0} >
                         <Grid xs={3} item>
                             <Avatar alt="creator-avatar" src={profileImage} sx={{ height: 100, width: 100 }} />
                         </Grid>
@@ -50,9 +48,9 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                                 <Grid> </Grid>
                                 <FavoriteRounded sx={{ fill: '#ff5a1d', height: 10, width: 10 }} />
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {favorites} favorites</Typography>
-                                <img src={logoIcon} style={{ height: 15, marginLeft: 20 }} />
+                                <img alt='logo Icon' src={logoIcon} style={{ height: 15, marginLeft: 20 }} />
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {numQuizzes} quizzes</Typography>
-                                <Box sx={{ textOverflow: "elipsis", height: 40, width: 400, overflow: 'hidden' }}> <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', mt: '1px' }}> {description}</Typography> </Box>
+                                <Box sx={{ textOverflow: "elipsis", height: 40, width: 400, overflow: 'hidden', mt: '8px' }}> <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600' }}> {description}</Typography> </Box>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -69,7 +67,7 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                     boxShadow: 'none',
                     height: 28,
                     px: 2,
-                    m: 2,
+                    m: 1,
                     color: 'common.white',
                     "&:hover": {
                         boxShadow: 'none',
