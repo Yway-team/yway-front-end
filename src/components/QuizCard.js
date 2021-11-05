@@ -98,7 +98,7 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
 
             <Dialog open={open} onClose={handleClose}
                 aria-labelledby="quiz-details-dialog"  >
-                <Card onClick={handleClickOpen} sx={{ width: 600, elevation: 0, boxShadow: 'none' }}>
+                <Card sx={{ width: 600, elevation: 0, boxShadow: 'none' }}>
 
                     <CardMedia
                         component="img"
