@@ -25,6 +25,7 @@ import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
 
+import PlatformScreen from "./screens/PlatformScreen";
 const httpLink = createHttpLink({
     uri: 'http://3.129.119.115:4000/graphql'
 });
@@ -107,6 +108,9 @@ export default function App() {
                             </Route>
                             <Route exact path="/create">
                                 <CreateScreen />
+                            </Route>
+                            <Route exact path="/testplatform">
+                                <PlatformScreen />
                             </Route>
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
