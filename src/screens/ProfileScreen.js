@@ -13,6 +13,7 @@ export default function ProfileScreen() {
   const history = useHistory();
   const [value, setValue] = useState(0);
   const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
     // history.push(url + routes[newValue]);

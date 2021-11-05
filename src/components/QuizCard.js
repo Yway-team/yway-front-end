@@ -8,20 +8,19 @@ import {
     Box,
     Avatar,
     Dialog,
-    DialogTitle,
     Button
 } from '@mui/material';
 import logoIcon from '../images/logoIcon.svg';
 
 import { useState } from 'react';
-import { globalState } from '../state/UserState';
-import { useHistory } from 'react-router-dom';
+// import { globalState } from '../state/UserState';
+// import { useHistory } from 'react-router-dom';
 
 
 // quizCard - All necessary information for a summarized display of the platform.
-//added id
+//added _id
 // {
-//    id: String
+//    _id: String
 //     thumbnail: Binary data,
 //         description: String,
 //             numQuestions: Int,
@@ -35,7 +34,7 @@ import { useHistory } from 'react-router-dom';
 
 
 
-function QuizCard({ id, name, thumbnail, description, numQuestions, creator, creatorImage, rating, timestamp, platform, platformImage }) {
+function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, creatorImage, rating, timestamp, platform, platformImage }) {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
