@@ -35,7 +35,8 @@ import { useState } from 'react';
 
 
 
-function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, creatorImage, rating, timestamp, platform, platformImage }) {
+function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail }) {
+    const timestamp = Date(Number(createdAt));
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -52,7 +53,7 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
                     <CardMedia
                         component="img"
                         height={130}
-                        image={thumbnail}
+                        image={bannerImg}
                         alt="quiz image"
                         sx={{ borderRadius: '10px 10px 0px 0px', zIndex: '-2' }} />
 
@@ -72,7 +73,7 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
                             // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
                         }}>
                             <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
-                                {name}
+                                {title}
                             </Typography>
                         </Box>
                         <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1} >
@@ -84,12 +85,12 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {timestamp} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                <Avatar alt="creator-avatar" src={creatorImage} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {creator} </Typography>
+                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {ownerUsername} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="creator-avatar" src={platformImage} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platform} </Typography>
+                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -103,7 +104,7 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
                     <CardMedia
                         component="img"
                         height={200}
-                        image={thumbnail}
+                        image={bannerImg}
                         alt="quiz image"
                     />
 
@@ -123,7 +124,7 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
                             // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
                         }}>
                             <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
-                                {name}
+                                {title}
                             </Typography>
 
                         </Box>
@@ -139,12 +140,12 @@ function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, cr
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {timestamp} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                <Avatar alt="creator-avatar" src={creatorImage} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {creator} </Typography>
+                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {ownerUsername} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="creator-avatar" src={platformImage} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platform} </Typography>
+                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
                             </Grid>
 
                             <Button
