@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
-import { useHistory, useRouteMatch, Switch, Route, Link } from 'react-router-dom';
+import { useHistory, useRouteMatch, useParams, Switch, Route, Link } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 
 export default function ProfileScreen() {
   let { path, url } = useRouteMatch();
+  const { userId } = useParams();
   const history = useHistory();
   const [value, setValue] = useState(0);
   const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
@@ -15,6 +18,11 @@ export default function ProfileScreen() {
     // history.push(url + routes[newValue]);
 
   };
+  const { data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
+  let userInfo = null;
+  if (data) {
+    userInfo = data.getUserInfo;
+  }
 
   useEffect(() => {
     console.log('remounted');
@@ -27,7 +35,7 @@ export default function ProfileScreen() {
           <img alt='cover' src="https://picsum.photos/1000" sx={{ objectFit: 'fill' }} />
         </Grid>
         <Grid item container justifyContent='center' flexDirection='column' alignItems='center' >
-          <Avatar alt="avatar" src="https://i.pravatar.cc/300"
+          <Avatar alt="avatar" src={userInfo ? userInfo.avatar : null /*"https://i.pravatar.cc/300"*/}
             sx={{
               mt: -12,
               height: 130,
