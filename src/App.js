@@ -2,12 +2,14 @@ import {
     ApolloClient,
     InMemoryCache,
     ApolloProvider,
-    createHttpLink
+    createHttpLink,
+    useReactiveVar
 } from "@apollo/client";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect
 } from "react-router-dom";
 import {
     HighlightsScreen,
@@ -72,6 +74,8 @@ const theme = createTheme({
 
 
 export default function App() {
+    const user = useReactiveVar(globalState);
+    const userId = user?._id;
     return (
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
@@ -79,7 +83,7 @@ export default function App() {
                     <NavigationControl
                         switch={<Switch>
                             <Route exact path="/">
-                                <HighlightsScreen />
+                                <Redirect to="/highlights" />
                             </Route>
                             <Route exact path="/highlights">
                                 <HighlightsScreen />
@@ -108,8 +112,15 @@ export default function App() {
                             <Route exact path="/favorites">
                                 <FavoritesScreen />
                             </Route>
-                            <Route path="/user" >
+                            <Route path="/user/:userId">
                                 <ProfileScreen />
+                            </Route>
+                            <Route path="/user" >
+                                {userId
+                                ?
+                                <Redirect to={`/user/${userId}`} />
+                                :
+                                <Redirect to="/highlights" />}
                             </Route>
                             {/* <Route exact path="/user/overview">
                                 <ProfileScreen tab = {0} />
