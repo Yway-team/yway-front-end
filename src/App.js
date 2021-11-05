@@ -63,6 +63,13 @@ const theme = createTheme({
         {
             textTransform: "none"
         },
+        h5: {
+            fontWeight: '700',
+            fontSize: 16,
+            color: '#333333',
+            my: 4,
+            ml: 2,
+        },
         body1:
         {
             fontSize: '14px',
@@ -118,10 +125,10 @@ export default function App() {
                             </Route>
                             <Route path="/user" >
                                 {userId
-                                ?
-                                <Redirect to={`/user/${userId}`} />
-                                :
-                                <Redirect to="/highlights" />}
+                                    ?
+                                    <Redirect to={`/user/${userId}`} />
+                                    :
+                                    <Redirect to="/highlights" />}
                             </Route>
                             {/* <Route exact path="/user/overview">
                                 <ProfileScreen tab = {0} />

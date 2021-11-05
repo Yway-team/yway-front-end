@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import { QuizCard, CommonTitle } from "../components";
 
@@ -8,6 +8,7 @@ export default function TopQuizzesScreen() {
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='TOP QUIZZES' />
+            {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
                 {quizzes.map((data) => <QuizCard key={data.id} {...data} />)}
             </Grid>
