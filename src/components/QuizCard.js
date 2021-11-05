@@ -30,6 +30,7 @@ import { useState } from 'react';
 //                             timestamp: Date,
 //                                 platform: String,
 //                                     name: String
+//                                          platform Image
 // }
 
 

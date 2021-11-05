@@ -1,101 +1,154 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
+import { QuizCard, PlatformCard, CommonTitle } from "../components";
+
+
+
 export default function HighlightsScreen() {
     return (
-        <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '200%', width: '100%' }}>
-            <Typography variant='h5' color='primary'>
-                HighlightsScreen
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
-            <Typography paragraph>
-                Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-                eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-                neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-                tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-                sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-                tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-                gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-                et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-                tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-                eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-                posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
+        <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
+            <CommonTitle title='New Platforms' />
+            {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
+            <Grid container justifyContent='flex-start'>
+                {platforms.map((data) => <Grid key={data._id} xs={6} sm={6} item ><PlatformCard {...data} /> </Grid>)}
+            </Grid>
+            <CommonTitle title='TOP QUIZZES' />
+            {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
+            <Grid container justifyContent='flex-start'>
+                {quizzes.map((data) => <QuizCard key={data._id} {...data} />)}
+            </Grid>
         </Grid>
     );
 }
+
+
+const platforms = [
+    {
+        _id: 1,
+        profileImage: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'someCompany',
+        favorites: '1M',
+        numQuizzes: '235',
+        description: 'There is a space for everybody. This is an officifasfasdfasgafdsssssssssssssssssssgdsagasgdal gsdgfdsfgsdfgdsgfpage of this company'
+    },
+    {
+        _id: 2,
+        profileImage: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'someCompany',
+        favorites: '1M',
+        numQuizzes: '235',
+        description: 'There is a space for everybody. This is an official page of this company'
+    },
+    {
+        _id: 3,
+        profileImage: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'someCompany',
+        favorites: '1M',
+        numQuizzes: '235',
+        description: 'There is a space for everybody. This is an official page of this company'
+    },
+    {
+        _id: 4,
+        profileImage: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'someCompany',
+        favorites: '1M',
+        numQuizzes: '235',
+        description: 'There is a space for everybody. This is an official page of this company'
+    },
+    {
+        _id: 5,
+        profileImage: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'someCompany',
+        favorites: '1M',
+        numQuizzes: '235',
+        description: 'There is a space for everybody. This is an official page of this company'
+    },
+    {
+        _id: 6,
+        profileImage: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'someCompany',
+        favorites: '1M',
+        numQuizzes: '235',
+        description: 'There is a space for everybody. This is an official page of this company'
+    },
+];
+
+const quizzes = [
+    {
+        _id: 1,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        _id: 2,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        _id: 3,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        _id: 4,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        _id: 5,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        _id: 6,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+];
