@@ -1,6 +1,88 @@
 import React from 'react'
 import { Grid, Stack, Avatar, Box }  from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
+import { QuizCard } from '../components';
+
+const quizzes = [
+    {
+        id: 1,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        id: 2,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        id: 3,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        id: 4,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        id: 5,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+    {
+        id: 6,
+        name: 'How much do you know your chinese cuisine',
+        description: "Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorpe eget nulla facilisi etia dignissim diam. Pulvinar elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra  tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis",
+        thumbnail: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        numQuestions: 10,
+        creator: 'yourMama101',
+        creatorImage: "https://i.pravatar.cc/300",
+        rating: 4.5,
+        timestamp: '2 months ago',
+        platformImage: "https://i.pravatar.cc/300",
+        platform: 'Mcdonal123',
+    },
+];
 
 export default function PlatformScreen() {
     return (
@@ -35,10 +117,14 @@ export default function PlatformScreen() {
                 </div>
             </Grid>
             <Grid item xs={12}>
-                <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+                <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2} sx={{maxWidth: "700px"}}>
+                    {quizzes?
+                    quizzes.map((data) => 
+                    
+                    <QuizCard key={data.id} {...data} />):
                     <Box gridColumn="span 8" sx={{display:"flex", paddingLeft: "5rem", paddingTop: "3rem"}}>
                         <h2>No Quizzes to Display</h2>
-                    </Box>
+                    </Box>}
                     <Box gridColumn="-1" gridRow="1" style={{paddingTop:"2rem"}}>
                         <Grid item sx={{display:"flex", justifyContent:"center", paddingTop:"20px", height: "400px"}}>
                             <MiniLeaderboard width="350px"/>
