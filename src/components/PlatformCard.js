@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import logoIcon from '../images/logoIcon.svg';
 import { FavoriteRounded } from '@mui/icons-material';
+import { useHistory } from 'react-router';
 // import { useState } from 'react';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
@@ -26,8 +27,10 @@ import { FavoriteRounded } from '@mui/icons-material';
 
 
 function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description, favorited }) {
+    const history = useHistory();
     const handleClickOpen = () => {
         console.log("route to platform page");
+        history.push('/testplatform');
     };
 
     return (

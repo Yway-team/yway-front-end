@@ -77,11 +77,31 @@ const theme = createTheme({
         {
             fontSize: '14px',
         }
-    }, components: {
-
+    }, overrides: {
+        MuiButton: {
+            root: {
+                elevation: 0,
+                boxShadow: 'none',
+                background: 'primary.main',
+                "&:hover": {
+                    boxShadow: 'none',
+                    backgroundColor: 'primary.light',
+                    color: 'primary.main',
+                }
+            },
+            contained: {
+                elevation: 0,
+                boxShadow: 'none',
+                "&:hover": {
+                    boxShadow: 'none',
+                    backgroundColor: 'primary.light',
+                    color: 'primary.main',
+                }
+            }
+        },
     },
-
-});
+}
+);
 
 
 export default function App() {
