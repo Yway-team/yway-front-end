@@ -20,7 +20,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
 
-console.log('Before' + globalState._id);
+
 const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',
     cache: new InMemoryCache(),
@@ -92,18 +92,38 @@ export default function App() {
                             {/*<Route exact path="/user/:userId/drafts">*/}
                             {/*    <DraftsScreen />*/}
                             {/*</Route>*/}
-                            <Route exact path="/user">
-                                <ProfileScreen />
-                            </Route>
-                            <Route exact path="/user/:userId">
-                                <ProfileScreen />
-                            </Route>
                             <Route exact path="/favorites">
                                 <FavoritesScreen />
                             </Route>
-                            {/*<Route exact path="/user/:userId/quizzes">*/}
-                            {/*    <MyQuizzesScreen />*/}
-                            {/*</Route>*/}
+                            <Route path="/user" >
+                                <ProfileScreen />
+                            </Route>
+                            {/* <Route exact path="/user/overview">
+                                <ProfileScreen tab = {0} />
+                            </Route>
+                            <Route exact path="/user/achievements">
+                                <ProfileScreen tab = {1} />
+                            </Route>
+                            <Route exact path="/user/quizzes">
+                                <ProfileScreen tab = {2} />
+                            </Route>
+                            <Route exact path="/user/platforms">
+                                <ProfileScreen tab={3} />
+                            </Route>
+                            <Route exact path="/user/history">
+                                <ProfileScreen tab={4} />
+                            </Route>
+                            <Route exact path="/user/friends">
+                                <ProfileScreen tab={4} />
+                            </Route> */}
+
+
+                            {/* <Route exact path="/user/:userId">
+                                <ProfileScreen tab={0} {...props} />
+                            </Route>
+                            <Route exact path="/user/:userId/achievements">
+                                <ProfileScreen tab={1} {...props} />
+                            </Route> */}
                             {/*<Route exact path="/user/:userId/platforms">*/}
                             {/*    <MyPlatformsScreen />*/}
                             {/*</Route>*/}

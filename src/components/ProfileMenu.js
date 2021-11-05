@@ -48,7 +48,6 @@ function ProfileMenu() {
 
 
     return (
-
         <>
             <IconButton onClick={handleProfileClick} size="small" sx={{ mx: 2 }}>
                 <Avatar sx={{ width: 32, height: 32, border: anchorEl ? '3px solid #FF5A1D' : '3px solid transparent' }}
@@ -98,8 +97,7 @@ function ProfileMenu() {
                     }
                 }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-            >
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
                 <MenuItem sx={{ my: 1, py: 5 }}>
                     <Avatar sx={{
                         width: 32, height: 32

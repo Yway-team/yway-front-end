@@ -1,55 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
+import { useHistory, useRouteMatch, Switch, Route, Link } from 'react-router-dom';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`user-tabpanel-${index}`}
-      aria-labelledby={`user-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `user-tab-${index}`,
-    'aria-controls': `user-tabpanel-${index}`,
-  };
-}
 export default function ProfileScreen() {
+  let { path, url } = useRouteMatch();
+  const history = useHistory();
   const [value, setValue] = useState(0);
-
+  const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    // history.push(url + routes[newValue]);
+
   };
+
+  useEffect(() => {
+    console.log('remounted');
+  }, []);
 
   return (
     <Grid container justifyContent='center' alignItems='center' >
       <Grid flexDirection='column' sx={{ maxWidth: '1000px' }} >
         <Grid sx={{ height: "150px", overflow: "hidden", }}>
-          <img src="https://picsum.photos/1000" sx={{ objectFit: 'fill' }} />
+          <img alt='cover' src="https://picsum.photos/1000" sx={{ objectFit: 'fill' }} />
         </Grid>
         <Grid item container justifyContent='center' flexDirection='column' alignItems='center' >
-          <Avatar alt="Remy Sharp" src="https://i.pravatar.cc/300"
+          <Avatar alt="avatar" src="https://i.pravatar.cc/300"
             sx={{
               mt: -12,
               height: 130,
@@ -124,9 +101,79 @@ export default function ProfileScreen() {
         <TabPanel value={value} index={5}>
           Friends
         </TabPanel>
+        {/* <Link to={`${url}/quizzes`}>Props v. State</Link>
+        <Grid>
+          <Switch>
+            <Route exact path={path}>
+              <Overview />
+            </Route>
+            <Route path={`${path}/overview`}>
+              <Overview />
+            </Route>
+            <Route exact path={`${path}/achievements`}>
+              <Achievements />
+            </Route>
+            <Route exact path={`${path}/quizzes`}>
+              <h3> my quizzes</h3>
+            </Route>
+            <Route exact path={`${path}/platforms`}>
+              <h3> my platforms</h3>
+            </Route>
+            <Route exact path={`${path}/history`}>
+              <h3> my history</h3>
+            </Route>
+            <Route exact path={`${path}/friends`}>
+              <h3> my achievements</h3>
+            </Route>
+          </Switch>
+        </Grid> */}
+
       </Grid>
     </Grid >
-
-
   )
 }
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`user-tabpanel-${index}`}
+      aria-labelledby={`user-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `user-tab-${index}`,
+    'aria-controls': `user-tabpanel-${index}`,
+  };
+}
+
+// function Overview() {
+//   return (
+//     <h3> Overview</h3>
+//   )
+// }
+
+
+// function Achievements() {
+//   return (
+//     <h3> Achievements</h3>
+//   )
+// }

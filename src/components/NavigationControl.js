@@ -13,8 +13,6 @@ import {
     Paper,
     InputBase
 } from '@mui/material';
-
-
 import {
     Menu,
     MenuOpen,
@@ -69,6 +67,10 @@ function NavigationControl(props) {
         ['My quizzes', <DynamicForm sx={{ fontSize: 16 }} />, `/user/${user._id}/quizzes`],
     ];
 
+
+    useEffect(() => {
+        console.log('mounted');
+    }, []);
 
     const toggleDrawer = () => {
         setOpen(!open);
