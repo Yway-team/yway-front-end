@@ -18,6 +18,7 @@ import {
     FavoritesScreen,
     CreateScreen,
     ProfileScreen,
+    CreateQuizScreen
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
@@ -94,9 +95,9 @@ export default function App() {
                             <Route exact path="/quiz">
                                 <TopQuizzesScreen />
                             </Route>
-                            {/*<Route exact path="/quiz/create">*/}
-                            {/*    <CreateQuizScreen />*/}
-                            {/*</Route>*/}
+                            <Route exact path="/quiz/create">
+                                <CreateQuizScreen />
+                            </Route>
                             <Route exact path="/create">
                                 <CreateScreen />
                             </Route>
