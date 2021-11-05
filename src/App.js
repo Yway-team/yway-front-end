@@ -2,6 +2,7 @@ import {
     ApolloClient,
     InMemoryCache,
     ApolloProvider,
+    createHttpLink
 } from "@apollo/client";
 import {
     BrowserRouter as Router,
@@ -19,13 +20,25 @@ import {
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
+import { setContext } from '@apollo/client/link/context';
 
+const httpLink = createHttpLink({
+    uri: 'http://3.129.119.115:4000/graphql'
+});
+
+const authLink = setContext(() => {
+    const { _id } = globalState();
+    return {
+        headers: {
+            authorization: _id
+        }
+    };
+});
 
 const client = new ApolloClient({
-    uri: 'http://3.129.119.115:4000/graphql',
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
-    credentials: 'include',
-    headers: { authorization: globalState._id }
+    credentials: 'include'
 });
 
 const theme = createTheme({

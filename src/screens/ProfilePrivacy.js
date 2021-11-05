@@ -8,8 +8,18 @@ import Button from '@mui/material/Button';
 
 import Stack from '@mui/material/Stack';
 import { Typography } from '@mui/material';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { GET_USER_INFO } from '../controllers/graphql/user-queries';
+import { globalState } from "../state/UserState";
 
 export default function ProfilePrivacy() {
+  const { _id } = useReactiveVar(globalState);
+  const { data, loading, error } = useQuery(GET_USER_INFO, { variables: { userId: _id } });
+  let userInfo = null;
+  if (data) {
+    userInfo = data.getUserInfo;
+    console.log(userInfo);
+  }
   return (
     <Stack spacing={3}>
       <h2>
