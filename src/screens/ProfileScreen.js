@@ -2,11 +2,8 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
-<<<<<<< HEAD
 import ProfilePrivacy from './ProfilePrivacy';
-=======
 import { useHistory, useRouteMatch, Switch, Route, Link } from 'react-router-dom';
->>>>>>> 9621c267ef0f94612504753032a6571db9c42b87
 
 export default function ProfileScreen() {
   let { path, url } = useRouteMatch();
@@ -106,11 +103,9 @@ export default function ProfileScreen() {
         <TabPanel value={value} index={5}>
           Friends
         </TabPanel>
-<<<<<<< HEAD
         <TabPanel value={value} index={6}>
           <ProfilePrivacy/>
         </TabPanel>
-=======
         {/* <Link to={`${url}/quizzes`}>Props v. State</Link>
         <Grid>
           <Switch>
@@ -138,7 +133,6 @@ export default function ProfileScreen() {
           </Switch>
         </Grid> */}
 
->>>>>>> 9621c267ef0f94612504753032a6571db9c42b87
       </Grid>
     </Grid >
   )
