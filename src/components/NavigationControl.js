@@ -202,17 +202,18 @@ function NavigationControl(props) {
                                     clientId={process.env.REACT_APP_CLIENT_ID}
                                     isSignedIn={false}
                                     render={renderProps => (
-                                        <Button onClick={renderProps.onClick} sx={{
-                                            background: theme.palette.primary.main,
-                                            mx: '22px',
-                                            px: 3,
-                                            color: 'common.white',
-                                            "&:hover": {
-                                                backgroundColor: theme.palette.primary.light,
-                                                color: theme.palette.primary.main,
+                                        <Button onClick={renderProps.onClick}
+                                            sx={{
+                                                background: theme.palette.primary.main,
+                                                mx: '22px',
+                                                px: 3,
+                                                color: 'common.white',
+                                                "&:hover": {
+                                                    backgroundColor: theme.palette.primary.light,
+                                                    color: theme.palette.primary.main,
+                                                }
                                             }
-                                        }
-                                        }>SIGN IN</Button>
+                                            }>SIGN IN</Button>
                                     )}
                                     onSuccess={handleLogin}
                                     onFailure={() => {
@@ -241,7 +242,7 @@ function NavigationControl(props) {
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>1014</Typography>
+                                }}>{user.creatorPoints}</Typography>
                                 <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} /></Grid>
 
                             <Grid container item xs={6} direction='row' alignItems='center' justifyContent='center'>
@@ -249,7 +250,7 @@ function NavigationControl(props) {
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>1014</Typography>
+                                }}>{user.playPoints}</Typography>
                                 <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} /></Grid>
 
                         </Grid>

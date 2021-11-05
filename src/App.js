@@ -2,11 +2,14 @@ import {
     ApolloClient,
     InMemoryCache,
     ApolloProvider,
+    createHttpLink,
+    useReactiveVar
 } from "@apollo/client";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect
 } from "react-router-dom";
 import {
     HighlightsScreen,
@@ -15,18 +18,31 @@ import {
     FavoritesScreen,
     CreateScreen,
     ProfileScreen,
+    CreateQuizScreen
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
+import { setContext } from '@apollo/client/link/context';
 
 import PlatformScreen from "./screens/PlatformScreen";
+const httpLink = createHttpLink({
+    uri: 'http://3.129.119.115:4000/graphql'
+});
+
+const authLink = setContext(() => {
+    const { _id } = globalState();
+    return {
+        headers: {
+            authorization: _id
+        }
+    };
+});
 
 const client = new ApolloClient({
-    uri: 'http://3.129.119.115:4000/graphql',
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
-    credentials: 'include',
-    headers: { authorization: globalState._id }
+    credentials: 'include'
 });
 
 const theme = createTheme({
@@ -48,6 +64,13 @@ const theme = createTheme({
         {
             textTransform: "none"
         },
+        h5: {
+            fontWeight: '700',
+            fontSize: 16,
+            color: '#333333',
+            my: 4,
+            ml: 2,
+        },
         body1:
         {
             fontSize: '14px',
@@ -60,6 +83,8 @@ const theme = createTheme({
 
 
 export default function App() {
+    const user = useReactiveVar(globalState);
+    const userId = user?._id;
     return (
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
@@ -67,7 +92,7 @@ export default function App() {
                     <NavigationControl
                         switch={<Switch>
                             <Route exact path="/">
-                                <HighlightsScreen />
+                                <Redirect to="/highlights" />
                             </Route>
                             <Route exact path="/highlights">
                                 <HighlightsScreen />
@@ -78,9 +103,9 @@ export default function App() {
                             <Route exact path="/quiz">
                                 <TopQuizzesScreen />
                             </Route>
-                            {/*<Route exact path="/quiz/create">*/}
-                            {/*    <CreateQuizScreen />*/}
-                            {/*</Route>*/}
+                            <Route exact path="/quiz/create">
+                                <CreateQuizScreen />
+                            </Route>
                             <Route exact path="/create">
                                 <CreateScreen />
                             </Route>
@@ -99,8 +124,15 @@ export default function App() {
                             <Route exact path="/favorites">
                                 <FavoritesScreen />
                             </Route>
-                            <Route path="/user" >
+                            <Route path="/user/:userId">
                                 <ProfileScreen />
+                            </Route>
+                            <Route path="/user" >
+                                {userId
+                                    ?
+                                    <Redirect to={`/user/${userId}`} />
+                                    :
+                                    <Redirect to="/highlights" />}
                             </Route>
                             {/* <Route exact path="/user/overview">
                                 <ProfileScreen tab = {0} />
