@@ -4,13 +4,16 @@ import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 
 export default function CreateQuizScreen() {
-    // const classes = useStyles()
-    const [platform, setPlatform] = useState('')
-    const [quizTitle, setQuizTitle] = useState('')
-    const [numQuestions, setNumQuestions] = useState(0)
+    // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
+    // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
+    // const classes = useStyles();
+    const [platform, setPlatform] = useState('');
+    const [quizTitle, setQuizTitle] = useState('');
+    const [numQuestions, setNumQuestions] = useState(0);
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const [questions, setQuestions] = useState([]);
+    const MAX_QUESTIONS = 1000
 
     const handleAddQuestion = () => {
         setQuestions(questions => [...questions, `${questions.length}`]);
@@ -19,12 +22,25 @@ export default function CreateQuizScreen() {
     };
 
     const handleRemoveQuestion = (index) => {
-        setQuestions(questions.filter((value, i) => i !== index));
+        setQuestions(questions.filter((_, i) => i !== index));
         console.log(questions);
         setNumQuestions(numQuestions - 1);
     };
 
-    const UpdateQuestion = index => e => {
+    const addOrRemoveQuestions = (howMany) => {
+        // if howMany is negative, remove that many questions
+        // don't change numQuestions in here - this reacts to a change in numQuestions
+        console.log(`Add ${howMany} questions`);
+        if (howMany === 0) { return null; }
+        if (howMany < 0) {
+            setQuestions(questions.filter((_, i) => i < questions.length + howMany));
+        } else {
+            const newQuestions = Array(howMany).fill(questions.length).map((value, i) => value + i);
+            setQuestions([...questions, ...newQuestions]);
+        }
+    };
+
+    const updateQuestion = index => e => {
         let newArr = [...questions];
         newArr[index] = e.target.value;
         setQuestions(newArr);
@@ -68,8 +84,10 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Number of Questions"}
+                                        onChange={(e) => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
                                         value={numQuestions || ''}
-                                        type={"number"}/>
+                                        onBlur={() => addOrRemoveQuestions(numQuestions - questions.length)}
+                                        type={"number"} />
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Questions" labelPlacement="start"
