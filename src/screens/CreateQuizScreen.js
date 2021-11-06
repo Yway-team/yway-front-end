@@ -7,7 +7,7 @@ export default function CreateQuizScreen() {
     // const classes = useStyles()
     const [platform, setPlatform] = useState('')
     const [quizTitle, setQuizTitle] = useState('')
-    const [numQuestions, setNumQuestions] = useState('')
+    const [numQuestions, setNumQuestions] = useState(0)
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const [questions, setQuestions] = useState([]);
@@ -15,11 +15,13 @@ export default function CreateQuizScreen() {
     const handleAddQuestion = () => {
         setQuestions(questions => [...questions, `${questions.length}`]);
         console.log(questions);
+        setNumQuestions(numQuestions + 1);
     };
 
     const handleRemoveQuestion = (index) => {
         setQuestions(questions.filter((value, i) => i !== index));
         console.log(questions);
+        setNumQuestions(numQuestions - 1);
     };
 
     const UpdateQuestion = index => e => {
@@ -66,7 +68,7 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Number of Questions"}
-                                        onChange={(e) => setNumQuestions(e.target.value)}
+                                        value={numQuestions || ''}
                                         type={"number"}/>
                     </Grid>
                     <Grid item>
