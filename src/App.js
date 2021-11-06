@@ -33,10 +33,10 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(() => {
-    const { _id } = globalState();
+    const { accessToken } = globalState();
     return {
         headers: {
-            authorization: _id
+            authorization: accessToken || ''
         }
     };
 });
@@ -95,8 +95,7 @@ const theme = createTheme({
             }
         },
     },
-}
-);
+});
 
 
 export default function App() {

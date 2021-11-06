@@ -4,6 +4,7 @@ export const LOGIN = gql`
     mutation Login($idToken: String!) {
         login(idToken: $idToken) {
             _id
+            accessToken
             avatar
             creatorPoints
             favorites
