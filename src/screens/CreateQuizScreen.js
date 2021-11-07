@@ -40,7 +40,8 @@ export default function CreateQuizScreen() {
             shuffleQuestions: shuffleQuestions,
             shuffleAnswers: shuffleAnswer,
             description: quizDescription /* todo */,
-            platformName: platform
+            platformName: platform,
+            timeToAnswer: timeToAnswer
             /* other optional props */
         };
         await createAndPublishQuiz({ variables: { quiz: quizObj } });
