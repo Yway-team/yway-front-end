@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, {useRef, useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
 import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
@@ -10,7 +10,7 @@ export default function CreateQuizScreen() {
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
     // const classes = useStyles();
     // todo: problem with the button that minimizes the left bar - it destroys the state of the main screen. Must be fixed.
-    
+
     // This object should only be used when the question information is needed to submit or save the quiz; everything other use case belongs to the CreateQuestionCard component. We can't afford to re-render the whole screen on a single change.
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const refContainer = useRef([]);
@@ -21,6 +21,7 @@ export default function CreateQuizScreen() {
     const [quizDescription, setQuizDescription] = useState('');
     const [numQuestions, setNumQuestions] = useState(0);
     const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
+    const [timeToAnswer, setTimeToAnswer] = useState(10);
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const MAX_QUESTIONS = 100;
@@ -78,35 +79,38 @@ export default function CreateQuizScreen() {
                                         onChange={e => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setTextFieldNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
                                         value={textFieldNumQuestions || ''}
                                         onBlur={e => setNumQuestions(textFieldNumQuestions)}
-                                        type={"number"} />
+                                        type={"number"}/>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Questions" labelPlacement="start" value={"shuffle questions"}
+                        <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
+                                        placeholder={timeToAnswer}
+                                        onChange={(e) => setTimeToAnswer(e.target.value)}/>
+                    </Grid>
+                    <Grid item>
+                        <FormControlLabel label="Shuffle Questions" labelPlacement="start"
                                           style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start" value={"shuffle answer"}
+                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
                                           style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
-                    <Grid container item direction={"column"}>
-                        {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard questions={refContainer.current} key={index} questionIndex={index}
-                                                                                              decrementNumQuestions={decrementNumQuestions} shouldChildUpdate={shouldChildUpdate}
-                                                                                            />)}
+                    <Grid container item direction={"column"} marginLeft={-2}>
+                        {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard
+                            questions={refContainer.current} key={index} questionIndex={index}
+                            decrementNumQuestions={decrementNumQuestions} shouldChildUpdate={shouldChildUpdate}
+                        />)}
                     </Grid>
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
                             onClick={() => {
                                 setNumQuestions(numQuestions + 1);
                                 setTextFieldNumQuestions(textFieldNumQuestions + 1);
-                            }}
-                    >
-                    Add Question
-                    </Button>
-                    <Stack direction={"row"} spacing={2} style={{paddingTop: '20px'}}>
-                        <Button variant={"outlined"}>DISCARD</Button>
+                            }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button>
+                    <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
+                        <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
                         <Button variant={"contained"}>SAVE</Button>
                         <Button variant={"contained"} type={"submit"}>PUBLISH</Button>
                     </Stack>
