@@ -21,6 +21,7 @@ export default function CreateQuizScreen() {
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const [questions, setQuestions] = useState([]);
+    const [description, setDescription] = useState('');
     const MAX_QUESTIONS = 100;
 
     const decrementNumQuestions = () => {
@@ -53,7 +54,7 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField name="description" label={"Description"} multiline={"multiline"}
-                                        variant={"outlined"}/>
+                                        variant={"outlined"} onChange={(e) => setDescription(e.target.value)}/>
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
@@ -71,16 +72,17 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
+                                        placeholder={timeToAnswer}
                                         onChange={(e) => setTimeToAnswer(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Questions" labelPlacement="start" value={"shuffle questions"}
+                        <FormControlLabel label="Shuffle Questions" labelPlacement="start"
                                           style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start" value={"shuffle answer"}
+                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
                                           style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
@@ -93,8 +95,7 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
                             onClick={() => setNumQuestions(numQuestions + 1)}
-                            style={{marginLeft: 16, marginTop: 20}}> Add
-                        Question</Button>
+                            style={{marginLeft: 16, marginTop: 20}}> Add Question</Button>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
                         <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
                         <Button variant={"contained"}>SAVE</Button>

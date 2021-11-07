@@ -11,6 +11,7 @@ import {
     Typography
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import {useTheme} from "@mui/material/styles";
 import React, {useEffect, useState} from "react";
@@ -23,7 +24,7 @@ import React, {useEffect, useState} from "react";
 
 export default function CreateQuestionCard(props) {
     // All state for the CreateQuestionCard must be handled here. Doing it in CreateQuizScreen is just too slow.
-    const { questions, questionIndex, decrementNumQuestions, shouldChildUpdate } = props;
+    const {questions, questionIndex, decrementNumQuestions, shouldChildUpdate} = props;
     const [shouldUpdate, setShouldUpdate] = useState(false);
     const question = questions[questionIndex];
     const [description, setDescription] = useState(question?.description || '');
@@ -48,6 +49,10 @@ export default function CreateQuestionCard(props) {
         // PROBLEM: deletion duplicates the element after the deleted element.
         questions.splice(questionIndex, 1);
         decrementNumQuestions();
+    }
+
+    const duplicateQuestion = () => {
+        // todo:
     }
 
     return (
@@ -105,9 +110,11 @@ export default function CreateQuestionCard(props) {
                         </Stack>
                     )}
                     <Stack direction="row" justifyContent="space-between" sx={{paddingTop: 4}}>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} onClick={() => setAnswerOptions([...answerOptions, ''])}> Add
+                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>}
+                                onClick={() => setAnswerOptions([...answerOptions, ''])}> Add
                             Option</Button>
-                        <IconButton aria-label="copy question" sx={{color: theme.palette.primary.main}}>
+                        <IconButton aria-label="duplicate question" sx={{color: theme.palette.primary.main}}>
+                            <ContentCopyIcon/>
                         </IconButton>
                     </Stack>
                 </Grid>
