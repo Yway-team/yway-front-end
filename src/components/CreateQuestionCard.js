@@ -80,11 +80,11 @@ export default function CreateQuestionCard(props) {
             </Grid>
             <CardContent>
                 <Grid padding={2}>
-                    <TextField label="Question" variant="standard" fullWidth
+                    <TextField label="Question" variant="standard" fullWidth multiline
                                value={description} onChange={e => setDescription(e.target.value)}/>
                     {answerOptions.map((option, index) =>
                         <Stack direction={'row'} justifyItems={"baseline"}>
-                            <TextField key={index} value={option} label={`Option ${index + 1}`}
+                            <TextField key={index} value={option} label={`Option ${index + 1}`} multiline
                                        variant="standard"
                                        onChange={e => setAnswerOptions(answerOptions.map((answerOption, answerIndex) => answerIndex === index ? e.target.value : answerOption))}
                                        fullWidth/>
