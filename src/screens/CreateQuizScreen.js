@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useRef } from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
 import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
@@ -7,49 +7,30 @@ export default function CreateQuizScreen() {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
     // const classes = useStyles();
+    // todo: problem with the button that minimizes the left bar - it destroys the state of the main screen. Must be fixed.
+    
+    // This object should only be used when the question information is needed to submit or save the quiz; everything other use case belongs to the CreateQuestionCard component. We can't afford to re-render the whole screen on a single change.
+    const refContainer = useRef([]);
+    const [shouldChildUpdate, setShouldChildUpdate] = useState(false);
+    // refContainer.current = [{description, answerOptions, correctAnswer}]
     const [platform, setPlatform] = useState('');
     const [quizTitle, setQuizTitle] = useState('');
     const [numQuestions, setNumQuestions] = useState(0);
+    const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const [questions, setQuestions] = useState([]);
-    const MAX_QUESTIONS = 1000
+    const MAX_QUESTIONS = 1000;
 
-    const handleAddQuestion = () => {
-        setQuestions(questions => [...questions, `${questions.length}`]);
-        console.log(questions);
-        setNumQuestions(numQuestions + 1);
-    };
-
-    const handleRemoveQuestion = (index) => {
-        setQuestions(questions.filter((_, i) => i !== index));
-        console.log(questions);
+    const decrementNumQuestions = () => {
         setNumQuestions(numQuestions - 1);
-    };
-
-    const addOrRemoveQuestions = (howMany) => {
-        // if howMany is negative, remove that many questions
-        // don't change numQuestions in here - this reacts to a change in numQuestions
-        console.log(`Add ${howMany} questions`);
-        if (howMany === 0) { return null; }
-        if (howMany < 0) {
-            setQuestions(questions.filter((_, i) => i < questions.length + howMany));
-        } else {
-            const newQuestions = Array(howMany).fill(questions.length).map((value, i) => value + i);
-            setQuestions([...questions, ...newQuestions]);
-        }
-    };
-
-    const updateQuestion = index => e => {
-        let newArr = [...questions];
-        newArr[index] = e.target.value;
-        setQuestions(newArr);
+        setShouldChildUpdate(!shouldChildUpdate);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(platform, quizTitle, numQuestions, shuffleQuestions, shuffleAnswer, questions)
-    }
+    };
 
     return (
         <Grid container direction="column" sx={{p: 2, pl: 10}}>
@@ -84,9 +65,9 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Number of Questions"}
-                                        onChange={(e) => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
-                                        value={numQuestions || ''}
-                                        onBlur={() => addOrRemoveQuestions(numQuestions - questions.length)}
+                                        onChange={e => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setTextFieldNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
+                                        value={textFieldNumQuestions || ''}
+                                        onBlur={e => setNumQuestions(textFieldNumQuestions)}
                                         type={"number"} />
                     </Grid>
                     <Grid item>
@@ -102,11 +83,12 @@ export default function CreateQuizScreen() {
                         </FormControlLabel>
                     </Grid>
                     <Grid container item direction={"column"}>
-                        {questions.map((data, index) => <CreateQuestionCard key={data._id} questionIndex={index}
-                                                                            handleRemoveQuestion={() => handleRemoveQuestion(index)} {...data} />)}
+                        {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard questions={refContainer.current} key={index} questionIndex={index}
+                                                                                              decrementNumQuestions={decrementNumQuestions} shouldChildUpdate={shouldChildUpdate}
+                                                                                            />)}
                     </Grid>
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
-                            onClick={handleAddQuestion}> Add
+                            onClick={() => setNumQuestions(numQuestions + 1)}> Add
                         Question</Button>
                     <Stack direction={"row"} spacing={2} style={{paddingTop: '20px'}}>
                         <Button variant={"outlined"}>DISCARD</Button>
@@ -118,4 +100,3 @@ export default function CreateQuizScreen() {
         </Grid>
     )
 }
-
