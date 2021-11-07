@@ -31,7 +31,9 @@ export default function CreateQuizScreen() {
         // if howMany is negative, remove that many questions
         // don't change numQuestions in here - this reacts to a change in numQuestions
         console.log(`Add ${howMany} questions`);
-        if (howMany === 0) { return null; }
+        if (howMany === 0) {
+            return null;
+        }
         if (howMany < 0) {
             setQuestions(questions.filter((_, i) => i < questions.length + howMany));
         } else {
@@ -57,13 +59,9 @@ export default function CreateQuizScreen() {
                 <CommonTitle title='CREATE QUIZ'/>
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container item direction="column" sx={{p: 2}}>
+                <Grid container item direction="column" sx={{p: 2}} spacing={2}>
                     <Grid item>
-                        <FormLabel style={{
-                            fontWeight: '700',
-                            fontSize: 16,
-                            color: 'common.black'
-                        }}>
+                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
                             Quiz Details
                         </FormLabel>
                     </Grid>
@@ -73,11 +71,12 @@ export default function CreateQuizScreen() {
                     <Grid item>
                         <LabelTextField label={"Quiz Title"} onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
+                    <Grid item>
+                        <LabelTextField name="description" label={"Description"}/>
+                    </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
-                            fontWeight: '700',
-                            fontSize: 16,
-                            color: 'common.black'
+                            fontWeight: '700', fontSize: 16, color: 'common.black'
                         }}>
                             Questions
                         </FormLabel>
@@ -87,29 +86,32 @@ export default function CreateQuizScreen() {
                                         onChange={(e) => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
                                         value={numQuestions || ''}
                                         onBlur={() => addOrRemoveQuestions(numQuestions - questions.length)}
-                                        type={"number"} />
+                                        type={"number"}/>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                                          value={"shuffle questions"}
+                        <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}/>
+                    </Grid>
+                    <Grid item>
+                        <FormControlLabel label="Shuffle Questions" labelPlacement="start" value={"shuffle questions"}
+                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                                          value={"shuffle answer"}
+                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start" value={"shuffle answer"}
+                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
-                    <Grid container item direction={"column"}>
-                        {questions.map((data, index) => <CreateQuestionCard key={data._id} questionIndex={index}
-                                                                            handleRemoveQuestion={() => handleRemoveQuestion(index)} {...data} />)}
+                    <Grid container item direction={"column"} marginLeft={-2}> {questions.map((data, index) =>
+                        <CreateQuestionCard key={data._id} questionIndex={index}
+                                            handleRemoveQuestion={() => handleRemoveQuestion(index)} {...data} />)}
                     </Grid>
-                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
-                            onClick={handleAddQuestion}> Add
-                        Question</Button>
-                    <Stack direction={"row"} spacing={2} style={{paddingTop: '20px'}}>
-                        <Button variant={"outlined"}>DISCARD</Button>
+                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>}
+                            style={{marginLeft: 16, marginTop: 20}} sx={{alignSelf: "flex-start"}}
+                            onClick={handleAddQuestion}> Add Question</Button>
+                    <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
+                        <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
                         <Button variant={"contained"} type={"submit"}>SAVE</Button>
                         <Button variant={"contained"}>PUBLISH</Button>
                     </Stack>

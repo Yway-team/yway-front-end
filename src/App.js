@@ -29,7 +29,8 @@ import PlatformScreen from "./screens/PlatformScreen";
 import PlatformSettings from "./screens/PlatformSettings";
 
 const httpLink = createHttpLink({
-    uri: 'http://3.129.119.115:4000/graphql'
+    // uri: 'http://3.129.119.115:4000/graphql'
+    uri: 'http://localhost:4000/graphql'
 });
 
 const authLink = setContext(() => {

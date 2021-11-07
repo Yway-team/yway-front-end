@@ -20,7 +20,6 @@ import React, {useState} from "react";
 // correctAnswer: String
 // question: String
 
-
 export default function CreateQuestionCard({
                                                questionIndex,
                                                questionStr,
@@ -35,8 +34,8 @@ export default function CreateQuestionCard({
 
     const handleAddOption = () => {
         setOptions(options => [...options, '']);
-        console.log(options);
-        console.log("correct", correct);
+        // console.log(options);
+        // console.log("correct", correct);
     }
 
     const handleRemoveOption = (index) => {
@@ -47,7 +46,7 @@ export default function CreateQuestionCard({
     const handleSelectedAnswer = (e) => {
         setCorrect(e.target.value);
         // setOptions(options.filter((value, i) => i !== index));
-        console.log("correct", correct);
+        // console.log("correct", correct);
     };
 
     const updateOption = index => e => {
@@ -72,59 +71,38 @@ export default function CreateQuestionCard({
                     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)"
                 }}
                 >
-                    <Grid
-                        container
-                        item
-                        xs={12}
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Typography
-                            sx={{
-                                fontWeight: "700",
-                                fontSize: 20,
-                                color: theme.palette.common.white
-                            }}
-                        >
+                    <Grid container item xs={12} direction="row" alignItems="center" justifyContent="center">
+                        <Typography sx={{fontWeight: "700", fontSize: 20, color: theme.palette.common.white}}>
                             {questionIndex + 1}
                         </Typography>
                     </Grid>
                 </Grid>
                 <IconButton aria-label="delete question" sx={{color: theme.palette.primary.main}}
-                            onClick={() => handleRemoveQuestion(questionIndex)}>
-                    <CloseIcon/>
+                            onClick={() => handleRemoveQuestion(questionIndex)}><CloseIcon/>
                 </IconButton>
             </Grid>
             <CardContent>
                 <Grid padding={2}>
                     <TextField label="Question" variant="standard" fullWidth
-                               onChange={(e) => setQuestion(e.target.value)}/>
-                    {options.map((data, index) =>
-                        <Stack direction={'row'} justifyItems={"baseline"}>
-                            <TextField key={data._id} {...data} value={options[index]} label={`Option ${index + 1}`}
-                                       variant="standard"
-                                       onChange={updateOption(index)}
-                                       fullWidth/>
-                            <FormControlLabel label="Correct"
-                                              value={index}
-                                              control={<Radio
-                                                  checked={correct === index}
-                                                  name={"correct"}
-                                                  value={index}
-                                                  onChange={() => setCorrect(index)}/>}>
-                            </FormControlLabel>
-                            <IconButton aria-label="delete option" sx={{color: theme.palette.primary.main}}
-                                        onClick={() => handleRemoveOption(index)}>
-                                <CloseIcon/>
-                            </IconButton>
-                        </Stack>
-                    )}
-                    <Stack direction="row" justifyContent="space-between" sx={{paddingTop: 4}}>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} onClick={handleAddOption}> Add
-                            Option</Button>
-                        <IconButton aria-label="copy question" sx={{color: theme.palette.primary.main}}>
+                               onChange={(e) => setQuestion(e.target.value)}/>{options.map((data, index) =>
+                    <Stack direction={'row'} justifyItems={"baseline"}>
+                        <TextField key={data._id} {...data} value={options[index]} label={`Option ${index + 1}`}
+                                   variant="standard" onChange={updateOption(index)} fullWidth/>
+                        <FormControlLabel label="Correct"
+                                          control={<Radio checked={correct === index} name={"correct"} value={index}
+                                                          onChange={() => setCorrect(index)}/>}>
+                        </FormControlLabel>
+                        <IconButton aria-label="delete option" sx={{color: theme.palette.primary.main}}
+                                    onClick={() => handleRemoveOption(index)}>
+                            <CloseIcon/>
                         </IconButton>
+                    </Stack>
+                )}
+                    <Stack direction="row" justifyContent="space-between" sx={{paddingTop: 4}}>
+                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} onClick={handleAddOption}>
+                            Add Option
+                        </Button>
+                        <IconButton aria-label="copy question" sx={{color: theme.palette.primary.main}}/>
                     </Stack>
                 </Grid>
             </CardContent>
