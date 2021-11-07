@@ -20,7 +20,7 @@ export default function CreateQuizScreen() {
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const [questions, setQuestions] = useState([]);
-    const MAX_QUESTIONS = 1000;
+    const MAX_QUESTIONS = 100;
 
     const decrementNumQuestions = () => {
         setNumQuestions(numQuestions - 1);
