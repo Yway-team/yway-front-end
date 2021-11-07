@@ -61,23 +61,9 @@ export default function CreateQuestionCard(props) {
                     alignItems: "center",
                     borderRadius: "0px 0px 55px 0px",
                     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)"
-                }}
-                >
-                    <Grid
-                        container
-                        item
-                        xs={12}
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Typography
-                            sx={{
-                                fontWeight: "700",
-                                fontSize: 20,
-                                color: theme.palette.common.white
-                            }}
-                        >
+                }}>
+                    <Grid container item xs={12} direction="row" alignItems="center" justifyContent="center">
+                        <Typography sx={{fontWeight: "700", fontSize: 20, color: theme.palette.common.white}}>
                             {questionIndex + 1}
                         </Typography>
                     </Grid>

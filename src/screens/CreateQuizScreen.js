@@ -38,13 +38,9 @@ export default function CreateQuizScreen() {
                 <CommonTitle title='CREATE QUIZ'/>
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container item direction="column" sx={{p: 2}}>
+                <Grid container item direction="column" sx={{p: 2}} spacing={2}>
                     <Grid item>
-                        <FormLabel style={{
-                            fontWeight: '700',
-                            fontSize: 16,
-                            color: 'common.black'
-                        }}>
+                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
                             Quiz Details
                         </FormLabel>
                     </Grid>
@@ -54,11 +50,12 @@ export default function CreateQuizScreen() {
                     <Grid item>
                         <LabelTextField label={"Quiz Title"} onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
+                    <Grid item>
+                        <LabelTextField name="description" label={"Description"} multiline={"multiline"} variant={"outlined"}/>
+                    </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
-                            fontWeight: '700',
-                            fontSize: 16,
-                            color: 'common.black'
+                            fontWeight: '700', fontSize: 16, color: 'common.black'
                         }}>
                             Questions
                         </FormLabel>
@@ -71,14 +68,14 @@ export default function CreateQuizScreen() {
                                         type={"number"} />
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                                          value={"shuffle questions"}
+                        <FormControlLabel label="Shuffle Questions" labelPlacement="start" value={"shuffle questions"}
+                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
-                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                                          value={"shuffle answer"}
+                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start" value={"shuffle answer"}
+                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
