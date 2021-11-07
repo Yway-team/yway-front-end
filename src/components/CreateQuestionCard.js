@@ -2,10 +2,10 @@ import {
     Button,
     Card,
     CardContent,
+    Checkbox,
     FormControlLabel,
     Grid,
     IconButton,
-    Radio,
     Stack,
     TextField,
     Typography
@@ -31,12 +31,11 @@ export default function CreateQuestionCard({
     const theme = useTheme();
     const [question, setQuestion] = useState('');
     const [options, setOptions] = useState([]);
-    const [correct, setCorrect] = useState(0);
+    const [correct, setCorrect] = useState('');
 
     const handleAddOption = () => {
         setOptions(options => [...options, '']);
         console.log(options);
-        console.log("correct", correct);
     }
 
     const handleRemoveOption = (index) => {
@@ -44,16 +43,10 @@ export default function CreateQuestionCard({
         // console.log(options);
     };
 
-    const handleSelectedAnswer = (e) => {
-        setCorrect(e.target.value);
-        // setOptions(options.filter((value, i) => i !== index));
-        console.log("correct", correct);
-    };
-
     const updateOption = index => e => {
         let newArr = [...options];
         newArr[index] = e.target.value;
-        // console.log(e.target.value);
+        console.log(e.target.value);
         setOptions(newArr);
         // console.log("options", options);
         // console.log("correct", correct);
@@ -102,17 +95,14 @@ export default function CreateQuestionCard({
                                onChange={(e) => setQuestion(e.target.value)}/>
                     {options.map((data, index) =>
                         <Stack direction={'row'} justifyItems={"baseline"}>
-                            <TextField key={data._id} {...data} value={options[index]} label={`Option ${index + 1}`}
-                                       variant="standard"
+                            <TextField key={index} {...data} value={options[index]} label={`Option ${index + 1}`} variant="standard"
                                        onChange={updateOption(index)}
                                        fullWidth/>
                             <FormControlLabel label="Correct"
-                                              value={index}
-                                              control={<Radio
-                                                  checked={correct === index}
-                                                  name={"correct"}
-                                                  value={index}
-                                                  onChange={() => setCorrect(index)}/>}>
+                                              value={options[index]}
+                                              control={<Checkbox
+                                                  value={options[index]}
+                                                  onChange={(e) => setCorrect(e.target.value)}/>}>
                             </FormControlLabel>
                             <IconButton aria-label="delete option" sx={{color: theme.palette.primary.main}}
                                         onClick={() => handleRemoveOption(index)}>

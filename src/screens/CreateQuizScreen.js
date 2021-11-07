@@ -82,7 +82,7 @@ export default function CreateQuizScreen() {
                         </FormControlLabel>
                     </Grid>
                     <Grid container item direction={"column"}>
-                        {questions.map((data, index) => <CreateQuestionCard key={data._id} questionIndex={index}
+                        {questions.map((data, index) => <CreateQuestionCard key={index} questionIndex={index}
                                                                             handleRemoveQuestion={() => handleRemoveQuestion(index)} {...data} />)}
                     </Grid>
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}

@@ -1,18 +1,9 @@
-import { useQuery } from '@apollo/client';
 import { Grid } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle } from "../components";
-import { GET_QUIZ_HIGHLIGHTS } from '../controllers/graphql/quiz-queries';
 
 
 
 export default function HighlightsScreen() {
-    const { data: quizData } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
-    let quizzes = null;
-    if (quizData) {
-        quizzes = quizData.getQuizHighlights;
-        console.log('quizzes');
-        console.log(quizzes);
-    }
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='NEW PLATFORMS' />
@@ -23,7 +14,7 @@ export default function HighlightsScreen() {
             <CommonTitle title='TOP QUIZZES' />
             {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
-                {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} />) : null}
+                {quizzes.map((data) => <QuizCard key={data._id} {...data} />)}
             </Grid>
         </Grid>
     );
@@ -81,7 +72,6 @@ const platforms = [
     },
 ];
 
-/*
 const quizzes = [
     {
         _id: 1,
@@ -161,4 +151,4 @@ const quizzes = [
         platformImage: "https://i.pravatar.cc/300",
         platform: 'Mcdonal123',
     },
-];*/
+];
