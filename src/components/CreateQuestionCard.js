@@ -69,8 +69,7 @@ export default function CreateQuestionCard({
                     alignItems: "center",
                     borderRadius: "0px 0px 55px 0px",
                     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)"
-                }}
-                >
+                }}>
                     <Grid container item xs={12} direction="row" alignItems="center" justifyContent="center">
                         <Typography sx={{fontWeight: "700", fontSize: 20, color: theme.palette.common.white}}>
                             {questionIndex + 1}
@@ -83,11 +82,11 @@ export default function CreateQuestionCard({
             </Grid>
             <CardContent>
                 <Grid padding={2}>
-                    <TextField label="Question" variant="standard" fullWidth
+                    <TextField label="Question" variant="standard" fullWidth multiline
                                onChange={(e) => setQuestion(e.target.value)}/>{options.map((data, index) =>
                     <Stack direction={'row'} justifyItems={"baseline"}>
                         <TextField key={data._id} {...data} value={options[index]} label={`Option ${index + 1}`}
-                                   variant="standard" onChange={updateOption(index)} fullWidth/>
+                                   variant="standard" onChange={updateOption(index)} multiline fullWidth/>
                         <FormControlLabel label="Correct"
                                           control={<Radio checked={correct === index} name={"correct"} value={index}
                                                           onChange={() => setCorrect(index)}/>}>

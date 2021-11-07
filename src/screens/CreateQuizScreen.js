@@ -72,7 +72,7 @@ export default function CreateQuizScreen() {
                         <LabelTextField label={"Quiz Title"} onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField name="description" label={"Description"}/>
+                        <LabelTextField name="description" label={"Description"} multiline={"multiline"} variant={"outlined"}/>
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
