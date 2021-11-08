@@ -67,11 +67,6 @@ function NavigationControl(props) {
         ['My quizzes', <DynamicForm sx={{ fontSize: 16 }} />, `/user/${user._id}/quizzes`],
     ];
 
-
-    useEffect(() => {
-        console.log('mounted');
-    }, []);
-
     const toggleDrawer = () => {
         setOpen(!open);
     }
@@ -200,7 +195,7 @@ function NavigationControl(props) {
                                 <><NotificationsPopUp /> <ProfileMenu /></>
                                 : <GoogleLogin
                                     clientId={process.env.REACT_APP_CLIENT_ID}
-                                    isSignedIn={true}
+                                    isSignedIn={false}
                                     render={renderProps => (
                                         <Button onClick={renderProps.onClick}
                                             sx={{

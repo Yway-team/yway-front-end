@@ -11,8 +11,8 @@ import {
     Button
 } from '@mui/material';
 import logoIcon from '../images/logoIcon.svg';
-
 import { useState } from 'react';
+import TimeAgoFromNow from './TimeAgoFromNow';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -36,7 +36,6 @@ import { useState } from 'react';
 
 
 function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail }) {
-    const timestamp = Date(Number(createdAt));
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -46,10 +45,16 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
         setOpen(false);
     };
 
+    createdAt = Date(createdAt);
+
+
+
+
     return (
         <>
             <Card onClick={handleClickOpen} sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', height: 300, m: 2 }}>
                 <CardActionArea >
+
                     <CardMedia
                         component="img"
                         height={130}
@@ -82,15 +87,19 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {timestamp} </Typography>
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}><TimeAgoFromNow date={createdAt} /> </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {ownerUsername} </Typography>
+                                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
+                                    <Typography noWrap sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {ownerUsername} </Typography>
+                                </Box>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
+                                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
+                                    <Typography noWrap sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
+                                </Box>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -118,7 +127,7 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
                             </Grid>
 
                         </Grid>
-                        <Box className={'quizCardBox'} sx={{
+                        <Box sx={{
                             overflow: "hidden", textOverflow: "ellipsis",
                             // 'display': '-webkit-box',
                             // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
@@ -137,7 +146,7 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {timestamp} </Typography>
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> <TimeAgoFromNow date={createdAt} /></Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
@@ -145,7 +154,9 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
+
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
+
                             </Grid>
 
                             <Button

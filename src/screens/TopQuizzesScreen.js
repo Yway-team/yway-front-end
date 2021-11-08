@@ -8,9 +8,9 @@ export default function TopQuizzesScreen() {
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='TOP QUIZZES' />
             {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
-            <Grid container justifyContent='flex-start'>
+            {/* <Grid container justifyContent='flex-start'>
                 {quizzes.map((data) => <QuizCard key={data._id} {...data} />)}
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 }
