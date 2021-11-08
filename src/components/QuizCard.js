@@ -13,6 +13,7 @@ import {
 import logoIcon from '../images/logoIcon.svg';
 import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
+import LinesEllipsis from 'react-lines-ellipsis'
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -31,13 +32,15 @@ import TimeAgoFromNow from './TimeAgoFromNow';
 //                                 platform: String,
 //                                     name: String
 //                                          platform Image
+//                                             draft: boolean
 // }
 
 
 
-function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail }) {
+function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail }) {
     const [open, setOpen] = useState(false);
-
+    // const draft = _id ? false : true;
+    const draft = false;
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -47,12 +50,9 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
 
     createdAt = Date(createdAt);
 
-
-
-
     return (
         <>
-            <Card onClick={handleClickOpen} sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', height: 300, m: 2 }}>
+            <Card onClick={handleClickOpen} sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', m: 3, borderRadius: '10px 10px 10px 10px' }}>
                 <CardActionArea >
 
                     <CardMedia
@@ -63,23 +63,31 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
                         sx={{ borderRadius: '10px 10px 0px 0px', zIndex: '-2' }} />
 
                     <CardContent sx={{ py: 2, px: 1 }}>
-                        <Grid container justifyContent='flex-end' sx={{ zIndex: 1, position: 'absolute', left: 0, top: 130 - 30 }}>
-                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 120, height: 30, backgroundColor: 'primary.main', borderRadius: '10px 0px 0px 0px' }}>
+                        <Grid container justifyContent='flex-end' sx={{ zIndex: 1, position: 'absolute', left: 0, top: 130 - 25 }}>
+                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 100, height: 25, backgroundColor: draft ? 'rgba(232, 232, 232, 0.85)' : 'primary.main', borderRadius: '10px 0px 0px 0px' }}>
                                 <Typography sx=
-                                    {{ color: 'common.white' }}>
+                                    {{ color: draft ? 'grey.700' : 'common.white', fontSize: 12, fontWeight: 600 }}>
                                     {`${numQuestions} questions`}
                                 </Typography>
                             </Grid>
-
                         </Grid>
-                        <Box className={'quizCardBox'} sx={{
-                            overflow: "hidden", textOverflow: "ellipsis", height: 52,
-                            // 'display': '-webkit-box',
-                            // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
-                        }}>
-                            <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
-                                {title}
-                            </Typography>
+
+                        <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -33, top: 12 }}>
+                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 130, height: 25, backgroundColor: 'rgba(232, 232, 232, 0.85)', transform: "rotate(-36deg)" }}>
+                                <Typography sx=
+                                    {{ color: 'grey.700', fontSize: 12, fontWeight: 600 }}>
+                                    {draft ? 'Draft' : 'Attempted'}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                        <Box sx={{ fontSize: 16, fontWeight: 600, color: 'common.black', fontFamily: "'Montserrat', sans-serif", height: 40 }}>
+                            <LinesEllipsis
+                                text={title}
+                                maxLine='2'
+                                ellipsis='...'
+                                trimRight
+                                basedOn='letters'
+                            />
                         </Box>
                         <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1} >
                             <Grid item container xs={6} alignItems='center'>
@@ -107,8 +115,8 @@ function QuizCard({ quizId, title, bannerImg, description, numQuestions, ownerId
             </Card >
 
             <Dialog open={open} onClose={handleClose}
-                aria-labelledby="quiz-details-dialog"  >
-                <Card sx={{ width: 600, elevation: 0, boxShadow: 'none' }}>
+                aria-labelledby="quiz-details-dialog" sx={{ backgroundColor: 'transparent' }}  >
+                <Card sx={{ width: 600, elevation: 0, boxShadow: 'none', borderRadius: '16px 16px 16px 16px' }}>
 
                     <CardMedia
                         component="img"
