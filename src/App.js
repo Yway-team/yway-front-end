@@ -147,11 +147,12 @@ export default function App() {
                                 <ProfileScreen />
                             </Route>
                             <Route path="/user" >
-                                {userId
+                                <ProfileScreen />
+                                {/* {userId
                                     ?
                                     <Redirect to={`/user/${userId}`} />
                                     :
-                                    <Redirect to="/highlights" />}
+                                    <Redirect to="/highlights" />} */}
                             </Route>
                             {/* <Route exact path="/user/overview">
                                 <ProfileScreen tab = {0} />

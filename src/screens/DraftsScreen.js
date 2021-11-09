@@ -14,7 +14,6 @@ export default function DraftsScreen() {
             <CommonTitle title='TOP QUIZZES' />
             <Grid container justifyContent='flex-start'>
                 {quizzes ? quizzes.map((data) => {
-
                     return (<QuizCard key={data._id} {...data} draft={true} />);
                 }) : null}
             </Grid>

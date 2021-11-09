@@ -48,6 +48,8 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
         setOpen(false);
     };
 
+    var attempted = true;
+
     createdAt = Date(createdAt);
 
     return (
@@ -64,22 +66,22 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
 
                     <CardContent sx={{ py: 2, px: 1 }}>
                         <Grid container justifyContent='flex-end' sx={{ zIndex: 1, position: 'absolute', left: 0, top: 130 - 25 }}>
-                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 100, height: 25, backgroundColor: draft ? 'rgba(232, 232, 232, 0.85)' : 'primary.main', borderRadius: '10px 0px 0px 0px' }}>
+                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 100, height: 25, backgroundColor: draft ? 'rgba(250, 250, 252, 0.75)' : 'primary.main', borderRadius: '10px 0px 0px 0px' }}>
                                 <Typography sx=
-                                    {{ color: draft ? 'grey.700' : 'common.white', fontSize: 12, fontWeight: 600 }}>
+                                    {{ color: draft ? 'grey.700' : 'common.white', fontSize: 12, fontWeight: 500 }}>
                                     {`${numQuestions} questions`}
                                 </Typography>
                             </Grid>
                         </Grid>
-
-                        <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -34, top: 14 }}>
-                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 130, height: 25, backgroundColor: 'rgba(232, 232, 232, 0.85)', transform: "rotate(-36deg)" }}>
-                                <Typography sx=
-                                    {{ color: 'grey.700', fontSize: 12, fontWeight: 600 }}>
-                                    {draft ? 'Draft' : 'Attempted'}
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                        {(draft || attempted) ?
+                            <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -34, top: 14 }}>
+                                <Grid container alignItems='center' justifyContent='center' sx={{ width: 130, height: 25, backgroundColor: 'rgba(250, 250, 252, 0.75)', transform: "rotate(-36deg)" }}>
+                                    <Typography sx=
+                                        {{ color: draft ? 'grey.700' : 'primary.main', fontSize: 12, fontWeight: 500 }}>
+                                        {draft ? 'Draft' : 'Attempted'}
+                                    </Typography>
+                                </Grid>
+                            </Grid> : null}
                         <Box sx={{ fontSize: 16, fontWeight: 600, color: 'common.black', fontFamily: "'Montserrat', sans-serif", height: 40 }}>
                             <LinesEllipsis
                                 text={title}
@@ -116,7 +118,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
 
             <Dialog open={open} onClose={handleClose}
                 aria-labelledby="quiz-details-dialog" sx={{ backgroundColor: 'transparent' }}  >
-                <Card sx={{ width: 600, elevation: 0, boxShadow: 'none', borderRadius: '16px 16px 16px 16px' }}>
+                <Card sx={{ width: 600, elevation: 0, boxShadow: 'none' }}>
 
                     <CardMedia
                         component="img"
