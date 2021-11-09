@@ -9,4 +9,6 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
+console.log(`These are the envars: ${process.env}`)
+
 reportWebVitals();

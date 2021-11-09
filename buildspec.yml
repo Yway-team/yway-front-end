@@ -13,14 +13,14 @@ phases:
   build:
     commands:
         # run build script
-        - npm run build
+        - yarn build
      
 artifacts:
   files:
     - '**/*'
   base-directory: build
 
-cache:
-  paths:
-    - '/root/.yarn-cache/**/*'
-    - 'node_modules/**/*'
+# cache:
+#   paths:
+#     - '/root/.yarn-cache/**/*'
+#     - 'node_modules/**/*'
