@@ -18,15 +18,15 @@ import {
     FavoritesScreen,
     CreateScreen,
     ProfileScreen,
-    CreateQuizScreen
+    CreateQuizScreen,
+    DraftsScreen,
+    PlatformScreen,
+    PlatformSettings,
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
-
-import PlatformScreen from "./screens/PlatformScreen";
-import PlatformSettings from "./screens/PlatformSettings";
 
 const httpLink = createHttpLink({
     uri: 'http://3.129.119.115:4000/graphql'
@@ -137,9 +137,9 @@ export default function App() {
                             {/*<Route exact path="/platform/create">*/}
                             {/*    <CreatePlatformScreen />*/}
                             {/*</Route>*/}
-                            {/*<Route exact path="/user/:userId/drafts">*/}
-                            {/*    <DraftsScreen />*/}
-                            {/*</Route>*/}
+                            <Route exact path="/drafts">
+                                <DraftsScreen />
+                            </Route>
                             <Route exact path="/favorites">
                                 <FavoritesScreen />
                             </Route>

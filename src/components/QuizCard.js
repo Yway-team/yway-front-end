@@ -13,7 +13,7 @@ import {
 import logoIcon from '../images/logoIcon.svg';
 import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
-import LinesEllipsis from 'react-lines-ellipsis'
+import LinesEllipsis from 'react-lines-ellipsis';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -31,16 +31,16 @@ import LinesEllipsis from 'react-lines-ellipsis'
 //                             timestamp: Date,
 //                                 platform: String,
 //                                     name: String
-//                                          platform Image
+//                                          platformThumbnail
 //                                             draft: boolean
 // }
 
 
 
-function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail }) {
+function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail, draft }) {
     const [open, setOpen] = useState(false);
     // const draft = _id ? false : true;
-    const draft = false;
+    draft = draft ? draft : false;
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -72,7 +72,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                             </Grid>
                         </Grid>
 
-                        <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -33, top: 12 }}>
+                        <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -34, top: 14 }}>
                             <Grid container alignItems='center' justifyContent='center' sx={{ width: 130, height: 25, backgroundColor: 'rgba(232, 232, 232, 0.85)', transform: "rotate(-36deg)" }}>
                                 <Typography sx=
                                     {{ color: 'grey.700', fontSize: 12, fontWeight: 600 }}>
@@ -95,7 +95,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}><TimeAgoFromNow date={createdAt} /> </Typography>
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> <TimeAgoFromNow dateIn={createdAt} /> </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
@@ -154,7 +154,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> <TimeAgoFromNow date={createdAt} /></Typography>
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> <TimeAgoFromNow dateIn={createdAt} /></Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />

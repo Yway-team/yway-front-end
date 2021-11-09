@@ -10,8 +10,6 @@ export default function HighlightsScreen() {
     let quizzes = null;
     if (quizData) {
         quizzes = quizData.getQuizHighlights;
-        console.log('quizzes');
-        console.log(quizzes);
     }
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>

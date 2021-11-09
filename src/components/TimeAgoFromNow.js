@@ -1,13 +1,8 @@
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en.json'
 import React from 'react'
-import ReactTimeAgo from 'react-time-ago'
+import TimeAgo from 'react-timeago'
 
-TimeAgo.addDefaultLocale(en);
-
-
-export default function TimeAgoFromNow({ date }) {
+export default function TimeAgoFromNow({ dateIn }) {
     return (
-        <ReactTimeAgo date={date} locale="en-US" timeStyle="round-minute" />
+        <TimeAgo date={dateIn} locale="en-US" />
     )
 }
