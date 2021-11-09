@@ -24,7 +24,7 @@ import {
     PlatformSettings,
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavigationControl from './components/NavigationControl'
+import NavigationControl from './components/NavigationControl/NavigationControl'
 import { globalState } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
 

@@ -34,13 +34,13 @@ import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { LOGIN } from '../controllers/graphql/user-mutations.js';
+import { LOGIN } from '../../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../state/UserState';
+import { globalState } from '../../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import ProfileMenu from './ProfileMenu';
 import NotificationsPopUp from './NotificationsPopUp';
-import logo from '../images/logo.svg';
+import logo from '../../images/logo.svg';
 
 
 function NavigationControl(props) {

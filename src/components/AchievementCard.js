@@ -46,7 +46,7 @@ function AchievementCard({ name, description, image, timestamp }) {
                                 />
                             </Grid>
                             <Grid xs={2} item>
-                                <Typography sx={{ fontSize: 12, mt: 1, fontWeight: 500, color: 'primary.main', textAlign: 'right' }}> <TimeAgoFromNow dateIn={timestamp} /> </Typography>
+                                <Typography sx={{ fontSize: 12, mt: 1, fontWeight: 600, color: 'primary.main', textAlign: 'right' }}> <TimeAgoFromNow dateIn={timestamp} /> </Typography>
                             </Grid>
 
                             {/* <Grid xs={2} sm={5} item container flexDirection='row' justifyContent='flex-start' alignItems='center' flexGrow={1} spacing={0}>
