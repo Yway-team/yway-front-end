@@ -77,7 +77,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                             <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -34, top: 14 }}>
                                 <Grid container alignItems='center' justifyContent='center' sx={{ width: 130, height: 25, backgroundColor: 'rgba(250, 250, 252, 0.75)', transform: "rotate(-36deg)" }}>
                                     <Typography sx=
-                                        {{ color: draft ? 'grey.700' : 'primary.main', fontSize: 12, fontWeight: 500 }}>
+                                        {{ color: 'grey.700', fontSize: 12, fontWeight: 600 }}>
                                         {draft ? 'Draft' : 'Attempted'}
                                     </Typography>
                                 </Grid>

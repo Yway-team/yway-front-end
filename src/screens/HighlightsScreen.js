@@ -35,7 +35,7 @@ const platforms = [
         name: 'someCompany',
         favorites: '1M',
         numQuizzes: '235',
-        description: 'There is a space for everybody. This is an officifasfasdfasgafdsssssssssssssssssssgdsagasgdal gsdgfdsfgsdfgdsgfpage of this company'
+        description: 'There is a space for everybody. This is an officifas gsdgfdds fasfd fsafdf dfasgasgdg gfpage of this company'
     },
     {
         _id: 2,

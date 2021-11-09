@@ -29,7 +29,7 @@ function AchievementCard({ name, description, image, timestamp }) {
             <CardActionArea >
                 <CardContent >
                     <Grid container direction='row' justifyContent='flex-start' alignItems='center' >
-                        <Grid item xs={2} container justifyContent='center' alignContent='center' >
+                        <Grid item xs={2} container pb={1} >
                             <Avatar alt="creator-avatar" src={image} sx={{ height: 80, width: 80 }} />
                         </Grid>
                         <Grid xs={9} item container direction='column' justifyContent='flex-start' alignItems='baseline' sx={{ height: 100, flexWrap: 'none' }} flexGrow={1} ml={4} >
