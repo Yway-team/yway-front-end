@@ -29,7 +29,8 @@ import { globalState } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-    uri: 'http://3.129.119.115:4000/graphql'
+    // uri: 'http://3.129.119.115:4000/graphql'
+    uri: 'http://localhost:4000/graphql'
 });
 
 const authLink = setContext(() => {
