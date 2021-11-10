@@ -3,12 +3,19 @@ import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button, Dialog } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
-import { useHistory, useRouteMatch, useParams } from 'react-router-dom';
+import {
+  useHistory,
+  // useRouteMatch, 
+  useParams
+} from 'react-router-dom';
+import {
+  Overview
+} from '../components';
 import { useQuery } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 
 export default function ProfileScreen() {
-  let { path, url } = useRouteMatch();
+  // let { path, url } = useRouteMatch();
   const { userId } = useParams();
   const history = useHistory();
   const [value, setValue] = useState(0);
@@ -92,7 +99,6 @@ export default function ProfileScreen() {
               <Tab label="History"{...a11yProps(4)} />
               <Tab label="Friends" {...a11yProps(5)} />
 
-
             </Tabs>
             <Grid item>
               <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }} onClick={handleClickSettingsOpen}>
@@ -105,7 +111,7 @@ export default function ProfileScreen() {
           </Grid>
 
           <TabPanel value={value} index={0}>
-            Overview
+            <Overview />
           </TabPanel>
           <TabPanel value={value} index={1}>
             Achievements
@@ -124,33 +130,33 @@ export default function ProfileScreen() {
           </TabPanel>
 
 
-
-          {/* <Link to={`${url}/quizzes`}>Props v. State</Link>
-        <Grid>
-          <Switch>
-            <Route exact path={path}>
-              <Overview />
-            </Route>
-            <Route path={`${path}/overview`}>
-              <Overview />
-            </Route>
-            <Route exact path={`${path}/achievements`}>
-              <Achievements />
-            </Route>
-            <Route exact path={`${path}/quizzes`}>
-              <h3> my quizzes</h3>
-            </Route>
-            <Route exact path={`${path}/platforms`}>
-              <h3> my platforms</h3>
-            </Route>
-            <Route exact path={`${path}/history`}>
-              <h3> my history</h3>
-            </Route>
-            <Route exact path={`${path}/friends`}>
-              <h3> my achievements</h3>
-            </Route>
-          </Switch>
-        </Grid> */}
+          {/* 
+          <Link to={`${url}/quizzes`}>Props v. State</Link>
+          <Grid>
+            <Switch>
+              <Route exact path={path}>
+                <Overview />
+              </Route>
+              <Route path={`${path}/overview`}>
+                <Overview />
+              </Route>
+              <Route exact path={`${path}/achievements`}>
+                <Achievements />
+              </Route>
+              <Route exact path={`${path}/quizzes`}>
+                <h3> my quizzes</h3>
+              </Route>
+              <Route exact path={`${path}/platforms`}>
+                <h3> my platforms</h3>
+              </Route>
+              <Route exact path={`${path}/history`}>
+                <h3> my history</h3>
+              </Route>
+              <Route exact path={`${path}/friends`}>
+                <h3> my achievements</h3>
+              </Route>
+            </Switch>
+          </Grid> */}
 
         </Grid>
       </Grid >
@@ -174,8 +180,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box >
+          {children}
         </Box>
       )}
     </div>
@@ -195,11 +201,6 @@ function a11yProps(index) {
   };
 }
 
-// function Overview() {
-//   return (
-//     <h3> Overview</h3>
-//   )
-// }
 
 
 // function Achievements() {

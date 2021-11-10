@@ -10,8 +10,6 @@ export default function HighlightsScreen() {
     let quizzes = null;
     if (quizData) {
         quizzes = quizData.getQuizHighlights;
-        console.log('quizzes');
-        console.log(quizzes);
     }
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
@@ -37,7 +35,7 @@ const platforms = [
         name: 'someCompany',
         favorites: '1M',
         numQuizzes: '235',
-        description: 'There is a space for everybody. This is an officifasfasdfasgafdsssssssssssssssssssgdsagasgdal gsdgfdsfgsdfgdsgfpage of this company'
+        description: 'There is a space for everybody. This is an officifas gsdgfdds fasfd fsafdf dfasgasgdg gfpage of this company'
     },
     {
         _id: 2,
