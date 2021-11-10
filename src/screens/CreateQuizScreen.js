@@ -1,9 +1,9 @@
 import React, {useRef, useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import {CP, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import { useMutation } from "@apollo/client";
-import { CREATE_AND_PUBLISH_QUIZ } from "../controllers/graphql/quiz-mutations";
+import {useMutation} from "@apollo/client";
+import {CREATE_AND_PUBLISH_QUIZ} from "../controllers/graphql/quiz-mutations";
 
 export default function CreateQuizScreen() {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
@@ -21,7 +21,7 @@ export default function CreateQuizScreen() {
     const [quizDescription, setQuizDescription] = useState('');
     const [numQuestions, setNumQuestions] = useState(0);
     const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
-    const [timeToAnswer, setTimeToAnswer] = useState(10);
+    const [timeToAnswer, setTimeToAnswer] = useState('10');
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const MAX_QUESTIONS = 100;
@@ -44,7 +44,7 @@ export default function CreateQuizScreen() {
             timeToAnswer: timeToAnswer
             /* other optional props */
         };
-        await createAndPublishQuiz({ variables: { quiz: quizObj } });
+        await createAndPublishQuiz({variables: {quiz: quizObj}});
     };
 
     return (
@@ -60,13 +60,17 @@ export default function CreateQuizScreen() {
                         </FormLabel>
                     </Grid>
                     <Grid item>
-                        <LabelTextField label={"Platform"} value={platform} onChange={(e) => setPlatform(e.target.value)}/>
+                        <LabelTextField label={"Platform"} value={platform}
+                                        onChange={(e) => setPlatform(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField label={"Quiz Title"} value={quizTitle} onChange={(e) => setQuizTitle(e.target.value)}/>
+                        <LabelTextField label={"Quiz Title"} value={quizTitle}
+                                        onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField name="description" label={"Description"} value={quizDescription} onChange={e => setQuizDescription(e.target.value)} multiline={"multiline"} variant={"outlined"}/>
+                        <LabelTextField name="description" label={"Description"} value={quizDescription}
+                                        onChange={e => setQuizDescription(e.target.value)} multiline={true}
+                                        variant={"outlined"}/>
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
