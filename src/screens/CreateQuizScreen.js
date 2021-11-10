@@ -26,7 +26,7 @@ export default function CreateQuizScreen() {
     const [quizDescription, setQuizDescription] = useState('');
     const [numQuestions, setNumQuestions] = useState(0);
     const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
-    const [timeToAnswer, setTimeToAnswer] = useState('10');
+    const [timeToAnswer, setTimeToAnswer] = useState(10);
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const MAX_QUESTIONS = 100;
