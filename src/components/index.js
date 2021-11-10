@@ -1,6 +1,7 @@
 export { default as QuizCard } from './QuizCard';
 export { default as PlatformCard } from './PlatformCard';
 export { default as AchievementCard } from './AchievementCard';
+export { default as HistoryCard } from './HistoryCard';
 export { default as CommonTitle } from './CommonTitle';
 export { default as LabelTextField } from './LabelTextField';
 export { default as CreateQuestionCard } from './CreateQuestionCard';

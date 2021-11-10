@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Tab, Tabs, Typography, Box, Avatar, Grid, Divider, Button, Dialog } from '@mui/material';
 import { Settings, Edit, } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
 import {
   useHistory,
-  // useRouteMatch, 
-  useParams
+  useParams,
+  Switch,
+  Route
 } from 'react-router-dom';
 import {
   Overview
 } from '../components';
-import { useQuery } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
+import { globalState } from "../state/UserState";
 
 export default function ProfileScreen() {
-  // let { path, url } = useRouteMatch();
   const { userId } = useParams();
+  const currentUser = useReactiveVar(globalState);
+  const isOwn = (userId === currentUser._id) ? true : false;
   const history = useHistory();
-  const [value, setValue] = useState(0);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-
   const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
+  const tab = findTab();
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
 
   const handleClickSettingsOpen = () => {
@@ -31,19 +32,38 @@ export default function ProfileScreen() {
     setSettingsOpen(false);
   };
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-    // history.push(url + routes[newValue]);
+    history.push('/user/' + userId + routes[newValue]);
 
   };
-  const { data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
+
+  function findTab() {
+    var currentPath = history.location.pathname;
+    for (let i = 0; i < routes.length; i++) {
+      if (currentPath.endsWith(routes[i])) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+
+  useEffect(() => {
+    console.log('Profile Screen mounted');
+  }, []);
+
+
+  const { loading, error, data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
   let userInfo = null;
+  if (loading) {
+    return ('loading');
+  }
+
+  if (error)
+    return `Error! ${error}`;
+
   if (data) {
     userInfo = data.getUserInfo;
   }
-
-  useEffect(() => {
-    console.log('remounted');
-  }, []);
 
   return (
     <>
@@ -81,7 +101,7 @@ export default function ProfileScreen() {
           </Grid>
           <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
             <Tabs
-              value={value}
+              value={tab}
               onChange={handleChange}
               aria-label="user tabs"
               textColor='primary'
@@ -110,56 +130,38 @@ export default function ProfileScreen() {
             </Grid>
           </Grid>
 
-          <TabPanel value={value} index={0}>
-            <Overview />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            Achievements
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            My Quizzes
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            My Platforms
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            History
-          </TabPanel>
-          <TabPanel value={value} index={5}>
-            Friends
-          </TabPanel>
 
 
-          {/* 
-          <Link to={`${url}/quizzes`}>Props v. State</Link>
-          <Grid>
+          <Box>
             <Switch>
-              <Route exact path={path}>
+              <Route exact path='/user/:userId'>
                 <Overview />
               </Route>
-              <Route path={`${path}/overview`}>
+              <Route path={`/user/:userId/overview`}>
                 <Overview />
               </Route>
-              <Route exact path={`${path}/achievements`}>
-                <Achievements />
+              <Route exact path={`/user/:userId/achievements`}>
+                Achievements
               </Route>
-              <Route exact path={`${path}/quizzes`}>
-                <h3> my quizzes</h3>
+              <Route exact path={`/user/:userId/quizzes`}>
+                my quizzes
               </Route>
-              <Route exact path={`${path}/platforms`}>
-                <h3> my platforms</h3>
+              <Route exact path={`/user/:userId/platforms`}>
+                my platforms
               </Route>
-              <Route exact path={`${path}/history`}>
-                <h3> my history</h3>
+              <Route exact path={`/user/:userId/history`}>
+                my history
               </Route>
-              <Route exact path={`${path}/friends`}>
-                <h3> my achievements</h3>
+              <Route exact path={`/user/:userId/friends`}>
+                my achievements
               </Route>
             </Switch>
-          </Grid> */}
+          </Box>
 
         </Grid>
       </Grid >
+
+
 
       <Dialog open={settingsOpen} onClose={handleSettingsClose}
         aria-labelledby="privacy-settings-dialog"  >
@@ -169,30 +171,6 @@ export default function ProfileScreen() {
   )
 }
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`user-tabpanel-${index}`}
-      aria-labelledby={`user-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box >
-          {children}
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
 function a11yProps(index) {
   return {
@@ -201,10 +179,3 @@ function a11yProps(index) {
   };
 }
 
-
-
-// function Achievements() {
-//   return (
-//     <h3> Achievements</h3>
-//   )
-// }

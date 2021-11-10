@@ -44,6 +44,12 @@ import logo from '../../images/logo.svg';
 
 
 function NavigationControl(props) {
+    // This component controls Top App Bar and Left Navigation Bar under one single state. 
+    // It also takes routes as props to maintain global state at all time.
+    // App Bar reacts to logged in state. 
+    // Drawer reacts to routes and changes its active tab accordingly.
+    // Main section is for displaying main pages. 
+
     const user = useReactiveVar(globalState);
     const theme = useTheme();
     const drawerWidth = 240;
@@ -120,13 +126,15 @@ function NavigationControl(props) {
         }),
     );
 
-    const title = (title) => <Typography sx={{
-        fontWeight: '700',
-        fontSize: 16,
-        color: theme.palette.primary.main,
-        my: 2,
-        marginLeft: '22px'
-    }}>{title}</Typography>;
+    const title = (title) =>
+        <Typography sx={{
+            fontWeight: '700',
+            fontSize: 16,
+            color: theme.palette.primary.main,
+            my: 2,
+            marginLeft: '22px'
+        }}>{title}
+        </Typography>;
 
     const tabTile = (tabName, icon, url, index) => {
         var isActive = checkUrl(url);
@@ -237,16 +245,22 @@ function NavigationControl(props) {
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>{user.creatorPoints}</Typography>
-                                <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} /></Grid>
+                                }}>
+                                    {user.creatorPoints}
+                                </Typography>
+                                <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} />
+                            </Grid>
 
                             <Grid container item xs={6} direction='row' alignItems='center' justifyContent='center'>
                                 <Typography sx={{
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>{user.playPoints}</Typography>
-                                <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} /></Grid>
+                                }}>
+                                    {user.playPoints}
+                                </Typography>
+                                <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} />
+                            </Grid>
 
                         </Grid>
                     </Grid> : <Fragment></Fragment>

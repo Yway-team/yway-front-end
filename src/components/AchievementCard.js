@@ -25,7 +25,7 @@ import LinesEllipsis from 'react-lines-ellipsis';
 function AchievementCard({ name, description, image, timestamp }) {
 
     return (
-        <Card sx={{ maxWidth: 500, elevation: 0, boxShadow: 'none', height: 120, m: 2, position: 'relative' }}>
+        <Card sx={{ maxWidth: 500, elevation: 0, boxShadow: 'none', height: 120, my: 2, position: 'relative' }}>
             <CardActionArea >
                 <CardContent >
                     <Grid container direction='row' justifyContent='flex-start' alignItems='center' >
@@ -43,6 +43,7 @@ function AchievementCard({ name, description, image, timestamp }) {
                                     ellipsis='...'
                                     trimRight
                                     basedOn='letters'
+                                    component='p'
                                 />
                             </Grid>
                             <Grid xs={2} item>

@@ -148,30 +148,29 @@ export default function App() {
                                 <ProfileScreen />
                             </Route>
                             <Route path="/user" >
-                                <ProfileScreen />
-                                {/* {userId
+                                {userId
                                     ?
                                     <Redirect to={`/user/${userId}`} />
                                     :
-                                    <Redirect to="/highlights" />} */}
+                                    <Redirect to="/highlights" />}
                             </Route>
-                            {/* <Route exact path="/user/overview">
-                                <ProfileScreen tab = {0} />
+                            {/* <Route exact path="/user/:userId/overview">
+                                <ProfileScreen tab={0} />
                             </Route>
-                            <Route exact path="/user/achievements">
-                                <ProfileScreen tab = {1} />
+                            <Route exact path="/user/:userId/achievements">
+                                <ProfileScreen tab={1} />
                             </Route>
-                            <Route exact path="/user/quizzes">
-                                <ProfileScreen tab = {2} />
+                            <Route exact path="/user/:userId/quizzes">
+                                <ProfileScreen tab={2} />
                             </Route>
-                            <Route exact path="/user/platforms">
+                            <Route exact path="/user/:userId/platforms">
                                 <ProfileScreen tab={3} />
                             </Route>
-                            <Route exact path="/user/history">
+                            <Route exact path="/user/:userId/history">
                                 <ProfileScreen tab={4} />
                             </Route>
-                            <Route exact path="/user/friends">
-                                <ProfileScreen tab={4} />
+                            <Route exact path="/user/:userId/friends">
+                                <ProfileScreen tab={5} />
                             </Route> */}
 
 

@@ -60,6 +60,7 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                                         ellipsis='...'
                                         trimRight
                                         basedOn='letters'
+                                        component='p'
                                     />
                                 </Box>
                             </Grid>

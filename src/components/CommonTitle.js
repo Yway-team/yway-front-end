@@ -9,7 +9,6 @@ function CommonTitle({ title }) {
                 color: 'common.black',
                 mt: 4,
                 mb: 2,
-                ml: 2,
             }
             }> {title}</Typography >
         </Grid >

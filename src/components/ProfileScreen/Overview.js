@@ -1,11 +1,17 @@
 import { useState } from 'react';
 import { Grid, Typography } from '@mui/material';
-import { CommonTitle, AchievementCard, ShowMoreButton } from '..';
+import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard } from '..';
 import { TungstenRounded, Bolt } from '@mui/icons-material';
 export default function Overview() {
+    //Overview tab display this component in Profile Screen
     const [expandAchievements, setExpandAchievements] = useState(false);
     function toggleExpandAchievements() {
         setExpandAchievements(!expandAchievements);
+    }
+
+    const [expandHistory, setExpandHistory] = useState(false);
+    function toggleExpandHistory() {
+        setExpandHistory(!expandHistory);
     }
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 7 }}>
@@ -59,6 +65,15 @@ export default function Overview() {
             </Grid>
             {achievements.length > 2 ?
                 <ShowMoreButton expand={expandAchievements} onClick={toggleExpandAchievements} /> : null}
+            <CommonTitle title='HISTORY' />
+            <Grid container justifyContent='flex-start' mb={1}>
+                {expandHistory ?
+                    history.map((data) => <HistoryCard key={data._id}{...data} />) :
+                    history.slice(0, 2).map((data) => <HistoryCard key={data._id}{...data} />)}
+            </Grid>
+            {history.length > 2 ?
+                <ShowMoreButton expand={expandHistory} onClick={toggleExpandHistory} /> : null}
+
 
         </Grid >
     );
@@ -92,6 +107,45 @@ const achievements = [
         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'Some Achievements',
         description: 'There is a space for everybody. This is an offic gsdgfdsfgsdfgdsgfpage of this company',
+        timestamp: Date.now()
+    }
+];
+
+const history = [
+    {
+        _id: 1,
+        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        first: 'Attemped the quiz of this long and difficult ',
+        link: 'some link',
+        second: ' and scored this much. ',
+        type: 'quiz',
+        timestamp: Date.now()
+    },
+    {
+        _id: 2,
+        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        first: 'Attemped the quiz of this long and difficult ',
+        link: 'some link',
+        second: ' and scored this much. ',
+        type: 'quiz',
+        timestamp: Date.now()
+    },
+    {
+        _id: 3,
+        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        first: 'Attemped the quiz of this long and difficult ',
+        link: 'some link',
+        second: ' and scored this much. ',
+        type: 'quiz',
+        timestamp: Date.now()
+    },
+    {
+        _id: 4,
+        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        first: 'Attemped the quiz of this long and difficult ',
+        link: 'some link',
+        second: ' and scored this much. ',
+        type: 'quiz',
         timestamp: Date.now()
     }
 ];
