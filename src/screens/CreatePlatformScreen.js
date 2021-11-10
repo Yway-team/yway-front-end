@@ -1,18 +1,33 @@
 import React, {useState} from "react";
 import {Button, FormControlLabel, FormLabel, Grid, Stack, Switch, TextField, Typography} from "@mui/material";
 import {ColorPicker, CommonTitle, ImageUpload, LabelTextField} from "../components";
+import { useMutation } from "@apollo/client";
+import { CREATE_PLATFORM } from "../controllers/graphql/platform-mutations";
 
 export default function CreatePlatformScreen() {
-
-    const [platform, setPlatform] = useState('');
-    const [quizTitle, setQuizTitle] = useState('');
+    const [createPlatform] = useMutation(CREATE_PLATFORM);
+    const [platformName, setPlatformName] = useState('');
     const [platformDescription, setPlatformDescription] = useState('');
-    const [minCreatorPts, setMinCreatorPts] = useState('0');
+    const [minCreatorPts, setMinCreatorPts] = useState(0);
     const [onlyModSubmissions, setOnlyModSubmissions] = useState(false);
 
-
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        const platformObj = {
+            title: platformName,
+            description: platformDescription,
+            minCreatorPoints: minCreatorPts,
+            onlyModSubmissions: onlyModSubmissions
+        };
+        const { data } = await createPlatform({ variables: { platform: platformObj } });
+        if (data) {
+            const platformId = data.createPlatform;
+            console.log(`Platform ID: ${platformId}`);
+        }
+    };
+
+    const handleCancel = async (e) => {
+        e.preventDefault();
     };
 
     return (
@@ -28,8 +43,8 @@ export default function CreatePlatformScreen() {
                         </FormLabel>
                     </Grid>
                     <Grid item>
-                        <LabelTextField label={"Platform Name"} value={platform}
-                                        onChange={e => setPlatform(e.target.value)}/>
+                        <LabelTextField label={"Platform Name"} value={platformName}
+                                        onChange={e => setPlatformName(e.target.value)}/>
                     </Grid>
                     <Grid item>
                         <LabelTextField name="description" label={"Description (optional)"} value={platformDescription}
@@ -62,7 +77,7 @@ export default function CreatePlatformScreen() {
                     <Grid item>
                         <Stack direction={'row'} alignItems={'baseline'} spacing={2}>
                             <TextField variant={"standard"} value={minCreatorPts}
-                                       onChange={e => setMinCreatorPts(e.target.value)}
+                                       onChange={e => setMinCreatorPts(Number(e.target.value))}
                                        style={{width: 32}} type={"number"}>
                             </TextField>
                             <Typography>
@@ -73,14 +88,14 @@ export default function CreatePlatformScreen() {
 
                     <Grid item>
                         <FormControlLabel control={<Switch value={onlyModSubmissions}
-                                                           onChange={e => setOnlyModSubmissions(e.target.value.checked)}/>}
+                                                           onChange={e => setOnlyModSubmissions(e.target.checked)}/>}
                                           label="Only allow current moderators to submit quizzes"/>
                     </Grid>
 
 
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
                         <Button variant={"contained"} type={"submit"}>CREATE</Button>
-                        <Button variant={"outlined"} type={"submit"}>CANCEL</Button>
+                        <Button variant={"outlined"} onClick={handleCancel}>CANCEL</Button>
                     </Stack>
                 </Grid>
             </form>
