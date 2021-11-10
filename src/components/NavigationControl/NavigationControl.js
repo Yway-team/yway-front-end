@@ -68,7 +68,7 @@ function NavigationControl(props) {
     const createTabLists = [
         ['Create quiz', <PostAddOutlined sx={{ fontSize: 20 }} />, '/quiz/create'],
         ['Create platform', <GroupAddRounded sx={{ fontSize: 20 }} />, '/platform/create'],
-        ['Drafts', <Source sx={{ fontSize: 18 }} />, `/user/${user._id}/drafts`],
+        ['Drafts', <Source sx={{ fontSize: 18 }} />, `/drafts`],
         ['My platforms', <People sx={{ fontSize: 17 }} />, `/user/${user._id}/platforms`],
         ['My quizzes', <DynamicForm sx={{ fontSize: 16 }} />, `/user/${user._id}/quizzes`],
     ];
