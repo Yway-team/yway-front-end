@@ -29,7 +29,7 @@ import PlatformScreen from "./screens/PlatformScreen";
 import PlatformSettings from "./screens/PlatformSettings";
 
 const httpLink = createHttpLink({
-    uri: 'http://api.yway.app/graphql'
+    uri: 'https://api.yway.app/graphql'
 });
 
 const authLink = setContext(() => {
