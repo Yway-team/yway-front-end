@@ -50,8 +50,6 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
 
     var attempted = true;
 
-    createdAt = Date(createdAt);
-
     return (
         <>
             <Card onClick={handleClickOpen} sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', m: 3, borderRadius: '10px 10px 10px 10px' }}>
