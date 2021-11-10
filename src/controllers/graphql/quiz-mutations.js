@@ -23,3 +23,25 @@ export const CREATE_AND_PUBLISH_QUIZ = gql`
         }
     }
 `;
+
+export const SAVE_QUIZ_AS_DRAFT = gql`
+    mutation SaveQuizAsDraft($draft: DraftInput!) {
+        # returns _id of draft if successful, else null
+        saveQuizAsDraft(draft: $draft)
+    }
+    # input DraftInput {
+    #     _id: String
+    #     questions: [QuestionInput]
+    #     tags: [String]
+    #     title: String
+    #     shuffleQuestions: Boolean
+    #     shuffleAnswers: Boolean
+    #     timeToAnswer: Int
+    #     bannerImg: String
+    #     color: String
+    #     createdAt: String
+    #     description: String
+    #     platformName: String
+    #     thumbnailImg: String
+    # }
+`;
