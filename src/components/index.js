@@ -6,3 +6,4 @@ export { default as LabelTextField } from './LabelTextField';
 export { default as CreateQuestionCard } from './CreateQuestionCard';
 export { default as Overview } from './ProfileScreen/Overview';
 export { default as ShowMoreButton } from './ShowMoreButton';
+export { default as ColorPicker } from './ColorPicker';

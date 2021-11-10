@@ -1,6 +1,6 @@
 import React, {useRef, useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {CP, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import {ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {useMutation} from "@apollo/client";
 import {CREATE_AND_PUBLISH_QUIZ} from "../controllers/graphql/quiz-mutations";
@@ -93,15 +93,28 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
+                                          style={{
+                                              padding: 0,
+                                              marginLeft: 0,
+                                              width: 280,
+                                              justifyContent: "space-between"
+                                          }}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
+                                          style={{
+                                              padding: 0,
+                                              marginLeft: 0,
+                                              width: 280,
+                                              justifyContent: "space-between"
+                                          }}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
+                    </Grid>
+                    <Grid item>
+                        <ColorPicker/>
                     </Grid>
                     <Grid container item direction={"column"} marginLeft={-2}>
                         {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard
