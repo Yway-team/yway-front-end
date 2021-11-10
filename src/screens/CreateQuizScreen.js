@@ -1,6 +1,6 @@
 import React, {useRef, useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import {ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { useMutation } from "@apollo/client";
 import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
@@ -26,7 +26,7 @@ export default function CreateQuizScreen() {
     const [quizDescription, setQuizDescription] = useState('');
     const [numQuestions, setNumQuestions] = useState(0);
     const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
-    const [timeToAnswer, setTimeToAnswer] = useState(10);
+    const [timeToAnswer, setTimeToAnswer] = useState('10');
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const MAX_QUESTIONS = 100;
@@ -49,7 +49,7 @@ export default function CreateQuizScreen() {
             timeToAnswer: timeToAnswer
             /* other optional props */
         };
-        await createAndPublishQuiz({ variables: { quiz: quizObj } });
+        await createAndPublishQuiz({variables: {quiz: quizObj}});
     };
 
     const handleSaveAsDraft = async (e) => {
@@ -82,13 +82,17 @@ export default function CreateQuizScreen() {
                         </FormLabel>
                     </Grid>
                     <Grid item>
-                        <LabelTextField label={"Platform"} value={platform} onChange={(e) => setPlatform(e.target.value)}/>
+                        <LabelTextField label={"Platform"} value={platform}
+                                        onChange={(e) => setPlatform(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField label={"Quiz Title"} value={quizTitle} onChange={(e) => setQuizTitle(e.target.value)}/>
+                        <LabelTextField label={"Quiz Title"} value={quizTitle}
+                                        onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField name="description" label={"Description"} value={quizDescription} onChange={e => setQuizDescription(e.target.value)} multiline={"multiline"} variant={"outlined"}/>
+                        <LabelTextField name="description" label={"Description"} value={quizDescription}
+                                        onChange={e => setQuizDescription(e.target.value)} multiline={true}
+                                        variant={"outlined"}/>
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
@@ -111,15 +115,28 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
+                                          style={{
+                                              padding: 0,
+                                              marginLeft: 0,
+                                              width: 280,
+                                              justifyContent: "space-between"
+                                          }}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
+                                          style={{
+                                              padding: 0,
+                                              marginLeft: 0,
+                                              width: 280,
+                                              justifyContent: "space-between"
+                                          }}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
+                    </Grid>
+                    <Grid item>
+                        <ColorPicker/>
                     </Grid>
                     <Grid container item direction={"column"} marginLeft={-2}>
                         {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard
