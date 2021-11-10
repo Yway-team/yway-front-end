@@ -1,6 +1,6 @@
-import React, {useRef, useState} from "react";
-import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import React, { useRef, useState } from "react";
+import { Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack } from "@mui/material";
+import { ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField } from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { useMutation } from "@apollo/client";
 import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
@@ -49,7 +49,7 @@ export default function CreateQuizScreen() {
             timeToAnswer: timeToAnswer
             /* other optional props */
         };
-        await createAndPublishQuiz({variables: {quiz: quizObj}});
+        await createAndPublishQuiz({ variables: { quiz: quizObj } });
     };
 
     const handleSaveAsDraft = async (e) => {
@@ -70,29 +70,29 @@ export default function CreateQuizScreen() {
     }
 
     return (
-        <Grid container direction="column" sx={{p: 2, pl: 10}}>
+        <Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
             <Grid item>
-                <CommonTitle title='CREATE QUIZ'/>
+                <CommonTitle title='CREATE QUIZ' />
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container item direction="column" sx={{p: 2}} spacing={2}>
+                <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
                     <Grid item>
-                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                        <FormLabel style={{ fontWeight: '700', fontSize: 16, color: 'common.black' }}>
                             Quiz Details
                         </FormLabel>
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Platform"} value={platform}
-                                        onChange={(e) => setPlatform(e.target.value)}/>
+                            onChange={(e) => setPlatform(e.target.value)} />
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Quiz Title"} value={quizTitle}
-                                        onChange={(e) => setQuizTitle(e.target.value)}/>
+                            onChange={(e) => setQuizTitle(e.target.value)} />
                     </Grid>
                     <Grid item>
                         <LabelTextField name="description" label={"Description (optional)"} value={quizDescription}
-                                        onChange={e => setQuizDescription(e.target.value)} multiline={true}
-                                        variant={"outlined"}/>
+                            onChange={e => setQuizDescription(e.target.value)} multiline={true}
+                            variant={"outlined"} />
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
@@ -103,57 +103,59 @@ export default function CreateQuizScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Number of Questions"}
-                                        onChange={e => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setTextFieldNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
-                                        value={textFieldNumQuestions || ''}
-                                        onBlur={e => setNumQuestions(textFieldNumQuestions)}
-                                        type={"number"}/>
+                            onChange={e => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setTextFieldNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
+                            value={textFieldNumQuestions || ''}
+                            onBlur={e => setNumQuestions(textFieldNumQuestions)}
+                            type={"number"} />
                     </Grid>
                     <Grid item>
                         <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
-                                        placeholder={timeToAnswer}
-                                        onChange={(e) => setTimeToAnswer(Number(e.target.value))}/>
+                            placeholder={timeToAnswer}
+                            onChange={(e) => setTimeToAnswer(Number(e.target.value))} />
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                                          style={{
-                                              padding: 0,
-                                              marginLeft: 0,
-                                              width: 280,
-                                              justifyContent: "space-between"
-                                          }}
-                                          control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
+                            style={{
+                                padding: 0,
+                                marginLeft: 0,
+                                width: 280,
+                                justifyContent: "space-between"
+                            }}
+                            control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)} />}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                                          style={{
-                                              padding: 0,
-                                              marginLeft: 0,
-                                              width: 280,
-                                              justifyContent: "space-between"
-                                          }}
-                                          control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
+                            style={{
+                                padding: 0,
+                                marginLeft: 0,
+                                width: 280,
+                                justifyContent: "space-between"
+                            }}
+                            control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)} />}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
                         {/*todo: get state from colorpicker*/}
-                        <ColorPicker label={"Color Style"}/>
+                        <ColorPicker label={"Color Style"} />
                     </Grid>
-                    <Grid container item direction={"column"} marginLeft={-2}>
+                    <Grid container item direction={"column"} >
                         {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard
                             questions={refContainer.current} key={index} questionIndex={index}
                             decrementNumQuestions={decrementNumQuestions} shouldChildUpdate={shouldChildUpdate}
                         />)}
                     </Grid>
-                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
-                            onClick={() => {
-                                setNumQuestions(numQuestions + 1);
-                                setTextFieldNumQuestions(textFieldNumQuestions + 1);
-                            }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button>
-                    <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
-                        <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
-                        <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE</Button>
-                        <Button variant={"contained"} type={"submit"}>PUBLISH</Button>
+                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />} sx={{ alignSelf: "flex-start" }}
+                        onClick={() => {
+                            setNumQuestions(numQuestions + 1);
+                            setTextFieldNumQuestions(textFieldNumQuestions + 1);
+                        }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button>
+                    <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }} justifyContent='space-between'>
+                        <Button variant={"outlined"} style={{ marginRight: 150 }}>DISCARD</Button>
+                        <Stack direction='row' spacing={2}>
+                            <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
+                            <Button variant={"contained"} type={"submit"}>PUBLISH</Button>
+                        </Stack>
                     </Stack>
                 </Grid>
             </form>

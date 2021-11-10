@@ -23,7 +23,7 @@ function HistoryCard({ _id, type, first, link, second, image, timestamp }) {
                 <CardContent sx={{ p: 1 }}>
                     <Grid container direction='row' justifyContent='flex-start'>
                         <Grid item container alignItems='flex-start' xs={1} md={1} sx={{ height: 80 }} >
-                            <Avatar alt="creator-avatar" src={image} sx={{ height: 50, width: 50, m: 1 }} />
+                            <Avatar alt="history-avatar" src={image} sx={{ height: 50, width: 50, m: 1 }} />
                         </Grid>
                         <Grid xs={10} item container direction='column' justifyContent='flex-start' alignItems='baseline' sx={{ height: 80, flexWrap: 'none', ml: 3 }}  >
                             <Grid xs={3} item container sx={{ fontFamily: "'Montserrat', sans-serif", overFlow: 'hidden', mt: 1, height: 30, }}>

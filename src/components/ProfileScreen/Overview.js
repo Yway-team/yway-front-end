@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Grid, Typography } from '@mui/material';
-import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard } from '..';
+import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard, FriendCard } from '..';
 import { TungstenRounded, Bolt } from '@mui/icons-material';
 export default function Overview() {
     //Overview tab display this component in Profile Screen
@@ -12,6 +12,11 @@ export default function Overview() {
     const [expandHistory, setExpandHistory] = useState(false);
     function toggleExpandHistory() {
         setExpandHistory(!expandHistory);
+    }
+
+    const [expandFriends, setExpandFriends] = useState(false);
+    function toggleExpandFriends() {
+        setExpandFriends(!expandFriends);
     }
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 7 }}>
@@ -57,6 +62,8 @@ export default function Overview() {
                         <Bolt sx={{ fill: '#ff5a1d', fontSize: 24, ml: 1 }} /></Grid>
                 </Grid>
             </Grid >
+
+            {/* //Achievements section  */}
             <CommonTitle title='ACHIEVEMENTS' />
             <Grid container justifyContent='flex-start'>
                 {expandAchievements ?
@@ -65,6 +72,8 @@ export default function Overview() {
             </Grid>
             {achievements.length > 2 ?
                 <ShowMoreButton expand={expandAchievements} onClick={toggleExpandAchievements} /> : null}
+
+            {/* history section */}
             <CommonTitle title='HISTORY' />
             <Grid container justifyContent='flex-start' mb={1}>
                 {expandHistory ?
@@ -73,6 +82,15 @@ export default function Overview() {
             </Grid>
             {history.length > 2 ?
                 <ShowMoreButton expand={expandHistory} onClick={toggleExpandHistory} /> : null}
+
+            <CommonTitle title='FRIENDS' />
+            <Grid container justifyContent='flex-start' mb={1}>
+                {expandFriends ?
+                    friends.map((data) => <FriendCard key={data._id}{...data} />) :
+                    friends.slice(0, 4).map((data) => <FriendCard key={data._id}{...data} />)}
+            </Grid>
+            {friends.length > 4 ?
+                <ShowMoreButton expand={expandFriends} onClick={toggleExpandFriends} /> : null}
 
 
         </Grid >
@@ -99,14 +117,14 @@ const achievements = [
         _id: 3,
         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'Some Achievements',
-        description: 'There is a space for everybody. This is an officifas gsdgfdsfgsdfgdsgfpage of this company',
+        description: 'There is a space for everybody. This is an officifas gsdgfds fgsdfgdsgfpage of this company',
         timestamp: Date.now()
     },
     {
         _id: 4,
         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'Some Achievements',
-        description: 'There is a space for everybody. This is an offic gsdgfdsfgsdfgdsgfpage of this company',
+        description: 'There is a space for everybody. This is an offic gsdgfdsfgsdf gdsgfpage of this company',
         timestamp: Date.now()
     }
 ];
@@ -149,3 +167,46 @@ const history = [
         timestamp: Date.now()
     }
 ];
+
+const friends = [
+    {
+        _id: 1,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 2,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 3,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 4,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 5,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 6,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 7,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    },
+    {
+        _id: 8,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+    }
+]
