@@ -90,7 +90,7 @@ export default function CreateQuizScreen() {
                                         onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField name="description" label={"Description"} value={quizDescription}
+                        <LabelTextField name="description" label={"Description (optional)"} value={quizDescription}
                                         onChange={e => setQuizDescription(e.target.value)} multiline={true}
                                         variant={"outlined"}/>
                     </Grid>
@@ -136,7 +136,8 @@ export default function CreateQuizScreen() {
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
-                        <ColorPicker/>
+                        {/*todo: get state from colorpicker*/}
+                        <ColorPicker label={"Color Style"}/>
                     </Grid>
                     <Grid container item direction={"column"} marginLeft={-2}>
                         {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard

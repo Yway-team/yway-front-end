@@ -5,7 +5,7 @@ import {ChromePicker} from 'react-color';
 import {useTheme} from "@emotion/react";
 
 
-function ColorPicker({}) {
+function ColorPicker({label}) {
     const theme = useTheme();
     const [open, setOpen] = useState(false)
     const [quizColor, setQuizColor] = useState(theme.palette.primary)
@@ -24,7 +24,7 @@ function ColorPicker({}) {
     return (
         <Stack direction={'row'} alignItems={'baseline'}>
             <Typography sx={{width: 250}}>
-                Color Style
+                {label}
             </Typography>
             <Button onClick={handleClickOpen} variant={"contained"}
                     sx={{
