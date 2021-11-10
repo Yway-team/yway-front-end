@@ -16,7 +16,7 @@ import {
     TopPlatformsScreen,
     TopQuizzesScreen,
     FavoritesScreen,
-    CreateScreen,
+    CreatePlatformScreen,
     ProfileScreen,
     CreateQuizScreen,
     DraftsScreen,
@@ -123,9 +123,6 @@ export default function App() {
                             <Route exact path="/quiz/create">
                                 <CreateQuizScreen />
                             </Route>
-                            <Route exact path="/create">
-                                <CreateScreen />
-                            </Route>
                             <Route exact path="/testplatform">
                                 <PlatformScreen />
                             </Route>
@@ -135,9 +132,9 @@ export default function App() {
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
                             {/*</Route>*/}
-                            {/*<Route exact path="/platform/create">*/}
-                            {/*    <CreatePlatformScreen />*/}
-                            {/*</Route>*/}
+                            <Route exact path="/platform/create">
+                                <CreatePlatformScreen />
+                            </Route>
                             <Route exact path="/drafts">
                                 <DraftsScreen />
                             </Route>

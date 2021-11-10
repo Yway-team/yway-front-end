@@ -1,9 +1,9 @@
 import React, {useRef, useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack} from "@mui/material";
-import {CP, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
+import {ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import {useMutation} from "@apollo/client";
-import {CREATE_AND_PUBLISH_QUIZ} from "../controllers/graphql/quiz-mutations";
+import { useMutation } from "@apollo/client";
+import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
 
 export default function CreateQuizScreen() {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
@@ -12,7 +12,12 @@ export default function CreateQuizScreen() {
     // todo: problem with the button that minimizes the left bar - it destroys the state of the main screen. Must be fixed.
 
     // This object should only be used when the question information is needed to submit or save the quiz; everything other use case belongs to the CreateQuestionCard component. We can't afford to re-render the whole screen on a single change.
+    // todo: only allow quiz creation if the user does not have the maximum number of drafts
+    // todo: fetch draft and set initial states accordingly
+    // todo: tags, color, thumbnailImg, bannerImg
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
+    const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
+    const [draftId, setDraftId] = useState(null);  // if editing a previous draft
     const refContainer = useRef([]);
     const [shouldChildUpdate, setShouldChildUpdate] = useState(false);
     // refContainer.current = [{description, answerOptions, correctAnswer}]
@@ -21,7 +26,7 @@ export default function CreateQuizScreen() {
     const [quizDescription, setQuizDescription] = useState('');
     const [numQuestions, setNumQuestions] = useState(0);
     const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
-    const [timeToAnswer, setTimeToAnswer] = useState('10');
+    const [timeToAnswer, setTimeToAnswer] = useState(10);
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
     const MAX_QUESTIONS = 100;
@@ -33,7 +38,7 @@ export default function CreateQuizScreen() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const quizObj = {
             questions: refContainer.current,
             title: quizTitle,
@@ -46,6 +51,23 @@ export default function CreateQuizScreen() {
         };
         await createAndPublishQuiz({variables: {quiz: quizObj}});
     };
+
+    const handleSaveAsDraft = async (e) => {
+        e.preventDefault();
+        const draftObj = {
+            questions: refContainer.current,
+            title: quizTitle,
+            shuffleQuestions: shuffleQuestions,
+            shuffleAnswers: shuffleAnswer,
+            description: quizDescription /* todo */,
+            platformName: platform,
+            timeToAnswer: timeToAnswer
+        };
+        if (draftId) {
+            draftObj._id = draftId;
+        }
+        await saveQuizAsDraft({ variables: { draft: draftObj } });
+    }
 
     return (
         <Grid container direction="column" sx={{p: 2, pl: 10}}>
@@ -68,7 +90,7 @@ export default function CreateQuizScreen() {
                                         onChange={(e) => setQuizTitle(e.target.value)}/>
                     </Grid>
                     <Grid item>
-                        <LabelTextField name="description" label={"Description"} value={quizDescription}
+                        <LabelTextField name="description" label={"Description (optional)"} value={quizDescription}
                                         onChange={e => setQuizDescription(e.target.value)} multiline={true}
                                         variant={"outlined"}/>
                     </Grid>
@@ -89,19 +111,33 @@ export default function CreateQuizScreen() {
                     <Grid item>
                         <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
                                         placeholder={timeToAnswer}
-                                        onChange={(e) => setTimeToAnswer(e.target.value)}/>
+                                        onChange={(e) => setTimeToAnswer(Number(e.target.value))}/>
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
+                                          style={{
+                                              padding: 0,
+                                              marginLeft: 0,
+                                              width: 280,
+                                              justifyContent: "space-between"
+                                          }}
                                           control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)}/>}>
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
                         <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                                          style={{marginLeft: 0, width: 280, justifyContent: "space-between"}}
+                                          style={{
+                                              padding: 0,
+                                              marginLeft: 0,
+                                              width: 280,
+                                              justifyContent: "space-between"
+                                          }}
                                           control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)}/>}>
                         </FormControlLabel>
+                    </Grid>
+                    <Grid item>
+                        {/*todo: get state from colorpicker*/}
+                        <ColorPicker label={"Color Style"}/>
                     </Grid>
                     <Grid container item direction={"column"} marginLeft={-2}>
                         {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard
@@ -116,7 +152,7 @@ export default function CreateQuizScreen() {
                             }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
                         <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
-                        <Button variant={"contained"}>SAVE</Button>
+                        <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE</Button>
                         <Button variant={"contained"} type={"submit"}>PUBLISH</Button>
                     </Stack>
                 </Grid>
