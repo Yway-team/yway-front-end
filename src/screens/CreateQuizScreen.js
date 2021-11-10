@@ -1,9 +1,10 @@
 import React, { useRef, useState } from "react";
 import { Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack } from "@mui/material";
-import { ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField } from "../components";
+import {ColorPicker, CommonTitle, CreateQuestionCard, ImageUpload, LabelTextField} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { useMutation } from "@apollo/client";
 import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
+import {useTheme} from "@emotion/react";
 
 export default function CreateQuizScreen() {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
@@ -15,6 +16,7 @@ export default function CreateQuizScreen() {
     // todo: only allow quiz creation if the user does not have the maximum number of drafts
     // todo: fetch draft and set initial states accordingly
     // todo: tags, color, thumbnailImg, bannerImg
+    const theme = useTheme();
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
     const [draftId, setDraftId] = useState(null);  // if editing a previous draft
@@ -29,6 +31,7 @@ export default function CreateQuizScreen() {
     const [timeToAnswer, setTimeToAnswer] = useState(10);
     const [shuffleQuestions, setShuffleQuestions] = useState(false);
     const [shuffleAnswer, setShuffleAnswer] = useState(false);
+    const [quizColor, setQuizColor] = useState(theme.palette.primary)
     const MAX_QUESTIONS = 100;
 
     const decrementNumQuestions = () => {
@@ -36,6 +39,10 @@ export default function CreateQuizScreen() {
         setTextFieldNumQuestions(textFieldNumQuestions - 1);
         setShouldChildUpdate(!shouldChildUpdate);
     };
+
+    const handleSetColor = (color) => {
+        setQuizColor(color.hex);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -94,6 +101,12 @@ export default function CreateQuizScreen() {
                             onChange={e => setQuizDescription(e.target.value)} multiline={true}
                             variant={"outlined"} />
                     </Grid>
+                    <Grid item>
+                        <ImageUpload label={"Banner Image"}/>
+                    </Grid>
+                    <Grid item>
+                        <ImageUpload label={"Thumbnail Image"}/>
+                    </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
                             fontWeight: '700', fontSize: 16, color: 'common.black'
@@ -136,8 +149,7 @@ export default function CreateQuizScreen() {
                         </FormControlLabel>
                     </Grid>
                     <Grid item>
-                        {/*todo: get state from colorpicker*/}
-                        <ColorPicker label={"Color Style"} />
+                        <ColorPicker label={"Color Style"} colorState={quizColor} onChangeComplete={(color)=>handleSetColor(color)}/>
                     </Grid>
                     <Grid container item direction={"column"} >
                         {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard

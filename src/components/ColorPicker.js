@@ -5,10 +5,8 @@ import {ChromePicker} from 'react-color';
 import {useTheme} from "@emotion/react";
 
 
-function ColorPicker({label}) {
-    const theme = useTheme();
+function ColorPicker({label, colorState, onChangeComplete}) {
     const [open, setOpen] = useState(false)
-    const [quizColor, setQuizColor] = useState(theme.palette.primary)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -16,10 +14,6 @@ function ColorPicker({label}) {
     const handleClose = () => {
         setOpen(false);
     };
-
-    const handleSetColor = (color) => {
-        setQuizColor(color.hex);
-    }
 
     return (
         <Stack direction={'row'} alignItems={'baseline'}>
@@ -34,11 +28,11 @@ function ColorPicker({label}) {
                         maxHeight: 18,
                         minWidth: 18,
                         minHeight: 18,
-                        backgroundColor: quizColor
+                        backgroundColor: colorState
                     }}/>
             <Dialog open={open} onClose={handleClose}>
-                <ChromePicker color={quizColor}
-                              onChangeComplete={(color) => handleSetColor(color)}/>
+                <ChromePicker color={colorState}
+                              onChangeComplete={onChangeComplete}/>
             </Dialog>
         </Stack>
     )
