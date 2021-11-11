@@ -1,9 +1,10 @@
 import { useReactiveVar } from "@apollo/client";
 import { Checkbox, Grid, FormLabel, FormControlLabel } from "@mui/material";
-import { ColorPicker, LabelTextField } from ".";
 import { quizDetailsVar, questionsVar } from "../screens/CreateQuizScreen";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from "react";
+import { useTheme } from "@emotion/react";
+import { ColorPicker, ImageUpload, LabelTextField } from ".";
 
 export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQuestions }) {
     const quizDetails = useReactiveVar(quizDetailsVar);
@@ -13,6 +14,13 @@ export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQ
     if (updateNumQuestions !== previousUpdateNumQuestions) {
         setNumQuestionsText(numQuestions);
         setPreviousUpdateNumQuestions(!previousUpdateNumQuestions);
+    }
+
+    const theme = useTheme();
+    const [quizColor, setQuizColor] = useState(theme.palette.primary);
+
+    const handleSetColor = (color) => {
+        setQuizColor(color.hex);
     }
 
     return (<>
@@ -46,6 +54,12 @@ export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQ
                 }}
                 multiline={true}
                 variant={"outlined"} />
+        </Grid>
+        <Grid item>
+            <ImageUpload label={"Banner Image"} />
+        </Grid>
+        <Grid item>
+            <ImageUpload label={"Thumbnail Image"} />
         </Grid>
         <Grid item marginTop={4}>
             <FormLabel style={{
@@ -123,7 +137,7 @@ export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQ
         </Grid>
         <Grid item>
             {/*todo: get state from colorpicker*/}
-            <ColorPicker label={"Color Style"} />
+            <ColorPicker label={"Color Style"} colorState={quizColor} onChangeComplete={color => handleSetColor(color)} />
         </Grid>
     </>);
 }
