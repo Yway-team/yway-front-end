@@ -1,9 +1,23 @@
-import React, { useRef, useState } from "react";
-import { Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack } from "@mui/material";
-import { ColorPicker, CommonTitle, CreateQuestionCard, LabelTextField } from "../components";
+import React, { useState, useEffect } from "react";
+import { Button, Grid, Stack } from "@mui/material";
+import { CommonTitle } from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import { useMutation } from "@apollo/client";
+import { makeVar, useMutation } from "@apollo/client";
 import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
+import { v4 as uuidv4 } from 'uuid';
+import CreateQuestionCardList from "../components/CreateQuestionCardList";
+import CreateQuizForms from "../components/CreateQuizForms";
+
+export const questionsVar = makeVar([]);
+export const quizDetailsVar = makeVar({
+    platformName: '',
+    title: '',
+    description: '',
+    timeToAnswer: 10,
+    shuffleQuestions: false,
+    shuffleAnswers: false
+    // todo: color, tags, images
+});
 
 export default function CreateQuizScreen() {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
@@ -15,38 +29,28 @@ export default function CreateQuizScreen() {
     // todo: only allow quiz creation if the user does not have the maximum number of drafts
     // todo: fetch draft and set initial states accordingly
     // todo: tags, color, thumbnailImg, bannerImg
+    const start = Date.now();
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
-    const [draftId, setDraftId] = useState(null);  // if editing a previous draft
-    const refContainer = useRef([]);
-    const [shouldChildUpdate, setShouldChildUpdate] = useState(false);
-    // refContainer.current = [{description, answerOptions, correctAnswer}]
-    const [platform, setPlatform] = useState('');
-    const [quizTitle, setQuizTitle] = useState('');
-    const [quizDescription, setQuizDescription] = useState('');
-    const [numQuestions, setNumQuestions] = useState(0);
-    const [textFieldNumQuestions, setTextFieldNumQuestions] = useState(0);
-    const [timeToAnswer, setTimeToAnswer] = useState(10);
-    const [shuffleQuestions, setShuffleQuestions] = useState(false);
-    const [shuffleAnswer, setShuffleAnswer] = useState(false);
-    const MAX_QUESTIONS = 100;
+    const [_, setQuestions] = useState(questionsVar());
+    const [numQuestions, setNumQuestions] = useState(questionsVar().length);
+    const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
 
-    const decrementNumQuestions = () => {
-        setNumQuestions(numQuestions - 1);
-        setTextFieldNumQuestions(textFieldNumQuestions - 1);
-        setShouldChildUpdate(!shouldChildUpdate);
-    };
+    useEffect(() => console.log(`Rendered CreateQuizScreen in ${(Date.now() - start)} milliseconds.`));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const questions = questionsVar();
+        const quizDetails = quizDetailsVar();
+        questions.forEach(question => delete question.id);
         const quizObj = {
-            questions: refContainer.current,
-            title: quizTitle,
-            shuffleQuestions: shuffleQuestions,
-            shuffleAnswers: shuffleAnswer,
-            description: quizDescription /* todo */,
-            platformName: platform,
-            timeToAnswer: timeToAnswer
+            questions: questions,
+            title: quizDetails.title,
+            shuffleQuestions: quizDetails.shuffleQuestions,
+            shuffleAnswers: quizDetails.shuffleAnswers,
+            description: quizDetails.description,
+            platformName: quizDetails.platformName,
+            timeToAnswer: quizDetails.timeToAnswer
             /* other optional props */
         };
         await createAndPublishQuiz({ variables: { quiz: quizObj } });
@@ -54,18 +58,22 @@ export default function CreateQuizScreen() {
 
     const handleSaveAsDraft = async (e) => {
         e.preventDefault();
+        const questions = questionsVar();
+        const quizDetails = quizDetailsVar();
+        questions.forEach(question => delete question.id);
         const draftObj = {
-            questions: refContainer.current,
-            title: quizTitle,
-            shuffleQuestions: shuffleQuestions,
-            shuffleAnswers: shuffleAnswer,
-            description: quizDescription /* todo */,
-            platformName: platform,
-            timeToAnswer: timeToAnswer
+            questions: questions,
+            title: quizDetails.title,
+            shuffleQuestions: quizDetails.shuffleQuestions,
+            shuffleAnswers: quizDetails.shuffleAnswers,
+            description: quizDetails.description,
+            platformName: quizDetails.platformName,
+            timeToAnswer: quizDetails.timeToAnswer
+            /* other optional props */
         };
-        if (draftId) {
-            draftObj._id = draftId;
-        }
+        // if (draftId) {
+        //     draftObj._id = draftId;
+        // }
         await saveQuizAsDraft({ variables: { draft: draftObj } });
     }
 
@@ -76,80 +84,22 @@ export default function CreateQuizScreen() {
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
-                    <Grid item>
-                        <FormLabel style={{ fontWeight: '700', fontSize: 16, color: 'common.black' }}>
-                            Quiz Details
-                        </FormLabel>
-                    </Grid>
-                    <Grid item>
-                        <LabelTextField label={"Platform"} value={platform}
-                            onChange={(e) => setPlatform(e.target.value)} />
-                    </Grid>
-                    <Grid item>
-                        <LabelTextField label={"Quiz Title"} value={quizTitle}
-                            onChange={(e) => setQuizTitle(e.target.value)} />
-                    </Grid>
-                    <Grid item>
-                        <LabelTextField name="description" label={"Description (optional)"} value={quizDescription}
-                            onChange={e => setQuizDescription(e.target.value)} multiline={true}
-                            variant={"outlined"} />
-                    </Grid>
-                    <Grid item marginTop={4}>
-                        <FormLabel style={{
-                            fontWeight: '700', fontSize: 16, color: 'common.black'
-                        }}>
-                            Questions
-                        </FormLabel>
-                    </Grid>
-                    <Grid item>
-                        <LabelTextField label={"Number of Questions"}
-                            onChange={e => e.target.value >= 0 && e.target.value <= MAX_QUESTIONS ? setTextFieldNumQuestions(Number(e.target.value)) : null /* todo: give a warning when they decrease the value */}
-                            value={textFieldNumQuestions || ''}
-                            onBlur={e => setNumQuestions(textFieldNumQuestions)}
-                            type={"number"} />
-                    </Grid>
-                    <Grid item>
-                        <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
-                            placeholder={timeToAnswer}
-                            onChange={(e) => setTimeToAnswer(Number(e.target.value))} />
-                    </Grid>
-                    <Grid item>
-                        <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                            style={{
-                                padding: 0,
-                                marginLeft: 0,
-                                width: 280,
-                                justifyContent: "space-between"
-                            }}
-                            control={<Checkbox onChange={(e) => setShuffleQuestions(e.target.checked)} />}>
-                        </FormControlLabel>
-                    </Grid>
-                    <Grid item>
-                        <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                            style={{
-                                padding: 0,
-                                marginLeft: 0,
-                                width: 280,
-                                justifyContent: "space-between"
-                            }}
-                            control={<Checkbox onChange={(e) => setShuffleAnswer(e.target.checked)} />}>
-                        </FormControlLabel>
-                    </Grid>
-                    <Grid item>
-                        {/*todo: get state from colorpicker*/}
-                        <ColorPicker label={"Color Style"} />
-                    </Grid>
-                    <Grid container item direction={"column"} >
-                        {Array(numQuestions).fill(null).map((_, index) => <CreateQuestionCard
-                            questions={refContainer.current} key={index} questionIndex={index}
-                            decrementNumQuestions={decrementNumQuestions} shouldChildUpdate={shouldChildUpdate}
-                        />)}
-                    </Grid>
+                    <CreateQuizForms numQuestions={numQuestions} setNumQuestions={setNumQuestions} setQuestions={setQuestions} updateNumQuestions={updateNumQuestions} />
+                    <CreateQuestionCardList setQuestions={setQuestions} />
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />} sx={{ alignSelf: "flex-start" }}
                         onClick={() => {
+                            let questions = questionsVar();
+                            questions.push({
+                                id: uuidv4(),
+                                description: '',
+                                answerOptions: ['', ''],
+                                correctAnswerIndex: -1
+                            });
+                            questionsVar(questions);
                             setNumQuestions(numQuestions + 1);
-                            setTextFieldNumQuestions(textFieldNumQuestions + 1);
-                        }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button>
+                            setQuestions([...questionsVar()]);
+                            setUpdateNumQuestions(!updateNumQuestions);
+                            }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button>
                     <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }} justifyContent='space-between'>
                         <Button variant={"outlined"} style={{ marginRight: 150 }}>DISCARD</Button>
                         <Stack direction='row' spacing={2}>

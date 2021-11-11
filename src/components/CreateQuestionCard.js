@@ -14,7 +14,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { useTheme } from "@mui/material/styles";
-import React, { useEffect, useState } from "react";
+import { questionsVar } from "../screens/CreateQuizScreen";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 // index: Int
 // answerOptions: [String]
@@ -22,37 +24,19 @@ import React, { useEffect, useState } from "react";
 // question: String
 
 
-export default function CreateQuestionCard(props) {
+export default function CreateQuestionCard({ questionIndex, setQuestions }) {
     // All state for the CreateQuestionCard must be handled here. Doing it in CreateQuizScreen is just too slow.
-    const { questions, questionIndex, decrementNumQuestions, shouldChildUpdate } = props;
-    const [shouldUpdate, setShouldUpdate] = useState(false);
-    const question = questions[questionIndex];
-    const [description, setDescription] = useState(question?.description || '');
-    const [answerOptions, setAnswerOptions] = useState(question?.answerOptions || ['', '']);
-    const [correctAnswerIndex, setCorrectAnswerIndex] = useState(question?.correctAnswerIndex || -1);
-    if (question && shouldUpdate !== shouldChildUpdate) {
-        setDescription(question.description);
-        setAnswerOptions(question.answerOptions);
-        setCorrectAnswerIndex(question.correctAnswerIndex);
-        setShouldUpdate(!shouldUpdate);
-    }
-    useEffect(() => {
-        questions[questionIndex] = {
-            description: description,
-            answerOptions: answerOptions,
-            correctAnswerIndex: correctAnswerIndex
-        };
-    });
+    let question = questionsVar()[questionIndex];
+    const [correctAnswerIndex, setCorrectAnswerIndex] = useState(question.correctAnswerIndex);
+    const [answerOptions, setAnswerOptions] = useState(question.answerOptions);
+    const [answerOptionsIds, setAnswerOptionIds] = useState(Array(question.answerOptions.length).fill(null).map(() => uuidv4()));
     const theme = useTheme();
 
-    const handleRemoveQuestion = () => {
-        // PROBLEM: deletion duplicates the element after the deleted element.
-        questions.splice(questionIndex, 1);
-        decrementNumQuestions();
-    }
-
-    const duplicateQuestion = () => {
-        // todo:
+    const updateQuestionsVar = question => {
+        const questions = questionsVar();
+        questions[questionIndex] = question;
+        questionsVar(questions);
+        question = questionsVar()[questionIndex]
     }
 
     return (
@@ -74,20 +58,31 @@ export default function CreateQuestionCard(props) {
                     </Grid>
                 </Grid>
                 <IconButton aria-label="delete question" sx={{ color: theme.palette.primary.main }}
-                    onClick={handleRemoveQuestion}>
+                    onClick={() => {
+                        let questions = questionsVar();
+                        questionsVar(questions.filter((_, i) => i !== questionIndex));
+                        setQuestions([...questionsVar()]);
+                        }}>
                     <CloseIcon />
                 </IconButton>
             </Grid>
             <CardContent>
                 <Grid padding={2} spacing={2} rowSpacing={3}>
                     <TextField label="Question" variant="standard" fullWidth multiline
-                        value={description} onChange={e => setDescription(e.target.value)}
+                        defaultValue={question.description} onBlur={e => {
+                            question.description = e.target.value;
+                            updateQuestionsVar(question);
+                        }}
                         sx={{ mb: 2 }} />
                     {answerOptions.map((option, index) =>
-                        <Stack direction={'row'} justifyItems={"baseline"}>
-                            <TextField key={index} value={option} label={`Option ${index + 1}`} multiline
+                        <Stack key={answerOptionsIds[index]} direction={'row'} justifyItems={"baseline"}>
+                            <TextField defaultValue={option} label={`Option ${index + 1}`} multiline
                                 variant="standard"
-                                onChange={e => setAnswerOptions(answerOptions.map((answerOption, answerIndex) => answerIndex === index ? e.target.value : answerOption))}
+                                onBlur={e => {
+                                    question.answerOptions[index] = e.target.value;
+                                    setAnswerOptions([...question.answerOptions]);
+                                    updateQuestionsVar(question);
+                                }}
                                 fullWidth
                                 sx={{ mb: 2 }} />
                             <FormControlLabel label="Correct"
@@ -96,25 +91,41 @@ export default function CreateQuestionCard(props) {
                                     checked={correctAnswerIndex === index}
                                     name={"correct"}
                                     value={correctAnswerIndex}
-                                    onChange={e => e.target.checked ? setCorrectAnswerIndex(index) : null} />}>
+                                    onChange={e => {
+                                        if (e.target.checked) {
+                                            question.correctAnswerIndex = index;
+                                            setCorrectAnswerIndex(question.correctAnswerIndex);
+                                            updateQuestionsVar(question);
+                                        }
+                                        }} />}>
                             </FormControlLabel>
                             <IconButton aria-label="delete option" sx={{ color: theme.palette.primary.main }}
                                 onClick={() => {
-                                    setAnswerOptions(answerOptions.filter((_, answerIndex) => answerIndex !== index));
-                                    if (index === correctAnswerIndex) {
+                                    question.answerOptions.splice(index, 1);
+                                    console.log(question.answerOptions);
+                                    setAnswerOptions([...question.answerOptions]);
+                                    setAnswerOptionIds(answerOptionsIds.filter((_, answerOptionindex) => answerOptionindex !== index));
+                                    if (correctAnswerIndex === index) {
+                                        question.correctAnswerIndex = -1;
                                         setCorrectAnswerIndex(-1);
-                                    } else if (index < correctAnswerIndex) {
+                                    } else if (correctAnswerIndex > index) {
+                                        question.correctAnswerIndex -= 1;
                                         setCorrectAnswerIndex(correctAnswerIndex - 1);
                                     }
-                                }}>
+                                    updateQuestionsVar(question);
+                                    }}>
                                 <CloseIcon />
                             </IconButton>
                         </Stack>
                     )}
                     <Stack direction="row" justifyContent="space-between" sx={{ paddingTop: 4 }}>
                         <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />}
-                            onClick={() => setAnswerOptions([...answerOptions, ''])}> Add
-                            Option</Button>
+                            onClick={() => {
+                                question.answerOptions.push('');
+                                setAnswerOptions([...question.answerOptions]);
+                                setAnswerOptionIds([...answerOptionsIds, uuidv4()]);
+                                updateQuestionsVar(question);
+                            }}>Add Option</Button>
                         <IconButton aria-label="duplicate question" sx={{ color: theme.palette.primary.main }}>
                             <ContentCopyIcon />
                         </IconButton>
