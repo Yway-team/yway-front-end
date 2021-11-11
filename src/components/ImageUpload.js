@@ -1,6 +1,7 @@
 import {IconButton, Stack, TextField, Typography} from "@mui/material";
 import IosShareIcon from '@mui/icons-material/IosShare';
 import {useState} from "react";
+import {useTheme} from "@emotion/react";
 
 export default function ImageUpload({label}) {
     const [imageName, setImageName] = useState('');
@@ -18,7 +19,7 @@ export default function ImageUpload({label}) {
             <Typography style={{width: 250}}>
                 {label}
             </Typography>
-            <TextField value={imageName} variant={"standard"} disabled={true}
+            <TextField  style={{width: 300}} value={imageName} variant={"standard"} disabled={true}
                        onChange={(e) => setImageName(e.target.value)}>
             </TextField>
             <label htmlFor="icon-button-file">
