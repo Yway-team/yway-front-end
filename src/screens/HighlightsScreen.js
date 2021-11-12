@@ -2,21 +2,27 @@ import { useQuery } from '@apollo/client';
 import { Grid } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle } from "../components";
 import { GET_QUIZ_HIGHLIGHTS } from '../controllers/graphql/quiz-queries';
+import { GET_PLATFORM_HIGHLIGHTS } from '../controllers/graphql/platform-queries';
 
 
 
 export default function HighlightsScreen() {
     const { data: quizData } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
+    const { data: platformData } = useQuery(GET_PLATFORM_HIGHLIGHTS, { variables: { howMany: 10 } });
     let quizzes = null;
+    let platforms = null;
     if (quizData) {
         quizzes = quizData.getQuizHighlights;
+    }
+    if (platformData) {
+        platforms = platformData.getPlatformHighlights;
     }
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='NEW PLATFORMS' />
             {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
-                {platforms.map((data) => <Grid key={data._id} xs={6} sm={6} item ><PlatformCard {...data} /> </Grid>)}
+                {platforms ? platforms.map((data) => <Grid key={data._id} xs={6} sm={6} item ><PlatformCard {...data} /> </Grid>) : null}
             </Grid>
             <CommonTitle title='TOP QUIZZES' />
             {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
@@ -28,6 +34,7 @@ export default function HighlightsScreen() {
 }
 
 
+/*
 const platforms = [
     {
         _id: 1,
@@ -78,6 +85,7 @@ const platforms = [
         description: 'There is a space for everybody. This is an official page of this company'
     },
 ];
+*/
 
 /*
 const quizzes = [
