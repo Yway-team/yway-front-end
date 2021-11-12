@@ -3,7 +3,7 @@ import { Checkbox, Grid, FormLabel, FormControlLabel } from "@mui/material";
 import { quizDetailsVar, questionsVar } from "../screens/CreateQuizScreen";
 import { v4 as uuidv4 } from 'uuid';
 import { useState } from "react";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material/styles";
 import { ColorPicker, ImageUpload, LabelTextField } from ".";
 
 export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQuestions }) {
