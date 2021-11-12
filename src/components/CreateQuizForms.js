@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorPicker, ImageUpload, LabelTextField } from ".";
 
-export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQuestions }) {
+export default function CreateQuizForms({ numQuestions, updateNumQuestions, handleUpdateNumQuestions }) {
     const quizDetails = useReactiveVar(quizDetailsVar);
     const [numQuestionsText, setNumQuestionsText] = useState(numQuestions);
     const [previousUpdateNumQuestions, setPreviousUpdateNumQuestions] = useState(updateNumQuestions);
@@ -77,23 +77,7 @@ export default function CreateQuizForms({ numQuestions, setQuestions, updateNumQ
                         setNumQuestionsText(value);
                     }
                 }}
-                onBlur={() => {
-                    let questions = questionsVar();
-                    if (numQuestionsText > questions.length) {
-                        questionsVar([...questions, ...Array(numQuestionsText - questions.length).fill(null).map(() => {
-                            return {
-                                id: uuidv4(),
-                                description: '',
-                                answerOptions: ['', ''],
-                                correctAnswerIndex: -1
-                            }
-                        })]);
-                        setQuestions([...questionsVar()]);
-                    } else if (numQuestionsText < questions.length) {
-                        questionsVar(questions.filter((_, i) => i < numQuestionsText));
-                        setQuestions([...questionsVar()]);
-                    }
-                }}
+                onBlur={() => handleUpdateNumQuestions(numQuestionsText)}
                 type={"number"} />
                     </Grid>
                     <Grid item>
