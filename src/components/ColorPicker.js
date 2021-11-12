@@ -2,7 +2,7 @@ import {Button, Dialog, Typography} from "@mui/material";
 import React, {useState} from "react";
 import Stack from "@mui/material/Stack";
 import {ChromePicker} from 'react-color';
-import {useTheme} from "@emotion/react";
+import {useTheme} from "@mui/material/styles";
 
 
 function ColorPicker({label, colorState, onChangeComplete}) {

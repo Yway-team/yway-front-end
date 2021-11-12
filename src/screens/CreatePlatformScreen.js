@@ -3,7 +3,7 @@ import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, T
 import {ColorPicker, CommonTitle, ImageUpload, LabelTextField} from "../components";
 import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
-import {useTheme} from "@emotion/react";
+import {useTheme} from "@mui/material/styles";
 
 export default function CreatePlatformScreen() {
     const theme = useTheme();
