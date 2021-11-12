@@ -12,6 +12,8 @@ import logoIcon from '../images/logoIcon.svg';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { FavoriteRounded } from '@mui/icons-material';
 import { useHistory } from 'react-router';
+import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../controllers/graphql/user-mutations';
+import { useMutation } from '@apollo/client';
 // import { useState } from 'react';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
@@ -29,10 +31,20 @@ import { useHistory } from 'react-router';
 
 function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description, favorited }) {
     const history = useHistory();
+    const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
+    const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
     const handleClickOpen = () => {
         console.log("route to platform page");
         history.push('/testplatform');
     };
+
+    const handleFavoritePlatform = async () => {
+        await favoritePlatform({ variables: { platformId: _id } });
+    };
+
+    const handleUnfavoritePlatform = async () => {
+        await unfavoritePlatform({ variables: { platformId: _id } });
+    }
 
     return (
         <Card onClick={handleClickOpen} sx={{ maxWidth: 600, elevation: 0, boxShadow: 'none', height: 130, m: 2, position: 'relative' }}>
@@ -87,7 +99,7 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                         color: 'primary.main',
                     }
                 }}
-            > FAVORITE</Button>
+            >FAVORITE</Button>
         </Card >);
 }
 
