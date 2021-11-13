@@ -38,7 +38,6 @@ function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, descrip
     var initFavorite = false;
     favoritesList.forEach(element => {
         if (element.title === title) {
-            console.log('true');
             initFavorite = true;
         };
     });
@@ -67,9 +66,10 @@ function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, descrip
 
     const handleUnfavoritePlatform = async () => {
         const { data } = await unfavoritePlatform({ variables: { platformId: _id } });
-        if (data.favoritePlatform) {
+        console.log(data.unfavoritePlatform);
+        if (data.unfavoritePlatform) {
             var newState = { ...globalState };
-            newState.favorites = data.favoritePlatform;
+            newState.favorites = data.unfavoritePlatform;
             globalState(newState);
             setFavorite(false);
         }
