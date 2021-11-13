@@ -152,13 +152,11 @@ export default function CreateQuizScreen() {
                 open={publishConfirmOpen}
                 handleClose={togglePublishConfirmOpen}
                 title='PUBLISH YOUR QUIZ'
-                content='Are you sure you want to publish this quiz now?'
-                yesText='PUBLISH NOW'
-                yesCallback={() => {
-                }}
+                content={`Are you sure you want to publish this quiz to the platform "${quizDetailsVar().platformName}"? Once you publish this quiz, its questions can't be edited.`}
+                yesText='PUBLISH'
+                yesCallback={handleSubmit}
                 noText='CANCEL'
-                noCallback={() => {
-                }}
+                noCallback={togglePublishConfirmOpen}
             />
         </>
     )
