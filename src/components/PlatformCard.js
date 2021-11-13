@@ -35,15 +35,14 @@ import { elementAcceptingRef } from '@mui/utils';
 function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, description }) {
     const history = useHistory();
     const favoritesList = (useReactiveVar(globalState)).favorites || [];
-    const initFavorite = favoritesList.forEach(element => {
-        console.log(element.title);
-        console.log(title);
+    var initFavorite = false;
+    favoritesList.forEach(element => {
         if (element.title === title) {
-            return true;
+            console.log('true');
+            initFavorite = true;
         };
-    }) || false;
+    });
 
-    console.log(initFavorite);
     const [favorite, setFavorite] = useState(initFavorite);
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
