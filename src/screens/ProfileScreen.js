@@ -1,16 +1,16 @@
-import {useEffect, useState} from 'react';
-import {Avatar, Box, Button, Dialog, Divider, Grid, Tab, Tabs, Typography} from '@mui/material';
-import {Edit, Settings,} from '@mui/icons-material';
+import { useEffect, useState } from 'react';
+import { Avatar, Box, Button, Dialog, Divider, Grid, Tab, Tabs, Typography } from '@mui/material';
+import { Edit, Settings, } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
 import ProfileSettings from './ProfileSettings';
-import {Route, Switch, useHistory, useParams} from 'react-router-dom';
-import {Overview} from '../components';
-import {useQuery, useReactiveVar} from '@apollo/client';
-import {GET_USER_INFO} from '../controllers/graphql/user-queries';
-import {globalState} from "../state/UserState";
+import { Route, Switch, useHistory, useParams } from 'react-router-dom';
+import { Overview, Achievements, Friends, History, MyQuizzes, MyPlatforms } from '../components';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { GET_USER_INFO } from '../controllers/graphql/user-queries';
+import { globalState } from "../state/UserState";
 
 export default function ProfileScreen() {
-    const {userId} = useParams();
+    const { userId } = useParams();
     const currentUser = useReactiveVar(globalState);
     const isOwn = (userId === currentUser._id) ? true : false;
     const history = useHistory();
@@ -55,7 +55,7 @@ export default function ProfileScreen() {
     }, []);
 
 
-    const {loading, error, data} = useQuery(GET_USER_INFO, {variables: {userId: userId}});
+    const { loading, error, data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
     let userInfo = null;
     if (loading) {
         return ('loading');
@@ -71,20 +71,20 @@ export default function ProfileScreen() {
     return (
         <>
             <Grid container justifyContent='center' alignItems='center'>
-                <Grid flexDirection='column' sx={{maxWidth: '1000px'}}>
-                    <Grid sx={{height: "150px", overflow: "hidden",}}>
-                        <img alt='cover' src="https://picsum.photos/1000" sx={{objectFit: 'fill'}}/>
+                <Grid flexDirection='column' sx={{ maxWidth: '1050px' }}>
+                    <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", }}>
+                        <img alt='cover' src="https://picsum.photos/1000" sx={{ objectFit: 'fill' }} />
                     </Grid>
                     <Grid item container justifyContent='center' flexDirection='column' alignItems='center'>
                         <Avatar alt="avatar" src={userInfo ? userInfo.avatar : null /*"https://i.pravatar.cc/300"*/}
-                                sx={{
-                                    mt: -12,
-                                    height: 130,
-                                    width: 130,
-                                    border: '0.2rem solid',
-                                    borderColor: 'common.white'
-                                }}
-                                imgProps={{style: {borderRadius: '50%', objectFit: 'fill'}}}/>
+                            sx={{
+                                mt: -12,
+                                height: 130,
+                                width: 130,
+                                border: '0.2rem solid',
+                                borderColor: 'common.white'
+                            }}
+                            imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }} />
                         <Typography sx={{
                             fontWeight: 700,
                             fontSize: 25,
@@ -100,9 +100,9 @@ export default function ProfileScreen() {
                             }}>
                             {userInfo ? userInfo.bio : null}
                         </Typography>
-                        <Divider flexItem sx={{mt: 3}}/>
+                        <Divider flexItem sx={{ mt: 3 }} />
                     </Grid>
-                    <Grid container sx={{justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
                         <Tabs
                             value={tab}
                             onChange={handleChange}
@@ -124,11 +124,11 @@ export default function ProfileScreen() {
 
                         </Tabs>
                         <Grid item>
-                            <Button variant="text" startIcon={<Settings/>} sx={{mr: 1}}
-                                    onClick={handleClickPrivacySettingsOpen}>
+                            <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
+                                onClick={handleClickPrivacySettingsOpen}>
                                 Settings
                             </Button>
-                            <Button variant="contained" startIcon={<Edit/>} onClick={handleClickProfileSettingsOpen}>
+                            <Button variant="contained" startIcon={<Edit />} onClick={handleClickProfileSettingsOpen}>
                                 Edit Profile
                             </Button>
                         </Grid>
@@ -138,25 +138,25 @@ export default function ProfileScreen() {
                     <Box>
                         <Switch>
                             <Route exact path='/user/:userId'>
-                                <Overview/>
+                                <Overview />
                             </Route>
                             <Route path={`/user/:userId/overview`}>
-                                <Overview/>
+                                <Overview />
                             </Route>
                             <Route exact path={`/user/:userId/achievements`}>
-                                Achievements
+                                <Achievements />
                             </Route>
                             <Route exact path={`/user/:userId/quizzes`}>
-                                my quizzes
+                                <MyQuizzes />
                             </Route>
                             <Route exact path={`/user/:userId/platforms`}>
-                                my platforms
+                                <MyPlatforms />
                             </Route>
                             <Route exact path={`/user/:userId/history`}>
-                                my history
+                                <History />
                             </Route>
                             <Route exact path={`/user/:userId/friends`}>
-                                my achievements
+                                <Friends />
                             </Route>
                         </Switch>
                     </Box>
@@ -166,13 +166,13 @@ export default function ProfileScreen() {
 
 
             <Dialog open={privacySettingsOpen} onClose={handlePrivacySettingsClose}
-                    aria-labelledby="privacy-settings-dialog">
-                <ProfilePrivacy userInfo={userInfo} handleClose={handlePrivacySettingsClose}/>
+                aria-labelledby="privacy-settings-dialog">
+                <ProfilePrivacy userInfo={userInfo} handleClose={handlePrivacySettingsClose} />
             </Dialog>
 
             <Dialog open={profileSettingsOpen} onClose={handleProfileSettingsClose}
-                    aria-labelledby="profile-settings-dialog">
-                <ProfileSettings userInfo={userInfo} handleClose={handleProfileSettingsClose}/>
+                aria-labelledby="profile-settings-dialog">
+                <ProfileSettings userInfo={userInfo} handleClose={handleProfileSettingsClose} />
             </Dialog>
         </>
     )
