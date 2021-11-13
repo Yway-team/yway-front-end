@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, Stack } from "@mui/material";
-import { CommonTitle } from "../components";
+import { CommonTitle, ComfirmationDialog } from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { makeVar, useMutation } from "@apollo/client";
 import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
@@ -35,6 +35,11 @@ export default function CreateQuizScreen() {
     const [_, setQuestions] = useState(questionsVar());
     const [numQuestions, setNumQuestions] = useState(questionsVar().length);
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
+    const [publishComfirmOpen, setPublishComfirmOpen] = useState(false);
+
+    const togglePublishComfirmOpen = () => {
+        setPublishComfirmOpen(!publishComfirmOpen);
+    }
 
     useEffect(() => console.log(`Rendered CreateQuizScreen in ${(Date.now() - start)} milliseconds.`));
 
@@ -106,37 +111,51 @@ export default function CreateQuizScreen() {
     }
 
     return (
-        <Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
-            <Grid item>
-                <CommonTitle title='CREATE QUIZ' />
-            </Grid>
-            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
-                    <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions} handleUpdateNumQuestions={handleUpdateNumQuestions} />
-                    <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion} />
-                    <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />} sx={{ alignSelf: "flex-start" }}
-                        onClick={() => {
-                            let questions = questionsVar();
-                            questions.push({
-                                id: uuidv4(),
-                                description: '',
-                                answerOptions: ['', ''],
-                                correctAnswerIndex: -1
-                            });
-                            questionsVar(questions);
-                            setNumQuestions(numQuestions + 1);
-                            setQuestions([...questionsVar()]);
-                            setUpdateNumQuestions(!updateNumQuestions);
-                            }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button>
-                    <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }} justifyContent='space-between'>
-                        <Button variant={"outlined"} style={{ marginRight: 150 }}>DISCARD</Button>
-                        <Stack direction='row' spacing={2}>
-                            <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
-                            <Button variant={"contained"} type={"submit"}>PUBLISH</Button>
-                        </Stack>
-                    </Stack>
+        <>
+            <Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
+                <Grid item>
+                    <CommonTitle title='CREATE QUIZ' />
                 </Grid>
-            </form>
-        </Grid>
+                <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                    <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
+                        <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions} handleUpdateNumQuestions={handleUpdateNumQuestions} />
+                        <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion} />
+                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />} sx={{ alignSelf: "flex-start" }}
+                            onClick={() => {
+                                let questions = questionsVar();
+                                questions.push({
+                                    id: uuidv4(),
+                                    description: '',
+                                    answerOptions: ['', ''],
+                                    correctAnswerIndex: -1
+                                });
+                                questionsVar(questions);
+                                setNumQuestions(numQuestions + 1);
+                                setQuestions([...questionsVar()]);
+                                setUpdateNumQuestions(!updateNumQuestions);
+                            }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button>
+                        <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }} justifyContent='space-between'>
+                            <Button variant={"outlined"} style={{ marginRight: 150 }}>DISCARD</Button>
+                            <Stack direction='row' spacing={2}>
+                                <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
+                                <Button variant={"contained"} onClick={togglePublishComfirmOpen}
+                                // type={"submit"}
+                                >PUBLISH</Button>
+                            </Stack>
+                        </Stack>
+                    </Grid>
+                </form>
+            </Grid>
+            <ComfirmationDialog
+                open={publishComfirmOpen}
+                handleClose={togglePublishComfirmOpen}
+                title='PUBLISH YOUR QUIZ'
+                content='Are you sure you want to publish this quiz now? '
+                yesText='PUBLISH NOW'
+                yesCallback={() => { }}
+                noText='CANCEL'
+                noCallback={() => { }}
+            />
+        </>
     )
 }
