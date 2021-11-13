@@ -45,3 +45,11 @@ export const SAVE_QUIZ_AS_DRAFT = gql`
     #     thumbnailImg: String
     # }
 `;
+
+export const DELETE_QUIZ = gql`
+        mutation DeleteQuiz($quizId: ID!) {
+            # Permanently deletes the quiz with the given quizId.
+            # Returns true if successful, false otherwise.
+            deleteQuiz(quizId: $quizId)
+        }
+`;
