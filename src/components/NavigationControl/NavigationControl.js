@@ -11,7 +11,8 @@ import {
     Button,
     Grid,
     Paper,
-    InputBase
+    InputBase,
+    Avatar
 } from '@mui/material';
 import {
     Menu,
@@ -143,6 +144,17 @@ function NavigationControl(props) {
             <ListItemIcon sx={{ minWidth: 30 }}>
                 {icon}
             </ListItemIcon>
+            <ListItemText
+                disableTypography={true} primary={tabName}>
+            </ListItemText>
+        </ListItem>);
+    };
+    //favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index
+    const favTile = (tabName, img, url, index) => {
+        var isActive = checkUrl(url);
+        return (<ListItem key={index} button selected={isActive} onClick={() => handleNextRoute(url)}
+            sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '7px', }}>
+            <Avatar alt='fav-platform-thumbnail' src={img} sx={{ width: 27, height: 27, mr: '8px' }} />
             <ListItemText
                 disableTypography={true} primary={tabName}>
             </ListItemText>
@@ -312,7 +324,7 @@ function NavigationControl(props) {
                                 )}
                                 {title('FAVORITES')}
                                 {user.favorites ? user.favorites.map(
-                                    (favorite, index) => tabTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
+                                    (favorite, index) => favTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
                                 ) : null}
                             </Fragment> :
                             <Fragment> {title('EXPLORE')}

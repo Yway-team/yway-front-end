@@ -18,10 +18,11 @@ import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../controllers/graphql/u
 import { useMutation, useReactiveVar } from '@apollo/client';
 // import { useState } from 'react';
 import { globalState } from '../state/UserState';
+import { elementAcceptingRef } from '@mui/utils';
 // import { useHistory } from 'react-router-dom';
 
 // _id: ObjectId,
-//name
+//title
 //       profileImg: Binary data, 
 //favorites: String,
 // numQuizzes: Int,
@@ -31,26 +32,48 @@ import { globalState } from '../state/UserState';
 
 
 
-function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description }) {
-
+function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, description }) {
     const history = useHistory();
     const favoritesList = (useReactiveVar(globalState)).favorites || [];
-    const [favorite, setFavorite] = useState(favoritesList.includes(_id));
+    const initFavorite = favoritesList.forEach(element => {
+        console.log(element.title);
+        console.log(title);
+        if (element.title === title) {
+            return true;
+        };
+    }) || false;
+
+    console.log(initFavorite);
+    const [favorite, setFavorite] = useState(initFavorite);
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
+
+
     const handleClickOpen = () => {
         console.log("route to platform page");
         history.push('/testplatform');
     };
 
+
     const handleFavoritePlatform = async () => {
-        await favoritePlatform({ variables: { platformId: _id } });
-        setFavorite(true);
+        const { data } = await favoritePlatform({ variables: { platformId: _id } });
+        if (data.favoritePlatform) {
+            var newState = { ...globalState };
+            newState.favorites = data.favoritePlatform;
+            globalState(newState);
+            setFavorite(true);
+        }
+
     };
 
     const handleUnfavoritePlatform = async () => {
-        await unfavoritePlatform({ variables: { platformId: _id } });
-        setFavorite(false);
+        const { data } = await unfavoritePlatform({ variables: { platformId: _id } });
+        if (data.favoritePlatform) {
+            var newState = { ...globalState };
+            newState.favorites = data.favoritePlatform;
+            globalState(newState);
+            setFavorite(false);
+        }
     }
 
 
@@ -65,7 +88,7 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                         </Grid>
                         <Grid xs={9} item container direction='column' justifyContent='flex-start' alignItems='baseline' sx={{ height: 110 }} flexGrow={1}  >
                             <Grid xs={2} container item direction='row' alignItems='center' justifyContent='space-between'>
-                                <Typography sx={{ fontSize: 16, fontWeight: 600 }}> {name} </Typography>
+                                <Typography sx={{ fontSize: 16, fontWeight: 600 }}> {title} </Typography>
 
                             </Grid>
                             <Grid xs={2} sm={6} item container flexDirection='row' justifyContent='flex-start' alignItems='center' flexGrow={1} mt={2} spacing={0} >
