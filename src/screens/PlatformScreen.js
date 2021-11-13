@@ -86,52 +86,49 @@ const quizzes = [
 
 export default function PlatformScreen() {
     return (
-        <Grid container>
-            <Grid item xs={12}>
-                <box style={{ height: "300px", position: "relative", display: "flex", alignItems: "flex-end" }}>
-                    <box style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute", top: "0px", zIndex: "-1" }}>
-                        <img style={{ width: "100%" }} alt='cover' src="https://picsum.photos/1000" />
-                    </box>
-                    <Avatar alt="avatar" src="https://i.pravatar.cc/300"
-                        sx={{
-                            height: 250,
-                            width: 250,
-                            border: '0.2rem solid',
-                            borderColor: 'common.white',
-                            marginLeft: "5%",
-                            display: "relative",
-                            bottom: "-30%"
-                        }}
-                        imgProps={{ style: { borderRadius: '50%' } }} />
-                    <h2 style={{ color: "black", fontSize: "50px" }}>All About Mountaineering</h2>
+        <>
+            <Grid container spacing={0}>
+                <Grid item xs={12}>
+                    <Box style={{ height: "300px", position: "relative", display: "flex", alignItems: "flex-end" }}>
+                        <Box style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute", top: "0px", zIndex: "-1" }}>
+                            <img style={{ width: "100%" }} alt='cover' src="https://picsum.photos/1000" />
+                        </Box>
+                        <Avatar alt="avatar" src="https://i.pravatar.cc/300"
+                            sx={{
+                                height: 250,
+                                width: 250,
+                                border: '0.2rem solid',
+                                borderColor: 'common.white',
+                                marginLeft: "5%",
+                                display: "relative",
+                                bottom: "-30%"
+                            }}
+                            imgProps={{ style: { borderRadius: '50%' } }} />
+                        <h2 style={{ color: "black", fontSize: "50px" }}>All About Mountaineering</h2>
 
-                    <Box sx={{ display: "flex", alignItems: 'flex-end', position: "absolute", left: "0px", bottom: "0px", width: "100%" }}>
+                        <Box sx={{ display: "flex", alignItems: 'flex-end', position: "absolute", left: "0px", bottom: "0px", width: "100%" }}>
+                        </Box>
                     </Box>
-                </box>
-                <box style={{ backgroundColor: "#ededed" }}>
-                    <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
-                        <box style={{ whiteSpace: "nowrap" }}>1.35 Million Followers</box>
-                        <box style={{ whiteSpace: "nowrap" }}>234 Quizzes</box>
-                        <box style={{ whiteSpace: "nowrap" }}>2349 Questions</box>
-                    </Stack>
-                </box>
-            </Grid>
-            <Grid item xs={12}>
-                <Box display="grid" gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2} sx={{ maxWidth: "700px" }}>
+                    <Box style={{ backgroundColor: "#ededed" }}>
+                        <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
+                            <Box style={{ whiteSpace: "nowrap" }}>1.35 Million Followers</Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>234 Quizzes</Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>2349 Questions</Box>
+                        </Stack>
+                    </Box>
+                </Grid>
+                <Grid item container xs={9} spacing={0}>
                     {quizzes ?
-                        quizzes.map((data) =>
+                    quizzes.map((data) =>
 
-                            <QuizCard key={data.id} {...data} />) :
-                        <Box gridColumn="span 8" sx={{ display: "flex", paddingLeft: "5rem", paddingTop: "3rem" }}>
-                            <h2>No Quizzes to Display</h2>
-                        </Box>}
-                    <Box gridColumn="-1" gridRow="1" style={{ paddingTop: "2rem" }}>
-                        <Grid item sx={{ display: "flex", justifyContent: "center", paddingTop: "20px", height: "400px" }}>
-                            <MiniLeaderboard width="350px" />
-                        </Grid>
-                    </Box>
-                </Box>
+                        <QuizCard key={data.id} {...data} />) :
+                        <h2>No Quizzes to Display</h2>
+                    }
+                </Grid>
+                <Grid item xs={3} sx={{marginTop: "2rem"}}>
+                    <MiniLeaderboard width="350px" />
+                </Grid>
             </Grid>
-        </Grid>
+        </>
     )
 }
