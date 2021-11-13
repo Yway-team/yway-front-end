@@ -6,13 +6,14 @@ import {
     Grid,
     Box,
     Avatar,
-    Button
+    Button,
+    CardActions
 } from '@mui/material';
 import logoIcon from '../images/logoIcon.svg';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { FavoriteRounded } from '@mui/icons-material';
 import { useHistory } from 'react-router';
-// import { useState } from 'react';
+import { useState } from 'react';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -27,17 +28,27 @@ import { useHistory } from 'react-router';
 
 
 
-function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description, favorited }) {
+function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description }) {
+    const [favorite, setFavorite] = useState(true);
     const history = useHistory();
     const handleClickOpen = () => {
         console.log("route to platform page");
         history.push('/testplatform');
     };
 
-    return (
-        <Card onClick={handleClickOpen} sx={{ maxWidth: 600, elevation: 0, boxShadow: 'none', height: 130, m: 2, position: 'relative' }}>
+    const handleFavorite = () => {
+        console.log('handling click favortie');
+        setFavorite(true);
+    };
 
-            <CardActionArea >
+    const handleUnfavorite = () => {
+        console.log('handling click unfavorite');
+        setFavorite(false);
+    }
+
+    return (
+        <Card sx={{ maxWidth: 600, elevation: 0, boxShadow: 'none', height: 130, m: 2, position: 'relative' }}>
+            <CardActionArea onClick={handleClickOpen} >
                 <CardContent sx={{ p: 1 }}>
                     <Grid container direction='row' justifyContent='flex-start' alignItems='center' spacing={0} >
                         <Grid xs={3} item>
@@ -68,26 +79,30 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                     </Grid>
                 </CardContent>
             </CardActionArea>
-            <Button
-                variant='contained'
+            <CardActions>
+                <Button
+                    variant='contained'
 
-                sx={{
-                    position: 'absolute',
-                    right: 0,
-                    top: 0,
-                    background: 'primary.main',
-                    boxShadow: 'none',
-                    height: 28,
-                    px: 2,
-                    m: 1,
-                    color: 'common.white',
-                    "&:hover": {
+                    onClick={favorite ? handleUnfavorite : handleFavorite}
+                    sx={{
+                        width: 120,
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                        backgroundColor: favorite ? 'grey.200' : 'primary.main',
                         boxShadow: 'none',
-                        backgroundColor: 'primary.light',
-                        color: 'primary.main',
-                    }
-                }}
-            > FAVORITE</Button>
+                        height: 28,
+                        px: 2,
+                        m: 1,
+                        color: favorite ? 'grey.500' : 'common.white',
+                        "&:hover": {
+                            boxShadow: 'none',
+                            backgroundColor: 'primary.light',
+                            color: 'primary.main',
+                        }
+                    }}
+                > {favorite ? 'FAVORITED' : 'FAVORITE'}</Button>
+            </CardActions>
         </Card >);
 }
 
