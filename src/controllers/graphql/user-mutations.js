@@ -32,12 +32,18 @@ export const UPDATE_PRIVACY_SETTINGS = gql`
 
 export const FAVORITE_PLATFORM = gql`
     mutation FavoritePlatform($platformId: ID!) {
-        favoritePlatform(platformId: $platformId)
+        favoritePlatform(platformId: $platformId) {
+            thumbnailImg
+            title
+        }
     }
 `;
 
 export const UNFAVORITE_PLATFORM = gql`
     mutation UnfavoritePlatform($platformId: ID!) {
-        unfavoritePlatform(platformId: $platformId)
+        unfavoritePlatform(platformId: $platformId) {
+            thumbnailImg
+            title
+        }
     }
 `;

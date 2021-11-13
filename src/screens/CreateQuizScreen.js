@@ -7,6 +7,8 @@ import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT} from "../controllers/graphq
 import {v4 as uuidv4} from 'uuid';
 import CreateQuestionCardList from "../components/CreateQuestionCardList";
 import CreateQuizForms from "../components/CreateQuizForms";
+import { useHistory } from 'react-router-dom';
+import { globalState } from "../state/UserState";
 
 export const questionsVar = makeVar([]);
 export const quizDetailsVar = makeVar({
@@ -30,6 +32,7 @@ export default function CreateQuizScreen() {
     // todo: fetch draft and set initial states accordingly
     // todo: tags, color, thumbnailImg, bannerImg
     const start = Date.now();
+    const history = useHistory();
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
     const [_, setQuestions] = useState(questionsVar());
@@ -39,7 +42,7 @@ export default function CreateQuizScreen() {
 
     const togglePublishConfirmOpen = () => {
         setPublishConfirmOpen(!publishConfirmOpen);
-    }
+    };
 
     useEffect(() => console.log(`Rendered CreateQuizScreen in ${(Date.now() - start)} milliseconds.`));
 
@@ -59,6 +62,7 @@ export default function CreateQuizScreen() {
             /* other optional props */
         };
         await createAndPublishQuiz({variables: {quiz: quizObj}});
+        history.push(`/user/${globalState()._id}/quizzes`);
     };
 
     const handleSaveAsDraft = async (e) => {
@@ -80,6 +84,7 @@ export default function CreateQuizScreen() {
         //     draftObj._id = draftId;
         // }
         await saveQuizAsDraft({variables: {draft: draftObj}});
+        history.push('/drafts');
     }
 
     const handleDeleteQuestion = async questionIndex => {
@@ -152,13 +157,11 @@ export default function CreateQuizScreen() {
                 open={publishConfirmOpen}
                 handleClose={togglePublishConfirmOpen}
                 title='PUBLISH YOUR QUIZ'
-                content='Are you sure you want to publish this quiz now?'
-                yesText='PUBLISH NOW'
-                yesCallback={() => {
-                }}
+                content={`Are you sure you want to publish this quiz to the platform "${quizDetailsVar().platformName}"? Once you publish this quiz, its questions can't be edited.`}
+                yesText='PUBLISH'
+                yesCallback={handleSubmit}
                 noText='CANCEL'
-                noCallback={() => {
-                }}
+                noCallback={togglePublishConfirmOpen}
             />
         </>
     )
