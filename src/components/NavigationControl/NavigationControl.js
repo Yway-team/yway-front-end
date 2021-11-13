@@ -311,6 +311,9 @@ function NavigationControl(props) {
                                     (data, index) => tabTile(...data, index)
                                 )}
                                 {title('FAVORITES')}
+                                {user.favorites ? user.favorites.map(
+                                    (favorite, index) => tabTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
+                                ) : null}
                             </Fragment> :
                             <Fragment> {title('EXPLORE')}
                                 {exploreTabLists.slice(0, -1).map(

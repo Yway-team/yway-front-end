@@ -7,7 +7,10 @@ export const LOGIN = gql`
             accessToken
             avatar
             creatorPoints
-            favorites
+            favorites {
+                thumbnailImg
+                title
+            }
             googleId
             notifications {
               description
