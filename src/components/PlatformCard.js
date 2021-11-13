@@ -14,6 +14,9 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import { FavoriteRounded } from '@mui/icons-material';
 import { useHistory } from 'react-router';
 import { useState } from 'react';
+import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../controllers/graphql/user-mutations';
+import { useMutation } from '@apollo/client';
+// import { useState } from 'react';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -31,20 +34,26 @@ import { useState } from 'react';
 function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description }) {
     const [favorite, setFavorite] = useState(true);
     const history = useHistory();
+    const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
+    const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
     const handleClickOpen = () => {
         console.log("route to platform page");
         history.push('/testplatform');
     };
 
-    const handleFavorite = () => {
+    const handleFavoritePlatform = async () => {
+        await favoritePlatform({ variables: { platformId: _id } });
         console.log('handling click favortie');
         setFavorite(true);
     };
 
-    const handleUnfavorite = () => {
-        console.log('handling click unfavorite');
+    const handleUnfavoritePlatform = async () => {
+        await unfavoritePlatform({ variables: { platformId: _id } });
+        console.log('handling click unfavortie');
         setFavorite(false);
     }
+
+
 
     return (
         <Card sx={{ maxWidth: 600, elevation: 0, boxShadow: 'none', height: 130, m: 2, position: 'relative' }}>
@@ -83,7 +92,7 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                 <Button
                     variant='contained'
 
-                    onClick={favorite ? handleUnfavorite : handleFavorite}
+                    onClick={favorite ? unfavoritePlatform : favoritePlatform}
                     sx={{
                         width: 120,
                         position: 'absolute',

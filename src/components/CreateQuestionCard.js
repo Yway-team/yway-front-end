@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 // question: String
 
 
-export default function CreateQuestionCard({ questionIndex, setQuestions }) {
+export default function CreateQuestionCard({ questionIndex, handleDeleteQuestion }) {
     // All state for the CreateQuestionCard must be handled here. Doing it in CreateQuizScreen is just too slow.
     let question = questionsVar()[questionIndex];
     const [correctAnswerIndex, setCorrectAnswerIndex] = useState(question.correctAnswerIndex);
@@ -58,11 +58,7 @@ export default function CreateQuestionCard({ questionIndex, setQuestions }) {
                     </Grid>
                 </Grid>
                 <IconButton aria-label="delete question" sx={{ color: theme.palette.primary.main }}
-                    onClick={() => {
-                        let questions = questionsVar();
-                        questionsVar(questions.filter((_, i) => i !== questionIndex));
-                        setQuestions([...questionsVar()]);
-                        }}>
+                    onClick={() => handleDeleteQuestion(questionIndex)}>
                     <CloseIcon />
                 </IconButton>
             </Grid>

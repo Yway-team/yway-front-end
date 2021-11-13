@@ -3,10 +3,10 @@ import { CreateQuestionCard } from ".";
 import { questionsVar } from "../screens/CreateQuizScreen";
 import React from 'react';
 
-export default function CreateQuestionCardList({ setQuestions }) {
+export default function CreateQuestionCardList({ handleDeleteQuestion }) {
     return (
         <Grid container item direction={"column"} >
-            {questionsVar().map(({ id }, index) => <CreateQuestionCard key={id} questionIndex={index} setQuestions={setQuestions} />)}
+            {questionsVar().map(({ id }, index) => <CreateQuestionCard key={id} questionIndex={index} handleDeleteQuestion={handleDeleteQuestion} />)}
         </Grid>
     );
 }

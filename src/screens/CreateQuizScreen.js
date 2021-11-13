@@ -77,6 +77,34 @@ export default function CreateQuizScreen() {
         await saveQuizAsDraft({ variables: { draft: draftObj } });
     }
 
+    const handleDeleteQuestion = async questionIndex => {
+        let questions = questionsVar();
+        questionsVar(questions.filter((_, i) => i !== questionIndex));
+        setNumQuestions(numQuestions - 1);
+        setUpdateNumQuestions(!updateNumQuestions);
+        setQuestions([...questionsVar()]);
+    }
+
+    const handleUpdateNumQuestions = async newNumQuestions => {
+        let questions = questionsVar();
+        if (newNumQuestions > questions.length) {
+            questionsVar([...questions, ...Array(newNumQuestions - questions.length).fill(null).map(() => {
+                return {
+                    id: uuidv4(),
+                    description: '',
+                    answerOptions: ['', ''],
+                    correctAnswerIndex: -1
+                }
+            })]);
+            setNumQuestions(newNumQuestions);
+            setQuestions([...questionsVar()]);
+        } else if (newNumQuestions < questions.length) {
+            questionsVar(questions.filter((_, i) => i < newNumQuestions));
+            setNumQuestions(newNumQuestions);
+            setQuestions([...questionsVar()]);
+        }
+    }
+
     return (
         <Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
             <Grid item>
@@ -84,8 +112,8 @@ export default function CreateQuizScreen() {
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                 <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
-                    <CreateQuizForms numQuestions={numQuestions} setNumQuestions={setNumQuestions} setQuestions={setQuestions} updateNumQuestions={updateNumQuestions} />
-                    <CreateQuestionCardList setQuestions={setQuestions} />
+                    <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions} handleUpdateNumQuestions={handleUpdateNumQuestions} />
+                    <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion} />
                     <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />} sx={{ alignSelf: "flex-start" }}
                         onClick={() => {
                             let questions = questionsVar();
