@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Grid, Stack} from "@mui/material";
-import {ComfirmationDialog, CommonTitle} from "../components";
+import {ConfirmationDialog, CommonTitle} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useMutation} from "@apollo/client";
 import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT} from "../controllers/graphql/quiz-mutations";
@@ -148,7 +148,7 @@ export default function CreateQuizScreen() {
                     </Grid>
                 </form>
             </Grid>
-            <ComfirmationDialog
+            <ConfirmationDialog
                 open={publishConfirmOpen}
                 handleClose={togglePublishConfirmOpen}
                 title='PUBLISH YOUR QUIZ'

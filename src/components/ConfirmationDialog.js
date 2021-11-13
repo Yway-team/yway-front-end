@@ -8,7 +8,7 @@ import {
     Box
 } from '@mui/material';
 
-export default function ComfirmationDialog({ open, handleClose, title, content, yesText, yesCallback, noText, noCallback }) {
+export default function ConfirmationDialog({ open, handleClose, title, content, yesText, yesCallback, noText, noCallback }) {
 
     return (
         <Dialog
