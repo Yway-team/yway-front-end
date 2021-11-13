@@ -19,6 +19,8 @@ import logoIcon from '../images/logoIcon.svg';
 import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
 import LinesEllipsis from 'react-lines-ellipsis';
+import { useMutation } from '@apollo/client';
+import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -49,6 +51,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
     var attempted = true;
     const [anchorEl, setAnchorEl] = useState(null);
     const openQuizEditMenu = Boolean(anchorEl);
+    const [deleteQuiz] = useMutation(DELETE_QUIZ);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -62,6 +65,10 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
     const handleQuizEditMenuClose = () => {
         setAnchorEl(null);
     };
+
+    const handleDeleteQuiz = async () => {
+        await deleteQuiz({ variables: { quizId: _id } });
+    }
 
     const menuTypography = (text) => <Typography
         sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
@@ -261,9 +268,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                                 {menuTypography('Edit Tags')}
                             </MenuItem>
 
-                            <MenuItem onClick={() => {
-
-                            }}>
+                            <MenuItem onClick={handleDeleteQuiz}>
                                 <ListItemIcon>
                                     <DeleteOutlined />
                                 </ListItemIcon>
