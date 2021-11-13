@@ -9,8 +9,9 @@ export default function ImageUpload({ label }) {
 
     const handleImageUpload = (e) => {
         // if (e.target.files.length > 0) {
-        setImageName(e.target.files[0].name)
+        setImageName(e.target.files[0].name);
         // }
+        setFile(e.target.files[0]);
     }
 
 

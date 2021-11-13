@@ -2,9 +2,10 @@ import { useReactiveVar } from "@apollo/client";
 import { Checkbox, Grid, FormLabel, FormControlLabel } from "@mui/material";
 import { quizDetailsVar, questionsVar } from "../screens/CreateQuizScreen";
 import { v4 as uuidv4 } from 'uuid';
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorPicker, ImageUpload, LabelTextField } from ".";
+import TagsInput from "./TagsInput";
 
 export default function CreateQuizForms({ numQuestions, updateNumQuestions, handleUpdateNumQuestions }) {
     const quizDetails = useReactiveVar(quizDetailsVar);
@@ -54,6 +55,10 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
                 }}
                 multiline={true}
                 variant={"outlined"} />
+        </Grid>
+        <Grid item>
+            <TagsInput>
+            </TagsInput>
         </Grid>
         <Grid item>
             <ImageUpload label={"Banner Image"} />
@@ -120,7 +125,6 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
             </FormControlLabel>
         </Grid>
         <Grid item>
-            {/*todo: get state from colorpicker*/}
             <ColorPicker label={"Color Style"} colorState={quizColor} onChangeComplete={color => handleSetColor(color)} />
         </Grid>
     </>);
