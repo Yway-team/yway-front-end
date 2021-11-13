@@ -15,9 +15,9 @@ import { FavoriteRounded } from '@mui/icons-material';
 import { useHistory } from 'react-router';
 import { useState } from 'react';
 import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../controllers/graphql/user-mutations';
-import { useMutation } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
 // import { useState } from 'react';
-// import { globalState } from '../state/UserState';
+import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
 // _id: ObjectId,
@@ -34,12 +34,17 @@ import { useMutation } from '@apollo/client';
 function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description }) {
     const [favorite, setFavorite] = useState(true);
     const history = useHistory();
+    const favoritesList = useReactiveVar(globalState).favorites;
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
     const handleClickOpen = () => {
         console.log("route to platform page");
         history.push('/testplatform');
     };
+
+    const checkFavorite = () => {
+        return favoritesList.includes(_id);
+    }
 
     const handleFavoritePlatform = async () => {
         await favoritePlatform({ variables: { platformId: _id } });
@@ -92,7 +97,7 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
                 <Button
                     variant='contained'
 
-                    onClick={favorite ? unfavoritePlatform : favoritePlatform}
+                    onClick={favorite ? handleUnfavoritePlatform : handleFavoritePlatform}
                     sx={{
                         width: 120,
                         position: 'absolute',
