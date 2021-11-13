@@ -45,13 +45,11 @@ function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, descript
 
     const handleFavoritePlatform = async () => {
         await favoritePlatform({ variables: { platformId: _id } });
-        console.log('handling click favortie');
         setFavorite(true);
     };
 
     const handleUnfavoritePlatform = async () => {
         await unfavoritePlatform({ variables: { platformId: _id } });
-        console.log('handling click unfavortie');
         setFavorite(false);
     }
 
