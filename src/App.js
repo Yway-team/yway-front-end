@@ -28,9 +28,10 @@ import NavigationControl from './components/NavigationControl/NavigationControl'
 import { globalState } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
 
+const link = process.env.REACT_APP_NODE_ENV == "development" ? 'http://localhost:4000/graphql' : "https://yway.app/graphql"
+
 const httpLink = createHttpLink({
-    // uri: 'http://3.129.119.115:4000/graphql'
-    uri: 'http://localhost:4000/graphql'
+    uri: link
 });
 
 const authLink = setContext(() => {
