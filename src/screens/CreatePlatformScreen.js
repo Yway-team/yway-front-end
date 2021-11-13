@@ -4,6 +4,7 @@ import {ColorPicker, CommonTitle, ImageUpload, LabelTextField} from "../componen
 import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
 import {useTheme} from "@mui/material/styles";
+import TagsInput from "../components/TagsInput";
 
 export default function CreatePlatformScreen() {
     const theme = useTheme();
@@ -58,6 +59,10 @@ export default function CreatePlatformScreen() {
                                         onChange={e => setPlatformDescription(e.target.value)} multiline={true}
                                         variant={"outlined"}/>
                     </Grid>
+                    <Grid item>
+                        <TagsInput>
+                        </TagsInput>
+                    </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
                             fontWeight: '700', fontSize: 16, color: 'common.black'
@@ -66,7 +71,8 @@ export default function CreatePlatformScreen() {
                         </FormLabel>
                     </Grid>
                     <Grid item>
-                        <ColorPicker label={"Background Color"} colorState={platformColor} onChangeComplete={(color)=>handleSetColor(color)}/>
+                        <ColorPicker label={"Background Color"} colorState={platformColor}
+                                     onChangeComplete={(color) => handleSetColor(color)}/>
                     </Grid>
                     <Grid item>
                         <ImageUpload label={"Banner Image"}/>
@@ -105,7 +111,7 @@ export default function CreatePlatformScreen() {
                                               onChange={e => setOnlyModSubmissions(e.target.value.checked)}/>}
                         />
                     </Grid>
-                    <Stack direction={"row"} spacing={2} >
+                    <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>
                         <Button variant={"contained"} type={"submit"}>CREATE</Button>
                         <Button variant={"outlined"} onClick={handleCancel}>CANCEL</Button>
                     </Stack>
