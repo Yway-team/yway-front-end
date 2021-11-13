@@ -32,19 +32,16 @@ import { globalState } from '../state/UserState';
 
 
 function PlatformCard({ _id, name, profileImage, favorites, numQuizzes, description }) {
-    const [favorite, setFavorite] = useState(true);
+
     const history = useHistory();
-    const favoritesList = useReactiveVar(globalState).favorites;
+    const favoritesList = (useReactiveVar(globalState)).favorites || [];
+    const [favorite, setFavorite] = useState(favoritesList.includes(_id));
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
     const handleClickOpen = () => {
         console.log("route to platform page");
         history.push('/testplatform');
     };
-
-    const checkFavorite = () => {
-        return favoritesList.includes(_id);
-    }
 
     const handleFavoritePlatform = async () => {
         await favoritePlatform({ variables: { platformId: _id } });
