@@ -10,6 +10,7 @@ import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
 
 export default function ProfileScreen() {
+
     const { userId } = useParams();
     const currentUser = useReactiveVar(globalState);
     const isOwn = (userId === currentUser._id) ? true : false;
