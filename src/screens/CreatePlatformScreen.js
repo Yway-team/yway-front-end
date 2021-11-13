@@ -105,7 +105,7 @@ export default function CreatePlatformScreen() {
                                               onChange={e => setOnlyModSubmissions(e.target.value.checked)}/>}
                         />
                     </Grid>
-                    <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40}}>
+                    <Stack direction={"row"} spacing={2} >
                         <Button variant={"contained"} type={"submit"}>CREATE</Button>
                         <Button variant={"outlined"} onClick={handleCancel}>CANCEL</Button>
                     </Stack>

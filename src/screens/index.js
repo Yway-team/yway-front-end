@@ -8,3 +8,4 @@ export { default as CreateQuizScreen } from './CreateQuizScreen';
 export { default as PlatformScreen } from './PlatformScreen';
 export { default as PlatformSettings } from './PlatformSettings';
 export { default as DraftsScreen } from './DraftsScreen';
+export {default as ProfileSettings} from './ProfileSettings'
