@@ -8,8 +8,13 @@ import {
     Box,
     Avatar,
     Dialog,
-    Button
+    Button,
+    IconButton,
+    Menu,
+    MenuItem,
+    ListItemIcon
 } from '@mui/material';
+import { MoreVertRounded, EditOutlined, DeleteOutlined, LocalOfferOutlined } from '@mui/icons-material';
 import logoIcon from '../images/logoIcon.svg';
 import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
@@ -41,6 +46,9 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
     const [open, setOpen] = useState(false);
     // const draft = _id ? false : true;
     draft = draft ? draft : false;
+    var attempted = true;
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openQuizEditMenu = Boolean(anchorEl);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -48,7 +56,17 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
         setOpen(false);
     };
 
-    var attempted = true;
+    const handleQuizEditMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleQuizEditMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const menuTypography = (text) => <Typography
+        sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
+
+
 
     return (
         <>
@@ -135,16 +153,17 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                             </Grid>
 
                         </Grid>
-                        <Box sx={{
+                        <Grid container justifyContent='space-between' alignItems='center' sx={{
                             overflow: "hidden", textOverflow: "ellipsis",
-                            // 'display': '-webkit-box',
-                            // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
                         }}>
                             <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
                                 {title}
                             </Typography>
+                            <IconButton sx={{ backgroundColor: openQuizEditMenu ? 'primary.main' : 'grey.50' }} onClick={handleQuizEditMenuClick}>
+                                <MoreVertRounded sx={{ fill: openQuizEditMenu ? 'white' : 'grey.500' }} />
+                            </IconButton>
 
-                        </Box>
+                        </Grid>
                         <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', my: 2 }}>
                             {description}
                         </Typography>
@@ -187,7 +206,70 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
 
 
                         </Grid>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={openQuizEditMenu}
+                            onClose={handleQuizEditMenuClose}
+                            onClick={handleQuizEditMenuClose}
+                            PaperProps={{
+                                elevation: 0,
+                                sx: {
+                                    overflow: "visible",
+                                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                                    '& .MuiMenuItem-root': {
+                                        px: 2,
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        ml: 1,
+                                        mr: 3,
+                                        my: 0.5,
+                                        fill: '#858585',
+                                        fontSize: 19,
+                                    },
+                                    "&:before": {
+                                        content: '""',
+                                        display: "block",
+                                        position: "absolute",
+                                        top: 0,
+                                        right: 14,
+                                        width: 10,
+                                        height: 10,
+                                        bgcolor: "background.paper",
+                                        transform: "translateY(-50%) rotate(45deg)",
+                                        zIndex: 0
+                                    }
+                                }
+                            }}
+                            transformOrigin={{ horizontal: "right", vertical: "top" }}
+                            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 
+                            <MenuItem onClick={() => {
+
+                            }}>
+                                <ListItemIcon>
+                                    <EditOutlined />
+                                </ListItemIcon>
+                                {menuTypography('Edit Quiz')}
+                            </MenuItem>
+
+                            <MenuItem onClick={() => {
+
+                            }}>
+                                <ListItemIcon>
+                                    <LocalOfferOutlined />
+                                </ListItemIcon>
+                                {menuTypography('Edit Tags')}
+                            </MenuItem>
+
+                            <MenuItem onClick={() => {
+
+                            }}>
+                                <ListItemIcon>
+                                    <DeleteOutlined />
+                                </ListItemIcon>
+                                {menuTypography('Delete Quiz')}
+                            </MenuItem>
+                        </Menu>
                     </CardContent>
 
 
