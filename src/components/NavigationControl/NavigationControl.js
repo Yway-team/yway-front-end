@@ -12,6 +12,7 @@ import {
     Grid,
     Paper,
     InputBase,
+    ListItemAvatar,
     Avatar
 } from '@mui/material';
 import {
@@ -39,6 +40,7 @@ import { LOGIN } from '../../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
 import { globalState } from '../../state/UserState';
 import { useReactiveVar } from "@apollo/client";
+import LinesEllipsis from 'react-lines-ellipsis';
 import ProfileMenu from './ProfileMenu';
 import NotificationsPopUp from './NotificationsPopUp';
 import logo from '../../images/logo.svg';
@@ -154,10 +156,20 @@ function NavigationControl(props) {
         var isActive = checkUrl(url);
         return (<ListItem key={index} button selected={isActive} onClick={() => handleNextRoute(url)}
             sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '7px', }}>
-            <Avatar alt='fav-platform-thumbnail' src={img} sx={{ width: 27, height: 27, mr: '8px' }} />
-            <ListItemText
+            <ListItemAvatar sx={{ minWidth: 40 }}>
+                <Avatar alt='fav-platform-thumbnail' src={img}
+                    sx={{ width: 27, height: 27 }}
+                />
+            </ListItemAvatar>
+            {/* <ListItemText
                 disableTypography={true} primary={tabName}>
-            </ListItemText>
+            </ListItemText> */}
+            <LinesEllipsis
+                text={tabName}
+                ellipsis='...'
+                trimRight
+                basedOn='letters'
+            />
         </ListItem>);
     };
 
