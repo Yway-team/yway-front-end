@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+import { gql } from '@apollo/client';
 
 export const GET_QUIZ_INFO = gql`
     query GetQuizInfo($quizId: ID!) {
