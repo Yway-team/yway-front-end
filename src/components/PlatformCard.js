@@ -35,7 +35,7 @@ import { globalState } from '../state/UserState';
 
 function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, description }) {
     const history = useHistory();
-    const favoritesList = (globalState()).favorites || [];
+    const favoritesList = useReactiveVar(globalState).favorites || [];
     const favorite = initFavorite(favoritesList);
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);

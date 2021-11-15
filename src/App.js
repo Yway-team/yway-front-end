@@ -25,7 +25,7 @@ import {
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl/NavigationControl'
-import { globalState } from "./state/UserState";
+import { globalState, globalLoggedIn } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
 
 const link = process.env.REACT_APP_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : "https://api.yway.app/graphql";
@@ -101,6 +101,7 @@ const theme = createTheme({
 
 
 export default function App() {
+    const loggedIn = useReactiveVar(globalLoggedIn);
     const user = useReactiveVar(globalState);
     const userId = user?._id;
     return (

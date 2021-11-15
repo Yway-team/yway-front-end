@@ -38,7 +38,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../../state/UserState';
+import { globalState, globalLoggedIn } from '../../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import LinesEllipsis from 'react-lines-ellipsis';
 import ProfileMenu from './ProfileMenu';
@@ -52,7 +52,7 @@ function NavigationControl(props) {
     // App Bar reacts to logged in state. 
     // Drawer reacts to routes and changes its active tab accordingly.
     // Main section is for displaying main pages. 
-
+    const loggedIn = useReactiveVar(globalLoggedIn);
     const user = useReactiveVar(globalState);
     const theme = useTheme();
     const drawerWidth = 240;
@@ -96,8 +96,8 @@ function NavigationControl(props) {
         const idToken = authResponse.id_token;
         const { data } = (await login({ variables: { idToken: idToken } }));
         if (data) {
+            globalLoggedIn(true);
             globalState({
-                loggedin: true,
                 ...data.login,
             });
         }
@@ -223,7 +223,7 @@ function NavigationControl(props) {
                             </Paper>
                         </Grid>
                         <Grid container item xs={3} justifyContent='flex-end' alignItems='center'>
-                            {user.loggedin ?
+                            {loggedIn ?
                                 <><NotificationsPopUp /> <ProfileMenu /></>
                                 : <GoogleLogin
                                     clientId={process.env.REACT_APP_CLIENT_ID}
@@ -252,7 +252,7 @@ function NavigationControl(props) {
                 </Toolbar>
             </AppBar>
             {
-                user.loggedin ?
+                loggedIn ?
                     <Grid container justifyContent='flex-end' sx={{ zIndex: theme.zIndex.drawer, position: 'fixed' }}>
                         <Grid item container direction='row' sx={{
                             backgroundColor: theme.palette.primary.main,
@@ -324,7 +324,7 @@ function NavigationControl(props) {
                         }
                     }}>
 
-                        {user.loggedin ?
+                        {loggedIn ?
                             <Fragment>
                                 {title('EXPLORE')}
                                 {exploreTabLists.map(

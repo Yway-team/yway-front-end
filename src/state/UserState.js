@@ -2,7 +2,10 @@ import { makeVar } from '@apollo/client';
 
 const emptyUserState =
 {
-    loggedin: false,
+    _id: "",
 };
 
+
 export const globalState = makeVar(emptyUserState);
+
+export const globalLoggedIn = makeVar(false);
