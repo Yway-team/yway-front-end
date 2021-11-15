@@ -23,33 +23,3 @@ export const CREATE_AND_PUBLISH_QUIZ = gql`
         }
     }
 `;
-
-export const SAVE_QUIZ_AS_DRAFT = gql`
-    mutation SaveQuizAsDraft($draft: DraftInput!) {
-        # returns _id of draft if successful, else null
-        saveQuizAsDraft(draft: $draft)
-    }
-    # input DraftInput {
-    #     _id: String
-    #     questions: [QuestionInput]
-    #     tags: [String]
-    #     title: String
-    #     shuffleQuestions: Boolean
-    #     shuffleAnswers: Boolean
-    #     timeToAnswer: Int
-    #     bannerImg: String
-    #     color: String
-    #     createdAt: String
-    #     description: String
-    #     platformName: String
-    #     thumbnailImg: String
-    # }
-`;
-
-export const DELETE_QUIZ = gql`
-        mutation DeleteQuiz($quizId: ID!) {
-            # Permanently deletes the quiz with the given quizId.
-            # Returns true if successful, false otherwise.
-            deleteQuiz(quizId: $quizId)
-        }
-`;

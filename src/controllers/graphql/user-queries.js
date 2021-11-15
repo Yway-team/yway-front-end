@@ -40,19 +40,3 @@ export const GET_USER_INFO = gql`
         }
     }
 `;
-
-export const GET_DRAFTS_INFO = gql`
-    query GetDraftsInfo {
-        getDraftsInfo {
-            _id
-            bannerImg
-            createdAt
-            description
-            numQuestions
-            tags
-            title
-            timeToAnswer
-            platformName
-        }
-    }
-`;

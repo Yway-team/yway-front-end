@@ -8,19 +8,11 @@ import {
     Box,
     Avatar,
     Dialog,
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-    ListItemIcon
+    Button
 } from '@mui/material';
-import { MoreVertRounded, EditOutlined, DeleteOutlined, LocalOfferOutlined } from '@mui/icons-material';
 import logoIcon from '../images/logoIcon.svg';
+
 import { useState } from 'react';
-import TimeAgoFromNow from './TimeAgoFromNow';
-import LinesEllipsis from 'react-lines-ellipsis';
-import { useMutation } from '@apollo/client';
-import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 // import { globalState } from '../state/UserState';
 // import { useHistory } from 'react-router-dom';
 
@@ -38,20 +30,14 @@ import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 //                             timestamp: Date,
 //                                 platform: String,
 //                                     name: String
-//                                          platformThumbnail
-//                                             draft: boolean
+//                                          platform Image
 // }
 
 
 
-function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, ownerUsername, ownerAvatar, rating, createdAt, platformId, platformName, platformThumbnail, draft }) {
+function QuizCard({ _id, name, thumbnail, description, numQuestions, creator, creatorImage, rating, timestamp, platform, platformImage }) {
     const [open, setOpen] = useState(false);
-    // const draft = _id ? false : true;
-    draft = draft ? draft : false;
-    var attempted = true;
-    const [anchorEl, setAnchorEl] = useState(null);
-    const openQuizEditMenu = Boolean(anchorEl);
-    const [deleteQuiz] = useMutation(DELETE_QUIZ);
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -59,27 +45,10 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
         setOpen(false);
     };
 
-    const handleQuizEditMenuClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleQuizEditMenuClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleDeleteQuiz = async () => {
-        await deleteQuiz({ variables: { quizId: _id } });
-    }
-
-    const menuTypography = (text) => <Typography
-        sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
-
-
-
     return (
         <>
-            <Card onClick={handleClickOpen} sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', m: 3, borderRadius: '10px 10px 10px 10px' }}>
+            <Card onClick={handleClickOpen} sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', height: 300, m: 2 }}>
                 <CardActionArea >
-
                     <CardMedia
                         component="img"
                         height={130}
@@ -88,31 +57,23 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                         sx={{ borderRadius: '10px 10px 0px 0px', zIndex: '-2' }} />
 
                     <CardContent sx={{ py: 2, px: 1 }}>
-                        <Grid container justifyContent='flex-end' sx={{ zIndex: 1, position: 'absolute', left: 0, top: 130 - 25 }}>
-                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 100, height: 25, backgroundColor: draft ? 'rgba(250, 250, 252, 0.75)' : 'primary.main', borderRadius: '10px 0px 0px 0px' }}>
+                        <Grid container justifyContent='flex-end' sx={{ zIndex: 1, position: 'absolute', left: 0, top: 130 - 30 }}>
+                            <Grid container alignItems='center' justifyContent='center' sx={{ width: 120, height: 30, backgroundColor: 'primary.main', borderRadius: '10px 0px 0px 0px' }}>
                                 <Typography sx=
-                                    {{ color: draft ? 'grey.700' : 'common.white', fontSize: 12, fontWeight: 500 }}>
+                                    {{ color: 'common.white' }}>
                                     {`${numQuestions} questions`}
                                 </Typography>
                             </Grid>
+
                         </Grid>
-                        {(draft || attempted) ?
-                            <Grid container justifyContent='flex-start' sx={{ zIndex: 1, position: 'absolute', left: -34, top: 14 }}>
-                                <Grid container alignItems='center' justifyContent='center' sx={{ width: 130, height: 25, backgroundColor: 'rgba(250, 250, 252, 0.75)', transform: "rotate(-36deg)" }}>
-                                    <Typography sx=
-                                        {{ color: 'grey.700', fontSize: 12, fontWeight: 600 }}>
-                                        {draft ? 'Draft' : 'Attempted'}
-                                    </Typography>
-                                </Grid>
-                            </Grid> : null}
-                        <Box sx={{ fontSize: 16, fontWeight: 600, color: 'common.black', fontFamily: "'Montserrat', sans-serif", height: 40 }}>
-                            <LinesEllipsis
-                                text={title}
-                                maxLine='2'
-                                ellipsis='...'
-                                trimRight
-                                basedOn='letters'
-                            />
+                        <Box className={'quizCardBox'} sx={{
+                            overflow: "hidden", textOverflow: "ellipsis", height: 52,
+                            // 'display': '-webkit-box',
+                            // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
+                        }}>
+                            <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
+                                {name}
+                            </Typography>
                         </Box>
                         <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1} >
                             <Grid item container xs={6} alignItems='center'>
@@ -120,19 +81,15 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> <TimeAgoFromNow dateIn={createdAt} /> </Typography>
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {timestamp} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
-                                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
-                                    <Typography noWrap sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {ownerUsername} </Typography>
-                                </Box>
+                                <Avatar alt="creator-avatar" src={creatorImage} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {creator} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
-                                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
-                                    <Typography noWrap sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
-                                </Box>
+                                <Avatar alt="creator-avatar" src={platformImage} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platform} </Typography>
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -140,7 +97,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
             </Card >
 
             <Dialog open={open} onClose={handleClose}
-                aria-labelledby="quiz-details-dialog" sx={{ backgroundColor: 'transparent' }}  >
+                aria-labelledby="quiz-details-dialog"  >
                 <Card sx={{ width: 600, elevation: 0, boxShadow: 'none' }}>
 
                     <CardMedia
@@ -160,17 +117,16 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                             </Grid>
 
                         </Grid>
-                        <Grid container justifyContent='space-between' alignItems='center' sx={{
+                        <Box className={'quizCardBox'} sx={{
                             overflow: "hidden", textOverflow: "ellipsis",
+                            // 'display': '-webkit-box',
+                            // '-webkit-line-clamp': 2, 'line-clamp': 2, '-webkit-box-orient': 'vertical'
                         }}>
                             <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
                                 {name}
                             </Typography>
-                            <IconButton sx={{ backgroundColor: openQuizEditMenu ? 'primary.main' : 'grey.50' }} onClick={handleQuizEditMenuClick}>
-                                <MoreVertRounded sx={{ fill: openQuizEditMenu ? 'white' : 'grey.500' }} />
-                            </IconButton>
 
-                        </Grid>
+                        </Box>
                         <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', my: 2 }}>
                             {description}
                         </Typography>
@@ -180,17 +136,15 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> <TimeAgoFromNow dateIn={createdAt} /></Typography>
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {timestamp} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={creatorImage} sx={{ height: 14, width: 14 }} />
                                 <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600' }}> {creator} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
-
-                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platformName} </Typography>
-
+                                <Avatar alt="creator-avatar" src={platformImage} sx={{ height: 14, width: 14 }} />
+                                <Typography sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}> {platform} </Typography>
                             </Grid>
 
                             <Button
@@ -213,68 +167,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
 
 
                         </Grid>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={openQuizEditMenu}
-                            onClose={handleQuizEditMenuClose}
-                            onClick={handleQuizEditMenuClose}
-                            PaperProps={{
-                                elevation: 0,
-                                sx: {
-                                    overflow: "visible",
-                                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                                    '& .MuiMenuItem-root': {
-                                        px: 2,
-                                    },
-                                    '& .MuiSvgIcon-root': {
-                                        ml: 1,
-                                        mr: 3,
-                                        my: 0.5,
-                                        fill: '#858585',
-                                        fontSize: 19,
-                                    },
-                                    "&:before": {
-                                        content: '""',
-                                        display: "block",
-                                        position: "absolute",
-                                        top: 0,
-                                        right: 14,
-                                        width: 10,
-                                        height: 10,
-                                        bgcolor: "background.paper",
-                                        transform: "translateY(-50%) rotate(45deg)",
-                                        zIndex: 0
-                                    }
-                                }
-                            }}
-                            transformOrigin={{ horizontal: "right", vertical: "top" }}
-                            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 
-                            <MenuItem onClick={() => {
-
-                            }}>
-                                <ListItemIcon>
-                                    <EditOutlined />
-                                </ListItemIcon>
-                                {menuTypography('Edit Quiz')}
-                            </MenuItem>
-
-                            <MenuItem onClick={() => {
-
-                            }}>
-                                <ListItemIcon>
-                                    <LocalOfferOutlined />
-                                </ListItemIcon>
-                                {menuTypography('Edit Tags')}
-                            </MenuItem>
-
-                            <MenuItem onClick={handleDeleteQuiz}>
-                                <ListItemIcon>
-                                    <DeleteOutlined />
-                                </ListItemIcon>
-                                {menuTypography('Delete Quiz')}
-                            </MenuItem>
-                        </Menu>
                     </CardContent>
 
 

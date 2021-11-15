@@ -40,8 +40,8 @@ export default function ProfilePrivacy(props) {
         </RadioGroup>
       </FormControl>
       <Stack direction="row" spacing={2}>
-        <Button variant="contained">CONFIRM</Button>
-        <Button variant="outlined" onClick={props.handleClose} >CANCEL</Button>
+        <Button variant="contained">Confirm</Button>
+        <Button variant="outlined" onClick={props.handleClose} >Cancel</Button>
       </Stack>
     </Stack>
   );

@@ -16,29 +16,27 @@ import {
     TopPlatformsScreen,
     TopQuizzesScreen,
     FavoritesScreen,
-    CreatePlatformScreen,
+    CreateScreen,
     ProfileScreen,
-    CreateQuizScreen,
-    DraftsScreen,
-    PlatformScreen,
-    PlatformSettings,
+    CreateQuizScreen
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavigationControl from './components/NavigationControl/NavigationControl'
+import NavigationControl from './components/NavigationControl'
 import { globalState } from "./state/UserState";
 import { setContext } from '@apollo/client/link/context';
 
-const link = process.env.REACT_APP_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : "https://api.yway.app/graphql";
+import PlatformScreen from "./screens/PlatformScreen";
+import PlatformSettings from "./screens/PlatformSettings";
 
 const httpLink = createHttpLink({
-    uri: "https://api.yway.app/graphql"
+    uri: 'http://3.129.119.115:4000/graphql'
 });
 
 const authLink = setContext(() => {
-    const { accessToken } = globalState();
+    const { _id } = globalState();
     return {
         headers: {
-            authorization: accessToken || ''
+            authorization: _id
         }
     };
 });
@@ -97,7 +95,8 @@ const theme = createTheme({
             }
         },
     },
-});
+}
+);
 
 
 export default function App() {
@@ -124,6 +123,9 @@ export default function App() {
                             <Route exact path="/quiz/create">
                                 <CreateQuizScreen />
                             </Route>
+                            <Route exact path="/create">
+                                <CreateScreen />
+                            </Route>
                             <Route exact path="/testplatform">
                                 <PlatformScreen />
                             </Route>
@@ -133,12 +135,12 @@ export default function App() {
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
                             {/*</Route>*/}
-                            <Route exact path="/platform/create">
-                                <CreatePlatformScreen />
-                            </Route>
-                            <Route exact path="/drafts">
-                                <DraftsScreen />
-                            </Route>
+                            {/*<Route exact path="/platform/create">*/}
+                            {/*    <CreatePlatformScreen />*/}
+                            {/*</Route>*/}
+                            {/*<Route exact path="/user/:userId/drafts">*/}
+                            {/*    <DraftsScreen />*/}
+                            {/*</Route>*/}
                             <Route exact path="/favorites">
                                 <FavoritesScreen />
                             </Route>
@@ -152,23 +154,23 @@ export default function App() {
                                     :
                                     <Redirect to="/highlights" />}
                             </Route>
-                            {/* <Route exact path="/user/:userId/overview">
-                                <ProfileScreen tab={0} />
+                            {/* <Route exact path="/user/overview">
+                                <ProfileScreen tab = {0} />
                             </Route>
-                            <Route exact path="/user/:userId/achievements">
-                                <ProfileScreen tab={1} />
+                            <Route exact path="/user/achievements">
+                                <ProfileScreen tab = {1} />
                             </Route>
-                            <Route exact path="/user/:userId/quizzes">
-                                <ProfileScreen tab={2} />
+                            <Route exact path="/user/quizzes">
+                                <ProfileScreen tab = {2} />
                             </Route>
-                            <Route exact path="/user/:userId/platforms">
+                            <Route exact path="/user/platforms">
                                 <ProfileScreen tab={3} />
                             </Route>
-                            <Route exact path="/user/:userId/history">
+                            <Route exact path="/user/history">
                                 <ProfileScreen tab={4} />
                             </Route>
-                            <Route exact path="/user/:userId/friends">
-                                <ProfileScreen tab={5} />
+                            <Route exact path="/user/friends">
+                                <ProfileScreen tab={4} />
                             </Route> */}
 
 
