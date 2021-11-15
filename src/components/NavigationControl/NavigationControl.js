@@ -97,9 +97,9 @@ function NavigationControl(props) {
         const { data } = (await login({ variables: { idToken: idToken } }));
         if (data) {
             globalLoggedIn(true);
-            globalState({
-                ...data.login,
-            });
+            globalState(
+                data.login
+            );
         }
     }
 

@@ -64,18 +64,21 @@ function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, descrip
     const handleFavoritePlatform = async () => {
         const { data } = await favoritePlatform({ variables: { platformId: _id } });
         if (data.favoritePlatform) {
-            var newState = { ...globalState };
+            var newState = { ...globalState() };
+            console.log(newState);
             newState.favorites = data.favoritePlatform;
             globalState(newState);
+            console.log(globalState());
         }
     };
 
     const handleUnfavoritePlatform = async () => {
         const { data } = await unfavoritePlatform({ variables: { platformId: _id } });
         if (data.unfavoritePlatform) {
-            var newState = { ...globalState };
+            var newState = { ...globalState() };
             newState.favorites = data.unfavoritePlatform;
             globalState(newState);
+            console.log(globalState());
         }
     }
 
