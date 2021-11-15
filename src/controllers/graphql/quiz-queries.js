@@ -22,6 +22,7 @@ export const GET_QUIZ_INFO = gql`
 export const GET_QUIZ_HIGHLIGHTS = gql`
     query GetQuizHighlights($howMany: Int!) {
         getQuizHighlights(howMany: $howMany) {
+            _id
             bannerImg
             createdAt
             description
