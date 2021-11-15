@@ -11,7 +11,8 @@ import {
     Button,
     Grid,
     Paper,
-    InputBase
+    InputBase,
+    Avatar
 } from '@mui/material';
 import {
     Menu,
@@ -34,16 +35,22 @@ import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { LOGIN } from '../controllers/graphql/user-mutations.js';
+import { LOGIN } from '../../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState } from '../state/UserState';
+import { globalState } from '../../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import ProfileMenu from './ProfileMenu';
 import NotificationsPopUp from './NotificationsPopUp';
-import logo from '../images/logo.svg';
+import logo from '../../images/logo.svg';
 
 
 function NavigationControl(props) {
+    // This component controls Top App Bar and Left Navigation Bar under one single state. 
+    // It also takes routes as props to maintain global state at all time.
+    // App Bar reacts to logged in state. 
+    // Drawer reacts to routes and changes its active tab accordingly.
+    // Main section is for displaying main pages. 
+
     const user = useReactiveVar(globalState);
     const theme = useTheme();
     const drawerWidth = 240;
@@ -62,15 +69,10 @@ function NavigationControl(props) {
     const createTabLists = [
         ['Create quiz', <PostAddOutlined sx={{ fontSize: 20 }} />, '/quiz/create'],
         ['Create platform', <GroupAddRounded sx={{ fontSize: 20 }} />, '/platform/create'],
-        ['Drafts', <Source sx={{ fontSize: 18 }} />, `/user/${user._id}/drafts`],
+        ['Drafts', <Source sx={{ fontSize: 18 }} />, `/drafts`],
         ['My platforms', <People sx={{ fontSize: 17 }} />, `/user/${user._id}/platforms`],
         ['My quizzes', <DynamicForm sx={{ fontSize: 16 }} />, `/user/${user._id}/quizzes`],
     ];
-
-
-    useEffect(() => {
-        console.log('mounted');
-    }, []);
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -125,13 +127,15 @@ function NavigationControl(props) {
         }),
     );
 
-    const title = (title) => <Typography sx={{
-        fontWeight: '700',
-        fontSize: 16,
-        color: theme.palette.primary.main,
-        my: 2,
-        marginLeft: '22px'
-    }}>{title}</Typography>;
+    const title = (title) =>
+        <Typography sx={{
+            fontWeight: '700',
+            fontSize: 16,
+            color: theme.palette.primary.main,
+            my: 2,
+            marginLeft: '22px'
+        }}>{title}
+        </Typography>;
 
     const tabTile = (tabName, icon, url, index) => {
         var isActive = checkUrl(url);
@@ -140,6 +144,17 @@ function NavigationControl(props) {
             <ListItemIcon sx={{ minWidth: 30 }}>
                 {icon}
             </ListItemIcon>
+            <ListItemText
+                disableTypography={true} primary={tabName}>
+            </ListItemText>
+        </ListItem>);
+    };
+    //favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index
+    const favTile = (tabName, img, url, index) => {
+        var isActive = checkUrl(url);
+        return (<ListItem key={index} button selected={isActive} onClick={() => handleNextRoute(url)}
+            sx={{ display: 'flex', alignItems: 'center', paddingLeft: '22px', py: '7px', }}>
+            <Avatar alt='fav-platform-thumbnail' src={img} sx={{ width: 27, height: 27, mr: '8px' }} />
             <ListItemText
                 disableTypography={true} primary={tabName}>
             </ListItemText>
@@ -242,16 +257,22 @@ function NavigationControl(props) {
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>{user.creatorPoints}</Typography>
-                                <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} /></Grid>
+                                }}>
+                                    {user.creatorPoints}
+                                </Typography>
+                                <TungstenRounded sx={{ fill: theme.palette.common.white, fontSize: 20, ml: 0.4 }} />
+                            </Grid>
 
                             <Grid container item xs={6} direction='row' alignItems='center' justifyContent='center'>
                                 <Typography sx={{
                                     fontWeight: '700',
                                     fontSize: 15,
                                     color: theme.palette.common.white
-                                }}>{user.playPoints}</Typography>
-                                <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} /></Grid>
+                                }}>
+                                    {user.playPoints}
+                                </Typography>
+                                <Bolt sx={{ fill: theme.palette.common.white, fontSize: 21, ml: 0.3 }} />
+                            </Grid>
 
                         </Grid>
                     </Grid> : <Fragment></Fragment>
@@ -302,6 +323,9 @@ function NavigationControl(props) {
                                     (data, index) => tabTile(...data, index)
                                 )}
                                 {title('FAVORITES')}
+                                {user.favorites ? user.favorites.map(
+                                    (favorite, index) => favTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
+                                ) : null}
                             </Fragment> :
                             <Fragment> {title('EXPLORE')}
                                 {exploreTabLists.slice(0, -1).map(

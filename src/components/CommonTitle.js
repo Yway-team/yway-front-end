@@ -7,8 +7,8 @@ function CommonTitle({ title }) {
                 fontWeight: '700',
                 fontSize: 16,
                 color: 'common.black',
-                my: 4,
-                ml: 2,
+                mt: 4,
+                mb: 2,
             }
             }> {title}</Typography >
         </Grid >

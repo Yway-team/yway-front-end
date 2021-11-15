@@ -16,7 +16,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import PersonIcon from "@mui/icons-material/Person";
 import { GoogleLogout } from 'react-google-login';
 import { useState } from 'react';
-import { globalState } from '../state/UserState';
+import { globalState } from '../../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import { useHistory } from 'react-router-dom';
 

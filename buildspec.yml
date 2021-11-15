@@ -7,20 +7,21 @@ phases:
    
     commands:
         # install npm
+        - env
         - yarn config set cache-folder /root/.yarn-cache
         - yarn install --frozen-lockfile
        
   build:
     commands:
         # run build script
-        - npm run build
+        - yarn build
      
 artifacts:
   files:
     - '**/*'
   base-directory: build
 
-cache:
-  paths:
-    - '/root/.yarn-cache/**/*'
-    - 'node_modules/**/*'
+# cache:
+#   paths:
+#     - '/root/.yarn-cache/**/*'
+#     - 'node_modules/**/*'
