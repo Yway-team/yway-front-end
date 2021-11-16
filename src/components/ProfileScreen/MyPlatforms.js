@@ -15,7 +15,7 @@ export default function MyPlatforms() {
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2 }}>
             {/* history section */}
             <Grid container justifyContent='flex-start' pl={3}>
-                <CommonTitle title='MY QUIZZES' />
+                <CommonTitle title='MY PLATFORMS' />
             </Grid>
             <Grid container justifyContent='flex-start' mb={1}>
                 {platforms ? platforms.map((data) => <PlatformCard key={data._id} {...data} />) : null}

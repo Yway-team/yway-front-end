@@ -3,11 +3,9 @@ import { CommonTitle, AchievementCard } from '..';
 export default function Achievements() {
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2, pl: 3 }}>
-            <CommonTitle title='Achievements' />
+            <CommonTitle title='ACHIEVEMENTS' />
             <Grid container justifyContent='flex-start' mb={1}>
-
                 {achievements.map((data) => <AchievementCard key={data._id}{...data} />)}
-
             </Grid>
         </Grid >
     );

@@ -18,14 +18,12 @@ export default function HighlightsScreen() {
         platforms = platformData.getPlatformHighlights;
     }
     return (
-        <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
+        <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', py: 2, pl: 10 }}>
             <CommonTitle title='NEW PLATFORMS' />
-            {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
                 {platforms ? platforms.map((data) => <Grid key={data._id} xs={6} sm={6} item ><PlatformCard {...data} /> </Grid>) : null}
             </Grid>
             <CommonTitle title='TOP QUIZZES' />
-            {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
                 {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} />) : null}
             </Grid>

@@ -32,6 +32,7 @@ import {
     SearchRounded
 } from '@mui/icons-material';
 import ListItem, { listItemClasses } from "@mui/material/ListItem";
+import { ShowMoreButton } from '../';
 import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
 import { Fragment, useState, useEffect } from 'react';
@@ -57,6 +58,7 @@ function NavigationControl(props) {
     const theme = useTheme();
     const drawerWidth = 240;
     const [open, setOpen] = useState(true);
+    const [showMoreOpen, setShowMoreOpen] = useState(false);
     const [login] = useMutation(LOGIN);
     const history = useHistory();
     const [currentURL, setcurrentURL] = useState(history.location.pathname);
@@ -335,9 +337,19 @@ function NavigationControl(props) {
                                     (data, index) => tabTile(...data, index)
                                 )}
                                 {title('FAVORITES')}
-                                {user.favorites ? user.favorites.map(
-                                    (favorite, index) => favTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
-                                ) : null}
+                                {user.favorites ?
+                                    showMoreOpen ?
+                                        user.favorites.map(
+                                            (favorite, index) => favTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
+                                        ) :
+                                        user.favorites.slice(0, 2).map(
+                                            (favorite, index) => favTile(favorite.title, favorite.thumbnailImg, `/platform/${favorite.title}`, index)
+                                        )
+                                    : null}
+                                {user.favorites && user.favorites.length > 2 ? <Box ml="22px">
+                                    <ShowMoreButton expand={showMoreOpen} onClick={() => { setShowMoreOpen(!showMoreOpen); }} />
+                                </Box> : null}
+
                             </Fragment> :
                             <Fragment> {title('EXPLORE')}
                                 {exploreTabLists.slice(0, -1).map(

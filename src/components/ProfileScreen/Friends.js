@@ -3,7 +3,7 @@ import { CommonTitle, FriendCard } from '..';
 export default function Friends() {
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2, pl: 3 }}>
-            <CommonTitle title='Achievements' />
+            <CommonTitle title='FRIENDS' />
             <Grid container justifyContent='flex-start' mb={1}>
 
                 {friends.map((data) => <FriendCard key={data._id}{...data} />)}
