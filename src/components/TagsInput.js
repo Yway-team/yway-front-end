@@ -16,7 +16,7 @@ function TagsInput({}) {
     }
 
     const handleDeleteTag = tagToDelete => () => {
-        setTags(tags => [tags.filter((tag) => tag !== tagToDelete)]);
+        setTags(tags => tags.filter((tag) => tag !== tagToDelete));
         console.log(tags)
     }
 
@@ -35,7 +35,7 @@ function TagsInput({}) {
             </Stack>
             <Grid container direction={'row'} spacing={2}>
                 <Grid item>
-                    {tags.map((data, index) => <Chip key={data} label={data} />)}
+                    {tags.map((data, index) => <Chip key={data} label={data} onDelete={handleDeleteTag(data)}/>)}
                 </Grid>
             </Grid>
         </Stack>
