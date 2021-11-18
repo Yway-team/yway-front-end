@@ -60,6 +60,7 @@ export const GET_DRAFTS_INFO = gql`
 export const GET_USER_QUIZZES_INFO = gql`
     query GetUserQuizzesInfo($userId: ID) {
         getUserQuizzesInfo(userId: $userId) {
+            _id
             bannerImg
             createdAt
             description
@@ -71,6 +72,19 @@ export const GET_USER_QUIZZES_INFO = gql`
             platformName
             platformThumbnail
             rating
+            title
+        }
+    }
+`;
+
+export const GET_USER_PLATFORMS_INFO = gql`
+    query GetUserPlatformsInfo($userId: ID) {
+        getUserPlatformsInfo(userId: $userId) {
+            _id
+            description
+            favorites
+            numQuizzes
+            thumbnailImg
             title
         }
     }

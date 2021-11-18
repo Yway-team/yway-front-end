@@ -1,14 +1,15 @@
 import { Grid } from '@mui/material';
 import { CommonTitle, PlatformCard } from '..';
 import { useQuery } from '@apollo/client';
+import { GET_USER_PLATFORMS_INFO } from '../../controllers/graphql/user-queries';
+import { useParams } from 'react-router';
 
-
-import { GET_PLATFORM_HIGHLIGHTS } from '../../controllers/graphql/platform-queries';
 export default function MyPlatforms() {
-    const { data: platformData } = useQuery(GET_PLATFORM_HIGHLIGHTS, { variables: { howMany: 10 } });
+    const { userId } = useParams();
+    const { data: platformData } = useQuery(GET_USER_PLATFORMS_INFO, { variables: { userId: userId } });
     let platforms = null;
     if (platformData) {
-        platforms = platformData.getPlatformHighlights;
+        platforms = platformData.getUserPlatformsInfo;
     }
 
     return (
@@ -24,6 +25,3 @@ export default function MyPlatforms() {
         </Grid >
     );
 }
-
-
-
