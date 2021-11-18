@@ -1,13 +1,13 @@
 import { Grid } from '@mui/material';
 import { CommonTitle, QuizCard } from '..';
 import { useQuery } from '@apollo/client';
-import { GET_QUIZ_HIGHLIGHTS } from '../../controllers/graphql/quiz-queries';
+import { GET_USER_QUIZZES_INFO } from '../../controllers/graphql/user-queries';
 export default function MyQuizzes() {
 
-    const { data: quizData } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
+    const { data: quizData } = useQuery(GET_USER_QUIZZES_INFO);
     let quizzes = null;
     if (quizData) {
-        quizzes = quizData.getQuizHighlights;
+        quizzes = quizData.getUserQuizzesInfo;
     }
 
 

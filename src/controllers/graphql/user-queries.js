@@ -56,3 +56,22 @@ export const GET_DRAFTS_INFO = gql`
         }
     }
 `;
+
+export const GET_USER_QUIZZES_INFO = gql`
+    query GetUserQuizzesInfo($userId: ID) {
+        getUserQuizzesInfo(userId: $userId) {
+            bannerImg
+            createdAt
+            description
+            numQuestions
+            ownerAvatar
+            ownerId
+            ownerUsername
+            platformId
+            platformName
+            platformThumbnail
+            rating
+            title
+        }
+    }
+`;
