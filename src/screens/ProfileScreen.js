@@ -148,16 +148,16 @@ export default function ProfileScreen() {
                                 <Achievements />
                             </Route>
                             <Route exact path={`/user/:userId/quizzes`}>
-                                <MyQuizzes />
+                                <MyQuizzes userId={userId} />
                             </Route>
                             <Route exact path={`/user/:userId/platforms`}>
-                                <MyPlatforms />
+                                <MyPlatforms userId={userId} />
                             </Route>
                             <Route exact path={`/user/:userId/history`}>
-                                <History />
+                                <History userId={userId} />
                             </Route>
                             <Route exact path={`/user/:userId/friends`}>
-                                <Friends />
+                                <Friends userId={userId} />
                             </Route>
                         </Switch>
                     </Box>

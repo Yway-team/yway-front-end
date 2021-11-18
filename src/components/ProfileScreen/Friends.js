@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { CommonTitle, FriendCard } from '..';
-export default function Friends() {
+export default function Friends({ userId }) {
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2, pl: 3 }}>
             <CommonTitle title='FRIENDS' />

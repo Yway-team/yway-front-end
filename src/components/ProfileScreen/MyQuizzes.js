@@ -2,18 +2,13 @@ import { Grid } from '@mui/material';
 import { CommonTitle, QuizCard } from '..';
 import { useQuery } from '@apollo/client';
 import { GET_USER_QUIZZES_INFO } from '../../controllers/graphql/user-queries';
-import { useParams } from 'react-router';
 
-export default function MyQuizzes() {
-    const { userId } = useParams();
+export default function MyQuizzes({ userId }) {
     const { data: quizData } = useQuery(GET_USER_QUIZZES_INFO, { variables: { userId: userId } });
     let quizzes = null;
     if (quizData) {
         quizzes = quizData.getUserQuizzesInfo;
     }
-
-
-
 
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2 }}>

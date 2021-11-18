@@ -2,10 +2,8 @@ import { Grid } from '@mui/material';
 import { CommonTitle, PlatformCard } from '..';
 import { useQuery } from '@apollo/client';
 import { GET_USER_PLATFORMS_INFO } from '../../controllers/graphql/user-queries';
-import { useParams } from 'react-router';
 
-export default function MyPlatforms() {
-    const { userId } = useParams();
+export default function MyPlatforms({ userId }) {
     const { data: platformData } = useQuery(GET_USER_PLATFORMS_INFO, { variables: { userId: userId } });
     let platforms = null;
     if (platformData) {

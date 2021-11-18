@@ -2,7 +2,7 @@
 import { Grid } from '@mui/material';
 import { CommonTitle, HistoryCard } from '..';
 
-export default function History() {
+export default function History({ userId }) {
 
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2, pl: 3 }}>
