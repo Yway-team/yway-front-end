@@ -39,7 +39,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
-import { globalState, globalLoggedIn } from '../../state/UserState';
+import { globalState, globalLoggedIn, loggedInChanged } from '../../state/UserState';
 import { useReactiveVar } from "@apollo/client";
 import LinesEllipsis from 'react-lines-ellipsis';
 import ProfileMenu from './ProfileMenu';
@@ -102,6 +102,7 @@ function NavigationControl(props) {
             globalState(
                 data.login
             );
+            loggedInChanged(true);
         }
     }
 
