@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
 import { CommonTitle, PlatformCard } from '..';
-import { useQuery } from '@apollo/client';
 import { GET_USER_PLATFORMS_INFO } from '../../controllers/graphql/user-queries';
+import usePrivilegedQuery from '../../hooks/usePrivilegedQuery';
 
 export default function MyPlatforms({ userId }) {
-    const { data: platformData } = useQuery(GET_USER_PLATFORMS_INFO, { variables: { userId: userId } });
+    const { data: platformData } = usePrivilegedQuery(GET_USER_PLATFORMS_INFO, { variables: { userId: userId } });
     let platforms = null;
     if (platformData) {
         platforms = platformData.getUserPlatformsInfo;
