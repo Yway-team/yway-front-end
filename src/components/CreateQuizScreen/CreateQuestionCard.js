@@ -14,7 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import { useTheme } from "@mui/material/styles";
-import { questionsVar } from "../screens/CreateQuizScreen";
+import { questionsVar } from "../../screens/CreateQuizScreen";
 import { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 

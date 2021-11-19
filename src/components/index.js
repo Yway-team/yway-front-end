@@ -5,7 +5,7 @@ export { default as HistoryCard } from './HistoryCard';
 export { default as FriendCard } from './FriendCard';
 export { default as CommonTitle } from './CommonTitle';
 export { default as LabelTextField } from './LabelTextField';
-export { default as CreateQuestionCard } from './CreateQuestionCard';
+export { default as CreateQuestionCard } from './CreateQuizScreen/CreateQuestionCard';
 
 
 export { default as Overview } from './ProfileScreen/Overview';

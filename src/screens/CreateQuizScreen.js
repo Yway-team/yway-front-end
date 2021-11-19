@@ -5,8 +5,8 @@ import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useMutation} from "@apollo/client";
 import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT} from "../controllers/graphql/quiz-mutations";
 import {v4 as uuidv4} from 'uuid';
-import CreateQuestionCardList from "../components/CreateQuestionCardList";
-import CreateQuizForms from "../components/CreateQuizForms";
+import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestionCardList";
+import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
 import { useHistory } from 'react-router-dom';
 import { globalState } from "../state/UserState";
 

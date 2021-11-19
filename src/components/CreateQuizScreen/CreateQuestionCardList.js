@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
-import { CreateQuestionCard } from ".";
-import { questionsVar } from "../screens/CreateQuizScreen";
+import { CreateQuestionCard } from "..";
+import { questionsVar } from "../../screens/CreateQuizScreen";
 import React from 'react';
 
 export default function CreateQuestionCardList({ handleDeleteQuestion }) {
