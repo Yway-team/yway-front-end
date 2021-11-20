@@ -2,7 +2,6 @@ import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Fad
 import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
-import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_QUESTION_INFO, GET_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
@@ -12,9 +11,7 @@ import { useParams } from 'react-router-dom';
 export default function TakeQuizScreen({ draft }) {
     const { quizId } = useParams();
     const { data: questionListData } = useQuery(GET_QUESTION_LIST, { variables: { quizId: quizId } });
-    const questionIndex = useState(0);
-    const [getQuestionInfo, { data: questionData, refetch: refetchQuestionInfo }] = useLazyQuery(GET_QUESTION_INFO);
-    const [getPlatformThumbnail, { data: platformData, refetch: refetchPlatformThumbnail }] = useLazyQuery(GET_PLATFORM_THUMBNAIL);
+    const [getPlatformThumbnail, { data: platformData, loading: loadingPlatformData, refetch: refetchPlatformThumbnail }] = useLazyQuery(GET_PLATFORM_THUMBNAIL);
     const { data: quizData } = useQuery(GET_QUIZ_INFO, { variables: { quizId: quizId } });
 
     let color = '#2f80ed';
@@ -30,22 +27,13 @@ export default function TakeQuizScreen({ draft }) {
     const [enter, setEnter] = useState(true);
 
 
-    var timeLimit = 10 * 1000;
+    var timeLimit = 30 * 1000;
     const [timeProgress, setTimeProgress] = useState(timeLimit);
     const [timerOnOff, setTimerOnOff] = useState(false);
 
     let questionList;
-    let questionId;
     if (questionListData) {
         questionList = questionListData.getQuestionList;
-        console.log('questionList:');
-        console.log(questionList);
-        questionId = questionList[questionIndex];
-        getQuestionInfo({ variables: { questionId: questionId } });
-    }
-    let question;
-    if (questionData) {
-        question = questionData.getQuestionInfo;
     }
     let quiz;
     if (quizData) {
@@ -55,7 +43,9 @@ export default function TakeQuizScreen({ draft }) {
         ownerUsername = quiz.ownerUsername;
         ownerAvatar = quiz.ownerAvatar;
         platformName = quiz.platformName;
-        getPlatformThumbnail({ variables: { title: platformName } });
+        if (!platformData && !loadingPlatformData) {
+            getPlatformThumbnail({ variables: { title: platformName } });
+        }
     }
     if (platformData) {
         platformThumbnail = platformData.getPlatformThumbnail;
@@ -209,7 +199,7 @@ export default function TakeQuizScreen({ draft }) {
                     setEnter={setEnter}
                     index={index}
                     color={color}
-                    question={questionList[index]}
+                    questionId={questionList[index]}
                     handleNextQuestion={() => handleNextQuestion()}
                     handleAnswer={handleAnswer}
                     timerOn={handleTimerOn}
@@ -231,8 +221,14 @@ export default function TakeQuizScreen({ draft }) {
 }
 
 
-function Question({ index, color, question, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer }) {
+function Question({ index, color, questionId, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer }) {
     const [clicked, setClicked] = useState(-1);
+    const { data: questionData } = useQuery(GET_QUESTION_INFO, { variables: { questionId: questionId } });
+
+    let question;
+    if (questionData) {
+        question = questionData.getQuestionInfo;
+    }
 
     useEffect(() => {
         timerOn();
@@ -260,7 +256,7 @@ function Question({ index, color, question, handleNextQuestion, timerOn, timerOf
 
 
     function Option({ option, index }) {
-        var correct = index === question.correctAnswerIndex;
+        var correct = option === question.correctAnswer;
         var feedbackColor = correct ? '#219653' : '#eb5757';
         var showFeedback = index === clicked;
 
@@ -315,7 +311,7 @@ function Question({ index, color, question, handleNextQuestion, timerOn, timerOf
                 <Stack sx={{ width: '100%', mr: 10 }} >
                     <Stack alignItems='center' direction='row'>
                         <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26, fontWeight: 600 }}> {index + 1}</Avatar>
-                        <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question.description}</Typography>
+                        <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question?.description || null}</Typography>
                     </Stack>
                     <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start' columnGap={1}>
                         {question ? question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />) : null}
