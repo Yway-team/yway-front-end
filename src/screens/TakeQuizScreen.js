@@ -109,18 +109,27 @@ export default function TakeQuizScreen({ draft }) {
 
 
     function handleNextQuestion() {
-        if (index < questionList.length) {
-            var newIndex = index + 1;
-            setIndex(newIndex);
-        }
-        else {
+        var newIndex = index + 1;
+        setIndex(newIndex);
+        if (!index < questionList.length - 1) {
             console.log('all indexes are now done');
             handleTimerOff();
             setTimeProgress(0);
+            setEnter(false);
         }
-
-
     };
+    function handleTimeOut() {
+        var newIndex = index + 1;
+        setIndex(newIndex);
+        handleTimerOff();
+
+        if (!index < questionList.length - 1) {
+            console.log('all indexes are now done');
+            handleTimerOff();
+            setTimeProgress(0);
+            setEnter(false);
+        }
+    }
 
     const handleAnswer = (correct) => {
         if (correct) {
@@ -129,17 +138,6 @@ export default function TakeQuizScreen({ draft }) {
         }
     }
 
-    function handleTimeOut() {
-        handleTimerOff();
-        if (index < questionList.length) {
-            var newIndex = index + 1;
-            setIndex(newIndex);
-        }
-        else {
-            console.log('all indexes are now done');
-            setTimeProgress(0);
-        }
-    }
 
     function handleTimerOn() {
         console.log('timer is on');
@@ -193,7 +191,7 @@ export default function TakeQuizScreen({ draft }) {
                     </Stack>
                 </Grid>
             </Stack>
-            {questionList ?
+            {questionList && index < questionList.length ?
                 <Question
                     enter={enter}
                     setEnter={setEnter}
@@ -204,7 +202,8 @@ export default function TakeQuizScreen({ draft }) {
                     handleAnswer={handleAnswer}
                     timerOn={handleTimerOn}
                     timerOff={handleTimerOff}
-                /> : null}
+                /> : <Typography variant='h5'> The quiz is done</Typography>}
+
             <Stack sx={{
                 width: '100%',
                 color: { color }
@@ -249,6 +248,7 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
 
 
     const handleClick = (index, correct) => {
+        console.log('clicked');
         setClicked(index);
         handleAnswer(correct);
     }

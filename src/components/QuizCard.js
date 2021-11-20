@@ -22,7 +22,7 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import { useMutation } from '@apollo/client';
 import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 // import { globalState } from '../state/UserState';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 // quizCard - All necessary information for a summarized display of the platform.
@@ -49,6 +49,7 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
     // const draft = _id ? false : true;
     draft = draft ? draft : false;
     var attempted = true;
+    const history = useHistory();
     const [anchorEl, setAnchorEl] = useState(null);
     const openQuizEditMenu = Boolean(anchorEl);
     const [deleteQuiz] = useMutation(DELETE_QUIZ);
@@ -195,6 +196,10 @@ function QuizCard({ _id, title, bannerImg, description, numQuestions, ownerId, o
 
                             <Button
                                 variant='contained'
+                                onClick={() => {
+                                    history.push('/quiz/take/' + _id);
+                                }
+                                }
                                 sx={{
                                     alignSelf: 'end',
                                     background: 'primary.main',
