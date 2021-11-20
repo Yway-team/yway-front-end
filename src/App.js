@@ -133,7 +133,7 @@ export default function App() {
                             <Route exact path="/platform/:platformName">
                                 <PlatformScreen />
                             </Route>
-                            <Route path="/platformSettings/:platformID">
+                            <Route path="/platformSettings/:platformName">
                                 <PlatformSettings />
                             </Route>
                             {/*<Route exact path="/quiz/create/:draftId">*/}
