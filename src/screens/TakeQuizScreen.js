@@ -2,26 +2,54 @@ import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Fad
 import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
-import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-export default function TakeQuizScreen() {
+import { useQuery, useLazyQuery } from '@apollo/client';
+import { GET_QUESTION_INFO, GET_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
+import { GET_PLATFORM_THUMBNAIL } from '../controllers/graphql/platform-queries'
+import { useParams } from 'react-router-dom';
+
+export default function TakeQuizScreen({ draft }) {
     const { quizId } = useParams();
-    var color = '#2f80ed';
-    var platformThumbnail = '';
-    var platformName = 'Platform101';
-    var title = 'This is like pretty long title with everything you would need to figure it out? ';
-    var ownerUsername = 'IamTheOwner124';
-    var ownerAvatar = '';
-    var user = globalState();
+    const { data: questionListData } = useQuery(GET_QUESTION_LIST, { variables: { quizId: quizId } });
+    const [getPlatformThumbnail, { data: platformData, loading: loadingPlatformData, refetch: refetchPlatformThumbnail }] = useLazyQuery(GET_PLATFORM_THUMBNAIL);
+    const { data: quizData } = useQuery(GET_QUIZ_INFO, { variables: { quizId: quizId } });
+
+    let color = '#2f80ed';
+    let platformName = 'No platform';
+    let platformThumbnail = '';
+    let title = 'Untitled';
+    let ownerUsername = '';
+    let ownerAvatar = '';
+    const user = globalState();
     var initPlayPoint = user.playPoints || 0;
     const [playPoints, setPlayPoints] = useState(initPlayPoint);
     const [index, setIndex] = useState(0);
     const [enter, setEnter] = useState(true);
 
 
-    var timeLimit = 10 * 1000;
+    var timeLimit = 30 * 1000;
     const [timeProgress, setTimeProgress] = useState(timeLimit);
     const [timerOnOff, setTimerOnOff] = useState(false);
+
+    let questionList;
+    if (questionListData) {
+        questionList = questionListData.getQuestionList;
+    }
+    let quiz;
+    if (quizData) {
+        quiz = quizData.getQuizInfo;
+        color = quiz.color;
+        title = quiz.title;
+        ownerUsername = quiz.ownerUsername;
+        ownerAvatar = quiz.ownerAvatar;
+        platformName = quiz.platformName;
+        if (!platformData && !loadingPlatformData) {
+            getPlatformThumbnail({ variables: { title: platformName } });
+        }
+    }
+    if (platformData) {
+        platformThumbnail = platformData.getPlatformThumbnail;
+    }
 
     useEffect(() => {
         var timer;
@@ -44,7 +72,7 @@ export default function TakeQuizScreen() {
         };
     }, [timerOnOff, timeLimit]);
 
-
+    /*
     var questionList = [
         {
             _id: '012243',
@@ -77,6 +105,7 @@ export default function TakeQuizScreen() {
             platform: '01244'
         }
     ];
+    */
 
 
     function handleNextQuestion() {
@@ -130,7 +159,7 @@ export default function TakeQuizScreen() {
         <Stack direction="column" justifyContent='space-between' alignItems='center' height={window.innerHeight - 64} >
             <Stack direction='row' justifyContent='space-between' sx={{ width: '100%' }}>
                 <Stack pl={7} pt={3} direction='row'>
-                    <Avatar src={platformThumbnail} alt='paltform-avatar' sx={{
+                    <Avatar src={platformThumbnail} alt='platform avatar' sx={{
                         width: '30pt',
                         height: '30pt'
                     }} />
@@ -140,7 +169,7 @@ export default function TakeQuizScreen() {
                             <Typography variant='h5' sx={{ color: 'grey.600', ml: 1, fontSize: 16 }}> {title}  </Typography>
                         </Stack>
                         <Stack direction='row' >
-                            <Avatar src={ownerAvatar} alt='paltform-avatar' sx={{
+                            <Avatar src={ownerAvatar} alt='platform avatar' sx={{
                                 width: 20,
                                 height: 20,
                                 mr: 1
@@ -164,13 +193,13 @@ export default function TakeQuizScreen() {
                     </Stack>
                 </Grid>
             </Stack>
-            {index < questionList.length ?
+            {questionList ?
                 <Question
                     enter={enter}
                     setEnter={setEnter}
                     index={index}
                     color={color}
-                    question={questionList[index]}
+                    questionId={questionList[index]}
                     handleNextQuestion={() => handleNextQuestion()}
                     handleAnswer={handleAnswer}
                     timerOn={handleTimerOn}
@@ -192,8 +221,14 @@ export default function TakeQuizScreen() {
 }
 
 
-function Question({ index, color, question, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer }) {
+function Question({ index, color, questionId, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer }) {
     const [clicked, setClicked] = useState(-1);
+    const { data: questionData } = useQuery(GET_QUESTION_INFO, { variables: { questionId: questionId } });
+
+    let question;
+    if (questionData) {
+        question = questionData.getQuestionInfo;
+    }
 
     useEffect(() => {
         timerOn();
@@ -221,7 +256,7 @@ function Question({ index, color, question, handleNextQuestion, timerOn, timerOf
 
 
     function Option({ option, index }) {
-        var correct = index === question.correctAnswerIndex;
+        var correct = option === question.correctAnswer;
         var feedbackColor = correct ? '#219653' : '#eb5757';
         var showFeedback = index === clicked;
 
@@ -276,10 +311,10 @@ function Question({ index, color, question, handleNextQuestion, timerOn, timerOf
                 <Stack sx={{ width: '100%', mr: 10 }} >
                     <Stack alignItems='center' direction='row'>
                         <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26, fontWeight: 600 }}> {index + 1}</Avatar>
-                        <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question.description}</Typography>
+                        <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question?.description || null}</Typography>
                     </Stack>
                     <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start' columnGap={1}>
-                        {question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />)}
+                        {question ? question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />) : null}
                     </Grid>
                 </Stack >
             </Slide>

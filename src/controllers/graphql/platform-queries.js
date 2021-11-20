@@ -42,30 +42,17 @@ export const GET_PLATFORM_SUMMARY = gql`
     }
 `;
 
-export const GET_PLATFORM_BY_ID = gql`
-    query GetPlatformById($id: String!) {
-        getPlatformById(_id: $id) {
+export const GET_PLATFORM_THUMBNAIL = gql`
+    query GetPlatformThumbnail($title: String!) {
+        getPlatformThumbnail(title: $title)
+    }
+`;
+
+export const GET_PLATFORM_SETTINGS = gql`
+    query GetPlatformSettings($platformId: ID!) {
+        getPlatformSettings(platformId: $platformId) {
             title
             bannerImg
-            description
-            favorites
-            numQuizzes
-            numQuestions
-            quizzesInfo {
-                _id
-                bannerImg
-                createdAt
-                description
-                numQuestions
-                ownerAvatar
-                ownerId
-                ownerUsername
-                platformId
-                platformName
-                platformThumbnail
-                rating
-                title
-            }
             thumbnailImg
         }
     }

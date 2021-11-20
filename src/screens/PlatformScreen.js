@@ -4,7 +4,7 @@ import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
 import { useParams, useHistory } from 'react-router-dom';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
-import { GET_PLATFORM_SUMMARY, GET_PLATFORM_BY_ID } from '../controllers/graphql/platform-queries';
+import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 /*const quizzes = [
