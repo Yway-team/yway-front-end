@@ -3,6 +3,11 @@ import { Grid, Stack, Avatar, Box } from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
 
+import { useParams } from 'react-router-dom';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { GET_USER_INFO } from '../controllers/graphql/user-queries';
+import { globalState } from "../state/UserState";
+
 const quizzes = [
     {
         id: 1,
@@ -85,15 +90,21 @@ const quizzes = [
 ];
 
 export default function PlatformScreen() {
+    const {platformId} = useParams()
+    const currentUser = useReactiveVar(globalState);
+
+    
+
     return (
         <>
             <Grid container spacing={0}>
                 <Grid item xs={12}>
                     <Box style={{ height: "300px", position: "relative", display: "flex", alignItems: "flex-end" }}>
                         <Box style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute", top: "0px", zIndex: "-1" }}>
-                            <img style={{ width: "100%" }} alt='cover' src="https://picsum.photos/1000" />
+                            <img style={{ width: "100%" }} alt='cover' src="https://cse416-content.s3.us-east-2.amazonaws.com/118-1000x500.jpg" />
+                            <div style={{position:"absolute", top: "0", left: "0", width: "100%", height:"100%", backgroundColor:"#cfcfcf50"}}></div>
                         </Box>
-                        <Avatar alt="avatar" src="https://i.pravatar.cc/300"
+                        <Avatar alt="avatar" src="https://i.picsum.photos/id/547/400/400.jpg?hmac=XHYLl2DzvVBGB_o4uGfgh_3RVOGd5ZMCq-OMn9m8IHE"
                             sx={{
                                 height: 250,
                                 width: 250,
@@ -104,13 +115,13 @@ export default function PlatformScreen() {
                                 bottom: "-30%"
                             }}
                             imgProps={{ style: { borderRadius: '50%' } }} />
-                        <h2 style={{ color: "black", fontSize: "50px" }}>All About Mountaineering</h2>
+                        <h2 style={{ color: "white", fontSize: "50px", marginLeft: "30px" }}>All About Mountaineering</h2>
 
                         <Box sx={{ display: "flex", alignItems: 'flex-end', position: "absolute", left: "0px", bottom: "0px", width: "100%" }}>
                         </Box>
                     </Box>
                     <Box style={{ backgroundColor: "#ededed" }}>
-                        <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
+                        <Stack sx={{ padding: "2rem", marginLeft: "35%", color:"#474747", fontSize:"15px" }} direction="row" spacing={5}>
                             <Box style={{ whiteSpace: "nowrap" }}>1.35 Million Followers</Box>
                             <Box style={{ whiteSpace: "nowrap" }}>234 Quizzes</Box>
                             <Box style={{ whiteSpace: "nowrap" }}>2349 Questions</Box>
