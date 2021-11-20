@@ -5,7 +5,7 @@ import { GET_QUIZ_HIGHLIGHTS } from '../controllers/graphql/quiz-queries';
 
 
 export default function TopQuizzesScreen() {
-    const { data: quizData } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
+    const { data: quizData } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 20 } });
     let quizzes = null;
     if (quizData) {
         quizzes = quizData.getQuizHighlights;
