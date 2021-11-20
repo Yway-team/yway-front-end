@@ -17,6 +17,7 @@ export const GET_PLATFORM_SUMMARY = gql`
     query GetPlatformSummary($title: String!) {
         getPlatformSummary(title: $title) {
             _id
+            bannerImg
             description
             favorites
             numQuizzes
@@ -36,6 +37,7 @@ export const GET_PLATFORM_SUMMARY = gql`
                 rating
                 title
             }
+            thumbnailImg
         }
     }
 `;
