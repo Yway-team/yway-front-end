@@ -15,6 +15,33 @@ export default function TakeQuizScreen() {
     const [index, setIndex] = useState(0);
 
 
+    var timeLimit = 30 * 1000;
+    const [timeProgress, setTimeProgress] = useState(timeLimit);
+    const [timerOnOff, setTimerOnOff] = useState(false);
+
+    useEffect(() => {
+        var timer;
+        if (timerOnOff) {
+            timer = setInterval(() => {
+                setTimeProgress((oldProgress) => {
+                    if (oldProgress <= 0) {
+                        setTimeProgress(0);
+                        setTimerOnOff(false);
+                        return timeLimit;
+                    }
+                    return oldProgress - 250;
+                }
+
+                );
+
+            }, 250);
+        }
+        return () => {
+            clearInterval(timer);
+        };
+    }, [timerOnOff, timeLimit]);
+
+
     var questionList = [
         {
             _id: '012243',
@@ -61,17 +88,28 @@ export default function TakeQuizScreen() {
 
     };
 
+    function handleTimerOn() {
+        console.log('timer is on');
+        setTimeProgress(timeLimit);
+        setTimerOnOff(true);
+    };
+
+    function handleTimerOff() {
+        setTimerOnOff(false);
+    }
+
+
 
 
     return (
         <Stack direction="column" justifyContent='space-between' alignItems='center' height={window.innerHeight - 64} >
-            <Stack container direction='row' justifyContent='space-between' sx={{ width: '100%' }}>
-                <Stack container pl={7} pt={3} direction='row'>
+            <Stack direction='row' justifyContent='space-between' sx={{ width: '100%' }}>
+                <Stack pl={7} pt={3} direction='row'>
                     <Avatar src={platformThumbnail} alt='paltform-avatar' sx={{
                         width: '30pt',
                         height: '30pt'
                     }} />
-                    <Stack container justifyContent='flex-start' ml={2} >
+                    <Stack justifyContent='flex-start' ml={2} >
                         <Stack direction='row' sx={{ height: '30pt', justifyContent: 'center', alignItems: 'flex-start', mt: '5pt', }}>
                             <Typography variant='h5' sx={{ color: { color }, flexGrow: 1, fontSize: 16 }}> {(platformName + ':')}  </Typography>
                             <Typography variant='h5' sx={{ color: 'grey.600', ml: 1, fontSize: 16 }}> {title}  </Typography>
@@ -86,7 +124,7 @@ export default function TakeQuizScreen() {
                         </Stack>
                     </Stack>
                 </Stack>
-                <Grid container xs={3} direction='column' sx={{ color: { color }, position: 'relative', width: 350, height: 150, overflow: 'hidden' }}>
+                <Grid container item xs={3} direction='column' sx={{ color: { color }, position: 'relative', width: 350, height: 150, overflow: 'hidden' }}>
                     <Stack justifyContent='center' sx={{ zIndex: 2, width: 200, position: 'absolute', right: -50, top: 10, pt: 0.5 }}>
                         <Typography sx={{ color: 'common.white', fontSize: 18, fontWeight: 600 }}> Play Points </Typography>
                         <Stack direction='row' alignItems='center ' sx={{ mt: 1, ml: 2 }} >
@@ -101,18 +139,20 @@ export default function TakeQuizScreen() {
                     </Stack>
                 </Grid>
             </Stack>
-            {index < questionList.length ? <Question
-                index={index}
-                color={color}
-                question={questionList[index]}
-                handleAnswer={() => handleAnswer()}
-                key={questionList[index]._id}
-            /> : null}
+            {index < questionList.length ?
+                <Question
+                    index={index}
+                    color={color}
+                    question={questionList[index]}
+                    handleAnswer={() => handleAnswer()}
+                    timerOn={handleTimerOn}
+                    timerOff={handleTimerOff}
+                /> : null}
             <Stack sx={{
                 width: '100%',
                 color: { color }
             }}>
-                <LinearProgress variant="determinate" value={20} color='inherit' sx={{
+                <LinearProgress variant="determinate" value={Math.round((timeProgress / timeLimit) * 100)} color='inherit' sx={{
                     height: 12,
                     [`& .MuiLinearProgress-bar`]: {
                         borderRadius: 2,
@@ -124,8 +164,13 @@ export default function TakeQuizScreen() {
 }
 
 
-function Question({ index, color, question, handleAnswer }) {
+function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
     const [exit, setExit] = useState(true);
+
+    useEffect(() => {
+        timerOn();
+    }, [index]
+    );
 
     function Option({ option, index }) {
         var feedbackColor = index === question.correctAnswerIndex ? '#219653' : '#EB5757';
@@ -133,9 +178,11 @@ function Question({ index, color, question, handleAnswer }) {
         useEffect(() => {
             if (clicked) {
                 setTimeout(() => {
+
                     setExit(false);
                     handleAnswer();
-                }, 2000);
+
+                }, 700);
 
             }
         }, [clicked]);
@@ -144,16 +191,17 @@ function Question({ index, color, question, handleAnswer }) {
             <Grid item xs={5} mr={2} >
                 <ButtonBase
                     onClick={() => {
+                        timerOff();
                         setClicked(true);
-                    }
-                    }
+                    }}
+                    disableRipple
                     sx={{
                         minWidth: '70%',
                         minHeight: 50,
                         backgroundColor: clicked ? feedbackColor : 'grey.400',
                         borderRadius: '5pt',
                         "&:hover": {
-                            backgroundColor: color,
+                            backgroundColor: clicked ? feedbackColor : color,
                         }
                     }}>
                     <Stack direction='row'
@@ -190,15 +238,13 @@ function Question({ index, color, question, handleAnswer }) {
                     onExited={() => {
                         setExit(true);
                     }}>
-
-
                     <Stack sx={{ width: '100%', mr: 10 }} >
                         <Stack alignItems='center' direction='row'>
                             <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26 }}> {index + 1}</Avatar>
                             <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question.description}</Typography>
                         </Stack>
                         <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start' columnGap={1}>
-                            {question.answerOptions.map((option, index) => <Option option={option} index={index} />)}
+                            {question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />)}
                         </Grid>
                     </Stack >
                 </Slide>
