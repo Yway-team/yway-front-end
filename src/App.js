@@ -126,7 +126,7 @@ export default function App() {
                             <Route exact path="/quiz/create">
                                 <CreateQuizScreen />
                             </Route>
-                            <Route exact path="/testplatform">
+                            <Route exact path="/platform/:platformName">
                                 <PlatformScreen />
                             </Route>
                             <Route exact path="/testplatformsettings">
