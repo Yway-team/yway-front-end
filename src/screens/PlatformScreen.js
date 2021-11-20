@@ -120,12 +120,11 @@ export default function PlatformScreen() {
                 <Grid item container xs={9} spacing={0}>
                     {quizzes ?
                     quizzes.map((data) =>
-
                         <QuizCard key={data.id} {...data} />) :
                         <h2>No Quizzes to Display</h2>
                     }
                 </Grid>
-                <Grid item xs={3} sx={{marginTop: "2rem"}}>
+                <Grid item xs={3} sx={{marginTop: "2rem", backgroundColor:"blue"}}>
                     <MiniLeaderboard width="350px" />
                 </Grid>
             </Grid>
