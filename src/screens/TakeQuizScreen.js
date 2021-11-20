@@ -11,7 +11,8 @@ export default function TakeQuizScreen() {
     var ownerUsername = 'IamTheOwner124';
     var ownerAvatar = '';
     var user = globalState();
-    var playPoints = user.playPoints;
+    var initPlayPoint = user.playPoints || 0;
+    const [playPoints, setPlayPoints] = useState(initPlayPoint);
     const [index, setIndex] = useState(0);
 
 
@@ -25,16 +26,16 @@ export default function TakeQuizScreen() {
             timer = setInterval(() => {
                 setTimeProgress((oldProgress) => {
                     if (oldProgress <= 0) {
+                        console.log('Time is up');
                         setTimeProgress(0);
-                        setTimerOnOff(false);
+
+                        handleTimerOff();
                         return timeLimit;
                     }
-                    return oldProgress - 250;
+                    return oldProgress - 1000;
                 }
-
                 );
-
-            }, 250);
+            }, 1000);
         }
         return () => {
             clearInterval(timer);
@@ -55,9 +56,9 @@ export default function TakeQuizScreen() {
         },
         {
             _id: '012243',
-            answerOptions: ['Option1', 'Option2', 'Option3', 'Option4'],
+            answerOptions: ['Q2  Option1', 'Q2  Option2', 'Q2  Option3', 'Q2  Option4'],
             correctAnswerIndex: 2,
-            description: 'Option 3 is correct. Please choose option 2. This is a real question.',
+            description: 'Q2 Option 3 is correct. Please choose option 2. This is a real question.',
             quiz: '01232',
             attemptTotal: 0,
             correctAttempts: 0,
@@ -65,7 +66,7 @@ export default function TakeQuizScreen() {
         },
         {
             _id: '012243',
-            answerOptions: ['Option1', 'Option2', 'Option3', 'Option4'],
+            answerOptions: ['Q3  Option1', 'Q3  Option2', 'Q3 Option3', 'Q3 Option4'],
             correctAnswerIndex: 2,
             description: 'Option 3 is correct. Please choose option 2. This is a real question.',
             quiz: '01232',
@@ -76,17 +77,30 @@ export default function TakeQuizScreen() {
     ];
 
 
-
-
-
-
     function handleAnswer() {
         if (index < questionList.length) {
             var newIndex = index + 1;
             setIndex(newIndex);
         }
+        else {
+            console.log('all indexes are now done');
+            handleTimerOff();
+            setTimeProgress(0);
+        }
 
     };
+
+    function handleTimeOut() {
+        if (index < questionList.length) {
+            var newIndex = index + 1;
+            setIndex(newIndex);
+        }
+        else {
+            console.log('all indexes are now done');
+            handleTimerOff();
+            setTimeProgress(0);
+        }
+    }
 
     function handleTimerOn() {
         console.log('timer is on');
@@ -95,6 +109,7 @@ export default function TakeQuizScreen() {
     };
 
     function handleTimerOff() {
+        console.log('timer is now off');
         setTimerOnOff(false);
     }
 
@@ -166,42 +181,49 @@ export default function TakeQuizScreen() {
 
 function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
     const [exit, setExit] = useState(true);
+    const [clicked, setClicked] = useState(-1);
 
     useEffect(() => {
         timerOn();
-    }, [index]
-    );
+        setClicked(-1);
+        return (() => {
+            timerOff();
+        });
+    }, [index]);
+
+
+
+    useEffect(() => {
+        if (clicked >= 0) {
+            console.log('clicked use effect');
+            setExit(false);
+        };
+    }, [clicked]);
+
+
+    const handleClick = (index, correct) => {
+        setClicked(index);
+    }
+
+
 
     function Option({ option, index }) {
-        var feedbackColor = index === question.correctAnswerIndex ? '#219653' : '#EB5757';
-        const [clicked, setClicked] = useState(false);
-        useEffect(() => {
-            if (clicked) {
-                setTimeout(() => {
-
-                    setExit(false);
-                    handleAnswer();
-
-                }, 700);
-
-            }
-        }, [clicked]);
+        var correct = index === question.correctAnswerIndex;
+        var feedbackColor = correct ? '#219653' : '#eb5757';
+        var showFeedback = index === clicked;
 
         return (
             <Grid item xs={5} mr={2} >
                 <ButtonBase
-                    onClick={() => {
-                        timerOff();
-                        setClicked(true);
-                    }}
+                    onClick={() => { handleClick(index) }}
                     disableRipple
                     sx={{
                         minWidth: '70%',
                         minHeight: 50,
-                        backgroundColor: clicked ? feedbackColor : 'grey.400',
+                        backgroundColor: showFeedback ? feedbackColor : 'grey.400',
                         borderRadius: '5pt',
                         "&:hover": {
-                            backgroundColor: clicked ? feedbackColor : color,
+                            backgroundColor: showFeedback ? feedbackColor : color,
                         }
                     }}>
                     <Stack direction='row'
@@ -213,7 +235,7 @@ function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
                             height: '100%',
                             minHeight: 50,
                             width: '95%',
-                            backgroundColor: clicked ? '#ffffffd5' : 'grey.200',
+                            backgroundColor: showFeedback ? '#ffffffd5' : 'grey.200',
                             ml: '5%',
                             borderRadius: '0pt 5pt 5pt 0pt',
                             "&:hover": {
@@ -231,28 +253,25 @@ function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
     }
 
     return (
-        <Fade in={exit} timeout={{ exit: 500, appear: 800, }}  >
-            <Stack>
-                <Slide in={exit} direction='right' appear={false} timeout={{ exit: 800 }}
-                    unmountOnExit
-                    onExited={() => {
-                        setExit(true);
-                    }}>
-                    <Stack sx={{ width: '100%', mr: 10 }} >
-                        <Stack alignItems='center' direction='row'>
-                            <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26 }}> {index + 1}</Avatar>
-                            <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question.description}</Typography>
-                        </Stack>
-                        <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start' columnGap={1}>
-                            {question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />)}
-                        </Grid>
-                    </Stack >
-                </Slide>
-            </Stack>
-        </Fade>
-
-
-
+        // <Fade in={exit} timeout={{ exit: 500, appear: 800, }}  >
+        <Stack>
+            <Slide in={exit} direction='right' appear={false} timeout={{ exit: 700 }}
+                onExited={() => {
+                    setExit(true);
+                    handleAnswer();
+                }}>
+                <Stack sx={{ width: '100%', mr: 10 }} >
+                    <Stack alignItems='center' direction='row'>
+                        <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26, fontWeight: 600 }}> {index + 1}</Avatar>
+                        <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question.description}</Typography>
+                    </Stack>
+                    <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start' columnGap={1}>
+                        {question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />)}
+                    </Grid>
+                </Stack >
+            </Slide>
+        </Stack>
+        // </Fade>
     );
 }
 
