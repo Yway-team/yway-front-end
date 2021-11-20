@@ -59,3 +59,9 @@ export const GET_PLATFORM_SETTINGS = gql`
         }
     }
 `;
+
+export const GET_PLATFORM_THUMBNAIL = gql`
+    query GetPlatformThumbnail($title: String!) {
+        getPlatformThumbnail(title: $title)
+    }
+`;

@@ -38,3 +38,20 @@ export const GET_QUIZ_HIGHLIGHTS = gql`
         }
     }
 `;
+
+export const GET_QUESTION_LIST = gql`
+    query GetQuestionList($quizId: ID!) {
+        getQuestionList(quizId: $quizId)
+    }
+`;
+
+export const GET_QUESTION_INFO = gql`
+    query GetQuestionInfo($questionId: ID!) {
+        getQuestionInfo(questionId: $questionId) {
+            _id
+            answerOptions
+            correctAnswer
+            description
+        }
+    }
+`;
