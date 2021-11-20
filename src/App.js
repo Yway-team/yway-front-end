@@ -32,8 +32,8 @@ import { setContext } from '@apollo/client/link/context';
 const link = process.env.REACT_APP_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : "https://api.yway.app/graphql";
 
 const httpLink = createHttpLink({
-    // uri: 'https://api.yway.app/graphql'
-    uri: 'http://localhost:4000/graphql'
+    uri: 'https://api.yway.app/graphql'
+    // uri: 'http://localhost:4000/graphql'
 });
 
 const authLink = setContext(() => {
@@ -130,6 +130,9 @@ export default function App() {
                             <Route exact path="/quiz/take/:quizId">
                                 <TakeQuizScreen />
                             </Route>
+                            <Route exact path="/platform/create">
+                                <CreatePlatformScreen />
+                            </Route>
                             <Route exact path="/platform/:platformName">
                                 <PlatformScreen />
                             </Route>
@@ -139,9 +142,6 @@ export default function App() {
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
                             {/*</Route>*/}
-                            <Route exact path="/platform/create">
-                                <CreatePlatformScreen />
-                            </Route>
                             <Route exact path="/drafts">
                                 <DraftsScreen />
                             </Route>
