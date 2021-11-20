@@ -19,6 +19,7 @@ import {
     CreatePlatformScreen,
     ProfileScreen,
     CreateQuizScreen,
+    TakeQuizScreen,
     DraftsScreen,
     PlatformScreen,
     PlatformSettings,
@@ -124,6 +125,9 @@ export default function App() {
                             </Route>
                             <Route exact path="/quiz/create">
                                 <CreateQuizScreen />
+                            </Route>
+                            <Route exact path="/quiz/take/:quizId">
+                                <TakeQuizScreen />
                             </Route>
                             <Route exact path="/testplatform">
                                 <PlatformScreen />

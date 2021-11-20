@@ -255,7 +255,7 @@ function NavigationControl(props) {
                 </Toolbar>
             </AppBar>
             {
-                loggedIn ?
+                loggedIn && !currentURL.includes('take') ?
                     <Grid container justifyContent='flex-end' sx={{ zIndex: theme.zIndex.drawer, position: 'fixed' }}>
                         <Grid item container direction='row' sx={{
                             backgroundColor: theme.palette.primary.main,
