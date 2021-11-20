@@ -35,7 +35,7 @@ import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 //                 creator: String,
 //                     creatorImage: Binary data,
 //                         rating: Double,
-//                             timestamp: Date,
+//                             createdAt: Date,
 //                                 platform: String,
 //                                     name: String
 //                                          platformThumbnail

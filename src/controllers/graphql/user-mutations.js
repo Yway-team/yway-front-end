@@ -15,7 +15,7 @@ export const LOGIN = gql`
             notifications {
               description
               type
-              timestamp
+              createdAt
             }
             playPoints
             username

@@ -12,7 +12,7 @@ import TimeAgoFromNow from './TimeAgoFromNow';
 // import { useHistory } from 'react-router-dom';
 
 
-function HistoryCard({ _id, type, first, link, second, image, timestamp }) {
+function HistoryCard({ _id, type, first, link, second, image, createdAt }) {
     var description;
     if (type === 'quiz') {
         description = <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'common.black', }}>{first} <Link> {link} </Link> {second} </Typography>;
@@ -37,7 +37,7 @@ function HistoryCard({ _id, type, first, link, second, image, timestamp }) {
                                 {description}
                             </Grid>
                             <Grid xs={2} item>
-                                <Typography sx={{ fontSize: 12, fontWeight: 600, color: 'primary.main', textAlign: 'right', mt: 2 }}> <TimeAgoFromNow dateIn={timestamp} /> </Typography>
+                                <Typography sx={{ fontSize: 12, fontWeight: 600, color: 'primary.main', textAlign: 'right', mt: 2 }}> <TimeAgoFromNow dateIn={createdAt} /> </Typography>
                             </Grid>
                         </Grid>
                     </Grid>
