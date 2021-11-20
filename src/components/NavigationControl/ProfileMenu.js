@@ -112,31 +112,37 @@ function ProfileMenu() {
                     </ListItemIcon>
                     {menuTypography('My profile')}
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => {
+                    history.push(`/user/${user._id}/platforms`);
+                }}>
                     <ListItemIcon>
                         <GroupsIcon />
                     </ListItemIcon>
                     {menuTypography('My platforms')}
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => {
+                    history.push(`/user/${user._id}/quizzes`);}}>
                     <ListItemIcon>
                         <DynamicFormIcon />
                     </ListItemIcon>
                     {menuTypography('My quizzes')}
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => {
+                    history.push(`/user/${user._id}/friends`);}}>
                     <ListItemIcon>
                         <PersonAdd />
                     </ListItemIcon>
                     {menuTypography('Friends')}
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => {
+                    history.push(`/user/${user._id}/achievements`);}}>
                     <ListItemIcon>
                         <EmojiEventsIcon />
                     </ListItemIcon>
                     {menuTypography('Achievements')}
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={() => {
+                    history.push(`/user/${user._id}/history`);}}>
                     <ListItemIcon>
                         <HistoryIcon />
                     </ListItemIcon> {menuTypography('History')}

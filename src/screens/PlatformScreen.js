@@ -93,7 +93,6 @@ export default function PlatformScreen() {
     let platformSummary;
     if (platformData) {
         platformSummary = platformData.getPlatformSummary;
-        console.log(platformSummary.quizzesInfo);
     }
     return (
         <>
@@ -114,7 +113,7 @@ export default function PlatformScreen() {
                                 bottom: "-30%"
                             }}
                             imgProps={{ style: { borderRadius: '50%' } }} />
-                        <h2 style={{ color: "black", fontSize: "50px" }}>{platformName}</h2>
+                        <h2 style={{ color: "white", fontSize: "50px", marginLeft: "30px" }}>{platformName}</h2>
 
                         <Box sx={{ display: "flex", alignItems: 'flex-end', position: "absolute", left: "0px", bottom: "0px", width: "100%" }}>
                         </Box>
