@@ -1,10 +1,11 @@
 import React from 'react'
-import { Grid, Stack, Avatar, Box } from '@mui/material'
+import { Grid, Stack, Avatar, Box, Button } from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
-import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
+import { GET_PLATFORM_SUMMARY, GET_PLATFORM_BY_ID } from '../controllers/graphql/platform-queries';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 /*const quizzes = [
     {
@@ -89,19 +90,35 @@ import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 
 export default function PlatformScreen() {
     const { platformName } = useParams();
-    const { data: platformData } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+    const history = useHistory();
+
+    const { data: platformData, error } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+
+    // const { data: moreData } = usePrivilegedQuery(GET_PLATFORM_BY_ID, { variables: { id: "618c41ee4d94eb6ad380f8f1" } });
+    // if (moreData){
+    //     console.log(moreData)
+    // }
+    
     let platformSummary;
     if (platformData) {
         platformSummary = platformData.getPlatformSummary;
     }
+
+    const gotoPlatformSettings = () => {
+        history.push(`/platformSettings/${platformName}`)
+    }
+
     return (
         <>
             <Grid container spacing={0}>
                 <Grid item xs={12}>
                     <Box style={{ height: "300px", position: "relative", display: "flex", alignItems: "flex-end" }}>
                         <Box style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute", top: "0px", zIndex: "-1" }}>
-                            <img style={{ width: "100%" }} alt='cover' src={platformSummary ? platformSummary.bannerImg : null} />
+                            <img style={{ width: "100%", zIndex: "-1" }} alt='cover' src={platformSummary ? platformSummary.bannerImg : null} />
                         </Box>
+                        <Button sx={{position:"absolute", right:"10px", bottom:"10px"}} onClick={gotoPlatformSettings} >
+                            <SettingsIcon sx={{color:"white"}}/>
+                        </Button>
                         <Avatar alt="avatar" src={platformSummary ? platformSummary.thumbnailImg : null}
                             sx={{
                                 height: 250,
@@ -131,8 +148,10 @@ export default function PlatformScreen() {
                     (platformSummary.quizzesInfo.length ?
                     platformSummary.quizzesInfo.map((data) =>
                         <QuizCard key={data.id} {...data} />) :
-                        <h2>No Quizzes to Display</h2>)
-                    }
+                        <Box sx={{marginTop:"50px", marginLeft: "50px"}}>
+                            <h2>No Quizzes to Display</h2>
+                        </Box>
+                    )}
                 </Grid>
                 <Grid item xs={3} sx={{marginTop: "2rem"}}>
                     <MiniLeaderboard width="350px" />
