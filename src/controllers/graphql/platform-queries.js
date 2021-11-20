@@ -12,3 +12,32 @@ export const GET_PLATFORM_HIGHLIGHTS = gql`
         }
     }
 `;
+
+export const GET_PLATFORM_SUMMARY = gql`
+    query GetPlatformSummary($title: String!) {
+        getPlatformSummary(title: $title) {
+            _id
+            bannerImg
+            description
+            favorites
+            numQuizzes
+            numQuestions
+            quizzesInfo {
+                _id
+                bannerImg
+                createdAt
+                description
+                numQuestions
+                ownerAvatar
+                ownerId
+                ownerUsername
+                platformId
+                platformName
+                platformThumbnail
+                rating
+                title
+            }
+            thumbnailImg
+        }
+    }
+`;

@@ -27,7 +27,7 @@ const history = [
         link: 'some link',
         second: ' and scored this much. ',
         type: 'quiz',
-        timestamp: Date.now()
+        createdAt: Date.now()
     },
     {
         _id: 2,
@@ -36,7 +36,7 @@ const history = [
         link: 'some link',
         second: ' and scored this much. ',
         type: 'quiz',
-        timestamp: Date.now()
+        createdAt: Date.now()
     },
     {
         _id: 3,
@@ -45,7 +45,7 @@ const history = [
         link: 'some link',
         second: ' and scored this much. ',
         type: 'quiz',
-        timestamp: Date.now()
+        createdAt: Date.now()
     },
     {
         _id: 4,
@@ -54,7 +54,7 @@ const history = [
         link: 'some link',
         second: ' and scored this much. ',
         type: 'quiz',
-        timestamp: Date.now()
+        createdAt: Date.now()
     }
 ];
 

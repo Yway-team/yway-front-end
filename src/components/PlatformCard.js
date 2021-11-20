@@ -57,7 +57,7 @@ function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, descrip
         return false;
     }
     const handleClickOpen = () => {
-        history.push('/testplatform');
+        history.push(`/platform/${title}`);
     };
 
 

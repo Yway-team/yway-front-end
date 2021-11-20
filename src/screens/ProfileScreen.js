@@ -118,8 +118,8 @@ export default function ProfileScreen() {
                         >
                             <Tab label="Overview" {...a11yProps(0)} />
                             <Tab label="Achievements" {...a11yProps(1)} />
-                            <Tab label="My Quizzes"{...a11yProps(2)} />
-                            <Tab label="My Platforms" {...a11yProps(3)} />
+                            <Tab label={`${isOwn ? 'My ' : ''}Quizzes`}{...a11yProps(2)} />
+                            <Tab label={`${isOwn ? 'My ' : ''}Platforms`} {...a11yProps(3)} />
                             <Tab label="History"{...a11yProps(4)} />
                             <Tab label="Friends" {...a11yProps(5)} />
 
@@ -148,10 +148,10 @@ export default function ProfileScreen() {
                                 <Achievements />
                             </Route>
                             <Route exact path={`/user/:userId/quizzes`}>
-                                <MyQuizzes userId={userId} />
+                                <MyQuizzes userId={userId} isOwn={isOwn} username={userInfo?.username} />
                             </Route>
                             <Route exact path={`/user/:userId/platforms`}>
-                                <MyPlatforms userId={userId} />
+                                <MyPlatforms userId={userId} isOwn={isOwn} username={userInfo?.username} />
                             </Route>
                             <Route exact path={`/user/:userId/history`}>
                                 <History userId={userId} />

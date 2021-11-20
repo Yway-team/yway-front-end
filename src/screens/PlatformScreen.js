@@ -2,8 +2,11 @@ import React from 'react'
 import { Grid, Stack, Avatar, Box } from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
+import { useParams } from 'react-router-dom';
+import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
+import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 
-const quizzes = [
+/*const quizzes = [
     {
         id: 1,
         title: 'How much do you know your chinese cuisine',
@@ -82,18 +85,25 @@ const quizzes = [
         platformThumbnail: "https://i.pravatar.cc/300",
         platformName: 'Mcdonal123',
     },
-];
+];*/
 
 export default function PlatformScreen() {
+    const { platformName } = useParams();
+    const { data: platformData } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+    let platformSummary;
+    if (platformData) {
+        platformSummary = platformData.getPlatformSummary;
+        console.log(platformSummary.quizzesInfo);
+    }
     return (
         <>
             <Grid container spacing={0}>
                 <Grid item xs={12}>
                     <Box style={{ height: "300px", position: "relative", display: "flex", alignItems: "flex-end" }}>
                         <Box style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute", top: "0px", zIndex: "-1" }}>
-                            <img style={{ width: "100%" }} alt='cover' src="https://picsum.photos/1000" />
+                            <img style={{ width: "100%" }} alt='cover' src={platformSummary ? platformSummary.bannerImg : null} />
                         </Box>
-                        <Avatar alt="avatar" src="https://i.pravatar.cc/300"
+                        <Avatar alt="avatar" src={platformSummary ? platformSummary.thumbnailImg : null}
                             sx={{
                                 height: 250,
                                 width: 250,
@@ -104,25 +114,25 @@ export default function PlatformScreen() {
                                 bottom: "-30%"
                             }}
                             imgProps={{ style: { borderRadius: '50%' } }} />
-                        <h2 style={{ color: "black", fontSize: "50px" }}>All About Mountaineering</h2>
+                        <h2 style={{ color: "black", fontSize: "50px" }}>{platformName}</h2>
 
                         <Box sx={{ display: "flex", alignItems: 'flex-end', position: "absolute", left: "0px", bottom: "0px", width: "100%" }}>
                         </Box>
                     </Box>
                     <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
-                            <Box style={{ whiteSpace: "nowrap" }}>1.35 Million Followers</Box>
-                            <Box style={{ whiteSpace: "nowrap" }}>234 Quizzes</Box>
-                            <Box style={{ whiteSpace: "nowrap" }}>2349 Questions</Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>{`${platformSummary ? platformSummary.favorites : '?'} Favorites`}</Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>{`${platformSummary ? platformSummary.numQuizzes : '?'} Quizzes`}</Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>{`${platformSummary ? platformSummary.numQuestions : '?'} Questions`}</Box>
                         </Stack>
                     </Box>
                 </Grid>
                 <Grid item container xs={9} spacing={0}>
-                    {quizzes ?
-                    quizzes.map((data) =>
-
+                    {platformSummary &&
+                    (platformSummary.quizzesInfo.length ?
+                    platformSummary.quizzesInfo.map((data) =>
                         <QuizCard key={data.id} {...data} />) :
-                        <h2>No Quizzes to Display</h2>
+                        <h2>No Quizzes to Display</h2>)
                     }
                 </Grid>
                 <Grid item xs={3} sx={{marginTop: "2rem"}}>

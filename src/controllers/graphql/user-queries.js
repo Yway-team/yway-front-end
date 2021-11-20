@@ -29,12 +29,12 @@ export const GET_USER_INFO = gql`
                 creatorPointValue
                 description
                 playPointValue
-                timestamp
+                createdAt
                 type
             }
             history {
                 description
-                timestamp
+                createdAt
                 type
             }
         }
