@@ -49,8 +49,8 @@ export const GET_PLATFORM_THUMBNAIL = gql`
 `;
 
 export const GET_PLATFORM_SETTINGS = gql`
-    query GetPlatformSettings($platformId: ID!) {
-        getPlatformSettings(platformId: $platformId) {
+    query GetPlatformSettings($title: String!) {
+        getPlatformSettings(title: $platformId) {
             title
             bannerImg
             thumbnailImg

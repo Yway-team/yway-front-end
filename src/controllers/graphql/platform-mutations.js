@@ -15,3 +15,13 @@ export const CREATE_PLATFORM = gql`
         createPlatform(platform: $platform)
     }
 `;
+
+export const UPDATE_PLATFORM_SETTINGS = gql`
+    mutation UpdatePlatformSettings($platformSettings: PlatformSettingsInput!) {
+        updatePlatformSettings(platformSettings: $platformSettings) {
+            title
+            bannerImg
+            thumbnailImg
+        }
+    }
+`;
