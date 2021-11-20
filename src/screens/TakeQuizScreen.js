@@ -31,7 +31,6 @@ export default function TakeQuizScreen() {
                     if (oldProgress <= 0) {
                         console.log('Time is up');
                         handleTimeOut();
-                        setTimerOnOff(false);
                         setEnter(false);
                         return timeLimit;
                     }
@@ -102,13 +101,13 @@ export default function TakeQuizScreen() {
     }
 
     function handleTimeOut() {
+        handleTimerOff();
         if (index < questionList.length) {
             var newIndex = index + 1;
             setIndex(newIndex);
         }
         else {
             console.log('all indexes are now done');
-            handleTimerOff();
             setTimeProgress(0);
         }
     }
