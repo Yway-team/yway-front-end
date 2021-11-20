@@ -2,6 +2,7 @@ import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Fad
 import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
+import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_QUESTION_INFO, GET_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
@@ -26,9 +27,10 @@ export default function TakeQuizScreen({ draft }) {
     var initPlayPoint = user.playPoints || 0;
     const [playPoints, setPlayPoints] = useState(initPlayPoint);
     const [index, setIndex] = useState(0);
+    const [enter, setEnter] = useState(true);
 
 
-    var timeLimit = 30 * 1000;
+    var timeLimit = 10 * 1000;
     const [timeProgress, setTimeProgress] = useState(timeLimit);
     const [timerOnOff, setTimerOnOff] = useState(false);
 
@@ -66,9 +68,8 @@ export default function TakeQuizScreen({ draft }) {
                 setTimeProgress((oldProgress) => {
                     if (oldProgress <= 0) {
                         console.log('Time is up');
-                        setTimeProgress(0);
-
-                        handleTimerOff();
+                        handleTimeOut();
+                        setEnter(false);
                         return timeLimit;
                     }
                     return oldProgress - 1000;
@@ -117,7 +118,7 @@ export default function TakeQuizScreen({ draft }) {
     */
 
 
-    function handleAnswer() {
+    function handleNextQuestion() {
         if (index < questionList.length) {
             var newIndex = index + 1;
             setIndex(newIndex);
@@ -128,16 +129,24 @@ export default function TakeQuizScreen({ draft }) {
             setTimeProgress(0);
         }
 
+
     };
 
+    const handleAnswer = (correct) => {
+        if (correct) {
+            console.log('handling answer');
+            setPlayPoints(playPoints + 10);
+        }
+    }
+
     function handleTimeOut() {
+        handleTimerOff();
         if (index < questionList.length) {
             var newIndex = index + 1;
             setIndex(newIndex);
         }
         else {
             console.log('all indexes are now done');
-            handleTimerOff();
             setTimeProgress(0);
         }
     }
@@ -196,10 +205,13 @@ export default function TakeQuizScreen({ draft }) {
             </Stack>
             {questionList ?
                 <Question
+                    enter={enter}
+                    setEnter={setEnter}
                     index={index}
                     color={color}
                     question={questionList[index]}
-                    handleAnswer={() => handleAnswer()}
+                    handleNextQuestion={() => handleNextQuestion()}
+                    handleAnswer={handleAnswer}
                     timerOn={handleTimerOn}
                     timerOff={handleTimerOff}
                 /> : null}
@@ -219,8 +231,7 @@ export default function TakeQuizScreen({ draft }) {
 }
 
 
-function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
-    const [exit, setExit] = useState(true);
+function Question({ index, color, question, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer }) {
     const [clicked, setClicked] = useState(-1);
 
     useEffect(() => {
@@ -236,13 +247,14 @@ function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
     useEffect(() => {
         if (clicked >= 0) {
             console.log('clicked use effect');
-            setExit(false);
+            setEnter(false);
         };
     }, [clicked]);
 
 
     const handleClick = (index, correct) => {
         setClicked(index);
+        handleAnswer(correct);
     }
 
 
@@ -255,7 +267,7 @@ function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
         return (
             <Grid item xs={5} mr={2} >
                 <ButtonBase
-                    onClick={() => { handleClick(index) }}
+                    onClick={() => { handleClick(index, correct) }}
                     disableRipple
                     sx={{
                         minWidth: '70%',
@@ -295,10 +307,10 @@ function Question({ index, color, question, handleAnswer, timerOn, timerOff }) {
     return (
         // <Fade in={exit} timeout={{ exit: 500, appear: 800, }}  >
         <Stack>
-            <Slide in={exit} direction='right' appear={false} timeout={{ exit: 700 }}
+            <Slide in={enter} direction='right' appear={false} timeout={{ exit: 700 }}
                 onExited={() => {
-                    setExit(true);
-                    handleAnswer();
+                    setEnter(true);
+                    handleNextQuestion();
                 }}>
                 <Stack sx={{ width: '100%', mr: 10 }} >
                     <Stack alignItems='center' direction='row'>
