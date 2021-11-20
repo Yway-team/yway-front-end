@@ -9,9 +9,11 @@ import { useParams } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
 
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
-import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
+import { GET_PLATFORM_SETTINGS } from '../controllers/graphql/platform-queries';
 
 import { LabelTextField } from '../components';
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_PLATFORM_SETTINGS } from '../controllers/graphql/platform-mutations';
 
 export default function PlatformSettings() {
 
@@ -21,8 +23,11 @@ export default function PlatformSettings() {
     // if (platformData) {
     //     platformSummary = platformData.getPlatformSummary;
     // }
+
+    const { data: platformSettingsData } = useQuery(GET_PLATFORM_SETTINGS);
+    const [updatePlatformSettings] = useMutation(UPDATE_PLATFORM_SETTINGS);
+
     const tempData = {
-        platformName:"test2",
         _id: "test",
         bannerImg: "test",
         description: "test",
@@ -51,10 +56,17 @@ export default function PlatformSettings() {
 
     const [tempPlatformName, setTempPlatformName] = useState(platformName)
     const [backgroundColor, setbackgroundColor] = useState(tempData.backgroundColor)
-    const [bannerImage, setbannerImage] = useState(tempData.bannerImg)
-    const [avatarImage, setavatarImage] = useState(tempData.thumbnailImg)
+    const [bannerImage, setbannerImage] = useState(null)
+    const [avatarImage, setavatarImage] = useState(null)
     const [creatorPoints, setcreatorPoints] = useState(tempData.minCreatorPoints)
     const [onlyModerators, setonlyModerators] = useState(tempData.onlyModSubmissions)
+
+    let platformSettings;
+    if (platformSettingsData) {
+        platformSettings = platformSettingsData.getPlatformSettings;
+        setbannerImage(platformSettings.bannerImg);
+        setavatarImage(platformSettings.thumbnailImg);
+    }
 
     const [open, setOpen] = useState(false)
     const handleOpen = () => {
@@ -80,7 +92,12 @@ export default function PlatformSettings() {
                         Are you sure you want to save changes?
                     </Typography>
                     <Stack direction="row" spacing={3}>
-                        <Button variant="contained">Submit</Button>
+                        <Button variant="contained" onClick={async () => await updatePlatformSettings({ variables: {
+                            platformSettings: {
+                                title: tempPlatformName,
+                                bannerImg: bannerImage,
+                                thumbnailImg: avatarImage
+                            } } })}>Submit</Button>
                         <Button variant="contained">Cancel</Button>
                     </Stack>
                 </Stack>
@@ -100,7 +117,7 @@ export default function PlatformSettings() {
                         display: "relative",
                         }}
                         imgProps={{ style: { borderRadius: '50%' } }} />
-                <h2 style={{color:"black", fontSize:"35px", marginLeft: "20px"}}>{tempData.platformName}</h2>
+                <h2 style={{color:"black", fontSize:"35px", marginLeft: "20px"}}>{platformName}</h2>
 
                 <Box sx={{display:"flex", alignItems: 'flex-end', position:"absolute", left: "0px", bottom: "0px", width:"100%"}}>
                 </Box>
