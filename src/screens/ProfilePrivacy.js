@@ -7,13 +7,14 @@ import Button from '@mui/material/Button';
 
 import Stack from '@mui/material/Stack';
 import {Box, Typography} from '@mui/material';
-import {useMutation} from '@apollo/client';
+import {useMutation, useReactiveVar} from '@apollo/client';
 import {UPDATE_PRIVACY_SETTINGS} from '../controllers/graphql/user-mutations';
+import {globalState} from "../state/UserState";
 
 export default function ProfilePrivacy(props) {
     // When the privacy settings are confirmed, call updatePrivacySettings to perform the mutation.
     // This is untested and intended as a starting point for the implementer.
-    let privacySettings = null;  // the new privacy settings should be in here
+    let privacySettings = useReactiveVar(globalState).privacySettings || 'private';  // the new privacy settings should be in here
     const {userInfo} = props;  // passed from ProfileScreen
     const [updatePrivacySettings] = useMutation(UPDATE_PRIVACY_SETTINGS, {variables: {privacySettings: privacySettings}});
     const [value, setValue] = React.useState(userInfo.privacySettings);
@@ -21,6 +22,11 @@ export default function ProfilePrivacy(props) {
     const handleSetPrivacy = async () => {
         privacySettings = value;
         const {data} = await updatePrivacySettings({variables: {privacySettings: privacySettings}});
+        console.log(data.updatePrivacySettings);
+        var newState = {...globalState()};
+        newState.privacySettings = data.updatePrivacySettings;
+        globalState(newState);
+        console.log(newState);
     }
 
     const handleChange = (event) => {
