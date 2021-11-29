@@ -17,7 +17,9 @@ export const quizDetailsVar = makeVar({
     description: '',
     timeToAnswer: 10,
     shuffleQuestions: false,
-    shuffleAnswers: false
+    shuffleAnswers: false,
+    bannerImgData: null,
+    thumbnailImgData: null
     // todo: color, tags, images
 });
 
@@ -51,6 +53,7 @@ export default function CreateQuizScreen() {
         const questions = questionsVar();
         const quizDetails = quizDetailsVar();
         questions.forEach(question => delete question.id);
+        console.log(quizDetails);
         const quizObj = {
             questions: questions,
             title: quizDetails.title,
@@ -58,7 +61,9 @@ export default function CreateQuizScreen() {
             shuffleAnswers: quizDetails.shuffleAnswers,
             description: quizDetails.description,
             platformName: quizDetails.platformName,
-            timeToAnswer: quizDetails.timeToAnswer
+            timeToAnswer: quizDetails.timeToAnswer,
+            bannerImgData: quizDetails.bannerImgData,
+            thumbnailImgData: quizDetails.thumbnailImgData
             /* other optional props */
         };
         await createAndPublishQuiz({variables: {quiz: quizObj}});
@@ -77,7 +82,9 @@ export default function CreateQuizScreen() {
             shuffleAnswers: quizDetails.shuffleAnswers,
             description: quizDetails.description,
             platformName: quizDetails.platformName,
-            timeToAnswer: quizDetails.timeToAnswer
+            timeToAnswer: quizDetails.timeToAnswer,
+            bannerImgData: quizDetails.bannerImgData,
+            thumbnailImgData: quizDetails.thumbnailImgData
             /* other optional props */
         };
         // if (draftId) {
