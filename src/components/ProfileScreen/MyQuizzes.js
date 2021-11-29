@@ -12,7 +12,6 @@ export default function MyQuizzes({ userId, isOwn, username }) {
 
     return (
         <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 2 }}>
-            {/* history section */}
             <Grid container justifyContent='flex-start' pl={3}>
                 <CommonTitle title={`${isOwn ? 'MY ' : (username.toUpperCase() + '\'S ' || '')}QUIZZES`} />
             </Grid>

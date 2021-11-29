@@ -2,7 +2,7 @@ import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide } fr
 import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/client';
 import { GET_QUESTION_INFO, GET_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
 import { GET_PLATFORM_THUMBNAIL } from '../controllers/graphql/platform-queries'
@@ -27,7 +27,7 @@ export default function TakeQuizScreen({ draft }) {
     const [enter, setEnter] = useState(true);
 
 
-    var timeLimit = 30 * 1000;
+    var timeLimit = 20 * 1000;
     const [timeProgress, setTimeProgress] = useState(timeLimit);
     const [timerOnOff, setTimerOnOff] = useState(false);
 
@@ -59,7 +59,6 @@ export default function TakeQuizScreen({ draft }) {
                     if (oldProgress <= 0) {
                         console.log('Time is up');
                         handleTimeOut();
-                        setEnter(false);
                         return timeLimit;
                     }
                     return oldProgress - 1000;
@@ -71,6 +70,11 @@ export default function TakeQuizScreen({ draft }) {
             clearInterval(timer);
         };
     }, [timerOnOff, timeLimit]);
+
+    useEffect(() => {
+        console.log('take question page render');
+    });
+
 
     /*
     var questionList = [
@@ -108,27 +112,28 @@ export default function TakeQuizScreen({ draft }) {
     */
 
 
-    function handleNextQuestion() {
+    const handleNextQuestion = useCallback(() => {
         var newIndex = index + 1;
         setIndex(newIndex);
-        if (!index < questionList.length - 1) {
+        if (newIndex > questionList.length - 1) {
             console.log('all indexes are now done');
             handleTimerOff();
             setTimeProgress(0);
             setEnter(false);
         }
-    };
-    function handleTimeOut() {
-        var newIndex = index + 1;
-        setIndex(newIndex);
-        handleTimerOff();
+    }, []);
 
-        if (!index < questionList.length - 1) {
-            console.log('all indexes are now done');
-            handleTimerOff();
-            setTimeProgress(0);
-            setEnter(false);
-        }
+    function handleTimeOut() {
+        // var newIndex = index + 1;
+        // setIndex(newIndex);
+        // handleTimerOff();
+
+        // if (newIndex > questionList.length - 1) {
+        //     console.log('all indexes are now done');
+        //     handleTimerOff();
+        //     setTimeProgress(0);
+        //     setEnter(false);
+        // }
     }
 
     const handleAnswer = (correct) => {
@@ -139,16 +144,20 @@ export default function TakeQuizScreen({ draft }) {
     }
 
 
-    function handleTimerOn() {
+    const handleTimerOn = useCallback(() => {
         console.log('timer is on');
         setTimeProgress(timeLimit);
         setTimerOnOff(true);
-    };
+    }, [timeLimit]);
 
-    function handleTimerOff() {
+    const handleTimerOff = useCallback(() => {
         console.log('timer is now off');
         setTimerOnOff(false);
-    }
+    }, []);
+
+    const handleEnter = useCallback((enterValue) => {
+        setEnter(enterValue);
+    });
 
 
 
@@ -194,7 +203,7 @@ export default function TakeQuizScreen({ draft }) {
             {questionList && index < questionList.length ?
                 <Question
                     enter={enter}
-                    setEnter={setEnter}
+                    setEnter={handleEnter}
                     index={index}
                     color={color}
                     questionId={questionList[index]}
@@ -206,7 +215,8 @@ export default function TakeQuizScreen({ draft }) {
 
             <Stack sx={{
                 width: '100%',
-                color: { color }
+                color: { color },
+                mt: '10%'
             }}>
                 <LinearProgress variant="determinate" value={Math.round((timeProgress / timeLimit) * 100)} color='inherit' sx={{
                     height: 12,
@@ -225,17 +235,29 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
     const { data: questionData } = useQuery(GET_QUESTION_INFO, { variables: { questionId: questionId } });
 
     let question;
+
+
     if (questionData) {
         question = questionData.getQuestionInfo;
     }
 
     useEffect(() => {
+        console.log('question render');
+    });
+
+
+    useEffect(() => {
+        console.log('what is rendering now?');
+    }, [handleAnswer]);
+
+    useEffect(() => {
+        console.log('index changed');
         timerOn();
         setClicked(-1);
         return (() => {
             timerOff();
         });
-    }, [index]);
+    }, [index, timerOff, timerOn]);
 
 
 
@@ -259,6 +281,7 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
         var correct = option === question.correctAnswer;
         var feedbackColor = correct ? '#219653' : '#eb5757';
         var showFeedback = index === clicked;
+
 
         return (
             <Grid item xs={5} mr={2} >
@@ -301,7 +324,7 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
     }
 
     return (
-        // <Fade in={exit} timeout={{ exit: 500, appear: 800, }}  >
+
         <Stack>
             <Slide in={enter} direction='right' appear={false} timeout={{ exit: 700 }}
                 onExited={() => {
@@ -319,7 +342,7 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
                 </Stack >
             </Slide>
         </Stack>
-        // </Fade>
+
     );
 }
 
