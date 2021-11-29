@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {Button, Grid, Stack} from "@mui/material";
-import {ConfirmationDialog, CommonTitle} from "../components";
+import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useMutation} from "@apollo/client";
 import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT} from "../controllers/graphql/quiz-mutations";
 import {v4 as uuidv4} from 'uuid';
 import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestionCardList";
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
-import { useHistory } from 'react-router-dom';
-import { globalState } from "../state/UserState";
+import {useHistory} from 'react-router-dom';
+import {globalState} from "../state/UserState";
 
 export const questionsVar = makeVar([]);
 export const quizDetailsVar = makeVar({
@@ -19,7 +19,9 @@ export const quizDetailsVar = makeVar({
     shuffleQuestions: false,
     shuffleAnswers: false,
     bannerImgData: null,
-    thumbnailImgData: null
+    thumbnailImgData: null,
+    color: null,
+    tags: []
     // todo: color, tags, images
 });
 
@@ -63,7 +65,9 @@ export default function CreateQuizScreen() {
             platformName: quizDetails.platformName,
             timeToAnswer: quizDetails.timeToAnswer,
             bannerImgData: quizDetails.bannerImgData,
-            thumbnailImgData: quizDetails.thumbnailImgData
+            thumbnailImgData: quizDetails.thumbnailImgData,
+            color: quizDetails.color,
+            tags: quizDetails.tags
             /* other optional props */
         };
         await createAndPublishQuiz({variables: {quiz: quizObj}});
@@ -84,7 +88,9 @@ export default function CreateQuizScreen() {
             platformName: quizDetails.platformName,
             timeToAnswer: quizDetails.timeToAnswer,
             bannerImgData: quizDetails.bannerImgData,
-            thumbnailImgData: quizDetails.thumbnailImgData
+            thumbnailImgData: quizDetails.thumbnailImgData,
+            color: quizDetails.color,
+            tags: quizDetails.tags
             /* other optional props */
         };
         // if (draftId) {

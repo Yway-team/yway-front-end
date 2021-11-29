@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import {gql} from '@apollo/client';
 
 export const LOGIN = gql`
     mutation Login($idToken: String!) {
@@ -13,9 +13,9 @@ export const LOGIN = gql`
             }
             googleId
             notifications {
-              description
-              type
-              createdAt
+                description
+                type
+                createdAt
             }
             playPoints
             username
@@ -27,6 +27,22 @@ export const UPDATE_PRIVACY_SETTINGS = gql`
     mutation UpdatePrivacySettings($privacySettings: String!) {
         # If privacy settings is not one of 'private', 'public', or 'friends', it does nothing and returns null. On success, returns the new privacy settings.
         updatePrivacySettings(privacySettings: $privacySettings)
+    }
+`;
+
+export const UPDATE_USERNAME = gql`
+    mutation UpdateUsername($username: String!) {
+        updateUsername(username: $username){
+            username
+        }
+    }
+`;
+
+export const UPDATE_BIO = gql`
+    mutation UpdateBio($bio: String!) {
+        updateBio(bio: $bio){
+            bio
+        }
     }
 `;
 

@@ -2,7 +2,6 @@ import {Button, Dialog, Typography} from "@mui/material";
 import React, {useState} from "react";
 import Stack from "@mui/material/Stack";
 import {ChromePicker} from 'react-color';
-import {useTheme} from "@mui/material/styles";
 
 
 function ColorPicker({label, colorState, onChangeComplete}) {
@@ -31,7 +30,7 @@ function ColorPicker({label, colorState, onChangeComplete}) {
                         backgroundColor: colorState
                     }}/>
             <Dialog open={open} onClose={handleClose}>
-                <ChromePicker color={colorState}
+                <ChromePicker color={colorState ? colorState : "primary"}
                               onChangeComplete={onChangeComplete}/>
             </Dialog>
         </Stack>

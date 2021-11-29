@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Dialog, Divider, Grid, Tab, Tabs, Typography } from '@mui/material';
-import { Edit, Settings, } from '@mui/icons-material';
+import { Edit, Settings, PersonAddAlt1Outlined, Add, Remove, Check } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
 import ProfileSettings from './ProfileSettings';
 import { Route, Switch, useHistory, useParams } from 'react-router-dom';
-import { Overview, Achievements, Friends, History, MyQuizzes, MyPlatforms } from '../components';
+import { Overview, Achievements, Friends, History, MyQuizzes, MyPlatforms, ConfirmationDialog } from '../components';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
@@ -13,12 +13,15 @@ export default function ProfileScreen() {
 
     const { userId } = useParams();
     const currentUser = useReactiveVar(globalState);
-    const isOwn = (userId === currentUser._id) ? true : false;
+    // const isOwn = (userId === currentUser._id) ? true : false;
+    const isOwn = false;
+    const friendStatus = 2;
     const history = useHistory();
     const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
     const tab = findTab();
     const [privacySettingsOpen, setPrivacySettingsOpen] = useState(false);
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false);
+    const [removeFriendOpen, setRemoveFriendOpen] = useState(false);
 
 
     const handleClickPrivacySettingsOpen = () => {
@@ -39,6 +42,22 @@ export default function ProfileScreen() {
         history.push('/user/' + userId + routes[newValue]);
 
     };
+
+    const handleAddFriend = () => {
+
+    }
+
+    const handleAcceptFriend = () => {
+
+    }
+
+    const handleDeclineFriend = () => {
+
+    }
+
+    const handleRemoveFriend = () => {
+
+    }
 
     function findTab() {
         var currentPath = history.location.pathname;
@@ -124,7 +143,7 @@ export default function ProfileScreen() {
                             <Tab label="Friends" {...a11yProps(5)} />
 
                         </Tabs>
-                        <Grid item>
+                        {isOwn ? <Grid item>
                             <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
                                 onClick={handleClickPrivacySettingsOpen}>
                                 Settings
@@ -132,7 +151,34 @@ export default function ProfileScreen() {
                             <Button variant="contained" startIcon={<Edit />} onClick={handleClickProfileSettingsOpen}>
                                 Edit Profile
                             </Button>
-                        </Grid>
+                        </Grid> :
+                            <Grid item>
+                                {
+                                    friendStatus === 0 ?
+                                        <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
+                                            ADD FRIEND
+                                        </Button> : <></>
+                                }
+                                {
+                                    friendStatus === 1 ?
+                                        <>
+                                            <Button variant="contained" startIcon={<Add />} onClick={handleAcceptFriend}>
+                                                ACCEPT
+                                            </Button>
+                                            <Button variant="outlined" startIcon={<Remove />} onClick={handleDeclineFriend} sx={{ ml: 2 }}>
+                                                DECLINE
+                                            </Button>
+                                        </> : <></>
+                                }
+                                {
+                                    friendStatus === 2 ?
+                                        <Button variant="contained" startIcon={<Check />} onClick={() => { setRemoveFriendOpen(true) }}>
+                                            FRIENDS
+                                        </Button> : <></>
+                                }
+
+                            </Grid>
+                        }
                     </Grid>
 
 
@@ -175,6 +221,16 @@ export default function ProfileScreen() {
                 aria-labelledby="profile-settings-dialog">
                 <ProfileSettings userInfo={userInfo} handleClose={handleProfileSettingsClose} />
             </Dialog>
+            <ConfirmationDialog
+                open={removeFriendOpen}
+                handleClose={() => { setRemoveFriendOpen(false); }}
+                title='REMOVE FRIEND'
+                content={`Are you sure you want to remove this friend? `}
+                yesText='REMOVE FRIEND'
+                yesCallback={handleRemoveFriend}
+                noText='CANCEL'
+                noCallback={() => { setRemoveFriendOpen(false); }}
+            />
         </>
     )
 }

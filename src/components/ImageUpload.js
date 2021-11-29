@@ -1,7 +1,6 @@
-import { IconButton, Stack, TextField, Typography } from "@mui/material";
+import {IconButton, Stack, TextField, Typography} from "@mui/material";
 import IosShareIcon from '@mui/icons-material/IosShare';
-import { useState } from "react";
-import { useTheme } from "@mui/material/styles";
+import {useState} from "react";
 
 export default function ImageUpload({ label, onUpload }) {
     const [imageName, setImageName] = useState('');

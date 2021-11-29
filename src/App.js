@@ -23,6 +23,7 @@ import {
     DraftsScreen,
     PlatformScreen,
     PlatformSettings,
+    SearchResultsScreen
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl/NavigationControl'
@@ -158,6 +159,9 @@ export default function App() {
                                     :
                                     <Redirect to="/highlights" />}
                             </Route>
+                            <Route exact path="/search/:query/:filter">
+                                <SearchResultsScreen />
+                            </Route>
                             {/* <Route exact path="/user/:userId/overview">
                                 <ProfileScreen tab={0} />
                             </Route>
@@ -214,9 +218,7 @@ export default function App() {
                             {/*<Route exact path="/quiz/:quizName/:quizId">*/}
                             {/*    <AnswerQuestionScreen />*/}
                             {/*</Route>*/}
-                            {/*<Route exact path="/search/:query/:filter">*/}
-                            {/*    <SearchResultsScreen />*/}
-                            {/*</Route>*/}
+
                         </Switch>} />
                 </Router>
             </ThemeProvider>

@@ -1,4 +1,4 @@
-import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Fade } from '@mui/material';
+import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide } from '@mui/material';
 import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt } from '@mui/icons-material';
 import { globalState } from '../state/UserState';

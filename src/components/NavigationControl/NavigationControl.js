@@ -28,8 +28,7 @@ import {
     People,
     DynamicForm,
     TungstenRounded,
-    Bolt,
-    SearchRounded
+    Bolt
 } from '@mui/icons-material';
 import ListItem, { listItemClasses } from "@mui/material/ListItem";
 import { ShowMoreButton } from '../';
@@ -44,6 +43,7 @@ import { useReactiveVar } from "@apollo/client";
 import LinesEllipsis from 'react-lines-ellipsis';
 import ProfileMenu from './ProfileMenu';
 import NotificationsPopUp from './NotificationsPopUp';
+import SearchBar from './SeachBar';
 import logo from '../../images/logo.svg';
 
 
@@ -164,9 +164,6 @@ function NavigationControl(props) {
                     sx={{ width: 27, height: 27 }}
                 />
             </ListItemAvatar>
-            {/* <ListItemText
-                disableTypography={true} primary={tabName}>
-            </ListItemText> */}
             <LinesEllipsis
                 text={tabName}
                 ellipsis='...'
@@ -199,31 +196,7 @@ function NavigationControl(props) {
                                 '& svg': { fill: theme.palette.primary.main }
                             }
                         }}>
-                            <Paper
-                                elevation={0}
-                                component="form"
-                                sx={{
-                                    px: 2,
-                                    display: 'flex',
-                                    alignItems: 'center',
-
-                                    width: '100%',
-                                    height: '36px',
-                                    maxWidth: '500px',
-                                    background: theme.palette.grey[200]
-                                }}
-                            >
-                                <InputBase
-                                    sx={{
-                                        ml: 1, flex: 1, fontSize: 14, fontWeight: 500,
-                                    }}
-                                    placeholder="Search Yway"
-                                    inputProps={{ 'aria-label': 'search Yway' }}
-                                />
-                                <IconButton type="submit" sx={{ p: '3px' }} aria-label="search">
-                                    <SearchRounded sx={{ fill: theme.palette.grey['500'] }} />
-                                </IconButton>
-                            </Paper>
+                            <SearchBar theme={theme} />
                         </Grid>
                         <Grid container item xs={3} justifyContent='flex-end' alignItems='center'>
                             {loggedIn ?

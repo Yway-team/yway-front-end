@@ -3,17 +3,34 @@ import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, T
 import {ColorPicker, CommonTitle, ImageUpload, LabelTextField} from "../components";
 import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
-import {useTheme} from "@mui/material/styles";
 import TagsInput from "../components/TagsInput";
 
 export default function CreatePlatformScreen() {
-    const theme = useTheme();
     const [createPlatform] = useMutation(CREATE_PLATFORM);
     const [platformName, setPlatformName] = useState('');
     const [platformDescription, setPlatformDescription] = useState('');
     const [minCreatorPts, setMinCreatorPts] = useState(0);
     const [onlyModSubmissions, setOnlyModSubmissions] = useState(false);
-    const [platformColor, setPlatformColor] = useState(theme.palette.primary)
+    const [platformColor, setPlatformColor] = useState(null);
+    const [tags, setTags] = useState([]);
+    const [newTag, setNewTag] = useState('')
+
+    const handleAddTag = () => {
+        if (newTag === '' || tags.includes(newTag)) {
+            return
+        }
+        setTags((tags) => tags.concat(newTag));
+        setNewTag('');
+        console.log(tags)
+    }
+
+    const handleDeleteTag = tagToDelete => () => {
+        setTags(tags => tags.filter((tag) => tag !== tagToDelete));
+        console.log(tags)
+    }
+    const onNewTagChange = (tag) => {
+        setNewTag(tag);
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +38,9 @@ export default function CreatePlatformScreen() {
             title: platformName,
             description: platformDescription,
             minCreatorPoints: minCreatorPts,
-            onlyModSubmissions: onlyModSubmissions
+            onlyModSubmissions: onlyModSubmissions,
+            color: platformColor,
+            tags: tags
         };
         const {data} = await createPlatform({variables: {platform: platformObj}});
         if (data) {
@@ -60,7 +79,8 @@ export default function CreatePlatformScreen() {
                                         variant={"outlined"}/>
                     </Grid>
                     <Grid item>
-                        <TagsInput>
+                        <TagsInput tags={tags} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
+                                   newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}>
                         </TagsInput>
                     </Grid>
                     <Grid item marginTop={4}>

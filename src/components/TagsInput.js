@@ -1,43 +1,27 @@
-import {Button, Chip, Container, Grid, TextField, Typography} from "@mui/material";
-import React, {useState} from "react";
+import {Box, Button, Chip, TextField, Typography} from "@mui/material";
+import React from "react";
 import Stack from "@mui/material/Stack";
 
-function TagsInput({}) {
-    const [tags, setTags] = useState([])
-    const [newTag, setNewTag] = useState('')
-
-    const handleAddTag = () => {
-        if (newTag === '' || tags.includes(newTag)) {
-            return
-        }
-        setTags((tags) => tags.concat(newTag));
-        setNewTag('');
-        console.log(tags)
-    }
-
-    const handleDeleteTag = tagToDelete => () => {
-        setTags(tags => tags.filter((tag) => tag !== tagToDelete));
-        console.log(tags)
-    }
+function TagsInput({tags, handleAddTag, handleDeleteTag, newTag, onNewTagChange}) {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            <Stack direction={'row'} alignItems={'center'} >
+            <Stack direction={'row'} alignItems={'center'}>
                 <Typography sx={{width: 250}}>
                     Tags
                 </Typography>
-                <TextField value={newTag} onChange={e => setNewTag(e.target.value)} variant='outlined'
-                           style={{width: 300, marginRight: 52}}>
+                <TextField value={newTag} onChange={onNewTagChange} variant='outlined'
+                           style={{width: 336, marginRight: 16}}>
                 </TextField>
                 <Button onClick={handleAddTag} variant={"contained"}>
                     ADD TAG
                 </Button>
             </Stack>
-            <Grid container direction={'row'} spacing={2}>
-                <Grid item>
-                    {tags.map((data, index) => <Chip key={data} label={data} onDelete={handleDeleteTag(data)}/>)}
-                </Grid>
-            </Grid>
+            <Box direction={'row'} m={1} sx={{maxWidth: '1050px'}}>
+                {tags.map((data, index) => <Chip sx={{marginRight: 1, marginBottom: 1}} key={data} label={'#'.concat(data)}
+                                                 color={"primary"} variant={"outlined"}
+                                                 onDelete={handleDeleteTag(data)}/>)}
+            </Box>
         </Stack>
     )
 }

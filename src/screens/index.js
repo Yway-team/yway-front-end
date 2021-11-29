@@ -9,4 +9,5 @@ export { default as TakeQuizScreen } from './TakeQuizScreen';
 export { default as PlatformScreen } from './PlatformScreen';
 export { default as PlatformSettings } from './PlatformSettings';
 export { default as DraftsScreen } from './DraftsScreen';
-export { default as ProfileSettings } from './ProfileSettings'
+export { default as ProfileSettings } from './ProfileSettings';
+export { default as SearchResultsScreen } from './SearchResultsScreen';
