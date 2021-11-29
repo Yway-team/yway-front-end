@@ -9,6 +9,8 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
     const quizDetails = useReactiveVar(quizDetailsVar);
     const [numQuestionsText, setNumQuestionsText] = useState(numQuestions);
     const [previousUpdateNumQuestions, setPreviousUpdateNumQuestions] = useState(updateNumQuestions);
+    const bannerImgLabel = 'Banner Image';
+    const thumbnailImgLabel = 'Thumbnail Image';
     const [newTag, setNewTag] = useState('')
     const MAX_QUESTIONS = 100;
     if (updateNumQuestions !== previousUpdateNumQuestions) {
@@ -20,7 +22,25 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         let details = {...quizDetails};
         details.color = color.hex;
         quizDetailsVar(details);
-    }
+    };
+
+    const handleImageUpload = (name, data) => {
+        const newQuizDetails = { ...quizDetails };
+        console.log(`name: ${name}`);
+        console.log(name === bannerImgLabel);
+        console.log(data);
+        if (name === bannerImgLabel) {
+            newQuizDetails.bannerImgData = data;
+            console.log(newQuizDetails);
+            quizDetailsVar(newQuizDetails);
+        } else if (name === thumbnailImgLabel) {
+            newQuizDetails.thumbnailImgData = data;
+            quizDetailsVar(newQuizDetails);
+        } else {
+            console.error(`CreateQuizForms.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+        }
+        console.log(quizDetailsVar());
+    };
 
     const handleAddTag = () => {
         if (newTag === '' || quizDetails.tags.includes(newTag)) {
@@ -79,10 +99,10 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
             </TagsInput>
         </Grid>
         <Grid item>
-            <ImageUpload label={"Banner Image"}/>
+            <ImageUpload onUpload={handleImageUpload} label={bannerImgLabel} />
         </Grid>
         <Grid item>
-            <ImageUpload label={"Thumbnail Image"}/>
+            <ImageUpload onUpload={handleImageUpload} label={thumbnailImgLabel} />
         </Grid>
         <Grid item marginTop={4}>
             <FormLabel style={{

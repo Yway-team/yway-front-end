@@ -18,6 +18,8 @@ export const quizDetailsVar = makeVar({
     timeToAnswer: 10,
     shuffleQuestions: false,
     shuffleAnswers: false,
+    bannerImgData: null,
+    thumbnailImgData: null,
     color: null,
     tags: []
     // todo: color, tags, images
@@ -53,6 +55,7 @@ export default function CreateQuizScreen() {
         const questions = questionsVar();
         const quizDetails = quizDetailsVar();
         questions.forEach(question => delete question.id);
+        console.log(quizDetails);
         const quizObj = {
             questions: questions,
             title: quizDetails.title,
@@ -61,6 +64,8 @@ export default function CreateQuizScreen() {
             description: quizDetails.description,
             platformName: quizDetails.platformName,
             timeToAnswer: quizDetails.timeToAnswer,
+            bannerImgData: quizDetails.bannerImgData,
+            thumbnailImgData: quizDetails.thumbnailImgData,
             color: quizDetails.color,
             tags: quizDetails.tags
             /* other optional props */
@@ -82,6 +87,8 @@ export default function CreateQuizScreen() {
             description: quizDetails.description,
             platformName: quizDetails.platformName,
             timeToAnswer: quizDetails.timeToAnswer,
+            bannerImgData: quizDetails.bannerImgData,
+            thumbnailImgData: quizDetails.thumbnailImgData,
             color: quizDetails.color,
             tags: quizDetails.tags
             /* other optional props */
