@@ -17,8 +17,9 @@ export default function ImageUpload({ label, onUpload }) {
         setImageName(file.name);
         setFile(file);
         reader.addEventListener('load', () => {
-            setFileContents(reader.result);
-            onUpload(label, reader.result);
+            const imgData = reader.result;
+            setFileContents(imgData);
+            onUpload(label, file.name, imgData);
         });
         reader.readAsDataURL(file);
         // pass the data in fileContents to the top level

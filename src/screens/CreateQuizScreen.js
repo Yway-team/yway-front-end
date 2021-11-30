@@ -65,7 +65,9 @@ export default function CreateQuizScreen() {
             platformName: quizDetails.platformName,
             timeToAnswer: quizDetails.timeToAnswer,
             bannerImgData: quizDetails.bannerImgData,
+            bannerImgName: quizDetails.bannerImgName,
             thumbnailImgData: quizDetails.thumbnailImgData,
+            thumbnailImgName: quizDetails.thumbnailImgName,
             color: quizDetails.color,
             tags: quizDetails.tags
             /* other optional props */
