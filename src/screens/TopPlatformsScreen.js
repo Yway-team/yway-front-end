@@ -16,7 +16,7 @@ export default function TopPlatformsScreen() {
             <CommonTitle title='TOP PLATFORMS' />
             {/* <Typography variant='h5'>TOP QUIZZES</Typography> */}
             <Grid container justifyContent='flex-start'>
-                {platforms ? platforms.map((data) => <Grid key={data._id} xs={6} sm={6} item ><PlatformCard {...data} /> </Grid>) : null}
+                {platforms ? platforms.map((data) => <Grid key={data._id} item ><PlatformCard {...data} /> </Grid>) : null}
             </Grid>
         </Grid>
     );

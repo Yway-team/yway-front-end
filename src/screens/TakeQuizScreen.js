@@ -4,19 +4,17 @@ import { Bolt, Visibility, East } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/client';
-import { GET_QUESTION_INFO, GET_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
-import { GET_PLATFORM_THUMBNAIL } from '../controllers/graphql/platform-queries'
+import { GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
 import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
 
 export default function TakeQuizScreen({ draftId }) {
     const history = useHistory();
     const { quizId } = useParams();
-    const { data: questionListData } = useQuery(GET_QUESTION_LIST, { variables: { quizId: quizId } });
-    const [getPlatformThumbnail, { data: platformData, loading: loadingPlatformData, refetch: refetchPlatformThumbnail }] = useLazyQuery(GET_PLATFORM_THUMBNAIL);
-    const { data: quizData } = useQuery(GET_QUIZ_INFO, { variables: { quizId: quizId } });
+    const { data } = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, { variables: { quizId: quizId } });
 
-    let color = '#2f80ed';
+
+    let color = '#ff5a1d';
     let platformName = 'No platform';
     let platformThumbnail = '';
     let title = 'Untitled';
@@ -40,24 +38,22 @@ export default function TakeQuizScreen({ draftId }) {
     const [timerOnOff, setTimerOnOff] = useState(false);
 
     let questionList = [];
-    if (questionListData) {
-        questionList = questionListData.getQuestionList;
-    }
+
     let quiz;
-    if (quizData) {
-        quiz = quizData.getQuizInfo;
-        color = quiz.color;
+
+    if (data) {
+        console.log(data);
+        questionList = data.getQuestionList;
+        quiz = data.getQuizInfo;
+        color = quiz.color || color;
         title = quiz.title;
         ownerUsername = quiz.ownerUsername;
         ownerAvatar = quiz.ownerAvatar;
         platformName = quiz.platformName;
-        if (!platformData && !loadingPlatformData) {
-            getPlatformThumbnail({ variables: { title: platformName } });
-        }
+        rating = quiz.rating;
+        platformThumbnail = quiz.platformThumbnail;
     }
-    if (platformData) {
-        platformThumbnail = platformData.getPlatformThumbnail;
-    }
+
 
     useEffect(() => {
         var timer;

@@ -56,3 +56,24 @@ export const GET_QUESTION_INFO = gql`
         }
     }
 `;
+
+export const GET_QUIZ_INFO_AND_QUESTION_LIST = gql`
+    query GetQuizInfoAndQuestionList($quizId: ID!) {
+        getQuizInfo(quizId: $quizId) {
+            bannerImg
+            color
+            createdAt
+            description
+            numQuestions
+            ownerAvatar
+            ownerId
+            ownerUsername
+            platformId
+            platformName
+            platformThumbnail
+            rating
+            title
+        }
+        getQuestionList(quizId: $quizId)
+    }
+`;

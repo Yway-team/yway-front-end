@@ -21,7 +21,7 @@ export default function HighlightsScreen() {
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', py: 2, pl: 10 }}>
             <CommonTitle title='NEW PLATFORMS' />
             <Grid container justifyContent='flex-start'>
-                {platforms ? platforms.map((data) => <Grid key={data._id} xs={6} sm={6} item ><PlatformCard {...data} /> </Grid>) : null}
+                {platforms ? platforms.map((data) => <Grid key={data._id} item ><PlatformCard {...data} /> </Grid>) : null}
             </Grid>
             <CommonTitle title='TOP QUIZZES' />
             <Grid container justifyContent='flex-start'>
