@@ -13,9 +13,8 @@ export default function ProfileScreen() {
 
     const { userId } = useParams();
     const currentUser = useReactiveVar(globalState);
-    // const isOwn = (userId === currentUser._id) ? true : false;
-    const isOwn = false;
-    const friendStatus = 2;
+    const isOwn = (userId === currentUser._id) ? true : false;
+    const friendStatus = 0;
     const history = useHistory();
     const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
     const tab = findTab();
@@ -181,14 +180,13 @@ export default function ProfileScreen() {
                         }
                     </Grid>
 
-
                     <Box>
                         <Switch>
                             <Route exact path='/user/:userId'>
-                                <Overview />
+                                <Overview userId={userId} isOwn={isOwn} />
                             </Route>
                             <Route path={`/user/:userId/overview`}>
-                                <Overview />
+                                <Overview userId={userId} isOwn={isOwn} />
                             </Route>
                             <Route exact path={`/user/:userId/achievements`}>
                                 <Achievements />

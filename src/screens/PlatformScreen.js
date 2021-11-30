@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Stack, Avatar, Box, Button } from '@mui/material'
+import { Grid, Stack, Avatar, Box, Button, CircularProgress } from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
 import { useParams, useHistory } from 'react-router-dom';
@@ -92,13 +92,13 @@ export default function PlatformScreen() {
     const { platformName } = useParams();
     const history = useHistory();
 
-    const { data: platformData, error } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+    const { data: platformData, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
 
     // const { data: moreData } = usePrivilegedQuery(GET_PLATFORM_BY_ID, { variables: { id: "618c41ee4d94eb6ad380f8f1" } });
     // if (moreData){
     //     console.log(moreData)
     // }
-    
+
     let platformSummary;
     if (platformData) {
         platformSummary = platformData.getPlatformSummary;
@@ -116,8 +116,8 @@ export default function PlatformScreen() {
                         <Box style={{ height: "100%", width: "100%", overflow: "hidden", position: "absolute", top: "0px", zIndex: "-1" }}>
                             <img style={{ width: "100%", zIndex: "-1" }} alt='cover' src={platformSummary ? platformSummary.bannerImg : null} />
                         </Box>
-                        <Button sx={{position:"absolute", right:"10px", bottom:"10px"}} onClick={gotoPlatformSettings} >
-                            <SettingsIcon sx={{color:"white"}}/>
+                        <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
+                            <SettingsIcon sx={{ color: "white" }} />
                         </Button>
                         <Avatar alt="avatar" src={platformSummary ? platformSummary.thumbnailImg : null}
                             sx={{
@@ -145,15 +145,15 @@ export default function PlatformScreen() {
                 </Grid>
                 <Grid item container xs={9} spacing={0}>
                     {platformSummary &&
-                    (platformSummary.quizzesInfo.length ?
-                    platformSummary.quizzesInfo.map((data) =>
-                        <QuizCard key={data.id} {...data} />) :
-                        <Box sx={{marginTop:"50px", marginLeft: "50px"}}>
-                            <h2>No Quizzes to Display</h2>
-                        </Box>
-                    )}
+                        (platformSummary.quizzesInfo.length ?
+                            platformSummary.quizzesInfo.map((data) =>
+                                <QuizCard key={data.id} {...data} />) :
+                            <Box sx={{ marginTop: "50px", marginLeft: "50px" }}>
+                                <h2>No Quizzes to Display</h2>
+                            </Box>
+                        )}
                 </Grid>
-                <Grid item xs={3} sx={{marginTop: "2rem"}}>
+                <Grid item xs={3} sx={{ marginTop: "2rem" }}>
                     <MiniLeaderboard width="350px" />
                 </Grid>
             </Grid>
