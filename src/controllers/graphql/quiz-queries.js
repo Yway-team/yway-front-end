@@ -4,6 +4,7 @@ export const GET_QUIZ_INFO = gql`
     query GetQuizInfo($quizId: ID!) {
         getQuizInfo(quizId: $quizId) {
             bannerImg
+            color
             createdAt
             description
             numQuestions
