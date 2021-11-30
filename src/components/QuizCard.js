@@ -21,7 +21,6 @@ import TimeAgoFromNow from './TimeAgoFromNow';
 import LinesEllipsis from 'react-lines-ellipsis';
 import { useMutation } from '@apollo/client';
 import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
-// import { globalState } from '../state/UserState';
 import { useHistory } from 'react-router-dom';
 
 
