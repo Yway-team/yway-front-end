@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {Button, Grid, Stack} from "@mui/material";
-import {CommonTitle, ConfirmationDialog} from "../components";
+import React, { useEffect, useState } from "react";
+import { Button, Grid, Stack } from "@mui/material";
+import { CommonTitle, ConfirmationDialog } from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import {makeVar, useMutation} from "@apollo/client";
-import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT} from "../controllers/graphql/quiz-mutations";
-import {v4 as uuidv4} from 'uuid';
+import { makeVar, useMutation } from "@apollo/client";
+import { CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT } from "../controllers/graphql/quiz-mutations";
+import { v4 as uuidv4 } from 'uuid';
 import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestionCardList";
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
-import {useHistory} from 'react-router-dom';
-import {globalState} from "../state/UserState";
+import { useHistory } from 'react-router-dom';
+import { globalState } from "../state/UserState";
 
 export const questionsVar = makeVar([]);
 export const quizDetailsVar = makeVar({
@@ -25,7 +25,7 @@ export const quizDetailsVar = makeVar({
     // todo: color, tags, images
 });
 
-export default function CreateQuizScreen() {
+export default function CreateQuizScreen({ draftId }) {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
     // const classes = useStyles();
@@ -35,6 +35,10 @@ export default function CreateQuizScreen() {
     // todo: only allow quiz creation if the user does not have the maximum number of drafts
     // todo: fetch draft and set initial states accordingly
     // todo: tags, color, thumbnailImg, bannerImg
+    if (draftId) {
+        //fetch draft details here
+        //and set it in questionVar and quizDetailsVar
+    }
     const start = Date.now();
     const history = useHistory();
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
@@ -70,7 +74,7 @@ export default function CreateQuizScreen() {
             tags: quizDetails.tags
             /* other optional props */
         };
-        await createAndPublishQuiz({variables: {quiz: quizObj}});
+        await createAndPublishQuiz({ variables: { quiz: quizObj } });
         history.push(`/user/${globalState()._id}/quizzes`);
     };
 
@@ -96,7 +100,7 @@ export default function CreateQuizScreen() {
         // if (draftId) {
         //     draftObj._id = draftId;
         // }
-        await saveQuizAsDraft({variables: {draft: draftObj}});
+        await saveQuizAsDraft({ variables: { draft: draftObj } });
         history.push('/drafts');
     }
 
@@ -130,36 +134,36 @@ export default function CreateQuizScreen() {
 
     return (
         <>
-            <Grid container direction="column" sx={{p: 2, pl: 10, width: 700}}>
+            <Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
                 <Grid item>
-                    <CommonTitle title='CREATE QUIZ'/>
+                    <CommonTitle title='CREATE QUIZ' />
                 </Grid>
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                    <Grid container item direction="column" sx={{py: 2}} spacing={2}>
+                    <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
                         <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions}
-                                         handleUpdateNumQuestions={handleUpdateNumQuestions}/>
-                        <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion}/>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
-                                onClick={() => {
-                                    let questions = questionsVar();
-                                    questions.push({
-                                        id: uuidv4(),
-                                        description: '',
-                                        answerOptions: ['', ''],
-                                        correctAnswerIndex: -1
-                                    });
-                                    questionsVar(questions);
-                                    setNumQuestions(numQuestions + 1);
-                                    setQuestions([...questionsVar()]);
-                                    setUpdateNumQuestions(!updateNumQuestions);
-                                }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button>
-                        <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40, width: 700}}
-                               justifyContent='space-between'>
-                            <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
+                            handleUpdateNumQuestions={handleUpdateNumQuestions} />
+                        <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion} />
+                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />} sx={{ alignSelf: "flex-start" }}
+                            onClick={() => {
+                                let questions = questionsVar();
+                                questions.push({
+                                    id: uuidv4(),
+                                    description: '',
+                                    answerOptions: ['', ''],
+                                    correctAnswerIndex: -1
+                                });
+                                questionsVar(questions);
+                                setNumQuestions(numQuestions + 1);
+                                setQuestions([...questionsVar()]);
+                                setUpdateNumQuestions(!updateNumQuestions);
+                            }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button>
+                        <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }}
+                            justifyContent='space-between'>
+                            <Button variant={"outlined"} style={{ marginRight: 150 }}>DISCARD</Button>
                             <Stack direction='row' spacing={2}>
                                 <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
                                 <Button variant={"contained"} onClick={togglePublishConfirmOpen}
-                                    // type={"submit"}
+                                // type={"submit"}
                                 >PUBLISH</Button>
                             </Stack>
                         </Stack>

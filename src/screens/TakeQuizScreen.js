@@ -1,6 +1,6 @@
 import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Dialog, Button } from '@mui/material';
 import { ReactComponent as Background } from '../images/blop.svg';
-import { Bolt, Visibility, ArrowForward } from '@mui/icons-material';
+import { Bolt, Visibility, East } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useLazyQuery } from '@apollo/client';
@@ -8,7 +8,8 @@ import { GET_QUESTION_INFO, GET_QUESTION_LIST, GET_QUIZ_INFO } from '../controll
 import { GET_PLATFORM_THUMBNAIL } from '../controllers/graphql/platform-queries'
 import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
-export default function TakeQuizScreen({ draft }) {
+
+export default function TakeQuizScreen({ draftId }) {
     const history = useHistory();
     const { quizId } = useParams();
     const { data: questionListData } = useQuery(GET_QUESTION_LIST, { variables: { quizId: quizId } });
@@ -259,7 +260,7 @@ export default function TakeQuizScreen({ draft }) {
                             </Stack>
                         </Stack>
                     </Stack>
-                    <Stack direction='row' justifyContent='space-between' sx={{ width: '80%' }}>
+                    <Stack direction='row' justifyContent='space-between' sx={{ width: '90%' }}>
                         <Stack direction='row' ml={'60pt'}>
                             <Avatar src={ownerAvatar} alt='platform avatar' sx={{
                                 width: 20,
@@ -271,20 +272,20 @@ export default function TakeQuizScreen({ draft }) {
                         <Stack direction='row'>
                             <Logo fill={color} style={{ height: 20, width: 20, marginRight: 10 }} />
                             <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, mr: 5 }}> {rating} </Typography>
-                            <Visibility fill={color} style={{ height: 20, width: 20, marginRight: 10 }} />
+                            <Visibility style={{ height: 20, width: 20, marginRight: 10, fill: color }} />
                             <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, }}> {attempted} </Typography>
                         </Stack>
                     </Stack>
-                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '80%', mt: 5 }}>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%', mt: 5, backgroundColor: color + '25', py: 5 }}>
                         <Stack direction='row' ml={'60pt'} alignItems='center'>
                             <Typography sx={{ fontSize: 24, color: 'common.black', fontWeight: 700, }}> You earned</Typography>
                             <Typography sx={{ fontSize: 28, color: color, fontWeight: 700, ml: 5 }}>  {playPoints} </Typography>
-                            <Bolt fill={color} sx={{ fontSize: 30, }} />
+                            <Bolt sx={{ fontSize: 30, fill: color }} />
                         </Stack>
 
                         <Stack direction='column' justifyContent='center' >
                             {/* <Typography textAlign='center' sx={{ fontSize: 17, color: 'common.black', fontWeight: 700 }}> Your Streak </Typography> */}
-                            <Avatar sx={{ height: 60, width: 60, mt: 2, background: color || 'grey', color: 'white', alignItems: 'center' }}>
+                            <Avatar sx={{ height: 60, width: 60, mt: 2, marginRight: 15, background: color || 'grey', color: 'white', alignItems: 'center' }}>
                                 <Typography fontSize={18} fontWeight={600}>
                                     {(playPoints / 10).toString() + ' / ' + (questionList ? questionList.length : 0).toString()}
                                 </Typography>
@@ -292,7 +293,7 @@ export default function TakeQuizScreen({ draft }) {
                         </Stack>
                     </Stack>
 
-                    <Stack direction='row' justifyContent='space-between' alignItems='flex-end' sx={{ width: '90%', mt: 7, mb: 5 }}>
+                    <Stack direction='row' justifyContent='space-between' alignItems='flex-end' sx={{ width: '95%', mt: 7, mb: 5 }}>
                         <Stack direction='column' ml={'50pt'} alignItems='center'>
                             <Typography sx={{ fontSize: 16, color: 'common.black', fontWeight: 600, }}> How good was the quiz? </Typography>
                             <Stack direction='row' mt={2}>
@@ -300,17 +301,17 @@ export default function TakeQuizScreen({ draft }) {
                                     <ButtonBase onClick={() => {
                                         setUserRating(index + 1);
                                     }} sx={{
-                                        p: 0.5,
-                                        pl: 1,
-                                        py: 1,
-                                        borderRadius: '40%'
+                                        pl: 0.5,
+                                        borderRadius: '50%',
+                                        height: 40,
+                                        width: 40
                                     }}>
                                         <Logo fill={index > userRating - 1 ? '#D1D1D1' : color} style={{ height: 25, width: 25, marginRight: 10 }} />
                                     </ButtonBase>
                                 )}
                             </Stack>
                         </Stack>
-                        <Button endIcon={<ArrowForward />}
+                        <Button endIcon={<East />}
                             disabled={userRating === 0}
                             onClick={handleFinishSubmit}
                             sx={{
@@ -318,6 +319,9 @@ export default function TakeQuizScreen({ draft }) {
                                 px: 2,
                                 fontWeight: 700,
                                 fontSize: 18,
+                                "&:hover": {
+                                    backgroundColor: (color + '10'),
+                                }
                             }}>
                             FINISH
                         </Button>
