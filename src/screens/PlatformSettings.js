@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { useParams } from 'react-router-dom';
-import SaveChangesModal from '../components/PlatformScreen/SaveChangesModal';
 import {Checkbox, FormLabel, Grid} from "@mui/material";
 
 import {CommonTitle, ConfirmationDialog} from "../components";
@@ -56,10 +55,8 @@ export default function PlatformSettings() {
     }
 
     const [tempPlatformName, setTempPlatformName] = useState(platformName)
-    const [backgroundColor, setbackgroundColor] = useState(tempData.backgroundColor)
     const [bannerImage, setbannerImage] = useState(null)
     const [avatarImage, setavatarImage] = useState(null)
-    const [creatorPoints, setcreatorPoints] = useState(tempData.minCreatorPoints)
     const [onlyModerators, setonlyModerators] = useState(tempData.onlyModSubmissions)
 
     let platformSettings;
@@ -107,9 +104,29 @@ export default function PlatformSettings() {
         }
     }
 
+    // Color Picker functions
+    const [backgroundColor, setbackgroundColor] = useState(tempData.backgroundColor)
+    const handleSetColor = (color) => {
+        setbackgroundColor(color)
+    }
+
+    // Minimum required creator points
+    const [creatorPoints, setcreatorPoints] = useState(0)
+    const handleCreatorPoints = (v) => {
+        setcreatorPoints(v)
+    }
+
+    // Confirmation Dialog
+    const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
+    const togglePublishConfirmOpen = () => {
+        setPublishConfirmOpen(!publishConfirmOpen);
+    };
+    const handleSubmit = () => {
+        alert("test")
+    }
+
     return (
         <>
-            <SaveChangesModal open={open} handleOpen={handleOpen} handleClose={handleClose} saveNewPlatformSettings={saveNewPlatformSettings}/>
             <div style={{height: "200px", position:"relative", display: "flex", alignItems: "center"}}>
                 <div style={{height: "100%",width: "100%", overflow:"hidden", position: "absolute", top:"0px", zIndex: "-1"}}>
                     <img style={{width: "100%"}} alt='cover' src="https://picsum.photos/1000" />
@@ -161,12 +178,8 @@ export default function PlatformSettings() {
                         Platform Style
                     </FormLabel>
                     <Box sx={{ display: 'flex', alignItems: "center" }}>
-                        <div>
-                        Background Color
-                        </div>
-                        <div style={{marginLeft:"-230px"}}>
-                            <ColorPicker/>
-                        </div>
+                        <ColorPicker label={"Background Color"} colorState={backgroundColor}
+                                    onChangeComplete={color => handleSetColor(color)}/>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems:"center" }}>
                         {/* <div style={{paddingRight: "10px"}}>
@@ -184,12 +197,10 @@ export default function PlatformSettings() {
                     <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
                         Quiz Rules
                     </FormLabel>
-                    <Box sx={{ display: 'flex', alignItems: "center" }}>
-                        <TextField sx={{width:"30px"}} value="12" id="standard-basic" variant="standard"/>
-                        <div>
-                            Minimum number of creator points to submit a quiz.
-                        </div>
-                    </Box>
+                    <LabelTextField label={"Required Creator Points"}
+                                    value={creatorPoints}
+                                    onChange={handleCreatorPoints}
+                                    type={"number"}/>
                     <Box sx={{ display: 'flex' }}>
                         <FormControlLabel control={<Switch defaultChecked />} label="Only allow current moderators to submit quizzes" />
                     </Box>
@@ -199,6 +210,16 @@ export default function PlatformSettings() {
                     </Stack>
                 </Stack>
             </Stack>
+            <ConfirmationDialog
+                open={publishConfirmOpen}
+                handleClose={togglePublishConfirmOpen}
+                title='Confirm Changes'
+                content={`Are you sure you want to save changes?`}
+                yesText='PUBLISH'
+                yesCallback={handleSubmit}
+                noText='CANCEL'
+                noCallback={togglePublishConfirmOpen}
+            />
         </>
     )
 }
