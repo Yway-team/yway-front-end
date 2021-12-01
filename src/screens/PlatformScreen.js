@@ -6,6 +6,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Typography } from "@mui/material";
 
 /*const quizzes = [
     {
@@ -149,7 +150,9 @@ export default function PlatformScreen() {
                             platformSummary.quizzesInfo.map((data) =>
                                 <QuizCard key={data.id} {...data} />) :
                             <Box sx={{ marginTop: "50px", marginLeft: "50px" }}>
-                                <h2>No Quizzes to Display</h2>
+                                <Typography sx={{ width: 250 }}>
+                                    No Quizzes to Display
+                                </Typography>
                             </Box>
                         )}
                 </Grid>
