@@ -8,48 +8,23 @@ import {CommonTitle, ImageUpload} from "../components";
 import {UPDATE_BIO, UPDATE_USERNAME} from "../controllers/graphql/user-mutations";
 import {useMutation, useReactiveVar} from "@apollo/client";
 import {globalState} from "../state/UserState";
+import {quizDetailsVar} from "./CreateQuizScreen";
 
 
 export default function ProfileSettings(props) {
-    // When the privacy settings are confirmed, call updatePrivacySettings to perform the mutation.
-    // This is untested and intended as a starting point for the implementer.
-    let newBio = useReactiveVar(globalState).bio || '';  // the new privacy settings should be in here
+    let newBio = useReactiveVar(globalState).bio || '';
     let newUsername = useReactiveVar(globalState).username || '';
     const {userInfo} = props;  // passed from ProfileScreen
-    // const [value, setValue] = React.useState(newBio);
-
+    const bannerImgLabel = 'Banner Image';
+    const thumbnailImgLabel = 'Profile Image';
     const [username, setUsername] = useState(newUsername);
-    const [bio, setBio] = useState(newBio ? newBio : userInfo.bio);
+    const [bio, setBio] = useState(newBio);
     const [updateUsername] = useMutation(UPDATE_USERNAME, {variables: {username: newUsername}});
     const [updateBio] = useMutation(UPDATE_BIO, {variables: {bio: newBio}});
-    const [imageName, setImageName] = useState('');
-    const [image, setImage] = useState(null);
+    const [bannerImageName, setBannerImageName] = useState('');
+    const [bannerImage, setBannerImage] = useState(null);
     const [profileImageName, setProfileImageName] = useState('');
     const [profileImage, setProfileImage] = useState(null);
-
-    const handleImageUpload = (e) => {
-        setImageName(e.target.files[0].name);
-
-        var file = e.target.files[0];
-        const reader = new FileReader();
-        var url = reader.readAsDataURL(file);
-
-        reader.onloadend = function (e) {
-            setImage([reader.result]);
-        };
-    }
-
-    const handleProfileImageUpload = (e) => {
-        setProfileImageName(e.target.files[0].name);
-
-        var file = e.target.files[0];
-        const reader = new FileReader();
-        var url = reader.readAsDataURL(file);
-
-        reader.onloadend = function (e) {
-            setProfileImage(reader.result);
-        };
-    }
 
     const handleChangeUsername = async () => {
         newUsername = username;
@@ -69,13 +44,17 @@ export default function ProfileSettings(props) {
         window.location.reload(false);
     }
 
-    const handleChangeProfileImage = () => {
-
-    }
-
-    const handleChangeBannerImage = () => {
-
-    }
+    const handleImageUpload = (name, filename, data) => {
+        if (name === bannerImgLabel) {
+            setBannerImage(data);
+            setBannerImage(filename);
+        } else if (name === thumbnailImgLabel) {
+            setProfileImage(data);
+            setProfileImage(filename);
+        } else {
+            console.error(`CreateQuizForms.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+        }
+    };
 
     return (
         <Stack spacing={3} sx={{px: 5, pb: 5}}>
@@ -92,14 +71,12 @@ export default function ProfileSettings(props) {
             <Box>
                 <Button variant="contained" onClick={handleChangeBio}>CONFIRM</Button>
             </Box>
-            {/*<ImageUpload label={"Banner Image"} handleImageUpload={e => handleImageUpload(e)} image={image} imageName={imageName}/>*/}
-            {/*<ImageUpload label={"Thumbnail Image"} handleImageUpload={e => handleProfileImageUpload(e)} image={profileImage} imageName={profileImageName}/>*/}
+            <ImageUpload label={bannerImgLabel} onUpload={handleImageUpload}/>
+            <ImageUpload label={thumbnailImgLabel} onUpload={handleImageUpload}/>
             <Stack direction={"row"} spacing={2}>
                 <Button variant={"contained"}>CONFIRM</Button>
                 <Button variant={"outlined"} onClick={props.handleClose}>CANCEL</Button>
             </Stack>
-            {/*<img width={"300px"} src={image}/>*/}
-            {/*<img width={"300px"} src={profileImage}/>*/}
         </Stack>
     );
 }
