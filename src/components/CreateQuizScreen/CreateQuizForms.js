@@ -24,17 +24,16 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         quizDetailsVar(details);
     };
 
-    const handleImageUpload = (name, data) => {
+    const handleImageUpload = (name, filename, data) => {
         const newQuizDetails = { ...quizDetails };
-        console.log(`name: ${name}`);
-        console.log(name === bannerImgLabel);
-        console.log(data);
         if (name === bannerImgLabel) {
             newQuizDetails.bannerImgData = data;
+            newQuizDetails.bannerImgName = filename;
             console.log(newQuizDetails);
             quizDetailsVar(newQuizDetails);
         } else if (name === thumbnailImgLabel) {
             newQuizDetails.thumbnailImgData = data;
+            newQuizDetails.thumbnailImgName = filename;
             quizDetailsVar(newQuizDetails);
         } else {
             console.error(`CreateQuizForms.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
