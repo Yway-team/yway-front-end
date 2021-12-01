@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import { Stack, Box, Avatar, Typography } from '@mui/material'
 import TextField from '@mui/material/TextField';
 import { ColorPicker } from '../components';
@@ -6,14 +6,20 @@ import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { useParams } from 'react-router-dom';
-import Modal from '@mui/material/Modal';
+import SaveChangesModal from '../components/PlatformScreen/SaveChangesModal';
+import {Checkbox, FormLabel, Grid} from "@mui/material";
+
+import {CommonTitle, ConfirmationDialog} from "../components";
+import ImageUpload from '../components/ImageUpload'
+
+import TagsInput from '../components/TagsInput';
 
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { GET_PLATFORM_SETTINGS } from '../controllers/graphql/platform-queries';
-
-import { LabelTextField } from '../components';
 import { useMutation, useQuery } from '@apollo/client';
 import { UPDATE_PLATFORM_SETTINGS } from '../controllers/graphql/platform-mutations';
+
+import { LabelTextField } from '../components';
 
 export default function PlatformSettings() {
 
@@ -24,8 +30,15 @@ export default function PlatformSettings() {
     //     platformSummary = platformData.getPlatformSummary;
     // }
 
-    const { data: platformSettingsData } = useQuery(GET_PLATFORM_SETTINGS);
     const [updatePlatformSettings] = useMutation(UPDATE_PLATFORM_SETTINGS);
+    const saveNewPlatformSettings = async () => await updatePlatformSettings({ variables: {
+        platformSettings: {
+            title: tempPlatformName,
+            bannerImg: bannerImage,
+            thumbnailImg: avatarImage
+        } } })
+
+    const { data: platformSettingsData } = useQuery(GET_PLATFORM_SETTINGS);
 
     const tempData = {
         _id: "test",
@@ -42,18 +55,6 @@ export default function PlatformSettings() {
         backgroundColor: "orange",
     }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-      };
-
     const [tempPlatformName, setTempPlatformName] = useState(platformName)
     const [backgroundColor, setbackgroundColor] = useState(tempData.backgroundColor)
     const [bannerImage, setbannerImage] = useState(null)
@@ -68,6 +69,7 @@ export default function PlatformSettings() {
         setavatarImage(platformSettings.thumbnailImg);
     }
 
+    // MODAL MANAGEMENT
     const [open, setOpen] = useState(false)
     const handleOpen = () => {
         setOpen(true)
@@ -76,32 +78,38 @@ export default function PlatformSettings() {
         setOpen(false)
     }
 
+    // TAG MANAGEMENT
+    const tags = useRef([])
+    const handleAddTag = () => {
+        console.log(newTag)
+
+        if (newTag === '' || tags.current.includes(newTag)) {
+            return
+        }
+        tags.current.push(newTag)
+        setNewTag('');
+    }
+    const handleDeleteTag = tagToDelete => () => {
+        tags.current = tags.current.filter(tag=>tag!==tagToDelete)
+    }
+    const [newTag, setNewTag] = useState('')
+    const onNewTagChange = (tag) => {
+        setNewTag(tag);
+    }
+
+    // IMAGE UPLOAD MANAGEMENT
+    const handleImageUpload = (name, data) => {
+        if (name === "Banner Image"){
+            setbannerImage(data)
+        }
+        if (name === "Thumbnail Image"){
+            setavatarImage(data)
+        }
+    }
+
     return (
         <>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Stack sx={style} spacing={3}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Confirmation
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Are you sure you want to save changes?
-                    </Typography>
-                    <Stack direction="row" spacing={3}>
-                        <Button variant="contained" onClick={async () => await updatePlatformSettings({ variables: {
-                            platformSettings: {
-                                title: tempPlatformName,
-                                bannerImg: bannerImage,
-                                thumbnailImg: avatarImage
-                            } } })}>Submit</Button>
-                        <Button variant="contained">Cancel</Button>
-                    </Stack>
-                </Stack>
-            </Modal>
+            <SaveChangesModal open={open} handleOpen={handleOpen} handleClose={handleClose} saveNewPlatformSettings={saveNewPlatformSettings}/>
             <div style={{height: "200px", position:"relative", display: "flex", alignItems: "center"}}>
                 <div style={{height: "100%",width: "100%", overflow:"hidden", position: "absolute", top:"0px", zIndex: "-1"}}>
                     <img style={{width: "100%"}} alt='cover' src="https://picsum.photos/1000" />
@@ -117,29 +125,41 @@ export default function PlatformSettings() {
                         display: "relative",
                         }}
                         imgProps={{ style: { borderRadius: '50%' } }} />
-                <h2 style={{color:"black", fontSize:"35px", marginLeft: "20px"}}>{platformName}</h2>
+                {/* <h2 style={{color:"black", fontSize:"35px", marginLeft: "20px"}}>{platformName}</h2> */}
+                <Typography sx={{
+                    fontWeight: '700',
+                    fontSize: 35,
+                    color: 'black',
+                    ml: 5
+                }
+                }> {platformName}</Typography >
 
                 <Box sx={{display:"flex", alignItems: 'flex-end', position:"absolute", left: "0px", bottom: "0px", width:"100%"}}>
                 </Box>
             </div> 
             <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem"}} spacing={4}>
                 <Stack spacing={2}>
-                    <h2>Platform Settings</h2>
+                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                        Platform Settings
+                    </FormLabel>
                     <Stack direction="row" alignItems="baseline">
-                        <div style={{paddingRight: "10px"}}>
+                        {/* <div style={{paddingRight: "10px"}}>
                         Platform Names
                         </div>
-                        <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/>
+                        <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/> */}
+                        <LabelTextField label={"Platform Name"} value={tempPlatformName}
+                            onChange={(e)=>setTempPlatformName(e.target.value)}/>
                     </Stack>
                     <Box sx={{ display: 'flex' }}>
-                        <div>
-                        Platform Tags
-                        </div>
+                        <TagsInput tags={tags.current} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
+                                newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}/>
                     </Box>
                 </Stack>
 
                 <Stack spacing={2}>
-                    <h2>Platform Style</h2>
+                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                        Platform Style
+                    </FormLabel>
                     <Box sx={{ display: 'flex', alignItems: "center" }}>
                         <div>
                         Background Color
@@ -149,21 +169,21 @@ export default function PlatformSettings() {
                         </div>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems:"center" }}>
-                        <div style={{paddingRight: "10px"}}>
+                        {/* <div style={{paddingRight: "10px"}}>
                         Banner Image
                         </div>
-                        <TextField size="small" id="standard-basic" variant="standard" style={{position:"relative", top:"-5px"}} value={bannerImage} onChange={setbannerImage}/>
+                        <TextField size="small" id="standard-basic" variant="standard" style={{position:"relative", top:"-5px"}} value={bannerImage} onChange={setbannerImage}/> */}
+                        <ImageUpload onUpload={handleImageUpload} label={"Banner Image"} />
                     </Box>
                     <Box sx={{ display: 'flex',  alignItems:"center" }}>
-                        <div style={{paddingRight: "10px"}}>
-                        Avatar Image
-                        </div>
-                        <TextField size="small" id="standard-basic" variant="standard" style={{position:"relative", top:"-5px"}} value={avatarImage} onChange={setavatarImage}/>
+                        <ImageUpload onUpload={handleImageUpload} label={"Thumbnail Image"} />
                     </Box>
                 </Stack>
 
                 <Stack spacing={2}>
-                    <h2>Quiz Rules</h2>
+                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                        Quiz Rules
+                    </FormLabel>
                     <Box sx={{ display: 'flex', alignItems: "center" }}>
                         <TextField sx={{width:"30px"}} value="12" id="standard-basic" variant="standard"/>
                         <div>
