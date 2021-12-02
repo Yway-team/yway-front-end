@@ -8,6 +8,7 @@ import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Typography } from "@mui/material";
 import Header from '../components/PlatformScreen/Header';
+import ModeratorQuizCard from '../components/PlatformScreen/ModeratorQuizCard';
 
 /*const quizzes = [
     {
@@ -144,7 +145,7 @@ export default function PlatformScreen() {
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <QuizCard key={data.id} {...data} />) :
+                                <ModeratorQuizCard key={data.id} {...data} />) :
                             <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
