@@ -122,9 +122,9 @@ export default function CreateQuestionCard({ questionIndex, handleDeleteQuestion
                                 setAnswerOptionIds([...answerOptionsIds, uuidv4()]);
                                 updateQuestionsVar(question);
                             }}>Add Option</Button>
-                        <IconButton aria-label="duplicate question" sx={{ color: theme.palette.primary.main }}>
-                            <ContentCopyIcon />
-                        </IconButton>
+                        {/*<IconButton aria-label="duplicate question" sx={{ color: theme.palette.primary.main }}>*/}
+                        {/*    <ContentCopyIcon />*/}
+                        {/*</IconButton>*/}
                     </Stack>
                 </Grid>
             </CardContent>

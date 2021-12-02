@@ -27,6 +27,7 @@ export default function ProfilePrivacy(props) {
         newState.privacySettings = data.updatePrivacySettings;
         globalState(newState);
         console.log(newState);
+        window.location.reload(false);
     }
 
     const handleChange = (event) => {
