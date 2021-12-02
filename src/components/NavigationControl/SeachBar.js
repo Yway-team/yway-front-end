@@ -17,6 +17,21 @@ export default function SearchBar({ theme }) {
         return () => clearTimeout(timeOutId);
     }, [query]);
 
+
+    useEffect(() => {
+        const listener = event => {
+            if (event.code === "Enter") {
+                console.log("Enter key was pressed. Run your function.");
+                event.preventDefault();
+                document.activeElement.blur();
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, []);
+
     function handleSearch() {
         if (query !== '')
             history.push(`/search/${query}/${filter}`);
@@ -47,8 +62,11 @@ export default function SearchBar({ theme }) {
                         setQuery(event.target.value);
                     }
                 }
+                onFocus={() => {
+                    handleSearch();
+                }}
             />
-            <IconButton type="submit" sx={{ p: '3px' }} aria-label="search">
+            <IconButton sx={{ p: '3px' }} aria-label="search">
                 <SearchRounded sx={{ fill: theme.palette.grey['500'] }} />
             </IconButton>
         </Paper>);

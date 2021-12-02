@@ -8,6 +8,7 @@ import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Typography } from "@mui/material";
 import Header from '../components/PlatformScreen/Header';
+import ModeratorQuizCard from '../components/PlatformScreen/ModeratorQuizCard';
 
 /*const quizzes = [
     {
@@ -95,11 +96,7 @@ export default function PlatformScreen() {
     const history = useHistory();
 
     const { data: platformData, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
-
-    // const { data: moreData } = usePrivilegedQuery(GET_PLATFORM_BY_ID, { variables: { id: "618c41ee4d94eb6ad380f8f1" } });
-    // if (moreData){
-    //     console.log(moreData)
-    // }
+    console.log(platformData)
 
     let platformSummary;
     if (platformData) {
@@ -113,7 +110,7 @@ export default function PlatformScreen() {
     return (
         <>
             <Grid container spacing={0}>
-                <Grid item xs={12}>
+                <Grid item xs={12} spacing={0}>
                     <Box style={{position: "relative"}}>
                         <Header platformName={platformName}/>
                         <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
@@ -139,12 +136,17 @@ export default function PlatformScreen() {
                             </Box>
                         </Stack>
                     </Box>
+                    <Box style={{ minHeight: "30px", margin: "30px" }}>
+                        <Typography>
+                            {platformSummary? platformSummary.description: ""}
+                        </Typography>
+                    </Box>
                 </Grid>
-                <Grid item container xs={8} spacing={0}>
+                <Grid item container xs={9} spacing={0}>
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <QuizCard key={data.id} {...data} />) :
+                                <ModeratorQuizCard key={data.id} {...data} />) :
                             <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
@@ -152,8 +154,8 @@ export default function PlatformScreen() {
                             </Box>
                         )}
                 </Grid>
-                <Grid item xs={3} sx={{ marginTop: "2rem" }}>
-                    <MiniLeaderboard width="350px" />
+                <Grid item xs={3} sx={{ marginTop: "2rem" }} spacing={0}>
+                    <MiniLeaderboard width="310px" platformName={platformName}/>
                 </Grid>
             </Grid>
         </>
