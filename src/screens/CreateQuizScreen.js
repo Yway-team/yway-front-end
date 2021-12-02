@@ -70,6 +70,7 @@ export default function CreateQuizScreen({draft, edit}) {
             details.shuffleAnswers = quizInfo.shuffleAnswers;
             details.shuffleQuestions = quizInfo.shuffleQuestions;
             details.color = quizInfo.color;
+            details._id = draftId;
             quizDetailsVar(details);
 
 

@@ -54,6 +54,7 @@ function QuizCard({
                       ownerAvatar,
                       rating,
                       createdAt,
+                      updatedAt,
                       platformId,
                       platformName,
                       platformThumbnail,
@@ -96,7 +97,6 @@ function QuizCard({
 
     const menuTypography = (text) => <Typography
         sx={{fontWeight: '500', fontSize: 14, color: '#858585', my: 1}}>{text}</Typography>;
-
 
     return (
         <>
@@ -173,7 +173,7 @@ function QuizCard({
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
                                     sx={{fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right'}}>
-                                    <TimeAgoFromNow dateIn={createdAt}/> </Typography>
+                                    <TimeAgoFromNow dateIn={createdAt || updatedAt}/> </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{height: 14, width: 14}}/>

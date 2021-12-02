@@ -9,6 +9,7 @@ export default function DraftsScreen() {
     if (draftData) {
         drafts = draftData.getDraftsInfo;
     }
+    if (drafts) console.log(drafts);
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='DRAFTS' />

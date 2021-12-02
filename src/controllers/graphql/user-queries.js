@@ -70,7 +70,7 @@ export const GET_DRAFTS_INFO = gql`
         getDraftsInfo {
             _id
             bannerImg
-            createdAt
+            updatedAt
             description
             numQuestions
             tags
