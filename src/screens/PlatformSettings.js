@@ -34,15 +34,18 @@ export default function PlatformSettings() {
 
     console.log(platformName)
     console.log(platformSettingsData)
-    const [effectiveSettings, setEffectiveSettings] = useState({
+    let [effectiveSettings, setEffectiveSettings] = useState({
         bannerImg: defaultImages.bannerImg,
         thumbnailImg: defaultImages.thumbnailImg,
-        platformName: platformName,
+        title: platformName,
         creatorPoints: 0,
+        updated: false
     })
-    if (platformSettingsData){
-        setEffectiveSettings(platformSettingsData.getPlatformSettings)
+    if (platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
+        console.log(`updated using ${platformSettingsData.getPlatformSettings}`)
+        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
     }
+    console.log(effectiveSettings)
 
     const tempData = {
         _id: "test",
@@ -58,18 +61,6 @@ export default function PlatformSettings() {
         bannedUsers: "test",
         backgroundColor: "orange",
     }
-
-    const [tempPlatformName, setTempPlatformName] = useState(platformName)
-    const [onlyModerators, setonlyModerators] = useState(tempData.onlyModSubmissions)
-
-    let platformSettings = {
-        bannerImg: "test",
-        thumbnailImg: "test"};
-    // if (platformSettingsData) {
-    //     platformSettings = platformSettingsData.getPlatformSettings;
-    //     setbannerImage(platformSettings.bannerImg);
-    //     setavatarImage(platformSettings.thumbnailImg);
-    // }
 
     // TAG MANAGEMENT
     const tags = useRef([])
@@ -102,9 +93,12 @@ export default function PlatformSettings() {
     }
 
     // Color Picker functions
-    const [backgroundColor, setbackgroundColor] = useState(tempData.backgroundColor)
     const handleSetColor = (color) => {
-        setbackgroundColor(color)
+        console.log("updating color to")
+        console.log(color)
+        setEffectiveSettings(prev=>{
+            return {...prev, color}
+        })
     }
 
     // Confirmation Dialog
@@ -126,10 +120,10 @@ export default function PlatformSettings() {
         <>
             <div style={{height: "200px", position:"relative", display: "flex", alignItems: "center"}}>
                 <div style={{height: "100%",width: "100%", overflow:"hidden", position: "absolute", top:"0px", zIndex: "-1"}}>
-                    <img style={{width: "100%"}} alt='cover' src={effectiveSettings.bannerImg} />
+                    <img style={{width: "100%"}} alt='cover' src={effectiveSettings.bannerImg?effectiveSettings.bannerImg:defaultImages.bannerImg} />
                     <div style={{backgroundColor:"#c2c2c250", width:"100%", height: "100%", position:"absolute", top:"0", left:"0"}}></div>
                 </div>
-                <Avatar alt="avatar" src={effectiveSettings.thumbnailImg}
+                <Avatar alt="avatar" src={effectiveSettings.thumbnailImg?effectiveSettings.thumbnailImg:defaultImages.thumbnailImg}
                         sx={{
                         height: 150,
                         width: 150,
@@ -150,7 +144,7 @@ export default function PlatformSettings() {
                 <Box sx={{display:"flex", alignItems: 'flex-end', position:"absolute", left: "0px", bottom: "0px", width:"100%"}}>
                 </Box>
             </div> 
-            <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem"}} spacing={4}>
+            <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem", minHeight:"700px"}} spacing={4}>
                 <Stack spacing={2}>
                     <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
                         Platform Settings
@@ -160,10 +154,10 @@ export default function PlatformSettings() {
                         Platform Names
                         </div>
                         <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/> */}
-                        <LabelTextField label={"Platform Name"} value={effectiveSettings.platformName}
+                        <LabelTextField label={"Platform Name"} value={effectiveSettings.title}
                             onChange={(e)=>{
                                 setEffectiveSettings(prev=>{
-                                    return {...prev, platformName: e.target.value}
+                                    return {...prev, title: e.target.value}
                                 })
                             }}/>
                     </Stack>
@@ -178,7 +172,7 @@ export default function PlatformSettings() {
                         Platform Style
                     </FormLabel>
                     <Box sx={{ display: 'flex', alignItems: "center" }}>
-                        <ColorPicker label={"Background Color"} colorState={backgroundColor}
+                        <ColorPicker label={"Background Color"} colorState={effectiveSettings.color}
                                     onChangeComplete={color => handleSetColor(color)}/>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems:"center" }}>
@@ -194,15 +188,15 @@ export default function PlatformSettings() {
                         Quiz Rules
                     </FormLabel>
                     <LabelTextField label={"Required Creator Points"}
-                                    value={effectiveSettings.creatorPoints}
+                                    value={effectiveSettings.minCreatorPoints}
                                     onChange={(e) => {
                                         setEffectiveSettings(prev=>{
-                                            return {...prev, prev}
+                                            return {...prev, minCreatorPoints: e.target.value}
                                         })
                                     }}
                                     type={"number"}/>
                     <Box sx={{ display: 'flex' }}>
-                        <FormControlLabel control={<Switch defaultChecked />} label="Only allow current moderators to submit quizzes" />
+                        <FormControlLabel control={<Switch />} label="Only allow current moderators to submit quizzes" />
                     </Box>
                     <Stack direction="row" spacing={3}>
                         <Button variant="contained" onClick={()=>setPublishConfirmOpen(true)}>Submit</Button>
