@@ -33,7 +33,7 @@ import { globalState } from '../state/UserState';
 
 
 
-function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, description }) {
+function PlatformCard({ _id, title, thumbnailImg, favorites, numQuizzes, description }) {
     const history = useHistory();
     const favoritesList = useReactiveVar(globalState).favorites || [];
     const favorite = initFavorite(favoritesList);
@@ -90,7 +90,7 @@ function PlatformCard({ _id, title, profileImage, favorites, numQuizzes, descrip
                 <CardContent sx={{ p: 1 }}>
                     <Grid container direction='row' justifyContent='flex-start' alignItems='center' spacing={0} >
                         <Grid xs={3} item>
-                            <Avatar alt="creator-avatar" src={profileImage} sx={{ height: 100, width: 100 }} />
+                            <Avatar alt="creator-avatar" src={thumbnailImg} sx={{ height: 100, width: 100 }} />
                         </Grid>
                         <Grid xs={9} item container direction='column' justifyContent='flex-start' alignItems='baseline' sx={{ height: 110 }} flexGrow={1}  >
                             <Grid xs={2} container item direction='row' alignItems='center' justifyContent='space-between'>
