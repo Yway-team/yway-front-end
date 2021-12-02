@@ -6,19 +6,25 @@ import {
     CardActionArea,
     Stack
 } from '@mui/material';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
-function FriendCard({ _id, avatar, name }) {
+function FriendCard({ _id, avatar, username }) {
+    const history = useHistory();
     return (
-        <Card sx={{
-            width: 200, elevation: 0, boxShadow: 'none', height: 140, mr: 2, my: 2,
-        }}>
+        <Card
+            onClick={() => {
+                history.push(`/user/${_id}`);
+            }}
+            sx={{
+                width: 200, elevation: 0, boxShadow: 'none', height: 140, mr: 2, my: 2,
+
+            }}>
             <CardActionArea>
                 <CardContent sx={{ p: 1 }}>
                     <Stack justifyContent='center' alignItems='center'>
                         <Avatar alt="friend-avatar" src={avatar} sx={{ height: 80, width: 80 }} />
-                        <Typography sx={{ fontSize: 16, fontWeight: 600, my: 2 }}> {name}  </Typography>
+                        <Typography sx={{ fontSize: 16, fontWeight: 600, my: 2 }}> {username}  </Typography>
                     </Stack>
                 </CardContent>
             </CardActionArea>

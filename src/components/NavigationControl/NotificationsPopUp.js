@@ -1,52 +1,51 @@
 import {
-    Avatar,
-    Dialog, DialogContent,
-    DialogTitle, Grid,
     IconButton,
     List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
     Typography,
     Menu,
-    MenuItem
+    Box,
+    Avatar
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/NotificationsOutlined";
 import { useState } from 'react';
-import HistoryCard from "../HistoryCard";
-import FriendRequestCard from "../FriendRequestCard";
+import NotificationCard from "../FriendRequestCard";
+
 
 function NotificationsPopUp() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const [read, setRead] = useState(false);
 
     const handleClickOpen = (event) => {
         setAnchorEl(event.currentTarget);
+        if (!read) {
+            setRead(true);
+        }
     };
 
     const handleClose = () => {
         setAnchorEl(null);
     }
 
-    const menuTypography = (text) => <Typography
-        sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
+    const numberOfNotifications = notifications.length;
+
 
     return (
         <>
-            <IconButton id="notification-button"
-                onClick={handleClickOpen}>
-                <NotificationsIcon sx={{ width: 25, height: 25 }} />
-            </IconButton>
-            {/* <Dialog onClose={handleClose} open={open}>
-                <DialogTitle>NOTIFICATIONS</DialogTitle>
-                <DialogContent>
-                    <Grid container justifyContent='flex-start' mb={1}>
-                        {friends.map((data) => <FriendRequestCard key={data._id}{...data} />)}
-                    </Grid>
-                </DialogContent>
+            <Box sx={{ position: 'relative' }}>
+                <IconButton id="notification-button"
+                    onClick={handleClickOpen} >
+                    <NotificationsIcon sx={{ width: 25, height: 25 }} />
+                </IconButton>
+                {!read ?
+                    <Avatar sx={{ position: 'absolute', top: 2, right: -1, height: 20, width: 20, backgroundColor: 'primary.main' }}>
+                        <Typography fontSize={14}>
+                            {numberOfNotifications}
+                        </Typography>
+                    </Avatar> : null
+                }
 
-            </Dialog> */}
-
+            </Box>
             <Menu
                 anchorEl={anchorEl}
                 open={open}
@@ -95,9 +94,8 @@ function NotificationsPopUp() {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 
                 <List>
-                    {friends.map((data) =>
-
-                        <FriendRequestCard key={data._id}{...data} />
+                    {notifications.map((data) =>
+                        <NotificationCard key={data._id}{...data} />
 
                     )}
                 </List>
@@ -107,32 +105,43 @@ function NotificationsPopUp() {
 
 }
 
-const friends = [
+const notifications = [
     {
         _id: 1,
         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'SoekindoGName123',
+        type: 'friendRequest',
+        createdAt: Date.now()
+    },
+    {
+        _id: 1,
+        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+        name: 'SoekindoGName123',
+        type: 'friendRequest',
+        createdAt: Date.now()
     },
     {
         _id: 2,
         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'SoekindoGName123',
+        type: 'friendRequest',
+        createdAt: Date.now()
     },
     {
         _id: 3,
         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'SoekindoGName123',
+        type: 'friendRequest',
+        createdAt: Date.now()
     },
     {
         _id: 4,
         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'SoekindoGName123',
+        type: 'friendRequest',
+        createdAt: Date.now()
     },
-    {
-        _id: 5,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    }
+
 ]
 
 export default NotificationsPopUp;

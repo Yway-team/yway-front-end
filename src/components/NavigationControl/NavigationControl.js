@@ -113,6 +113,8 @@ function NavigationControl(props) {
         })
     }, [history])
 
+
+
     const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
             flexGrow: 1,
