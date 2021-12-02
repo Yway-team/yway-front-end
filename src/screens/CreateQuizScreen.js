@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Button, Grid, Stack} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
@@ -48,30 +48,37 @@ export default function CreateQuizScreen({draft, edit}) {
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
-    const [getDraftInfo] = useLazyQuery(GET_DRAFT);
+    const [getDraft] = useLazyQuery(GET_DRAFT);
     const params = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
-    // console.log('quizid', quizId);
-    // console.log(edit)
-    // const {quizData} = useQuery(GET_QUIZ_INFO, {variables: {quizId: quizId}});
+    let quizInfo;
 
     if (draft && !gotQuizInfo) {
-        //fetch draft details here and set it in questionVar and quizDetailsVar
-        //const draftInfo = {
-        //                     _id: draft._id,
-        //                     bannerImg: draft.bannerImg || DEFAULT_BANNER_IMAGE,
-        //                     createdAt: draft.createdAt.toString(),
-        //                     description: draft.description,
-        //                     numQuestions: draft.questions.length,
-        //                     platformName: draft.platformName,
-        //                     tags: draft.tags,
-        //                     timeToAnswer: draft.timeToAnswer,
-        //                     title: draft.title
-        //                 };
         const { draftId } = params;
-        getDraftInfo({ variables: {draftId: draftId } }).then(({ data }) => {
-            const draftInfo = data.getDraft;
-            !draftInfo || quizDetailsVar(draftInfo);
+        getDraft({variables: {draftId: draftId}}).then(({data}) => {
+            quizInfo = data.getDraft;
+            console.log(quizInfo);
+            let quizDetails = quizDetailsVar();
+            let details = {...quizDetails};
+            details.platformName = quizInfo.platformName;
+            details.title = quizInfo.title;
+            details.description = quizInfo.description;
+            details.tags = quizInfo.tags ? quizInfo.tags : [];
+            details.bannerImgData = quizInfo.bannerImg;
+            details.thumbnailImgData = quizInfo.thumbnailImg;
+            details.timeToAnswer = quizInfo.timeToAnswer;
+            details.shuffleAnswers = quizInfo.shuffleAnswers;
+            details.shuffleQuestions = quizInfo.shuffleQuestions;
+            details.color = quizInfo.color;
+            quizDetailsVar(details);
+
+
+            let questions = questionsVar();
+            questions = quizInfo.questions;
+            setQuestions(quizInfo.questions);
+            questionsVar(questions);
+
+            console.log(quizDetails);
         });
         setGotQuizInfo(true);
     }
@@ -79,25 +86,26 @@ export default function CreateQuizScreen({draft, edit}) {
         const { quizId } = params;
         //fetch quiz details here and set it in questionVar and quizDetailsVar
         getQuizEditInfo({ variables: { quizId: quizId } }).then(({ data }) => {
-            const quizInfo = data.getQuizEditInfo;
-            !quizInfo || quizDetailsVar(quizInfo);
+            if (data) quizInfo = data.data.getQuizEditInfo;
+            quizInfo = data.getQuizEditInfo;
+            console.log(quizInfo);
+            console.log(data);
+            let quizDetails = quizDetailsVar();
+            let details = {...quizDetails};
+            details.platformName = quizInfo.platformName;
+            details.title = quizInfo.title;
+            details.description = quizInfo.description;
+            details.tags = quizInfo.tags ? quizInfo.tags : [];
+            details.bannerImgData = quizInfo.bannerImg;
+            details.thumbnailImgData = quizInfo.thumbnailImg;
+            details.timeToAnswer = quizInfo.timeToAnswer;
+            details.shuffleAnswers = quizInfo.shuffleAnswers;
+            details.shuffleQuestions = quizInfo.shuffleQuestions;
+            details.color = quizInfo.color;
+            quizDetailsVar(details);
+            // quizDetailsVar(quizInfo);
         });
         setGotQuizInfo(true);
-        //    getQuizInfo(quizId: $quizId) {
-        //             bannerImg
-        //             color
-        //             createdAt
-        //             description
-        //             numQuestions
-        //             ownerAvatar
-        //             ownerId
-        //             ownerUsername
-        //             platformId
-        //             platformName
-        //             platformThumbnail
-        //             rating
-        //             title
-        //         }
     }
 
 
@@ -199,31 +207,35 @@ export default function CreateQuizScreen({draft, edit}) {
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                     <Grid container item direction="column" sx={{py: 2}} spacing={2}>
                         <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions}
-                                         handleUpdateNumQuestions={handleUpdateNumQuestions}/>
-                        <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion}/>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
-                                onClick={() => {
-                                    let questions = questionsVar();
-                                    questions.push({
-                                        id: uuidv4(),
-                                        description: '',
-                                        answerOptions: ['', ''],
-                                        correctAnswerIndex: -1
-                                    });
-                                    questionsVar(questions);
-                                    setNumQuestions(numQuestions + 1);
-                                    setQuestions([...questionsVar()]);
-                                    setUpdateNumQuestions(!updateNumQuestions);
-                                }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button>
+                                         handleUpdateNumQuestions={handleUpdateNumQuestions} edit={edit}/>
+                        {!edit ? <><CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion}/>
+                            <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>}
+                                    sx={{alignSelf: "flex-start"}}
+                                    onClick={() => {
+                                        let questions = questionsVar();
+                                        questions.push({
+                                            id: uuidv4(),
+                                            description: '',
+                                            answerOptions: ['', ''],
+                                            correctAnswerIndex: -1
+                                        });
+                                        questionsVar(questions);
+                                        setNumQuestions(numQuestions + 1);
+                                        setQuestions([...questionsVar()]);
+                                        setUpdateNumQuestions(!updateNumQuestions);
+                                    }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button></> : <Fragment/>}
+
                         <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40, width: 700}}
                                justifyContent='space-between'>
-                            <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
-                            <Stack direction='row' spacing={2}>
-                                <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
-                                <Button variant={"contained"} onClick={togglePublishConfirmOpen}
-                                    // type={"submit"}
-                                >PUBLISH</Button>
-                            </Stack>
+                            {edit ? <> <Stack direction='row' spacing={2}>
+                                <Button variant={"contained"} onClick={togglePublishConfirmOpen}>SAVE CHANGES</Button>
+                                <Button variant={"contained"}>CANCEL</Button></Stack></> : <><Button
+                                variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
+                                <Stack direction='row' spacing={2}>
+                                    <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
+                                    <Button variant={"contained"} onClick={togglePublishConfirmOpen}
+                                    >PUBLISH</Button>
+                                </Stack></>}
                         </Stack>
                     </Grid>
                 </form>

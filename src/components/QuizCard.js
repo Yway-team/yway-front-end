@@ -22,7 +22,7 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import {useMutation} from '@apollo/client';
 import {DELETE_QUIZ} from '../controllers/graphql/quiz-mutations';
 import {useHistory} from 'react-router-dom';
-import { DELETE_DRAFT } from '../controllers/graphql/user-mutations';
+import {DELETE_DRAFT} from '../controllers/graphql/user-mutations';
 
 
 // quizCard - All necessary information for a summarized display of the platform.
@@ -90,7 +90,7 @@ function QuizCard({
     }
 
     const handleDeleteDraft = async () => {
-        await deleteDraft({ variables: { draftId: _id } });
+        await deleteDraft({variables: {draftId: _id}});
         await refetch();
     }
 
@@ -162,7 +162,7 @@ function QuizCard({
                         </Box>
                         <Grid container sx={{mt: 1}} justifyContent='space-between' spacing={1}>
                             <Grid item container xs={6} alignItems='center'>
-                                <img src={logoIcon} style={{height: 15}} alt='' />
+                                <img src={logoIcon} style={{height: 15}} alt=''/>
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
@@ -344,12 +344,12 @@ function QuizCard({
                             anchorOrigin={{horizontal: "right", vertical: "bottom"}}>
 
                             <MenuItem onClick={() => {
-                                draft ? history.push(`quiz/create/${_id}`) : history.push(`/quiz/edit/${_id}`);
+                                history.push(draft ? `/quiz/create/${_id}` : `/quiz/edit/${_id}`);
                             }}>
                                 <ListItemIcon>
                                     <EditOutlined/>
                                 </ListItemIcon>
-                                {menuTypography(draft ? 'Edit Draft' :'Edit Quiz')}
+                                {menuTypography(draft ? 'Edit Draft' : 'Edit Quiz')}
                             </MenuItem>
 
                             <MenuItem>
