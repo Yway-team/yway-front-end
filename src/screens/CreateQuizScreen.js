@@ -9,7 +9,7 @@ import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestio
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
 import {useHistory, useParams} from 'react-router-dom';
 import {globalState} from "../state/UserState";
-import {GET_QUIZ_INFO} from "../controllers/graphql/quiz-queries";
+import {GET_QUIZ_EDIT_INFO} from "../controllers/graphql/quiz-queries";
 import {GET_DRAFTS_INFO} from "../controllers/graphql/user-queries";
 
 
@@ -48,7 +48,7 @@ export default function CreateQuizScreen({draftId, edit}) {
     const [numQuestions, setNumQuestions] = useState(questionsVar().length);
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
-    const [getQuizInfo] = useLazyQuery(GET_QUIZ_INFO);
+    const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
     const [getDraftInfo] = useLazyQuery(GET_DRAFTS_INFO);
     const {quizId} = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
@@ -74,33 +74,33 @@ export default function CreateQuizScreen({draftId, edit}) {
         console.log(draftsData);
     }
 
-    // useEffect(() => {
-        if (edit && !gotQuizInfo) {
-            //fetch quiz details here and set it in questionVar and quizDetailsVar
-            const {data} = getQuizInfo({variables: {quizId: quizId}});
+    if (edit && !gotQuizInfo) {
+        //fetch quiz details here and set it in questionVar and quizDetailsVar
+        getQuizEditInfo({ variables: { quizId: quizId } }).then(result => {
+            let data;
+            if (result) data = result.data;
+            const quizInfo = data.getQuizEditInfo;
+            console.log(quizInfo);
             console.log(data);
-
-            if (data){
-                console.log(data.getQuizInfo);
-            }
-            setGotQuizInfo(true);
-            //    getQuizInfo(quizId: $quizId) {
-            //             bannerImg
-            //             color
-            //             createdAt
-            //             description
-            //             numQuestions
-            //             ownerAvatar
-            //             ownerId
-            //             ownerUsername
-            //             platformId
-            //             platformName
-            //             platformThumbnail
-            //             rating
-            //             title
-            //         }
-        }
-    // })
+            quizDetailsVar(quizInfo);
+        });
+        setGotQuizInfo(true);
+        //    getQuizInfo(quizId: $quizId) {
+        //             bannerImg
+        //             color
+        //             createdAt
+        //             description
+        //             numQuestions
+        //             ownerAvatar
+        //             ownerId
+        //             ownerUsername
+        //             platformId
+        //             platformName
+        //             platformThumbnail
+        //             rating
+        //             title
+        //         }
+    }
 
 
     const togglePublishConfirmOpen = () => {
