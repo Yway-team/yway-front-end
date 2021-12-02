@@ -128,19 +128,17 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
                 Questions
             </FormLabel>
         </Grid>
-        <Grid item>
-            {!edit ? <LabelTextField label={"Number of Questions"}
-                                     value={numQuestionsText}
-                                     onChange={e => {
-                                         const value = Number(e.target.value);
-                                         if (value >= 0 && value <= MAX_QUESTIONS) {
-                                             setNumQuestionsText(value);
-                                         }
-                                     }}
-                                     onBlur={() => handleUpdateNumQuestions(numQuestionsText)}
-                                     type={"number"}/> : <Fragment/>}
-        </Grid>
-        <Grid item>
+
+        {!edit ? <> <Grid item> <LabelTextField label={"Number of Questions"}
+                                                value={numQuestionsText}
+                                                onChange={e => {
+                                                    const value = Number(e.target.value);
+                                                    if (value >= 0 && value <= MAX_QUESTIONS) {
+                                                        setNumQuestionsText(value);
+                                                    }
+                                                }}
+                                                onBlur={() => handleUpdateNumQuestions(numQuestionsText)}
+                                                type={"number"}/> </Grid> <Grid item>
             <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
                             value={quizDetails.timeToAnswer ? quizDetails.timeToAnswer : 10}
                             onChange={e => {
@@ -149,38 +147,40 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
                                 quizDetailsVar(details);
                             }}/>
         </Grid>
-        <Grid item>
-            <FormControlLabel label="Shuffle Questions" labelPlacement="start"
-                              style={{
-                                  padding: 0,
-                                  marginLeft: 0,
-                                  width: 280,
-                                  justifyContent: "space-between"
-                              }}
-                              checked={quizDetails.shuffleQuestions}
-                              control={<Checkbox onChange={e => {
-                                  let details = {...quizDetails};
-                                  details.shuffleQuestions = e.target.checked;
-                                  quizDetailsVar(details);
-                              }}/>}>
-            </FormControlLabel>
-        </Grid>
-        <Grid item>
-            <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
-                              style={{
-                                  padding: 0,
-                                  marginLeft: 0,
-                                  width: 280,
-                                  justifyContent: "space-between"
-                              }}
-                              checked={quizDetails.shuffleAnswers}
-                              control={<Checkbox onChange={e => {
-                                  let details = {...quizDetails};
-                                  details.shuffleAnswers = e.target.checked;
-                                  quizDetailsVar(details);
-                              }}/>}>
-            </FormControlLabel>
-        </Grid>
+            <Grid item>
+                <FormControlLabel label="Shuffle Questions" labelPlacement="start"
+                                  style={{
+                                      padding: 0,
+                                      marginLeft: 0,
+                                      width: 280,
+                                      justifyContent: "space-between"
+                                  }}
+                                  checked={quizDetails.shuffleQuestions}
+                                  control={<Checkbox onChange={e => {
+                                      let details = {...quizDetails};
+                                      details.shuffleQuestions = e.target.checked;
+                                      quizDetailsVar(details);
+                                  }}/>}>
+                </FormControlLabel>
+            </Grid>
+            <Grid item>
+                <FormControlLabel label="Shuffle Answer Options" labelPlacement="start"
+                                  style={{
+                                      padding: 0,
+                                      marginLeft: 0,
+                                      width: 280,
+                                      justifyContent: "space-between"
+                                  }}
+                                  checked={quizDetails.shuffleAnswers}
+                                  control={<Checkbox onChange={e => {
+                                      let details = {...quizDetails};
+                                      details.shuffleAnswers = e.target.checked;
+                                      quizDetailsVar(details);
+                                  }}/>}>
+                </FormControlLabel>
+            </Grid></> : <Fragment/>}
+
+
         <Grid item>
             <ColorPicker label={"Color Style"} colorState={quizDetails.color}
                          onChangeComplete={color => handleSetColor(color)}/>
