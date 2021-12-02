@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +52,13 @@ export default function MiniLeaderboard({width}) {
         <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
           Leaderboards
         </Typography>
+      </Box>
+      <Box sx={{paddingLeft: "5%"}}>
+        <Button>
+          <Typography sx={{fontSize:"15px", color: "blue"}}>
+            View Full Leaderboard >>
+          </Typography>
+        </Button>
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
