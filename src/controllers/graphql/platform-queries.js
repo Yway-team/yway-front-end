@@ -18,8 +18,10 @@ export const GET_PLATFORM_SUMMARY = gql`
         getPlatformSummary(title: $title) {
             _id
             bannerImg
+            color
             description
             favorites
+            moderator
             numQuizzes
             numQuestions
             quizzesInfo {
@@ -37,6 +39,7 @@ export const GET_PLATFORM_SUMMARY = gql`
                 rating
                 title
             }
+            tags
             thumbnailImg
         }
     }
