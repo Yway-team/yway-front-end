@@ -11,3 +11,4 @@ export { default as PlatformSettings } from './PlatformSettings';
 export { default as DraftsScreen } from './DraftsScreen';
 export { default as ProfileSettings } from './ProfileSettings';
 export { default as SearchResultsScreen } from './SearchResultsScreen';
+export { default as FullLeaderboard } from './FullLeaderboard';

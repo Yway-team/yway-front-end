@@ -23,7 +23,8 @@ import {
     DraftsScreen,
     PlatformScreen,
     PlatformSettings,
-    SearchResultsScreen
+    SearchResultsScreen,
+    FullLeaderboard
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl/NavigationControl'
@@ -139,6 +140,9 @@ export default function App() {
                             </Route>
                             <Route path="/platformSettings/:platformName">
                                 <PlatformSettings />
+                            </Route>
+                            <Route path="/leaderboard/:platformName">
+                                <FullLeaderboard />
                             </Route>
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
