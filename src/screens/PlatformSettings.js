@@ -41,7 +41,7 @@ export default function PlatformSettings() {
         creatorPoints: 0,
         updated: false
     })
-    if (platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
+    if (platformSettingsData && platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
         console.log(`updated using ${platformSettingsData.getPlatformSettings}`)
         setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
     }
