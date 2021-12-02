@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/NotificationsOutlined";
 import { useState } from 'react';
-import NotificationCard from "../FriendRequestCard";
+import NotificationCard from "../NotificationCard";
 
 
 function NotificationsPopUp() {
@@ -107,7 +107,7 @@ function NotificationsPopUp() {
 
 const notifications = [
     {
-        _id: 1,
+        _id: 0,
         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
         name: 'SoekindoGName123',
         type: 'friendRequest',
