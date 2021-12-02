@@ -25,7 +25,7 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
     };
 
     const handleImageUpload = (name, filename, data) => {
-        const newQuizDetails = { ...quizDetails };
+        const newQuizDetails = {...quizDetails};
         if (name === bannerImgLabel) {
             newQuizDetails.bannerImgData = data;
             newQuizDetails.bannerImgName = filename;
@@ -40,6 +40,23 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         }
         console.log(quizDetailsVar());
     };
+
+    const handleRemoveImage = (name) => {
+        const newQuizDetails = {...quizDetails};
+        if (name === bannerImgLabel) {
+            newQuizDetails.bannerImgData = null;
+            newQuizDetails.bannerImgName = '';
+            console.log(newQuizDetails);
+            quizDetailsVar(newQuizDetails);
+        } else if (name === thumbnailImgLabel) {
+            newQuizDetails.thumbnailImgData = null;
+            newQuizDetails.thumbnailImgName = '';
+            quizDetailsVar(newQuizDetails);
+        } else {
+            console.error(`CreateQuizForms.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+        }
+        console.log(quizDetailsVar());
+    }
 
     const handleAddTag = () => {
         if (newTag === '' || quizDetails.tags.includes(newTag)) {
@@ -98,10 +115,10 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
             </TagsInput>
         </Grid>
         <Grid item>
-            <ImageUpload onUpload={handleImageUpload} label={bannerImgLabel} />
+            <ImageUpload onUpload={handleImageUpload} label={bannerImgLabel} onRemove={handleRemoveImage}/>
         </Grid>
         <Grid item>
-            <ImageUpload onUpload={handleImageUpload} label={thumbnailImgLabel} />
+            <ImageUpload onUpload={handleImageUpload} label={thumbnailImgLabel} onRemove={handleRemoveImage}/>
         </Grid>
         <Grid item marginTop={4}>
             <FormLabel style={{

@@ -1,10 +1,10 @@
 import {IconButton, Stack, TextField, Typography} from '@mui/material';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import CloseIcon from "@mui/icons-material/Close";
-import {useState} from 'react';
+import {Fragment, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
 
-export default function ImageUpload({ label, onUpload }) {
+export default function ImageUpload({label, onUpload, onRemove}) {
     const [imageName, setImageName] = useState('');
     const [image, setImage] = useState(null);
 
@@ -24,6 +24,7 @@ export default function ImageUpload({ label, onUpload }) {
     };
 
     const handleRemoveImage = (e) => {
+        onRemove(label);
         setImageName('');
         setImage(null);
     }
@@ -47,14 +48,14 @@ export default function ImageUpload({ label, onUpload }) {
                                         component='span'>
                                 <IosShareIcon/>
                             </IconButton>
+                        </label>
+                        {image ?
                             <IconButton color='primary' onClick={handleRemoveImage}>
                                 <CloseIcon/>
-                            </IconButton>
-                        </label>
+                            </IconButton> : <Fragment/>}
                     </Stack>
-                    <img width={'300px'} src={image} alt='' />
+                    <img width={'300px'} src={image} alt=''/>
                 </Stack>
-
             </Stack>
         </>
     );
