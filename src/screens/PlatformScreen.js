@@ -131,25 +131,39 @@ export default function PlatformScreen() {
                                 bottom: "-30%"
                             }}
                             imgProps={{ style: { borderRadius: '50%' } }} />
-                        <h2 style={{ color: "white", fontSize: "50px", marginLeft: "30px" }}>{platformName}</h2>
+                        <Typography style={{ color: "black", fontSize: "50px", marginLeft: "30px" }}>
+                            {platformName}
+                        </Typography>
 
                         <Box sx={{ display: "flex", alignItems: 'flex-end', position: "absolute", left: "0px", bottom: "0px", width: "100%" }}>
                         </Box>
                     </Box>
                     <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
-                            <Box style={{ whiteSpace: "nowrap" }}>{`${platformSummary ? platformSummary.favorites : '?'} Favorites`}</Box>
-                            <Box style={{ whiteSpace: "nowrap" }}>{`${platformSummary ? platformSummary.numQuizzes : '?'} Quizzes`}</Box>
-                            <Box style={{ whiteSpace: "nowrap" }}>{`${platformSummary ? platformSummary.numQuestions : '?'} Questions`}</Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>
+                            <Typography>
+                                {`${platformSummary ? platformSummary.favorites : '?'} Favorites`}
+                            </Typography>
+                            </Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>
+                                <Typography>
+                                    {`${platformSummary ? platformSummary.numQuizzes : '?'} Quizzes`}
+                                </Typography>
+                            </Box>
+                            <Box style={{ whiteSpace: "nowrap" }}>
+                                <Typography>
+                                    {`${platformSummary ? platformSummary.numQuestions : '?'} Questions`}
+                                </Typography>
+                            </Box>
                         </Stack>
                     </Box>
                 </Grid>
-                <Grid item container xs={9} spacing={0}>
+                <Grid item container xs={8} spacing={0}>
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
                                 <QuizCard key={data.id} {...data} />) :
-                            <Box sx={{ marginTop: "50px", marginLeft: "50px" }}>
+                            <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
                                 </Typography>

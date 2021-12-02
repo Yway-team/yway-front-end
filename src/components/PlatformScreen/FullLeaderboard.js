@@ -38,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-export default function MiniLeaderboard({width}) {
+export default function FullLeaderboard({width}) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
