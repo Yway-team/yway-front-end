@@ -87,8 +87,8 @@ export default function CreateQuizScreen({draft, edit}) {
 
     if (edit && !gotQuizInfo) {
         //fetch quiz details here and set it in questionVar and quizDetailsVar
-        getQuizInfo({ variables: { quizId: quizId } }).then(data => {
-            if (data) quizInfo = data.data.getQuizInfo;
+        getQuizEditInfo({ variables: { quizId: quizId } }).then(data => {
+            if (data) quizInfo = data.data.getQuizEditInfo;
             console.log(quizInfo);
             console.log(data);
             let quizDetails = quizDetailsVar();
