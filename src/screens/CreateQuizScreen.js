@@ -9,8 +9,8 @@ import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestio
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
 import {useHistory, useParams} from 'react-router-dom';
 import {globalState} from "../state/UserState";
-import {GET_QUIZ_EDIT_INFO} from "../controllers/graphql/quiz-queries";
-import {GET_DRAFTS_INFO} from "../controllers/graphql/user-queries";
+import {GET_QUIZ_EDIT_INFO, GET_QUIZ_INFO} from "../controllers/graphql/quiz-queries";
+import {GET_DRAFT} from "../controllers/graphql/user-queries";
 
 
 export const questionsVar = makeVar([]);
@@ -49,7 +49,8 @@ export default function CreateQuizScreen({draft, edit}) {
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
-    const [getDraftInfo] = useLazyQuery(GET_DRAFTS_INFO);
+    const [getQuizInfo] = useLazyQuery(GET_QUIZ_INFO);
+    const [getDraft] = useLazyQuery(GET_DRAFT);
     const {quizId} = useParams();
     const {draftId} = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
@@ -86,13 +87,24 @@ export default function CreateQuizScreen({draft, edit}) {
 
     if (edit && !gotQuizInfo) {
         //fetch quiz details here and set it in questionVar and quizDetailsVar
-        getQuizEditInfo({ variables: { quizId: quizId } }).then(result => {
-            let data;
-            if (result) data = result.data;
-            const quizInfo = data.getQuizEditInfo;
+        getQuizInfo({ variables: { quizId: quizId } }).then(data => {
+            if (data) quizInfo = data.data.getQuizInfo;
             console.log(quizInfo);
             console.log(data);
-            quizDetailsVar(quizInfo);
+            let quizDetails = quizDetailsVar();
+            let details = {...quizDetails};
+            details.platformName = quizInfo.platformName;
+            details.title = quizInfo.title;
+            details.description = quizInfo.description;
+            details.tags = quizInfo.tags ? quizInfo.tags : [];
+            details.bannerImgData = quizInfo.bannerImg;
+            details.thumbnailImgData = quizInfo.thumbnailImg;
+            details.timeToAnswer = quizInfo.timeToAnswer;
+            details.shuffleAnswers = quizInfo.shuffleAnswers;
+            details.shuffleQuestions = quizInfo.shuffleQuestions;
+            details.color = quizInfo.color;
+            quizDetailsVar(details);
+            // quizDetailsVar(quizInfo);
         });
         setGotQuizInfo(true);
     }
