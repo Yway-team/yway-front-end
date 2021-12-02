@@ -15,10 +15,12 @@ import { makeVar, useMutation, useQuery } from '@apollo/client';
 import { UPDATE_PLATFORM_SETTINGS } from '../controllers/graphql/platform-mutations';
 import { LabelTextField } from '../components';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
+import { useHistory } from 'react-router';
 
 export default function PlatformSettings() {
 
     const { platformName } = useParams();
+    const history = useHistory()
     
     const [updatePlatformSettings] = useMutation(UPDATE_PLATFORM_SETTINGS);
     // const saveNewPlatformSettings = async () => updatePlatformSettings({ variables: {
@@ -48,7 +50,8 @@ export default function PlatformSettings() {
     const [effectiveSettings, setEffectiveSettings] = useState({
         bannerImg: "test",
         thumbnailImg: "test",
-        platformName: platformName
+        platformName: platformName,
+        creatorPoints: 0,
     })
     // if (platformSettingsData){
     //     effectiveSettings = platformSettingsData.getPlatformSettings
@@ -115,12 +118,6 @@ export default function PlatformSettings() {
     const [backgroundColor, setbackgroundColor] = useState(tempData.backgroundColor)
     const handleSetColor = (color) => {
         setbackgroundColor(color)
-    }
-
-    // Minimum required creator points
-    const [creatorPoints, setcreatorPoints] = useState(0)
-    const handleCreatorPoints = (e) => {
-        setcreatorPoints(e.target.value)
     }
 
     // Confirmation Dialog
@@ -210,27 +207,31 @@ export default function PlatformSettings() {
                         Quiz Rules
                     </FormLabel>
                     <LabelTextField label={"Required Creator Points"}
-                                    value={creatorPoints}
-                                    onChange={handleCreatorPoints}
+                                    value={effectiveSettings.creatorPoints}
+                                    onChange={(e) => {
+                                        setEffectiveSettings(prev=>{
+                                            return {...prev, prev}
+                                        })
+                                    }}
                                     type={"number"}/>
                     <Box sx={{ display: 'flex' }}>
                         <FormControlLabel control={<Switch defaultChecked />} label="Only allow current moderators to submit quizzes" />
                     </Box>
                     <Stack direction="row" spacing={3}>
-                        <Button variant="contained" onClick={handleOpen}>Submit</Button>
-                        <Button variant="contained">Cancel</Button>
+                        <Button variant="contained" onClick={()=>setPublishConfirmOpen(true)}>Submit</Button>
+                        <Button variant="contained" onClick={()=>history.push(`/platform/${platformName}`)}>Cancel</Button>
                     </Stack>
                 </Stack>
             </Stack>
             <ConfirmationDialog
                 open={publishConfirmOpen}
-                handleClose={togglePublishConfirmOpen}
+                handleClose={()=>setPublishConfirmOpen(prev=>!prev)}
                 title='Confirm Changes'
                 content={`Are you sure you want to save changes?`}
                 yesText='PUBLISH'
                 yesCallback={handleSubmit}
                 noText='CANCEL'
-                noCallback={togglePublishConfirmOpen}
+                noCallback={()=>setPublishConfirmOpen(prev=>!prev)}
             />
         </>
     )

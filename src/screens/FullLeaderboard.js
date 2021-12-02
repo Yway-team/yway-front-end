@@ -4,6 +4,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Header from '../components/PlatformScreen/Header';
+import { useParams } from 'react-router';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -38,18 +40,22 @@ function a11yProps(index) {
   };
 }
 
-export default function FullLeaderboard({width}) {
+export default function FullLeaderboard() {
   const [value, setValue] = React.useState(0);
+
+  const {platformName} = useParams()
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Box sx={{ width: width }}>
+    <>
+    <Header platformName={platformName}/>
+    <Box sx={{ width: "100%", mt: "100px", minHeight: "600px"}}>
       <Box sx={{paddingLeft: "5%"}}>
         <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
-          Leaderboards
+          Leaderboard
         </Typography>
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -76,5 +82,6 @@ export default function FullLeaderboard({width}) {
         Nobody has played any quizzes yet!
       </TabPanel>
     </Box>
+    </>
   );
 }

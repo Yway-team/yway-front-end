@@ -23,7 +23,8 @@ import {
     DraftsScreen,
     PlatformScreen,
     PlatformSettings,
-    SearchResultsScreen
+    SearchResultsScreen,
+    FullLeaderboard
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl/NavigationControl'
@@ -33,8 +34,8 @@ import { setContext } from '@apollo/client/link/context';
 const link = process.env.REACT_APP_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : "https://api.yway.app/graphql";
 
 const httpLink = createHttpLink({
-    // uri: 'https://api.yway.app/graphql'
-    uri: 'http://localhost:4000/graphql'
+    uri: 'https://api.yway.app/graphql'
+    // uri: 'http://localhost:4000/graphql'
 });
 
 const authLink = setContext(() => {
@@ -139,6 +140,9 @@ export default function App() {
                             </Route>
                             <Route path="/platformSettings/:platformName">
                                 <PlatformSettings />
+                            </Route>
+                            <Route path="/leaderboard/:platformName">
+                                <FullLeaderboard />
                             </Route>
                             {/*<Route exact path="/quiz/create/:draftId">*/}
                             {/*    <EditDraftScreen />*/}
