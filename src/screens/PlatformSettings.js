@@ -6,38 +6,53 @@ import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { useParams } from 'react-router-dom';
-import {Checkbox, FormLabel, Grid} from "@mui/material";
-
+import {FormLabel} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import ImageUpload from '../components/ImageUpload'
-
 import TagsInput from '../components/TagsInput';
-
-import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
-import { GET_PLATFORM_SETTINGS } from '../controllers/graphql/platform-queries';
-import { useMutation, useQuery } from '@apollo/client';
+import { GET_PLATFORM_SUMMARY, GET_PLATFORM_SETTINGS } from '../controllers/graphql/platform-queries';
+import { makeVar, useMutation, useQuery } from '@apollo/client';
 import { UPDATE_PLATFORM_SETTINGS } from '../controllers/graphql/platform-mutations';
-
 import { LabelTextField } from '../components';
+import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 
 export default function PlatformSettings() {
 
     const { platformName } = useParams();
-    // const { data: platformData } = usePrivilegedQuery(GET_PLATFORM_SETTINGS, { variables: { title: platformName } });
-    // let platformSummary;
-    // if (platformData) {
-    //     platformSummary = platformData.getPlatformSummary;
-    // }
-
+    
     const [updatePlatformSettings] = useMutation(UPDATE_PLATFORM_SETTINGS);
-    const saveNewPlatformSettings = async () => await updatePlatformSettings({ variables: {
-        platformSettings: {
-            title: tempPlatformName,
-            bannerImg: bannerImage,
-            thumbnailImg: avatarImage
-        } } })
+    // const saveNewPlatformSettings = async () => updatePlatformSettings({ variables: {
+    //     platformSettings: {
+    //         title: tempPlatformName,
+    //         bannerImg: bannerImg,
+    //         thumbnailImg: thumbnailImg
+    //     } } })
 
-    const { data: platformSettingsData } = useQuery(GET_PLATFORM_SETTINGS);
+    // const { data: platformSettingsData } = useQuery(GET_PLATFORM_SETTINGS);
+    // The above doesn't work. Must use usePrivilegedQuery.
+    
+    // Platform Data Fetching
+    const { data: platformData } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+    let effectivePlatformData = {
+        thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
+        bannerImg: "https://cse416-content.s3.us-east-2.amazonaws.com/Banner+Image.png"
+    }
+    if (platformData){
+        effectivePlatformData = platformData.getPlatformSummary
+    }
+    // Platform Settings Data Fetching
+    const { data: platformSettingsData } = usePrivilegedQuery(GET_PLATFORM_SETTINGS, { variables: { title: platformName } });
+
+    console.log(platformData)
+    console.log(platformSettingsData)
+    const [effectiveSettings, setEffectiveSettings] = useState({
+        bannerImg: "test",
+        thumbnailImg: "test",
+        platformName: platformName
+    })
+    // if (platformSettingsData){
+    //     effectiveSettings = platformSettingsData.getPlatformSettings
+    // }
 
     const tempData = {
         _id: "test",
@@ -55,25 +70,16 @@ export default function PlatformSettings() {
     }
 
     const [tempPlatformName, setTempPlatformName] = useState(platformName)
-    const [bannerImage, setbannerImage] = useState(null)
-    const [avatarImage, setavatarImage] = useState(null)
     const [onlyModerators, setonlyModerators] = useState(tempData.onlyModSubmissions)
 
-    let platformSettings;
-    if (platformSettingsData) {
-        platformSettings = platformSettingsData.getPlatformSettings;
-        setbannerImage(platformSettings.bannerImg);
-        setavatarImage(platformSettings.thumbnailImg);
-    }
-
-    // MODAL MANAGEMENT
-    const [open, setOpen] = useState(false)
-    const handleOpen = () => {
-        setOpen(true)
-    }
-    const handleClose = () => {
-        setOpen(false)
-    }
+    let platformSettings = {
+        bannerImg: "test",
+        thumbnailImg: "test"};
+    // if (platformSettingsData) {
+    //     platformSettings = platformSettingsData.getPlatformSettings;
+    //     setbannerImage(platformSettings.bannerImg);
+    //     setavatarImage(platformSettings.thumbnailImg);
+    // }
 
     // TAG MANAGEMENT
     const tags = useRef([])
@@ -96,12 +102,13 @@ export default function PlatformSettings() {
 
     // IMAGE UPLOAD MANAGEMENT
     const handleImageUpload = (name, data) => {
-        if (name === "Banner Image"){
-            setbannerImage(data)
-        }
-        if (name === "Thumbnail Image"){
-            setavatarImage(data)
-        }
+        setEffectiveSettings(prev=>{
+            const mapNameToVar = {
+                "Banner Image": "bannerImg",
+                "Thumbnail Image": "thumbnailImg"
+            }
+            return {...prev, [`${mapNameToVar[name]}Name`]: name, [`${mapNameToVar[name]}Data`]: data}
+        })
     }
 
     // Color Picker functions
@@ -112,8 +119,8 @@ export default function PlatformSettings() {
 
     // Minimum required creator points
     const [creatorPoints, setcreatorPoints] = useState(0)
-    const handleCreatorPoints = (v) => {
-        setcreatorPoints(v)
+    const handleCreatorPoints = (e) => {
+        setcreatorPoints(e.target.value)
     }
 
     // Confirmation Dialog
@@ -124,15 +131,21 @@ export default function PlatformSettings() {
     const handleSubmit = () => {
         alert("test")
     }
+    const handleOpen = () => {
+        setPublishConfirmOpen(true)
+    }
+    const handleClose = () => {
+        setPublishConfirmOpen(false)
+    }
 
     return (
         <>
             <div style={{height: "200px", position:"relative", display: "flex", alignItems: "center"}}>
                 <div style={{height: "100%",width: "100%", overflow:"hidden", position: "absolute", top:"0px", zIndex: "-1"}}>
-                    <img style={{width: "100%"}} alt='cover' src="https://picsum.photos/1000" />
+                    <img style={{width: "100%"}} alt='cover' src={effectivePlatformData.bannerImg} />
                     <div style={{backgroundColor:"#c2c2c250", width:"100%", height: "100%", position:"absolute", top:"0", left:"0"}}></div>
                 </div>
-                <Avatar alt="avatar" src="https://i.pravatar.cc/300"
+                <Avatar alt="avatar" src={effectivePlatformData.thumbnailImg}
                         sx={{
                         height: 150,
                         width: 150,
@@ -142,7 +155,6 @@ export default function PlatformSettings() {
                         display: "relative",
                         }}
                         imgProps={{ style: { borderRadius: '50%' } }} />
-                {/* <h2 style={{color:"black", fontSize:"35px", marginLeft: "20px"}}>{platformName}</h2> */}
                 <Typography sx={{
                     fontWeight: '700',
                     fontSize: 35,
@@ -164,8 +176,12 @@ export default function PlatformSettings() {
                         Platform Names
                         </div>
                         <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/> */}
-                        <LabelTextField label={"Platform Name"} value={tempPlatformName}
-                            onChange={(e)=>setTempPlatformName(e.target.value)}/>
+                        <LabelTextField label={"Platform Name"} value={effectiveSettings.platformName}
+                            onChange={(e)=>{
+                                setEffectiveSettings(prev=>{
+                                    return {...prev, platformName: e.target.value}
+                                })
+                            }}/>
                     </Stack>
                     <Box sx={{ display: 'flex' }}>
                         <TagsInput tags={tags.current} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
@@ -182,10 +198,6 @@ export default function PlatformSettings() {
                                     onChangeComplete={color => handleSetColor(color)}/>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems:"center" }}>
-                        {/* <div style={{paddingRight: "10px"}}>
-                        Banner Image
-                        </div>
-                        <TextField size="small" id="standard-basic" variant="standard" style={{position:"relative", top:"-5px"}} value={bannerImage} onChange={setbannerImage}/> */}
                         <ImageUpload onUpload={handleImageUpload} label={"Banner Image"} />
                     </Box>
                     <Box sx={{ display: 'flex',  alignItems:"center" }}>
