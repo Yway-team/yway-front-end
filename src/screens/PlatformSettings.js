@@ -17,45 +17,32 @@ import { LabelTextField } from '../components';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { useHistory } from 'react-router';
 
+
+let defaultImages = {
+    thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
+    bannerImg: "https://cse416-content.s3.us-east-2.amazonaws.com/Banner+Image.png"
+}
+
 export default function PlatformSettings() {
 
     const { platformName } = useParams();
     const history = useHistory()
     
     const [updatePlatformSettings] = useMutation(UPDATE_PLATFORM_SETTINGS);
-    // const saveNewPlatformSettings = async () => updatePlatformSettings({ variables: {
-    //     platformSettings: {
-    //         title: tempPlatformName,
-    //         bannerImg: bannerImg,
-    //         thumbnailImg: thumbnailImg
-    //     } } })
-
-    // const { data: platformSettingsData } = useQuery(GET_PLATFORM_SETTINGS);
-    // The above doesn't work. Must use usePrivilegedQuery.
-    
-    // Platform Data Fetching
-    const { data: platformData } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
-    let effectivePlatformData = {
-        thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
-        bannerImg: "https://cse416-content.s3.us-east-2.amazonaws.com/Banner+Image.png"
-    }
-    if (platformData){
-        effectivePlatformData = platformData.getPlatformSummary
-    }
     // Platform Settings Data Fetching
     const { data: platformSettingsData } = usePrivilegedQuery(GET_PLATFORM_SETTINGS, { variables: { title: platformName } });
 
-    console.log(platformData)
+    console.log(platformName)
     console.log(platformSettingsData)
     const [effectiveSettings, setEffectiveSettings] = useState({
-        bannerImg: "test",
-        thumbnailImg: "test",
+        bannerImg: defaultImages.bannerImg,
+        thumbnailImg: defaultImages.thumbnailImg,
         platformName: platformName,
         creatorPoints: 0,
     })
-    // if (platformSettingsData){
-    //     effectiveSettings = platformSettingsData.getPlatformSettings
-    // }
+    if (platformSettingsData){
+        setEffectiveSettings(platformSettingsData.getPlatformSettings)
+    }
 
     const tempData = {
         _id: "test",
@@ -139,10 +126,10 @@ export default function PlatformSettings() {
         <>
             <div style={{height: "200px", position:"relative", display: "flex", alignItems: "center"}}>
                 <div style={{height: "100%",width: "100%", overflow:"hidden", position: "absolute", top:"0px", zIndex: "-1"}}>
-                    <img style={{width: "100%"}} alt='cover' src={effectivePlatformData.bannerImg} />
+                    <img style={{width: "100%"}} alt='cover' src={effectiveSettings.bannerImg} />
                     <div style={{backgroundColor:"#c2c2c250", width:"100%", height: "100%", position:"absolute", top:"0", left:"0"}}></div>
                 </div>
-                <Avatar alt="avatar" src={effectivePlatformData.thumbnailImg}
+                <Avatar alt="avatar" src={effectiveSettings.thumbnailImg}
                         sx={{
                         height: 150,
                         width: 150,
