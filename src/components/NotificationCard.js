@@ -21,7 +21,7 @@ export default function NotificationCard({ _id, type, name, avatar, createdAt })
                         {
                             type === 'friendRequest' ?
                                 <Typography>
-                                    {name} sent you a friend request.
+                                    <span style={{ fontSize: 'Montserret', fontWeight: '600' }} >  {name}   </span> sent you a friend request.
                                 </Typography> : null
                         }
                         <Typography sx={{ fontSize: 12, fontWeight: 600, color: 'primary.main', textAlign: 'left', mt: 2 }}> <TimeAgoFromNow dateIn={createdAt} /> </Typography>
