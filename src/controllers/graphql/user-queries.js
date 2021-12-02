@@ -41,6 +41,30 @@ export const GET_USER_INFO = gql`
     }
 `;
 
+export const GET_DRAFT = gql`
+    query GetDraft($draftId: ID!) {
+        getDraft(draftId: $draftId) {
+            _id
+            questions {
+                answerOptions
+                correctAnswerIndex
+                description
+            }
+            tags
+            title
+            shuffleQuestions
+            shuffleAnswers
+            timeToAnswer
+            bannerImg
+            color
+            updatedAt
+            description
+            platformName
+            thumbnailImg
+        }
+    }
+`;
+
 export const GET_DRAFTS_INFO = gql`
     query GetDraftsInfo {
         getDraftsInfo {

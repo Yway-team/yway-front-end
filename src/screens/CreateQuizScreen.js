@@ -100,7 +100,7 @@ export default function CreateQuizScreen({ draftId }) {
             thumbnailImgName: quizDetails.thumbnailImgName,
             color: quizDetails.color,
             tags: quizDetails.tags,
-            updatedAt: Date.now()
+            updatedAt: new Date()
             /* other optional props */
         };
         // if (draftId) {
