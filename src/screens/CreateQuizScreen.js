@@ -97,7 +97,8 @@ export default function CreateQuizScreen({ draftId }) {
             bannerImgData: quizDetails.bannerImgData,
             thumbnailImgData: quizDetails.thumbnailImgData,
             color: quizDetails.color,
-            tags: quizDetails.tags
+            tags: quizDetails.tags,
+            updatedAt: Date.now()
             /* other optional props */
         };
         // if (draftId) {

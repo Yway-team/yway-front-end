@@ -1,10 +1,10 @@
 import { Grid } from '@mui/material';
 import { QuizCard, CommonTitle } from "../components";
-import { useQuery } from '@apollo/client';
+import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { GET_DRAFTS_INFO } from '../controllers/graphql/user-queries';
 
 export default function DraftsScreen() {
-    const { data: draftData } = useQuery(GET_DRAFTS_INFO);
+    const { data: draftData } = usePrivilegedQuery(GET_DRAFTS_INFO);
     let drafts = null;
     if (draftData) {
         drafts = draftData.getDraftsInfo;
