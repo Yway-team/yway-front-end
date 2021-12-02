@@ -344,7 +344,7 @@ function QuizCard({
                             anchorOrigin={{horizontal: "right", vertical: "bottom"}}>
 
                             <MenuItem onClick={() => {
-                                history.push(`/quiz/edit/${_id}`);
+                                draft ? history.push(`quiz/create/${_id}`) : history.push(`/quiz/edit/${_id}`);
                             }}>
                                 <ListItemIcon>
                                     <EditOutlined/>

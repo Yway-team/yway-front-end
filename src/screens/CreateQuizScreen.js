@@ -10,7 +10,7 @@ import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
 import {useHistory, useParams} from 'react-router-dom';
 import {globalState} from "../state/UserState";
 import {GET_QUIZ_EDIT_INFO} from "../controllers/graphql/quiz-queries";
-import {GET_DRAFTS_INFO} from "../controllers/graphql/user-queries";
+import {GET_DRAFT} from "../controllers/graphql/user-queries";
 
 
 export const questionsVar = makeVar([]);
@@ -28,7 +28,7 @@ export const quizDetailsVar = makeVar({
     // todo: color, tags, images
 });
 
-export default function CreateQuizScreen({draftId, edit}) {
+export default function CreateQuizScreen({draft, edit}) {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
     // const classes = useStyles();
@@ -39,7 +39,6 @@ export default function CreateQuizScreen({draftId, edit}) {
     // todo: fetch draft and set initial states accordingly
     // todo: tags, color, thumbnailImg, bannerImg
 
-
     const start = Date.now();
     const history = useHistory();
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
@@ -49,14 +48,14 @@ export default function CreateQuizScreen({draftId, edit}) {
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
-    const [getDraftInfo] = useLazyQuery(GET_DRAFTS_INFO);
-    const {quizId} = useParams();
+    const [getDraftInfo] = useLazyQuery(GET_DRAFT);
+    const params = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
     // console.log('quizid', quizId);
     // console.log(edit)
     // const {quizData} = useQuery(GET_QUIZ_INFO, {variables: {quizId: quizId}});
 
-    if (draftId) {
+    if (draft && !gotQuizInfo) {
         //fetch draft details here and set it in questionVar and quizDetailsVar
         //const draftInfo = {
         //                     _id: draft._id,
@@ -69,20 +68,19 @@ export default function CreateQuizScreen({draftId, edit}) {
         //                     timeToAnswer: draft.timeToAnswer,
         //                     title: draft.title
         //                 };
-
-        const {data: draftsData, error, loading} = getDraftInfo();
-        console.log(draftsData);
+        const { draftId } = params;
+        getDraftInfo({ variables: {draftId: draftId } }).then(({ data }) => {
+            const draftInfo = data.getDraft;
+            !draftInfo || quizDetailsVar(draftInfo);
+        });
+        setGotQuizInfo(true);
     }
-
     if (edit && !gotQuizInfo) {
+        const { quizId } = params;
         //fetch quiz details here and set it in questionVar and quizDetailsVar
-        getQuizEditInfo({ variables: { quizId: quizId } }).then(result => {
-            let data;
-            if (result) data = result.data;
+        getQuizEditInfo({ variables: { quizId: quizId } }).then(({ data }) => {
             const quizInfo = data.getQuizEditInfo;
-            console.log(quizInfo);
-            console.log(data);
-            quizDetailsVar(quizInfo);
+            !quizInfo || quizDetailsVar(quizInfo);
         });
         setGotQuizInfo(true);
         //    getQuizInfo(quizId: $quizId) {

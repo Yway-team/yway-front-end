@@ -148,7 +148,7 @@ export default function App() {
                                 <FullLeaderboard />
                             </Route>
                             <Route exact path="/quiz/create/:draftId">
-                                <CreateQuizScreen />
+                                <CreateQuizScreen draft={true} />
                             </Route>
                             <Route exact path="/drafts">
                                 <DraftsScreen />
