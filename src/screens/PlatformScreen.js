@@ -154,7 +154,7 @@ export default function PlatformScreen() {
                         )}
                 </Grid>
                 <Grid item xs={3} sx={{ marginTop: "2rem" }}>
-                    <MiniLeaderboard width="350px" />
+                    <MiniLeaderboard width="350px" platformName={platformName}/>
                 </Grid>
             </Grid>
         </>

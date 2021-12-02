@@ -5,6 +5,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import { Button } from '@mui/material';
+import { useHistory } from 'react-router';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,7 +40,9 @@ function a11yProps(index) {
   };
 }
 
-export default function MiniLeaderboard({width}) {
+export default function MiniLeaderboard({width,platformName}) {
+  const history = useHistory()
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -54,7 +57,7 @@ export default function MiniLeaderboard({width}) {
         </Typography>
       </Box>
       <Box sx={{paddingLeft: "5%"}}>
-        <Button>
+        <Button onClick={()=>history.push(`/leaderboard/${platformName}`)}>
           <Typography sx={{fontSize:"15px", color: "blue"}}>
             View Full Leaderboard >>
           </Typography>
