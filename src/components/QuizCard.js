@@ -14,14 +14,14 @@ import {
     MenuItem,
     Typography
 } from '@mui/material';
-import {DeleteOutlined, EditOutlined, LocalOfferOutlined, MoreVertRounded} from '@mui/icons-material';
+import { DeleteOutlined, EditOutlined, LocalOfferOutlined, MoreVertRounded } from '@mui/icons-material';
 import logoIcon from '../images/logoIcon.svg';
-import {useState} from 'react';
+import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
 import LinesEllipsis from 'react-lines-ellipsis';
-import {useMutation} from '@apollo/client';
-import {DELETE_QUIZ} from '../controllers/graphql/quiz-mutations';
-import {useHistory} from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
+import { useHistory } from 'react-router-dom';
 
 
 // quizCard - All necessary information for a summarized display of the platform.
@@ -43,21 +43,21 @@ import {useHistory} from 'react-router-dom';
 
 
 function QuizCard({
-                      _id,
-                      title,
-                      bannerImg,
-                      description,
-                      numQuestions,
-                      ownerId,
-                      ownerUsername,
-                      ownerAvatar,
-                      rating,
-                      createdAt,
-                      platformId,
-                      platformName,
-                      platformThumbnail,
-                      draft
-                  }) {
+    _id,
+    title,
+    bannerImg,
+    description,
+    numQuestions,
+    ownerId,
+    ownerUsername,
+    ownerAvatar,
+    rating,
+    createdAt,
+    platformId,
+    platformName,
+    platformThumbnail,
+    draft
+}) {
     const [open, setOpen] = useState(false);
     // const draft = _id ? false : true;
     draft = draft ? draft : false;
@@ -81,17 +81,17 @@ function QuizCard({
     };
 
     const handleDeleteQuiz = async () => {
-        await deleteQuiz({variables: {quizId: _id}});
+        await deleteQuiz({ variables: { quizId: _id } });
     }
 
     const menuTypography = (text) => <Typography
-        sx={{fontWeight: '500', fontSize: 14, color: '#858585', my: 1}}>{text}</Typography>;
+        sx={{ fontWeight: '500', fontSize: 14, color: '#858585', my: 1 }}>{text}</Typography>;
 
 
     return (
         <>
             <Card onClick={handleClickOpen}
-                  sx={{maxWidth: 300, elevation: 0, boxShadow: 'none', m: 3, borderRadius: '10px 10px 10px 10px'}}>
+                sx={{ maxWidth: 300, elevation: 0, boxShadow: 'none', m: 3, borderRadius: '10px 10px 10px 10px' }}>
                 <CardActionArea>
 
                     <CardMedia
@@ -99,11 +99,11 @@ function QuizCard({
                         height={130}
                         image={bannerImg}
                         alt="quiz image"
-                        sx={{borderRadius: '10px 10px 0px 0px', zIndex: '-2'}}/>
+                        sx={{ borderRadius: '10px 10px 0px 0px', zIndex: '-2' }} />
 
-                    <CardContent sx={{py: 2, px: 1}}>
+                    <CardContent sx={{ py: 2, px: 1 }}>
                         <Grid container justifyContent='flex-end'
-                              sx={{zIndex: 1, position: 'absolute', left: 0, top: 130 - 25}}>
+                            sx={{ zIndex: 1, position: 'absolute', left: 0, top: 130 - 25 }}>
                             <Grid container alignItems='center' justifyContent='center' sx={{
                                 width: 100,
                                 height: 25,
@@ -111,18 +111,18 @@ function QuizCard({
                                 borderRadius: '10px 0px 0px 0px'
                             }}>
                                 <Typography sx=
-                                                {{
-                                                    color: draft ? 'grey.700' : 'common.white',
-                                                    fontSize: 12,
-                                                    fontWeight: 500
-                                                }}>
+                                    {{
+                                        color: draft ? 'grey.700' : 'common.white',
+                                        fontSize: 12,
+                                        fontWeight: 500
+                                    }}>
                                     {`${numQuestions} questions`}
                                 </Typography>
                             </Grid>
                         </Grid>
-                        {(draft || attempted) ?
+                        {(draft) ?
                             <Grid container justifyContent='flex-start'
-                                  sx={{zIndex: 1, position: 'absolute', left: -34, top: 14}}>
+                                sx={{ zIndex: 1, position: 'absolute', left: -34, top: 14 }}>
                                 <Grid container alignItems='center' justifyContent='center' sx={{
                                     width: 130,
                                     height: 25,
@@ -130,7 +130,7 @@ function QuizCard({
                                     transform: "rotate(-36deg)"
                                 }}>
                                     <Typography sx=
-                                                    {{color: 'grey.700', fontSize: 12, fontWeight: 600}}>
+                                        {{ color: 'grey.700', fontSize: 12, fontWeight: 600 }}>
                                         {draft ? 'Draft' : 'Attempted'}
                                     </Typography>
                                 </Grid>
@@ -150,9 +150,9 @@ function QuizCard({
                                 basedOn='letters'
                             />
                         </Box>
-                        <Grid container sx={{mt: 1}} justifyContent='space-between' spacing={1}>
+                        <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1}>
                             <Grid item container xs={6} alignItems='center'>
-                                <img src={logoIcon} style={{height: 15}}/>
+                                <img src={logoIcon} style={{ height: 15 }} />
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
@@ -162,12 +162,12 @@ function QuizCard({
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
-                                    sx={{fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right'}}>
-                                    <TimeAgoFromNow dateIn={createdAt}/> </Typography>
+                                    sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}>
+                                    <TimeAgoFromNow dateIn={createdAt} /> </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{height: 14, width: 14}}/>
-                                <Box sx={{overflow: 'hidden', textOverflow: 'ellipsis', width: '120px'}}>
+                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
+                                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
                                     <Typography noWrap sx={{
                                         fontSize: 14,
                                         ml: 1,
@@ -177,8 +177,8 @@ function QuizCard({
                                 </Box>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{height: 14, width: 14}}/>
-                                <Box sx={{overflow: 'hidden', textOverflow: 'ellipsis', width: '120px'}}>
+                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
+                                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
                                     <Typography noWrap sx={{
                                         fontSize: 14,
                                         ml: 1,
@@ -194,8 +194,8 @@ function QuizCard({
             </Card>
 
             <Dialog open={open} onClose={handleClose}
-                    aria-labelledby="quiz-details-dialog" sx={{backgroundColor: 'transparent'}}>
-                <Card sx={{width: 600, elevation: 0, boxShadow: 'none'}}>
+                aria-labelledby="quiz-details-dialog" sx={{ backgroundColor: 'transparent' }}>
+                <Card sx={{ width: 600, elevation: 0, boxShadow: 'none' }}>
 
                     <CardMedia
                         component="img"
@@ -204,9 +204,9 @@ function QuizCard({
                         alt="quiz image"
                     />
 
-                    <CardContent sx={{p: 5}}>
+                    <CardContent sx={{ p: 5 }}>
                         <Grid container justifyContent='flex-end'
-                              sx={{zIndex: 1, position: 'absolute', left: 0, top: 200 - 30}}>
+                            sx={{ zIndex: 1, position: 'absolute', left: 0, top: 200 - 30 }}>
                             <Grid container alignItems='center' justifyContent='center' sx={{
                                 width: 120,
                                 height: 30,
@@ -214,7 +214,7 @@ function QuizCard({
                                 borderRadius: '10px 0px 0px 0px'
                             }}>
                                 <Typography sx=
-                                                {{color: 'common.white'}}>
+                                    {{ color: 'common.white' }}>
                                     {`${numQuestions} questions`}
                                 </Typography>
                             </Grid>
@@ -223,21 +223,21 @@ function QuizCard({
                         <Grid container justifyContent='space-between' alignItems='center' sx={{
                             overflow: "hidden", textOverflow: "ellipsis",
                         }}>
-                            <Typography sx={{fontSize: 16, fontWeight: 600, color: 'common.black'}}>
+                            <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
                                 {title}
                             </Typography>
-                            <IconButton sx={{backgroundColor: openQuizEditMenu ? 'primary.main' : 'grey.50'}}
-                                        onClick={handleQuizEditMenuClick}>
-                                <MoreVertRounded sx={{fill: openQuizEditMenu ? 'white' : 'grey.500'}}/>
+                            <IconButton sx={{ backgroundColor: openQuizEditMenu ? 'primary.main' : 'grey.50' }}
+                                onClick={handleQuizEditMenuClick}>
+                                <MoreVertRounded sx={{ fill: openQuizEditMenu ? 'white' : 'grey.500' }} />
                             </IconButton>
 
                         </Grid>
-                        <Typography sx={{fontSize: 14, fontWeight: 500, color: 'grey.600', my: 2}}>
+                        <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', my: 2 }}>
                             {description}
                         </Typography>
-                        <Grid container sx={{mt: 1}} justifyContent='space-between' spacing={1}>
+                        <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1}>
                             <Grid item container xs={6} alignItems='center'>
-                                <img src={logoIcon} style={{height: 15}}/>
+                                {(!draft) ? <img src={logoIcon} style={{ height: 15 }} /> : null}
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
@@ -247,11 +247,11 @@ function QuizCard({
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
-                                    sx={{fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right'}}>
-                                    <TimeAgoFromNow dateIn={createdAt}/></Typography>
+                                    sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}>
+                                    <TimeAgoFromNow dateIn={createdAt} /></Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{height: 14, width: 14}}/>
+                                {!draft ? <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} /> : null}
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
@@ -260,8 +260,7 @@ function QuizCard({
                                 }}> {ownerUsername} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="creator-avatar" src={platformThumbnail} sx={{height: 14, width: 14}}/>
-
+                                <Avatar alt="platform-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
@@ -330,28 +329,28 @@ function QuizCard({
                                     }
                                 }
                             }}
-                            transformOrigin={{horizontal: "right", vertical: "top"}}
-                            anchorOrigin={{horizontal: "right", vertical: "bottom"}}>
+                            transformOrigin={{ horizontal: "right", vertical: "top" }}
+                            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 
                             <MenuItem onClick={() => {
                                 history.push(`/quiz/edit/${_id}`);
                             }}>
                                 <ListItemIcon>
-                                    <EditOutlined/>
+                                    <EditOutlined />
                                 </ListItemIcon>
                                 {menuTypography('Edit Quiz')}
                             </MenuItem>
 
                             <MenuItem>
                                 <ListItemIcon>
-                                    <LocalOfferOutlined/>
+                                    <LocalOfferOutlined />
                                 </ListItemIcon>
                                 {menuTypography('Edit Tags')}
                             </MenuItem>
 
                             <MenuItem onClick={handleDeleteQuiz}>
                                 <ListItemIcon>
-                                    <DeleteOutlined/>
+                                    <DeleteOutlined />
                                 </ListItemIcon>
                                 {menuTypography('Delete Quiz')}
                             </MenuItem>
