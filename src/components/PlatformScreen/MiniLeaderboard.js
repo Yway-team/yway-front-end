@@ -40,14 +40,26 @@ function a11yProps(index) {
   };
 }
 
-export default function MiniLeaderboard({width,platformName}) {
-  const history = useHistory()
+export default function MiniLeaderboard({ width, platformName, leaderboardEntries }) {
+  /*
+  leaderboardEntries {
+    userId: ID
+    avatar: String
+    score: Number (number of attempts of one of the user's quizzes on this platform)
+    secondaryScore: Number (number of quizzes owned by the user on this platform)
+    username: String
+  }
+  */
+  const history = useHistory();
 
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  
+  // leaderboardEntries will be null if the query in PlatformScreen hasn't resolved yet
+  if (leaderboardEntries) console.log(leaderboardEntries);
 
   return (
     <Box sx={{ width: width }}>
@@ -59,7 +71,7 @@ export default function MiniLeaderboard({width,platformName}) {
       <Box sx={{paddingLeft: "5%"}}>
         <Button onClick={()=>history.push(`/leaderboard/${platformName}`)}>
           <Typography sx={{fontSize:"15px", color: "blue"}}>
-            View Full Leaderboard >>
+            View Full Leaderboard &gt;&gt;
           </Typography>
         </Button>
       </Box>

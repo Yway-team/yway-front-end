@@ -138,7 +138,7 @@ export default function PlatformScreen() {
                     </Box>
                     <Box style={{ minHeight: "30px", margin: "30px" }}>
                         <Typography>
-                            {platformSummary? platformSummary.description: ""}
+                            {platformSummary ? platformSummary.description : ""}
                         </Typography>
                     </Box>
                 </Grid>
@@ -155,7 +155,7 @@ export default function PlatformScreen() {
                         )}
                 </Grid>
                 <Grid item xs={3} sx={{ marginTop: "2rem" }} spacing={0}>
-                    <MiniLeaderboard width="310px" platformName={platformName}/>
+                    <MiniLeaderboard width="310px" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                 </Grid>
             </Grid>
         </>
