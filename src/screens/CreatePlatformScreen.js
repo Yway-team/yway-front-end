@@ -4,6 +4,7 @@ import {ColorPicker, CommonTitle, ImageUpload, LabelTextField} from "../componen
 import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
+import {quizDetailsVar} from "./CreateQuizScreen";
 
 export default function CreatePlatformScreen() {
     const [createPlatform] = useMutation(CREATE_PLATFORM);
@@ -13,7 +14,37 @@ export default function CreatePlatformScreen() {
     const [onlyModSubmissions, setOnlyModSubmissions] = useState(false);
     const [platformColor, setPlatformColor] = useState(null);
     const [tags, setTags] = useState([]);
-    const [newTag, setNewTag] = useState('')
+    const [newTag, setNewTag] = useState('');
+    const [bannerImg, setBannerImg] = useState(null);
+    const [bannerImgName, setBannerImgName] = useState('');
+    const [thumbnailImg, setThumbnailImg] = useState(null);
+    const [thumbnailImgName, setThumbnailImgName] = useState('');
+    const bannerImgLabel = 'Banner Image';
+    const thumbnailImgLabel = 'Thumbnail Image';
+
+    const handleImageUpload = (name, filename, data) => {
+        if (name === bannerImgLabel) {
+            setBannerImg(data);
+            setBannerImgName(filename);
+        } else if (name === thumbnailImgLabel) {
+            setThumbnailImg(data);
+            setThumbnailImgName(filename);
+        } else {
+            console.error(`CreatePlatform.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+        }
+    };
+
+    const handleRemoveImage = (name) => {
+        if (name === bannerImgLabel) {
+            setBannerImg(null);
+            setBannerImgName('');
+        } else if (name === thumbnailImgLabel) {
+            setThumbnailImg(null);
+            setThumbnailImgName('');
+        } else {
+            console.error(`CreatePlatform.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+        }
+    }
 
     const handleAddTag = () => {
         if (newTag === '' || tags.includes(newTag)) {
@@ -95,10 +126,10 @@ export default function CreatePlatformScreen() {
                                      onChangeComplete={(color) => handleSetColor(color)}/>
                     </Grid>
                     <Grid item>
-                        <ImageUpload label={"Banner Image"}/>
+                        <ImageUpload label={"Banner Image"} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
                     </Grid>
                     <Grid item>
-                        <ImageUpload label={"Thumbnail Image"}/>
+                        <ImageUpload label={"Thumbnail Image"} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{

@@ -8,7 +8,6 @@ import {CommonTitle, ImageUpload} from "../components";
 import {UPDATE_BIO, UPDATE_USERNAME} from "../controllers/graphql/user-mutations";
 import {useMutation, useReactiveVar} from "@apollo/client";
 import {globalState} from "../state/UserState";
-import {quizDetailsVar} from "./CreateQuizScreen";
 
 
 export default function ProfileSettings(props) {
@@ -18,13 +17,13 @@ export default function ProfileSettings(props) {
     const bannerImgLabel = 'Banner Image';
     const thumbnailImgLabel = 'Profile Image';
     const [username, setUsername] = useState(newUsername);
-    const [bio, setBio] = useState(newBio);
+    const [bio, setBio] = useState(newBio ? newBio : userInfo.bio);
     const [updateUsername] = useMutation(UPDATE_USERNAME, {variables: {username: newUsername}});
     const [updateBio] = useMutation(UPDATE_BIO, {variables: {bio: newBio}});
-    const [bannerImageName, setBannerImageName] = useState('');
-    const [bannerImage, setBannerImage] = useState(null);
-    const [profileImageName, setProfileImageName] = useState('');
-    const [profileImage, setProfileImage] = useState(null);
+    const [bannerImgName, setBannerImgName] = useState('');
+    const [bannerImg, setBannerImg] = useState(null);
+    const [profileImgName, setProfileImgName] = useState('');
+    const [profileImg, setProfileImg] = useState(null);
 
     const handleChangeUsername = async () => {
         newUsername = username;
@@ -46,20 +45,36 @@ export default function ProfileSettings(props) {
 
     const handleImageUpload = (name, filename, data) => {
         if (name === bannerImgLabel) {
-            setBannerImage(data);
-            setBannerImage(filename);
+            setBannerImg(data);
+            setBannerImg(filename);
         } else if (name === thumbnailImgLabel) {
-            setProfileImage(data);
-            setProfileImage(filename);
+            setProfileImg(data);
+            setProfileImg(filename);
         } else {
-            console.error(`CreateQuizForms.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+            console.error(`ProfileSettings.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
         }
     };
+
+    const handleRemoveImage = (name) => {
+        if (name === bannerImgLabel) {
+            setBannerImg(null);
+            setBannerImgName('');
+        } else if (name === thumbnailImgLabel) {
+            setProfileImg(null);
+            setProfileImgName('');
+        } else {
+            console.error(`ProfileSettings.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+        }
+    }
+
+    const handleUpdateImageConfirm = () => {
+
+    }
 
     return (
         <Stack spacing={3} sx={{px: 5, pb: 5}}>
             <CommonTitle title='EDIT PROFILE' sx={{spacing: 0}}/>
-            <TextField label={"Change Username"} value={username} variant={"standard"}
+            <TextField label={"Username"} value={username} variant={"standard"}
                        onChange={e => setUsername(e.target.value)} fullWidth>
             </TextField>
             <Box>
@@ -71,10 +86,10 @@ export default function ProfileSettings(props) {
             <Box>
                 <Button variant="contained" onClick={handleChangeBio}>CONFIRM</Button>
             </Box>
-            <ImageUpload label={bannerImgLabel} onUpload={handleImageUpload}/>
-            <ImageUpload label={thumbnailImgLabel} onUpload={handleImageUpload}/>
+            <ImageUpload label={bannerImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
+            <ImageUpload label={thumbnailImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
             <Stack direction={"row"} spacing={2}>
-                <Button variant={"contained"}>CONFIRM</Button>
+                <Button variant={"contained"} onClick={handleUpdateImageConfirm}>CONFIRM</Button>
                 <Button variant={"outlined"} onClick={props.handleClose}>CANCEL</Button>
             </Stack>
         </Stack>
