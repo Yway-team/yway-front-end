@@ -57,6 +57,7 @@ function QuizCard({
                       platformId,
                       platformName,
                       platformThumbnail,
+                      refetch,
                       draft
                   }) {
     const [open, setOpen] = useState(false);
@@ -85,10 +86,12 @@ function QuizCard({
 
     const handleDeleteQuiz = async () => {
         await deleteQuiz({variables: {quizId: _id}});
+        await refetch();
     }
 
     const handleDeleteDraft = async () => {
         await deleteDraft({ variables: { draftId: _id } });
+        await refetch();
     }
 
     const menuTypography = (text) => <Typography

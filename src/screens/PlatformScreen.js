@@ -95,7 +95,7 @@ export default function PlatformScreen() {
     const { platformName } = useParams();
     const history = useHistory();
 
-    const { data: platformData, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+    const { data: platformData, refetch, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
     console.log(platformData)
 
     let platformSummary;
@@ -146,7 +146,7 @@ export default function PlatformScreen() {
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <ModeratorQuizCard key={data.id} {...data} />) :
+                                <ModeratorQuizCard key={data.id} {...data} refetch={refetch} />) :
                             <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
