@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Button, Grid, Stack} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
@@ -10,7 +10,7 @@ import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
 import {useHistory, useParams} from 'react-router-dom';
 import {globalState} from "../state/UserState";
 import {GET_QUIZ_INFO} from "../controllers/graphql/quiz-queries";
-import {GET_DRAFTS_INFO} from "../controllers/graphql/user-queries";
+import {GET_DRAFT} from "../controllers/graphql/user-queries";
 
 
 export const questionsVar = makeVar([]);
@@ -28,7 +28,7 @@ export const quizDetailsVar = makeVar({
     // todo: color, tags, images
 });
 
-export default function CreateQuizScreen({draftId, edit}) {
+export default function CreateQuizScreen({draft, edit}) {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
     // const classes = useStyles();
@@ -49,58 +49,61 @@ export default function CreateQuizScreen({draftId, edit}) {
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const [getQuizInfo] = useLazyQuery(GET_QUIZ_INFO);
-    const [getDraftInfo] = useLazyQuery(GET_DRAFTS_INFO);
+    const [getDraft] = useLazyQuery(GET_DRAFT);
     const {quizId} = useParams();
+    const {draftId} = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
-    // console.log('quizid', quizId);
-    // console.log(edit)
-    // const {quizData} = useQuery(GET_QUIZ_INFO, {variables: {quizId: quizId}});
+    let quizInfo;
 
-    if (draftId) {
-        //fetch draft details here and set it in questionVar and quizDetailsVar
-        //const draftInfo = {
-        //                     _id: draft._id,
-        //                     bannerImg: draft.bannerImg || DEFAULT_BANNER_IMAGE,
-        //                     createdAt: draft.createdAt.toString(),
-        //                     description: draft.description,
-        //                     numQuestions: draft.questions.length,
-        //                     platformName: draft.platformName,
-        //                     tags: draft.tags,
-        //                     timeToAnswer: draft.timeToAnswer,
-        //                     title: draft.title
-        //                 };
+    if (draft && !gotQuizInfo) {
+        getDraft({variables: {draftId: draftId}}).then(({data}) => {
+            quizInfo = data.getDraft;
+            console.log(quizInfo);
+            let quizDetails = quizDetailsVar();
+            let details = {...quizDetails};
+            details.platformName = quizInfo.platformName;
+            details.title = quizInfo.title;
+            details.description = quizInfo.description;
+            details.tags = quizInfo.tags ? quizInfo.tags : [];
+            details.bannerImgData = quizInfo.bannerImg;
+            details.thumbnailImgData = quizInfo.thumbnailImg;
+            details.timeToAnswer = quizInfo.timeToAnswer;
+            details.shuffleAnswers = quizInfo.shuffleAnswers;
+            details.shuffleQuestions = quizInfo.shuffleQuestions;
+            details.color = quizInfo.color;
+            quizDetailsVar(details);
 
-        const {data: draftsData, error, loading} = getDraftInfo();
-        console.log(draftsData);
+
+            let questions = questionsVar();
+            questions = quizInfo.questions;
+            setQuestions(quizInfo.questions);
+            questionsVar(questions);
+
+            console.log(quizDetails);
+        });
+        setGotQuizInfo(true);
     }
 
-    // useEffect(() => {
-        if (edit && !gotQuizInfo) {
-            //fetch quiz details here and set it in questionVar and quizDetailsVar
-            const {data} = getQuizInfo({variables: {quizId: quizId}});
-            console.log(data);
-
-            if (data){
-                console.log(data.getQuizInfo);
-            }
-            setGotQuizInfo(true);
-            //    getQuizInfo(quizId: $quizId) {
-            //             bannerImg
-            //             color
-            //             createdAt
-            //             description
-            //             numQuestions
-            //             ownerAvatar
-            //             ownerId
-            //             ownerUsername
-            //             platformId
-            //             platformName
-            //             platformThumbnail
-            //             rating
-            //             title
-            //         }
-        }
-    // })
+    if (edit && !gotQuizInfo) {
+        getQuizInfo({variables: {quizId: quizId}}).then(({data}) => {
+            quizInfo = data.getQuizInfo;
+            console.log(quizInfo);
+            let quizDetails = quizDetailsVar();
+            let details = {...quizDetails};
+            details.title = quizInfo.title;
+            details.description = quizInfo.description;
+            details.tags = quizInfo.tags ? quizInfo.tags : [];
+            details.bannerImgData = quizInfo.bannerImg;
+            details.thumbnailImgData = quizInfo.thumbnailImg;
+            details.timeToAnswer = quizInfo.timeToAnswer;
+            details.shuffleAnswers = quizInfo.shuffleAnswers;
+            details.shuffleQuestions = quizInfo.shuffleQuestions;
+            details.color = quizInfo.color;
+            quizDetailsVar(details);
+            console.log(quizDetails);
+        });
+        setGotQuizInfo(true);
+    }
 
 
     const togglePublishConfirmOpen = () => {
@@ -201,31 +204,35 @@ export default function CreateQuizScreen({draftId, edit}) {
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                     <Grid container item direction="column" sx={{py: 2}} spacing={2}>
                         <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions}
-                                         handleUpdateNumQuestions={handleUpdateNumQuestions}/>
-                        <CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion}/>
-                        <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>} sx={{alignSelf: "flex-start"}}
-                                onClick={() => {
-                                    let questions = questionsVar();
-                                    questions.push({
-                                        id: uuidv4(),
-                                        description: '',
-                                        answerOptions: ['', ''],
-                                        correctAnswerIndex: -1
-                                    });
-                                    questionsVar(questions);
-                                    setNumQuestions(numQuestions + 1);
-                                    setQuestions([...questionsVar()]);
-                                    setUpdateNumQuestions(!updateNumQuestions);
-                                }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button>
+                                         handleUpdateNumQuestions={handleUpdateNumQuestions} edit={edit}/>
+                        {!edit ? <><CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion}/>
+                            <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>}
+                                    sx={{alignSelf: "flex-start"}}
+                                    onClick={() => {
+                                        let questions = questionsVar();
+                                        questions.push({
+                                            id: uuidv4(),
+                                            description: '',
+                                            answerOptions: ['', ''],
+                                            correctAnswerIndex: -1
+                                        });
+                                        questionsVar(questions);
+                                        setNumQuestions(numQuestions + 1);
+                                        setQuestions([...questionsVar()]);
+                                        setUpdateNumQuestions(!updateNumQuestions);
+                                    }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button></> : <Fragment/>}
+
                         <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40, width: 700}}
                                justifyContent='space-between'>
-                            <Button variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
-                            <Stack direction='row' spacing={2}>
-                                <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
-                                <Button variant={"contained"} onClick={togglePublishConfirmOpen}
-                                    // type={"submit"}
-                                >PUBLISH</Button>
-                            </Stack>
+                            {edit ? <> <Stack direction='row' spacing={2}>
+                                <Button variant={"contained"} onClick={togglePublishConfirmOpen}>SAVE CHANGES</Button>
+                                <Button variant={"contained"}>CANCEL</Button></Stack></> : <><Button
+                                variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
+                                <Stack direction='row' spacing={2}>
+                                    <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
+                                    <Button variant={"contained"} onClick={togglePublishConfirmOpen}
+                                    >PUBLISH</Button>
+                                </Stack></>}
                         </Stack>
                     </Grid>
                 </form>

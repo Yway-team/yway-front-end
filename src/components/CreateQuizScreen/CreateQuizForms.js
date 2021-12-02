@@ -1,11 +1,11 @@
 import {useReactiveVar} from "@apollo/client";
 import {Checkbox, FormControlLabel, FormLabel, Grid} from "@mui/material";
 import {quizDetailsVar} from "../../screens/CreateQuizScreen";
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 import {ColorPicker, ImageUpload, LabelTextField} from "..";
 import TagsInput from "../TagsInput";
 
-export default function CreateQuizForms({numQuestions, updateNumQuestions, handleUpdateNumQuestions}) {
+export default function CreateQuizForms({numQuestions, updateNumQuestions, handleUpdateNumQuestions, edit}) {
     const quizDetails = useReactiveVar(quizDetailsVar);
     const [numQuestionsText, setNumQuestionsText] = useState(numQuestions);
     const [previousUpdateNumQuestions, setPreviousUpdateNumQuestions] = useState(updateNumQuestions);
@@ -84,12 +84,13 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
             </FormLabel>
         </Grid>
         <Grid item>
-            <LabelTextField label={"Platform"} value={quizDetails.platformName}
-                            onChange={e => {
-                                let details = {...quizDetails};
-                                details.platformName = e.target.value;
-                                quizDetailsVar(details);
-                            }}/>
+            {!edit ? <LabelTextField label={"Platform"} value={quizDetails.platformName}
+                                     onChange={e => {
+                                         let details = {...quizDetails};
+                                         details.platformName = e.target.value;
+                                         quizDetailsVar(details);
+                                     }}/> : <Fragment/>}
+
         </Grid>
         <Grid item>
             <LabelTextField label={"Quiz Title"} value={quizDetails.title}
@@ -128,20 +129,20 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
             </FormLabel>
         </Grid>
         <Grid item>
-            <LabelTextField label={"Number of Questions"}
-                            value={numQuestionsText}
-                            onChange={e => {
-                                const value = Number(e.target.value);
-                                if (value >= 0 && value <= MAX_QUESTIONS) {
-                                    setNumQuestionsText(value);
-                                }
-                            }}
-                            onBlur={() => handleUpdateNumQuestions(numQuestionsText)}
-                            type={"number"}/>
+            {!edit ? <LabelTextField label={"Number of Questions"}
+                                     value={numQuestionsText}
+                                     onChange={e => {
+                                         const value = Number(e.target.value);
+                                         if (value >= 0 && value <= MAX_QUESTIONS) {
+                                             setNumQuestionsText(value);
+                                         }
+                                     }}
+                                     onBlur={() => handleUpdateNumQuestions(numQuestionsText)}
+                                     type={"number"}/> : <Fragment/>}
         </Grid>
         <Grid item>
             <LabelTextField name="timeToAnswer" label={"Time to answer (seconds)"} type={"number"}
-                            placeholder={quizDetails.timeToAnswer}
+                            value={quizDetails.timeToAnswer ? quizDetails.timeToAnswer : 10}
                             onChange={e => {
                                 let details = {...quizDetails};
                                 details.timeToAnswer = Number(e.target.value);
@@ -156,6 +157,7 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
                                   width: 280,
                                   justifyContent: "space-between"
                               }}
+                              checked={quizDetails.shuffleQuestions}
                               control={<Checkbox onChange={e => {
                                   let details = {...quizDetails};
                                   details.shuffleQuestions = e.target.checked;
@@ -171,6 +173,7 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
                                   width: 280,
                                   justifyContent: "space-between"
                               }}
+                              checked={quizDetails.shuffleAnswers}
                               control={<Checkbox onChange={e => {
                                   let details = {...quizDetails};
                                   details.shuffleAnswers = e.target.checked;

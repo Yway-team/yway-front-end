@@ -4,13 +4,18 @@ import Stack from "@mui/material/Stack";
 
 function TagsInput({tags, handleAddTag, handleDeleteTag, newTag, onNewTagChange}) {
 
+    const handleEnterKeyPressed = (e) => {
+        if(e.keyCode === 13)
+            handleAddTag();
+    }
+
     return (
         <Stack direction={'column'} spacing={2}>
             <Stack direction={'row'} alignItems={'center'}>
                 <Typography sx={{width: 250}}>
                     Tags
                 </Typography>
-                <TextField value={newTag} onChange={onNewTagChange} variant='outlined'
+                <TextField value={newTag} onChange={onNewTagChange} onKeyDown={handleEnterKeyPressed} variant='outlined'
                            style={{width: 336, marginRight: 16}}>
                 </TextField>
                 <Button onClick={handleAddTag} variant={"contained"}>
