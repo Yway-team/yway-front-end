@@ -95,9 +95,12 @@ export default function CreateQuizScreen({ draftId }) {
             platformName: quizDetails.platformName,
             timeToAnswer: quizDetails.timeToAnswer,
             bannerImgData: quizDetails.bannerImgData,
+            bannerImgName: quizDetails.bannerImgName,
             thumbnailImgData: quizDetails.thumbnailImgData,
+            thumbnailImgName: quizDetails.thumbnailImgName,
             color: quizDetails.color,
-            tags: quizDetails.tags
+            tags: quizDetails.tags,
+            updatedAt: Date.now()
             /* other optional props */
         };
         // if (draftId) {
