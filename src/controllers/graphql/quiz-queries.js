@@ -20,6 +20,21 @@ export const GET_QUIZ_INFO = gql`
     }
 `;
 
+export const GET_QUIZ_EDIT_INFO = gql`
+    query GetQuizEditInfo($quizId: ID!) {
+        getQuizEditInfo(quizId: $quizId) {
+            _id
+            bannerImg
+            color
+            description
+            platformName
+            tags
+            thumbnailImg
+            title
+        }
+    }
+`;
+
 export const GET_QUIZ_HIGHLIGHTS = gql`
     query GetQuizHighlights($howMany: Int!) {
         getQuizHighlights(howMany: $howMany) {

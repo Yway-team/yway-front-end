@@ -20,7 +20,7 @@ export default function SearchResultsScreen() {
     let platforms = [];
     let quizzes = [];
     let users = [];
-    const { data } = useQuery(SEARCH, { variables: { searchString: query, filter: filter } });
+    const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter } });
 
     if (data) {
         platforms = data.search.platforms;
@@ -72,7 +72,7 @@ export default function SearchResultsScreen() {
                     <Grid container justifyContent='flex-start'>
                         {quizzes.length != 0 ?
 
-                            quizzes.map((data) => <Grid key={data._id} item ><QuizCard {...data} /> </Grid>)
+                            quizzes.map((data) => <Grid key={data._id} item ><QuizCard {...data} refetch={refetch} /> </Grid>)
                             : <Typography> {`There is no related quizzes for " ${query} "`} </Typography>
 
                         }

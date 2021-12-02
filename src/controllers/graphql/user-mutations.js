@@ -23,6 +23,12 @@ export const LOGIN = gql`
     }
 `;
 
+export const DELETE_DRAFT = gql`
+    mutation DeleteDraft($draftId: ID!) {
+        deleteDraft(draftId: $draftId)
+    }
+`;
+
 export const UPDATE_PRIVACY_SETTINGS = gql`
     mutation UpdatePrivacySettings($privacySettings: String!) {
         # If privacy settings is not one of 'private', 'public', or 'friends', it does nothing and returns null. On success, returns the new privacy settings.

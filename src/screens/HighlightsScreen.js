@@ -7,7 +7,7 @@ import { GET_PLATFORM_HIGHLIGHTS } from '../controllers/graphql/platform-queries
 
 
 export default function HighlightsScreen() {
-    const { data: quizData } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
+    const { data: quizData, refetch: refetchQuizzes } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
     const { data: platformData } = useQuery(GET_PLATFORM_HIGHLIGHTS, { variables: { howMany: 10 } });
     let quizzes = null;
     let platforms = null;
@@ -25,7 +25,7 @@ export default function HighlightsScreen() {
             </Grid>
             <CommonTitle title='TOP QUIZZES' />
             <Grid container justifyContent='flex-start'>
-                {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} />) : null}
+                {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} refetch={refetchQuizzes} />) : null}
             </Grid>
         </Grid>
     );

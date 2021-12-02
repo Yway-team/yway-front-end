@@ -22,6 +22,7 @@ import LinesEllipsis from 'react-lines-ellipsis';
 import { useMutation } from '@apollo/client';
 import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 import { useHistory } from 'react-router-dom';
+import { DELETE_DRAFT } from '../controllers/graphql/user-mutations';
 
 
 // quizCard - All necessary information for a summarized display of the platform.
@@ -56,6 +57,7 @@ function QuizCard({
     platformId,
     platformName,
     platformThumbnail,
+    refetch,
     draft
 }) {
     const [open, setOpen] = useState(false);
@@ -66,6 +68,8 @@ function QuizCard({
     const [anchorEl, setAnchorEl] = useState(null);
     const openQuizEditMenu = Boolean(anchorEl);
     const [deleteQuiz] = useMutation(DELETE_QUIZ);
+    const [deleteDraft] = useMutation(DELETE_DRAFT);
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -82,6 +86,12 @@ function QuizCard({
 
     const handleDeleteQuiz = async () => {
         await deleteQuiz({ variables: { quizId: _id } });
+        await refetch();
+    }
+
+    const handleDeleteDraft = async () => {
+        await deleteDraft({ variables: { draftId: _id } });
+        await refetch();
     }
 
     const menuTypography = (text) => <Typography
@@ -152,7 +162,7 @@ function QuizCard({
                         </Box>
                         <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1}>
                             <Grid item container xs={6} alignItems='center'>
-                                <img src={logoIcon} style={{ height: 15 }} />
+                                <img src={logoIcon} style={{ height: 15 }} alt='' />
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
@@ -333,12 +343,12 @@ function QuizCard({
                             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 
                             <MenuItem onClick={() => {
-                                history.push(`/quiz/edit/${_id}`);
+                                history.push(draft ? `/quiz/create/${_id}` : `/quiz/edit/${_id}`);
                             }}>
                                 <ListItemIcon>
                                     <EditOutlined />
                                 </ListItemIcon>
-                                {menuTypography('Edit Quiz')}
+                                {menuTypography(draft ? 'Edit Draft' : 'Edit Quiz')}
                             </MenuItem>
 
                             <MenuItem>
@@ -348,11 +358,11 @@ function QuizCard({
                                 {menuTypography('Edit Tags')}
                             </MenuItem>
 
-                            <MenuItem onClick={handleDeleteQuiz}>
+                            <MenuItem onClick={draft ? handleDeleteDraft : handleDeleteQuiz}>
                                 <ListItemIcon>
                                     <DeleteOutlined />
                                 </ListItemIcon>
-                                {menuTypography('Delete Quiz')}
+                                {menuTypography(draft ? 'Delete Draft' : 'Delete Quiz')}
                             </MenuItem>
                         </Menu>
                     </CardContent>

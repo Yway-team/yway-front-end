@@ -63,7 +63,7 @@ export default function CreateQuestionCard({ questionIndex, handleDeleteQuestion
                 </IconButton>
             </Grid>
             <CardContent>
-                <Grid padding={2} spacing={2} rowSpacing={3}>
+                <Grid padding={2} rowSpacing={3}>
                     <TextField label="Question" variant="standard" fullWidth multiline
                         defaultValue={question.description} onBlur={e => {
                             question.description = e.target.value;

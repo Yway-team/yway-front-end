@@ -95,7 +95,7 @@ export default function PlatformScreen() {
     const { platformName } = useParams();
     const history = useHistory();
 
-    const { data: platformData, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
+    const { data: platformData, refetch, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
     console.log(platformData)
 
     let platformSummary;
@@ -138,7 +138,7 @@ export default function PlatformScreen() {
                     </Box>
                     <Box style={{ minHeight: "30px", margin: "30px" }}>
                         <Typography>
-                            {platformSummary? platformSummary.description: ""}
+                            {platformSummary ? platformSummary.description : ""}
                         </Typography>
                     </Box>
                 </Grid>
@@ -146,7 +146,7 @@ export default function PlatformScreen() {
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <ModeratorQuizCard key={data.id} {...data} />) :
+                                <ModeratorQuizCard key={data.id} {...data} refetch={refetch} />) :
                             <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
@@ -155,7 +155,7 @@ export default function PlatformScreen() {
                         )}
                 </Grid>
                 <Grid item xs={3} sx={{ marginTop: "2rem" }} spacing={0}>
-                    <MiniLeaderboard width="310px" platformName={platformName}/>
+                    <MiniLeaderboard width="310px" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                 </Grid>
             </Grid>
         </>

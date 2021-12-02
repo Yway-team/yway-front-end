@@ -21,6 +21,13 @@ export const GET_PLATFORM_SUMMARY = gql`
             color
             description
             favorites
+            leaderboardEntries {
+                avatar
+                score
+                secondaryScore
+                userId
+                username
+            }
             moderator
             numQuizzes
             numQuestions
