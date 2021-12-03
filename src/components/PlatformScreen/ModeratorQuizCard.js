@@ -4,8 +4,11 @@ import { Grid, Stack, Avatar, Box, Button, CircularProgress } from '@mui/materia
 import SettingsIcon from '@mui/icons-material/Settings';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { REMOVE_QUIZ_FROM_PLATFORM } from '../../controllers/graphql/platform-mutations';
+import { useMutation } from '@apollo/client';
 
 export default function ModeratorQuizCard(props) {
+    const [removeQuizFromPlatform] = useMutation(REMOVE_QUIZ_FROM_PLATFORM, { variables: { platformId: props.platformId, quizId: props._id } });
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -14,6 +17,11 @@ export default function ModeratorQuizCard(props) {
     const handleClose = () => {
       setAnchorEl(null);
     };
+
+    const handleRemoveQuizFromPlatform = () => {
+        removeQuizFromPlatform().then(props.refetch);
+        handleClose();
+    }
   
     return (
         <Box sx={{position: "relative"}}>
@@ -38,7 +46,7 @@ export default function ModeratorQuizCard(props) {
                 }}
             >
                 <MenuItem onClick={handleClose}>View Quiz Details</MenuItem>
-                <MenuItem onClick={handleClose}>Delete Quiz</MenuItem>
+                <MenuItem onClick={handleRemoveQuizFromPlatform}>Remove Quiz</MenuItem>
             </Menu>
         </Box>
     )

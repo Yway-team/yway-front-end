@@ -146,7 +146,7 @@ export default function PlatformScreen() {
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <ModeratorQuizCard key={data.id} {...data} refetch={refetch} />) :
+                                <ModeratorQuizCard key={data.id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
                             <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
