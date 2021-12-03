@@ -4,9 +4,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import {Fragment, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
 
-export default function ImageUpload({label, onUpload, onRemove}) {
+export default function ImageUpload({label, onUpload, onRemove, savedImg}) {
     const [imageName, setImageName] = useState('');
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(savedImg ? savedImg : '');
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];

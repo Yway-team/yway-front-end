@@ -15,9 +15,9 @@ export default function CreatePlatformScreen() {
     const [platformColor, setPlatformColor] = useState(null);
     const [tags, setTags] = useState([]);
     const [newTag, setNewTag] = useState('');
-    const [bannerImg, setBannerImg] = useState(null);
+    const [bannerImg, setBannerImg] = useState('');
     const [bannerImgName, setBannerImgName] = useState('');
-    const [thumbnailImg, setThumbnailImg] = useState(null);
+    const [thumbnailImg, setThumbnailImg] = useState('');
     const [thumbnailImgName, setThumbnailImgName] = useState('');
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const bannerImgLabel = 'Banner Image';
@@ -37,10 +37,10 @@ export default function CreatePlatformScreen() {
 
     const handleRemoveImage = (name) => {
         if (name === bannerImgLabel) {
-            setBannerImg(null);
+            setBannerImg('');
             setBannerImgName('');
         } else if (name === thumbnailImgLabel) {
-            setThumbnailImg(null);
+            setThumbnailImg('');
             setThumbnailImgName('');
         } else {
             console.error(`CreatePlatform.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)

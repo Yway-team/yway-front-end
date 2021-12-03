@@ -88,21 +88,21 @@ export default function CreateQuizScreen({draft, edit}) {
         //fetch quiz details here and set it in questionVar and quizDetailsVar
         getQuizEditInfo({variables: {quizId: quizId}}).then(({data}) => {
             if (data) quizInfo = data.getQuizEditInfo;
-            // quizInfo = data.getQuizEditInfo;
-            // let quizDetails = quizDetailsVar();
-            // let details = {...quizDetails};
-            // // details.platformName = quizInfo.platformName;
-            // details.title = quizInfo.title;
-            // details.description = quizInfo.description;
-            // details.tags = quizInfo.tags ? quizInfo.tags : [];
-            // details.bannerImgData = quizInfo.bannerImg;
-            // details.thumbnailImgData = quizInfo.thumbnailImg;
-            // // details.timeToAnswer = quizInfo.timeToAnswer;
-            // // details.shuffleAnswers = quizInfo.shuffleAnswers;
-            // // details.shuffleQuestions = quizInfo.shuffleQuestions;
-            // details.color = quizInfo.color;
-            // quizDetailsVar(details);
-            quizDetailsVar(quizInfo);
+            quizInfo = data.getQuizEditInfo;
+            let quizDetails = quizDetailsVar();
+            let details = {...quizDetails};
+            // details.platformName = quizInfo.platformName;
+            details.title = quizInfo.title;
+            details.description = quizInfo.description;
+            details.tags = quizInfo.tags ? quizInfo.tags : [];
+            details.bannerImgData = quizInfo.bannerImg;
+            details.thumbnailImgData = quizInfo.thumbnailImg;
+            // details.timeToAnswer = quizInfo.timeToAnswer;
+            // details.shuffleAnswers = quizInfo.shuffleAnswers;
+            // details.shuffleQuestions = quizInfo.shuffleQuestions;
+            details.color = quizInfo.color;
+            quizDetailsVar(details);
+            // quizDetailsVar(quizInfo);
         });
         setGotQuizInfo(true);
     }
