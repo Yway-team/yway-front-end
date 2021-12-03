@@ -80,7 +80,6 @@ export default function CreateQuizScreen({draft, edit}) {
             questionsVar(uiParentCleaned);
             setNumQuestions(quizInfo.questions.length);
             setQuestions([...questionsVar()]);
-            console.log('draft', questionsVar());
         });
         setGotQuizInfo(true);
     }
@@ -88,7 +87,6 @@ export default function CreateQuizScreen({draft, edit}) {
         const {quizId} = params;
         //fetch quiz details here and set it in questionVar and quizDetailsVar
         getQuizEditInfo({variables: {quizId: quizId}}).then(({data}) => {
-            console.log(data);
             if (data) quizInfo = data.getQuizEditInfo;
             // quizInfo = data.getQuizEditInfo;
             // let quizDetails = quizDetailsVar();
