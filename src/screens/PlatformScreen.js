@@ -9,6 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { Typography } from "@mui/material";
 import Header from '../components/PlatformScreen/Header';
 import ModeratorQuizCard from '../components/PlatformScreen/ModeratorQuizCard';
+import FavoriteButton from '../components/PlatformScreen/FavoriteButton';
 
 /*const quizzes = [
     {
@@ -96,10 +97,10 @@ export default function PlatformScreen() {
     const history = useHistory();
 
     const { data: platformData, refetch, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
-    console.log(platformData)
 
     let platformSummary;
     if (platformData) {
+        console.log(platformData)
         platformSummary = platformData.getPlatformSummary;
     }
 
@@ -116,6 +117,7 @@ export default function PlatformScreen() {
                         <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
                             <SettingsIcon sx={{ color: "white" }} />
                         </Button>
+                        <FavoriteButton _id={platformSummary._id} title={platformName} sx={{ position: "absolute", right: "50px", bottom: "10px" }}/>
                     </Box>
                     <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>

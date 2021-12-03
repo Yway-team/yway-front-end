@@ -43,8 +43,9 @@ export default function PlatformSettings() {
         tags: []
     })
     if (platformSettingsData && platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
+        console.log("updated platformSettings")
         console.log(platformSettingsData.getPlatformSettings)
-        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true, bannerImgData: null, thumbnailImgData: null})
+        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
     }
 
     // TAG MANAGEMENT
@@ -90,6 +91,7 @@ export default function PlatformSettings() {
 
     // Confirmation and Loading Dialog
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
+    const [loadedModalOpen, setLoadedModalOpen] = useState(false)
     const togglePublishConfirmOpen = () => {
         setPublishConfirmOpen(!publishConfirmOpen);
     };
@@ -107,12 +109,18 @@ export default function PlatformSettings() {
             minCreatorPoints: effectiveSettings.minCreatorPoints,
             onlyModSubmissions: effectiveSettings.onlyModSubmissions,
             tags: effectiveSettings.tags,
-            title: effectiveSettings.title        
+            title: effectiveSettings.title,
+            platformId: effectiveSettings._id
         }
         console.log(packedSettings)
         await updatePlatformSettings({variables: {platformSettings: packedSettings}})
-        .then(data=>console.log(data))
+        .then(data=>{
+            const newSettings = data.updatePlatformSettings
+            setEffectiveSettings({...newSettings, updated: true})
+        })
         .catch(data=>console.log(data));
+        setPublishConfirmOpen(false)
+        setLoadedModalOpen(true)
     };
     const handleOpen = () => {
         setPublishConfirmOpen(true)
@@ -224,6 +232,15 @@ export default function PlatformSettings() {
                 yesCallback={handleSubmit}
                 noText='CANCEL'
                 noCallback={()=>setPublishConfirmOpen(prev=>!prev)}
+            />
+            <LoadedModal
+                open={loadedModalOpen}
+                handleClose={()=>setLoadedModalOpen(false)}
+                title='Changes have been saved'
+                content={`Changes have been saved`}
+                yesText='CONFIRM'
+                yesCallback={()=>setLoadedModalOpen(false)}
+                noCallback={()=>setLoadedModalOpen(false)}            
             />
         </>
     )
