@@ -27,6 +27,7 @@ export const UPDATE_PLATFORM_SETTINGS = gql`
             tags
             thumbnailImg
             title
+            _id
         }
     }
 `;

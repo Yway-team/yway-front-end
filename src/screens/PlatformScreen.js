@@ -96,7 +96,6 @@ export default function PlatformScreen() {
     const history = useHistory();
 
     const { data: platformData, refetch, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
-    console.log(platformData)
 
     let platformSummary;
     if (platformData) {
@@ -116,6 +115,7 @@ export default function PlatformScreen() {
                         <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
                             <SettingsIcon sx={{ color: "white" }} />
                         </Button>
+                        
                     </Box>
                     <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>

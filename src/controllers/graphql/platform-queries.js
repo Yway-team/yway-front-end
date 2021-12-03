@@ -70,7 +70,6 @@ export const GET_PLATFORM_SETTINGS = gql`
             tags
             thumbnailImg
             title
-            _id
         }
     }
 `;

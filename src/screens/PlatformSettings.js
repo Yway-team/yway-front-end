@@ -114,7 +114,10 @@ export default function PlatformSettings() {
         }
         console.log(packedSettings)
         await updatePlatformSettings({variables: {platformSettings: packedSettings}})
-        .then(data=>console.log(data))
+        .then(data=>{
+            const newSettings = data.updatePlatformSettings
+            setEffectiveSettings({...newSettings, updated: true})
+        })
         .catch(data=>console.log(data));
         setPublishConfirmOpen(false)
         setLoadedModalOpen(true)
