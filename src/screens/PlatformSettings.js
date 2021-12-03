@@ -16,7 +16,7 @@ import { UPDATE_PLATFORM_SETTINGS } from '../controllers/graphql/platform-mutati
 import { LabelTextField } from '../components';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { useHistory } from 'react-router';
-
+import LoadedModal from '../components/PlatformScreen/LoadedModal'
 
 let defaultImages = {
     thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
@@ -35,16 +35,16 @@ export default function PlatformSettings() {
     console.log(platformName)
     console.log(platformSettingsData)
     let [effectiveSettings, setEffectiveSettings] = useState({
-        bannerImg: defaultImages.bannerImg,
-        thumbnailImg: defaultImages.thumbnailImg,
+        bannerImgData: null,
+        thumbnailImgData: null,
         title: platformName,
         creatorPoints: 0,
         updated: false,
         tags: []
     })
     if (platformSettingsData && platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
-        console.log(`updated using ${platformSettingsData.getPlatformSettings}`)
-        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
+        console.log(platformSettingsData.getPlatformSettings)
+        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true, bannerImgData: null, thumbnailImgData: null})
     }
 
     // TAG MANAGEMENT
@@ -88,27 +88,31 @@ export default function PlatformSettings() {
         })
     }
 
-    // Confirmation Dialog
+    // Confirmation and Loading Dialog
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const togglePublishConfirmOpen = () => {
         setPublishConfirmOpen(!publishConfirmOpen);
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("show effectiveSettings")
+        console.log(effectiveSettings)
         const packedSettings = {
-            bannerImg: effectiveSettings.bannerImg,
+            // bannerImgData: effectiveSettings.bannerImgData,
+            // thumbnailImgData: effectiveSettings.thumbnailImgData,
+            bannerImgData: null,
+            thumbnailImgData: null,
             color: effectiveSettings.color,
             description: effectiveSettings.description,
             minCreatorPoints: effectiveSettings.minCreatorPoints,
             onlyModSubmissions: effectiveSettings.onlyModSubmissions,
             tags: effectiveSettings.tags,
-            thumbnailImg: effectiveSettings.thumbnailImg,
             title: effectiveSettings.title        
         }
-        updatePlatformSettings({variables: {platformSettings: packedSettings}})
+        console.log(packedSettings)
+        await updatePlatformSettings({variables: {platformSettings: packedSettings}})
         .then(data=>console.log(data))
         .catch(data=>console.log(data));
-        setPublishConfirmOpen(false)
     };
     const handleOpen = () => {
         setPublishConfirmOpen(true)
@@ -216,7 +220,7 @@ export default function PlatformSettings() {
                 handleClose={()=>setPublishConfirmOpen(prev=>!prev)}
                 title='Confirm Changes'
                 content={`Are you sure you want to save changes?`}
-                yesText='PUBLISH'
+                yesText='CONFIRM'
                 yesCallback={handleSubmit}
                 noText='CANCEL'
                 noCallback={()=>setPublishConfirmOpen(prev=>!prev)}
