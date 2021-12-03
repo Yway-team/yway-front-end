@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 function TagsInput({tags, handleAddTag, handleDeleteTag, newTag, onNewTagChange}) {
 
     const handleEnterKeyPressed = (e) => {
-        if(e.keyCode === 13)
+        if (e.keyCode === 13)
             handleAddTag();
     }
 
@@ -23,9 +23,10 @@ function TagsInput({tags, handleAddTag, handleDeleteTag, newTag, onNewTagChange}
                 </Button>
             </Stack>
             <Box direction={'row'} m={1} sx={{maxWidth: '1050px'}}>
-                {tags ? tags.map((data, index) => <Chip sx={{marginRight: 1, marginBottom: 1}} key={data} label={'#'.concat(data)}
-                                                 color={"primary"} variant={"outlined"}
-                                                 onDelete={() => handleDeleteTag(data)}/>) : null}
+                {tags ? tags.map((data, index) => <Chip sx={{marginRight: 1, marginBottom: 1}} key={data}
+                                                        label={'#'.concat(data)}
+                                                        color={"primary"} variant={"outlined"}
+                                                        onDelete={handleDeleteTag(data)}/>) : null}
             </Box>
         </Stack>
     )

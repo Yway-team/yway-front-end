@@ -88,7 +88,7 @@ export default function CreateQuizScreen({draft, edit}) {
         //fetch quiz details here and set it in questionVar and quizDetailsVar
         getQuizEditInfo({variables: {quizId: quizId}}).then(({data}) => {
             if (data) quizInfo = data.getQuizEditInfo;
-            quizInfo = data.getQuizEditInfo;
+            // quizInfo = data.getQuizEditInfo;
             let quizDetails = quizDetailsVar();
             let details = {...quizDetails};
             // details.platformName = quizInfo.platformName;
