@@ -65,13 +65,19 @@ export default function CreatePlatformScreen() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('banner', bannerImg);
+        console.log('thumbnail', thumbnailImg);
         const platformObj = {
             title: platformName,
             description: platformDescription,
             minCreatorPoints: minCreatorPts,
             onlyModSubmissions: onlyModSubmissions,
             color: platformColor,
-            tags: tags
+            tags: tags,
+            bannerImgData: bannerImg,
+            bannerImgName: bannerImgName,
+            thumbnailImgData: thumbnailImg,
+            thumbnailImgName: thumbnailImgName
         };
         const {data} = await createPlatform({variables: {platform: platformObj}});
         if (data) {
