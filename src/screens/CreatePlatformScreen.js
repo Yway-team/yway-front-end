@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, Typography} from "@mui/material";
-import {ColorPicker, CommonTitle, ImageUpload, LabelTextField} from "../components";
+import {ColorPicker, CommonTitle, ConfirmationDialog, ImageUpload, LabelTextField} from "../components";
 import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
@@ -19,6 +19,7 @@ export default function CreatePlatformScreen() {
     const [bannerImgName, setBannerImgName] = useState('');
     const [thumbnailImg, setThumbnailImg] = useState(null);
     const [thumbnailImgName, setThumbnailImgName] = useState('');
+    const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const bannerImgLabel = 'Banner Image';
     const thumbnailImgLabel = 'Thumbnail Image';
 
@@ -45,6 +46,10 @@ export default function CreatePlatformScreen() {
             console.error(`CreatePlatform.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
         }
     }
+
+    const togglePublishConfirmOpen = () => {
+        setPublishConfirmOpen(!publishConfirmOpen);
+    };
 
     const handleAddTag = () => {
         if (newTag === '' || tags.includes(newTag)) {
@@ -95,7 +100,7 @@ export default function CreatePlatformScreen() {
     }
 
     return (
-        <Grid container direction="column" sx={{p: 2, pl: 10, width: 700}}>
+        <><Grid container direction="column" sx={{p: 2, pl: 10, width: 700}}>
             <Grid item>
                 <CommonTitle title='CREATE PLATFORM'/>
             </Grid>
@@ -135,7 +140,8 @@ export default function CreatePlatformScreen() {
                         <ImageUpload label={"Banner Image"} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
                     </Grid>
                     <Grid item>
-                        <ImageUpload label={"Thumbnail Image"} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
+                        <ImageUpload label={"Thumbnail Image"} onUpload={handleImageUpload}
+                                     onRemove={handleRemoveImage}/>
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
@@ -169,11 +175,22 @@ export default function CreatePlatformScreen() {
                         />
                     </Grid>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>
-                        <Button variant={"contained"} type={"submit"}>CREATE</Button>
+                        <Button variant={"contained"} onClick={togglePublishConfirmOpen}>CREATE</Button>
                         <Button variant={"outlined"} onClick={handleCancel}>CANCEL</Button>
                     </Stack>
                 </Grid>
             </form>
         </Grid>
+            <ConfirmationDialog
+                open={publishConfirmOpen}
+                handleClose={togglePublishConfirmOpen}
+                title='CREATE PLATFORM'
+                content={`Are you sure you want to create this platform?`}
+                yesText='PUBLISH'
+                yesCallback={handleSubmit}
+                noText='CANCEL'
+                noCallback={togglePublishConfirmOpen}
+            />
+        </>
     )
 }

@@ -120,7 +120,7 @@ export default function CreateQuizScreen({draft, edit}) {
         const quizDetails = quizDetailsVar();
         questions.forEach(question => delete question.id);
         console.log(quizDetails);
-        const { draftId } = params;
+        const {draftId} = params;
         const quizObj = {
             _id: draftId,
             questions: questions,
@@ -231,8 +231,13 @@ export default function CreateQuizScreen({draft, edit}) {
                                justifyContent='space-between'>
                             {edit ? <> <Stack direction='row' spacing={2}>
                                 <Button variant={"contained"} onClick={togglePublishConfirmOpen}>SAVE CHANGES</Button>
-                                <Button variant={"contained"}>CANCEL</Button></Stack></> : <><Button
-                                variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
+                                <Button variant={"contained"} onClick={e => {
+                                    history.push(`/user/${globalState()._id}/quizzes`);
+                                }
+                                }>CANCEL</Button></Stack></> : <><Button
+                                variant={"outlined"} style={{marginRight: 150}} onClick={e => {
+                                history.push("/drafts");
+                            }}>{draft ? "CANCEL" : "DISCARD"}</Button>
                                 <Stack direction='row' spacing={2}>
                                     <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
                                     <Button variant={"contained"} onClick={togglePublishConfirmOpen}>PUBLISH</Button>
