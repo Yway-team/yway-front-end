@@ -72,12 +72,15 @@ export default function CreateQuizScreen({draft, edit}) {
             details.color = quizInfo.color;
             details._id = draftId;
             quizDetailsVar(details);
-
-            // let questions = questionsVar();
-            // questions = quizInfo.questions;
-            questionsVar(quizInfo.questions);
-            setQuestions(questionsVar());
-            console.log(questionsVar());
+            // Deep copy of uiParent
+            const uiParentCleaned = JSON.parse(JSON.stringify(quizInfo.questions));
+            // Strip __typename from uiParent and item list
+            delete uiParentCleaned.__typename;
+            uiParentCleaned.forEach(element => delete element.__typename);
+            questionsVar(uiParentCleaned);
+            setNumQuestions(quizInfo.questions.length);
+            setQuestions([...questionsVar()]);
+            console.log('draft', questionsVar());
         });
         setGotQuizInfo(true);
     }
