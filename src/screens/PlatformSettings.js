@@ -43,8 +43,9 @@ export default function PlatformSettings() {
         tags: []
     })
     if (platformSettingsData && platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
+        console.log("updated platformSettings")
         console.log(platformSettingsData.getPlatformSettings)
-        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true, bannerImgData: null, thumbnailImgData: null})
+        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
     }
 
     // TAG MANAGEMENT
@@ -107,12 +108,14 @@ export default function PlatformSettings() {
             minCreatorPoints: effectiveSettings.minCreatorPoints,
             onlyModSubmissions: effectiveSettings.onlyModSubmissions,
             tags: effectiveSettings.tags,
-            title: effectiveSettings.title        
+            title: effectiveSettings.title,
+            platformId: effectiveSettings._id
         }
         console.log(packedSettings)
         await updatePlatformSettings({variables: {platformSettings: packedSettings}})
         .then(data=>console.log(data))
         .catch(data=>console.log(data));
+        setPublishConfirmOpen(false)
     };
     const handleOpen = () => {
         setPublishConfirmOpen(true)
