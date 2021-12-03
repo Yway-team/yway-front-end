@@ -63,6 +63,7 @@ export const GET_PLATFORM_SETTINGS = gql`
         getPlatformSettings(title: $title) {
             bannerImg
             color
+            description
             minCreatorPoints
             onlyModSubmissions
             tags

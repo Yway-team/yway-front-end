@@ -19,9 +19,14 @@ export const CREATE_PLATFORM = gql`
 export const UPDATE_PLATFORM_SETTINGS = gql`
     mutation UpdatePlatformSettings($platformSettings: PlatformSettingsInput!) {
         updatePlatformSettings(platformSettings: $platformSettings) {
-            title
             bannerImg
+            color
+            description
+            minCreatorPoints
+            onlyModSubmissions
+            tags
             thumbnailImg
+            title
         }
     }
 `;

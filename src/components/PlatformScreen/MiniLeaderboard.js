@@ -4,8 +4,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { useHistory } from 'react-router';
+import MiniLeaderboardRow from './MiniLeaderboardRow';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -84,7 +85,9 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Nobody has played any quizzes yet!
+        <Grid container sx={{width}} spacing={2}>
+          {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <MiniLeaderboardRow avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
+        </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Nobody has played any quizzes yet!
