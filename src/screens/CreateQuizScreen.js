@@ -122,7 +122,9 @@ export default function CreateQuizScreen({draft, edit}) {
         const quizDetails = quizDetailsVar();
         questions.forEach(question => delete question.id);
         console.log(quizDetails);
+        const { draftId } = params;
         const quizObj = {
+            _id: draftId,
             questions: questions,
             title: quizDetails.title,
             shuffleQuestions: quizDetails.shuffleQuestions,
