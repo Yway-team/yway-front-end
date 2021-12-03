@@ -149,17 +149,23 @@ export default function PlatformSettings() {
                     <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
                         Platform Settings
                     </FormLabel>
+                    <LabelTextField label={"Platform Name"} value={effectiveSettings.title}
+                        onChange={(e)=>{
+                            setEffectiveSettings(prev=>{
+                                return {...prev, title: e.target.value}
+                            })
+                        }}/>
+                    <LabelTextField label={"Description"} value={effectiveSettings.description}
+                        onChange={(e)=>{
+                            setEffectiveSettings(prev=>{
+                                return {...prev, description: e.target.value}
+                            })
+                        }}/>
                     <Stack direction="row" alignItems="baseline">
                         {/* <div style={{paddingRight: "10px"}}>
                         Platform Names
                         </div>
                         <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/> */}
-                        <LabelTextField label={"Platform Name"} value={effectiveSettings.title}
-                            onChange={(e)=>{
-                                setEffectiveSettings(prev=>{
-                                    return {...prev, title: e.target.value}
-                                })
-                            }}/>
                     </Stack>
                     <Box sx={{ display: 'flex' }}>
                         <TagsInput tags={tags.current} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
