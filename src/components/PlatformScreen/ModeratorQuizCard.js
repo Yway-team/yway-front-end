@@ -37,7 +37,7 @@ export default function ModeratorQuizCard(props) {
                 'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>Veiw Quiz Details</MenuItem>
+                <MenuItem onClick={handleClose}>View Quiz Details</MenuItem>
                 <MenuItem onClick={handleClose}>Delete Quiz</MenuItem>
             </Menu>
         </Box>

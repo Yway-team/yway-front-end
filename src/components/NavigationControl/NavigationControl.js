@@ -43,7 +43,7 @@ import { useReactiveVar } from "@apollo/client";
 import LinesEllipsis from 'react-lines-ellipsis';
 import ProfileMenu from './ProfileMenu';
 import NotificationsPopUp from './NotificationsPopUp';
-import SearchBar from './SeachBar';
+import SearchBar from './SearchBar';
 import logo from '../../images/logo.svg';
 
 

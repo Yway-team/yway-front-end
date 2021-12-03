@@ -75,10 +75,9 @@ export default function CreateQuizScreen({draft, edit}) {
 
             // let questions = questionsVar();
             // questions = quizInfo.questions;
-            // setQuestions(quizInfo.questions);
             questionsVar(quizInfo.questions);
-
-            console.log(quizDetails);
+            setQuestions(questionsVar());
+            console.log(questionsVar());
         });
         setGotQuizInfo(true);
     }
