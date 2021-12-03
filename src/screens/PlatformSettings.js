@@ -91,6 +91,7 @@ export default function PlatformSettings() {
 
     // Confirmation and Loading Dialog
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
+    const [loadedModalOpen, setLoadedModalOpen] = useState(false)
     const togglePublishConfirmOpen = () => {
         setPublishConfirmOpen(!publishConfirmOpen);
     };
@@ -116,6 +117,7 @@ export default function PlatformSettings() {
         .then(data=>console.log(data))
         .catch(data=>console.log(data));
         setPublishConfirmOpen(false)
+        setLoadedModalOpen(true)
     };
     const handleOpen = () => {
         setPublishConfirmOpen(true)
@@ -227,6 +229,15 @@ export default function PlatformSettings() {
                 yesCallback={handleSubmit}
                 noText='CANCEL'
                 noCallback={()=>setPublishConfirmOpen(prev=>!prev)}
+            />
+            <LoadedModal
+                open={loadedModalOpen}
+                handleClose={()=>setLoadedModalOpen(false)}
+                title='Changes have been saved'
+                content={`Changes have been saved`}
+                yesText='CONFIRM'
+                yesCallback={()=>setLoadedModalOpen(false)}
+                noCallback={()=>setLoadedModalOpen(false)}            
             />
         </>
     )
