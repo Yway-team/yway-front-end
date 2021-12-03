@@ -46,22 +46,6 @@ export default function PlatformSettings() {
         console.log(`updated using ${platformSettingsData.getPlatformSettings}`)
         setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
     }
-    console.log(effectiveSettings)
-
-    const tempData = {
-        _id: "test",
-        bannerImg: "test",
-        description: "test",
-        thumbnailImg: "test",
-        moderators: "test",
-        title: "test",
-        tags: "test",
-        color: "test",
-        minCreatorPoints: "test",
-        onlyModSubmissions: "test",
-        bannedUsers: "test",
-        backgroundColor: "orange",
-    }
 
     // TAG MANAGEMENT
     const [newTag, setNewTag] = useState('')
@@ -99,10 +83,8 @@ export default function PlatformSettings() {
 
     // Color Picker functions
     const handleSetColor = (color) => {
-        console.log("updating color to")
-        console.log(color)
         setEffectiveSettings(prev=>{
-            return {...prev, color}
+            return {...prev, color: color.hex}
         })
     }
 
@@ -111,9 +93,23 @@ export default function PlatformSettings() {
     const togglePublishConfirmOpen = () => {
         setPublishConfirmOpen(!publishConfirmOpen);
     };
-    const handleSubmit = () => {
-        alert("test")
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const packedSettings = {
+            bannerImg: effectiveSettings.bannerImg,
+            color: effectiveSettings.color,
+            description: effectiveSettings.description,
+            minCreatorPoints: effectiveSettings.minCreatorPoints,
+            onlyModSubmissions: effectiveSettings.onlyModSubmissions,
+            tags: effectiveSettings.tags,
+            thumbnailImg: effectiveSettings.thumbnailImg,
+            title: effectiveSettings.title        
+        }
+        updatePlatformSettings({variables: {platformSettings: packedSettings}})
+        .then(data=>console.log(data))
+        .catch(data=>console.log(data));
+        setPublishConfirmOpen(false)
+    };
     const handleOpen = () => {
         setPublishConfirmOpen(true)
     }
