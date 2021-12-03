@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import { QuizCard, CommonTitle } from "../components";
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { GET_DRAFTS_INFO } from '../controllers/graphql/user-queries';
+import { useEffect } from 'react';
 
 export default function DraftsScreen() {
     const { data: draftData, refetch: refetchDrafts } = usePrivilegedQuery(GET_DRAFTS_INFO);
@@ -10,6 +11,11 @@ export default function DraftsScreen() {
         drafts = draftData.getDraftsInfo;
     }
     if (drafts) console.log(drafts);
+
+    useEffect(() => {
+        refetchDrafts();
+    }, [refetchDrafts]);
+    
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='DRAFTS' />
