@@ -31,3 +31,9 @@ export const UPDATE_PLATFORM_SETTINGS = gql`
         }
     }
 `;
+
+export const REMOVE_QUIZ_FROM_PLATFORM = gql`
+    mutation RemoveQuizFromPlatform($platformId: ID!, $quizId: ID!) {
+        removeQuizFromPlatform(platformId: $platformId, quizId: $quizId)
+    }
+`;
