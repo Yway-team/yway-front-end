@@ -14,15 +14,17 @@ import {
     MenuItem,
     Typography
 } from '@mui/material';
-import { DeleteOutlined, EditOutlined, LocalOfferOutlined, MoreVertRounded } from '@mui/icons-material';
+import { DeleteOutlined, EditOutlined, LocalConvenienceStoreOutlined, LocalOfferOutlined, MoreVertRounded } from '@mui/icons-material';
 import logoIcon from '../images/logoIcon.svg';
 import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
 import LinesEllipsis from 'react-lines-ellipsis';
-import { useMutation } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import { DELETE_QUIZ } from '../controllers/graphql/quiz-mutations';
 import { useHistory } from 'react-router-dom';
 import { DELETE_DRAFT } from '../controllers/graphql/user-mutations';
+import { globalState } from '../state/UserState';
+
 
 
 // quizCard - All necessary information for a summarized display of the platform.
@@ -44,28 +46,31 @@ import { DELETE_DRAFT } from '../controllers/graphql/user-mutations';
 
 
 function QuizCard({
-                      _id,
-                      title,
-                      bannerImg,
-                      description,
-                      numQuestions,
-                      ownerId,
-                      ownerUsername,
-                      ownerAvatar,
-                      rating,
-                      createdAt,
-                      updatedAt,
-                      platformId,
-                      platformName,
-                      platformThumbnail,
-                      refetch,
-                      draft
-                  }) {
+    _id,
+    title,
+    bannerImg,
+    description,
+    numQuestions,
+    ownerId,
+    ownerUsername,
+    ownerAvatar,
+    rating,
+    createdAt,
+    updatedAt,
+    platformId,
+    platformName,
+    platformThumbnail,
+    refetch,
+    draft
+}) {
     const [open, setOpen] = useState(false);
     // const draft = _id ? false : true;
     draft = draft ? draft : false;
+
     var attempted = true;
     const history = useHistory();
+    const user = useReactiveVar(globalState);
+
     const [anchorEl, setAnchorEl] = useState(null);
     const openQuizEditMenu = Boolean(anchorEl);
     const [deleteQuiz] = useMutation(DELETE_QUIZ);
@@ -168,12 +173,12 @@ function QuizCard({
                                     ml: 1,
                                     fontWeight: 500,
                                     color: 'grey.600'
-                                }}> {rating}</Typography>
+                                }}> {draft ? 'No rating yet' : rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
-                                    sx={{fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right'}}>
-                                    <TimeAgoFromNow dateIn={createdAt || updatedAt}/> </Typography>
+                                    sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}>
+                                    <TimeAgoFromNow dateIn={createdAt || updatedAt} /> </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
@@ -183,7 +188,7 @@ function QuizCard({
                                         ml: 1,
                                         fontWeight: 500,
                                         color: 'grey.600'
-                                    }}> {ownerUsername} </Typography>
+                                    }}> {draft ? 'You' : ownerUsername}</Typography>
                                 </Box>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
@@ -236,10 +241,13 @@ function QuizCard({
                             <Typography sx={{ fontSize: 16, fontWeight: 600, color: 'common.black' }}>
                                 {title}
                             </Typography>
-                            <IconButton sx={{ backgroundColor: openQuizEditMenu ? 'primary.main' : 'grey.50' }}
-                                onClick={handleQuizEditMenuClick}>
-                                <MoreVertRounded sx={{ fill: openQuizEditMenu ? 'white' : 'grey.500' }} />
-                            </IconButton>
+                            {(draft || ownerId === user._id) ?
+                                <IconButton sx={{ backgroundColor: openQuizEditMenu ? 'primary.main' : 'grey.50' }}
+                                    onClick={handleQuizEditMenuClick}>
+                                    <MoreVertRounded sx={{ fill: openQuizEditMenu ? 'white' : 'grey.500' }} />
+                                </IconButton> : <></>
+                            }
+
 
                         </Grid>
                         <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', my: 2 }}>
@@ -247,27 +255,27 @@ function QuizCard({
                         </Typography>
                         <Grid container sx={{ mt: 1 }} justifyContent='space-between' spacing={1}>
                             <Grid item container xs={6} alignItems='center'>
-                                {(!draft) ? <img src={logoIcon} style={{ height: 15 }} /> : null}
+                                <img src={logoIcon} style={{ height: 15 }} />
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
                                     fontWeight: 500,
                                     color: 'grey.600'
-                                }}> {rating}</Typography>
+                                }}> {draft ? 'No rating yet' : rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
                                     sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}>
-                                    <TimeAgoFromNow dateIn={createdAt} /></Typography>
+                                    <TimeAgoFromNow dateIn={draft ? updatedAt : createdAt} /></Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                {!draft ? <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} /> : null}
+                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
                                 <Typography sx={{
                                     fontSize: 14,
                                     ml: 1,
                                     fontWeight: 500,
                                     color: 'grey.600'
-                                }}> {ownerUsername} </Typography>
+                                }}> {draft ? 'You' : ownerUsername} </Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Avatar alt="platform-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
@@ -281,7 +289,7 @@ function QuizCard({
 
                             </Grid>
 
-                            <Button
+                            {draft ? null : <Button
                                 variant='contained'
                                 onClick={() => {
                                     history.push('/quiz/take/' + _id);
@@ -301,10 +309,11 @@ function QuizCard({
                                     }
                                 }
                                 }
-                            > BEGIN QUIZ</Button>
+                            > BEGIN QUIZ</Button>}
 
 
                         </Grid>
+
                         <Menu
                             anchorEl={anchorEl}
                             open={openQuizEditMenu}
@@ -365,6 +374,8 @@ function QuizCard({
                                 {menuTypography(draft ? 'Delete Draft' : 'Delete Quiz')}
                             </MenuItem>
                         </Menu>
+
+
                     </CardContent>
 
 
