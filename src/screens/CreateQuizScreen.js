@@ -43,18 +43,18 @@ export default function CreateQuizScreen({draft, edit}) {
     const history = useHistory();
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
+    const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
+    const [getDraft] = useLazyQuery(GET_DRAFT);
     const [_, setQuestions] = useState(questionsVar());
     const [numQuestions, setNumQuestions] = useState(questionsVar().length);
     const [updateNumQuestions, setUpdateNumQuestions] = useState(false);
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
-    const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
-    const [getDraft] = useLazyQuery(GET_DRAFT);
     const params = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
     let quizInfo;
 
     if (draft && !gotQuizInfo) {
-        const { draftId } = params;
+        const {draftId} = params;
         getDraft({variables: {draftId: draftId}}).then(({data}) => {
             quizInfo = data.getDraft;
             console.log(quizInfo);
@@ -72,39 +72,39 @@ export default function CreateQuizScreen({draft, edit}) {
             details.color = quizInfo.color;
             details._id = draftId;
             quizDetailsVar(details);
-
-
-            let questions = questionsVar();
-            questions = quizInfo.questions;
-            setQuestions(quizInfo.questions);
-            questionsVar(questions);
-
-            console.log(quizDetails);
+            // Deep copy of uiParent
+            const uiParentCleaned = JSON.parse(JSON.stringify(quizInfo.questions));
+            // Strip __typename from uiParent and item list
+            delete uiParentCleaned.__typename;
+            uiParentCleaned.forEach(element => delete element.__typename);
+            questionsVar(uiParentCleaned);
+            setNumQuestions(quizInfo.questions.length);
+            setQuestions([...questionsVar()]);
+            console.log('draft', questionsVar());
         });
         setGotQuizInfo(true);
     }
     if (edit && !gotQuizInfo) {
-        const { quizId } = params;
+        const {quizId} = params;
         //fetch quiz details here and set it in questionVar and quizDetailsVar
-        getQuizEditInfo({ variables: { quizId: quizId } }).then(({ data }) => {
-            if (data) quizInfo = data.data.getQuizEditInfo;
-            quizInfo = data.getQuizEditInfo;
-            console.log(quizInfo);
+        getQuizEditInfo({variables: {quizId: quizId}}).then(({data}) => {
             console.log(data);
-            let quizDetails = quizDetailsVar();
-            let details = {...quizDetails};
-            details.platformName = quizInfo.platformName;
-            details.title = quizInfo.title;
-            details.description = quizInfo.description;
-            details.tags = quizInfo.tags ? quizInfo.tags : [];
-            details.bannerImgData = quizInfo.bannerImg;
-            details.thumbnailImgData = quizInfo.thumbnailImg;
-            details.timeToAnswer = quizInfo.timeToAnswer;
-            details.shuffleAnswers = quizInfo.shuffleAnswers;
-            details.shuffleQuestions = quizInfo.shuffleQuestions;
-            details.color = quizInfo.color;
-            quizDetailsVar(details);
-            // quizDetailsVar(quizInfo);
+            if (data) quizInfo = data.getQuizEditInfo;
+            // quizInfo = data.getQuizEditInfo;
+            // let quizDetails = quizDetailsVar();
+            // let details = {...quizDetails};
+            // // details.platformName = quizInfo.platformName;
+            // details.title = quizInfo.title;
+            // details.description = quizInfo.description;
+            // details.tags = quizInfo.tags ? quizInfo.tags : [];
+            // details.bannerImgData = quizInfo.bannerImg;
+            // details.thumbnailImgData = quizInfo.thumbnailImg;
+            // // details.timeToAnswer = quizInfo.timeToAnswer;
+            // // details.shuffleAnswers = quizInfo.shuffleAnswers;
+            // // details.shuffleQuestions = quizInfo.shuffleQuestions;
+            // details.color = quizInfo.color;
+            // quizDetailsVar(details);
+            quizDetailsVar(quizInfo);
         });
         setGotQuizInfo(true);
     }
@@ -234,8 +234,7 @@ export default function CreateQuizScreen({draft, edit}) {
                                 variant={"outlined"} style={{marginRight: 150}}>DISCARD</Button>
                                 <Stack direction='row' spacing={2}>
                                     <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
-                                    <Button variant={"contained"} onClick={togglePublishConfirmOpen}
-                                    >PUBLISH</Button>
+                                    <Button variant={"contained"} onClick={togglePublishConfirmOpen}>PUBLISH</Button>
                                 </Stack></>}
                         </Stack>
                     </Grid>
