@@ -38,7 +38,6 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         } else {
             console.error(`CreateQuizForms.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
         }
-        console.log(quizDetailsVar());
     };
 
     const handleRemoveImage = (name) => {
@@ -55,7 +54,6 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         } else {
             console.error(`CreateQuizForms.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
         }
-        console.log(quizDetailsVar());
     }
 
     const handleAddTag = () => {

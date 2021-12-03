@@ -61,6 +61,7 @@ export const GET_PLATFORM_THUMBNAIL = gql`
 export const GET_PLATFORM_SETTINGS = gql`
     query GetPlatformSettings($title: String!) {
         getPlatformSettings(title: $title) {
+            _id
             bannerImg
             color
             description
