@@ -39,7 +39,8 @@ export default function PlatformSettings() {
         thumbnailImg: defaultImages.thumbnailImg,
         title: platformName,
         creatorPoints: 0,
-        updated: false
+        updated: false,
+        tags: []
     })
     if (platformSettingsData && platformSettingsData.getPlatformSettings && !effectiveSettings.updated){
         console.log(`updated using ${platformSettingsData.getPlatformSettings}`)
@@ -63,20 +64,24 @@ export default function PlatformSettings() {
     }
 
     // TAG MANAGEMENT
-    const tags = useRef([])
+    const [newTag, setNewTag] = useState('')
     const handleAddTag = () => {
-        console.log(newTag)
-
-        if (newTag === '' || tags.current.includes(newTag)) {
+        const tags = effectiveSettings.tags
+        if (newTag === '' || tags.includes(newTag)) {
             return
         }
-        tags.current.push(newTag)
-        setNewTag('');
+        setEffectiveSettings(prev=>{
+            return {...prev, tags: [...tags, newTag]}
+        })
+        setNewTag("")
     }
     const handleDeleteTag = tagToDelete => () => {
-        tags.current = tags.current.filter(tag=>tag!==tagToDelete)
+        const tags = effectiveSettings.tags
+        setEffectiveSettings(prev=>{
+            return {...prev, tags: tags.filter(tag=>tag!==tagToDelete)}
+        })
+        setNewTag("")
     }
-    const [newTag, setNewTag] = useState('')
     const onNewTagChange = (tag) => {
         setNewTag(tag);
     }
@@ -168,7 +173,7 @@ export default function PlatformSettings() {
                         <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/> */}
                     </Stack>
                     <Box sx={{ display: 'flex' }}>
-                        <TagsInput tags={tags.current} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
+                        <TagsInput tags={effectiveSettings.tags} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
                                 newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}/>
                     </Box>
                 </Stack>
