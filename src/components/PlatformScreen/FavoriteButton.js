@@ -1,14 +1,14 @@
 import React from 'react'
 import { Grid, Stack, Avatar, Box, Button, CircularProgress } from '@mui/material'
-import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../controllers/graphql/user-mutations';
+import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../../controllers/graphql/user-mutations';
 import { useMutation, useReactiveVar } from '@apollo/client';
-import { globalState } from '../state/UserState';
+import { globalState } from '../../state/UserState';
 
-export default function FavoriteButton({_id, }) {
-    const favorite = initFavorite(favoritesList);
+export default function FavoriteButton({_id, sx, title}) {
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
     const favoritesList = useReactiveVar(globalState).favorites || [];
+    const favorite = initFavorite(favoritesList);
 
     function initFavorite(favListIn) {
         for (var element of favListIn) {
@@ -43,11 +43,8 @@ export default function FavoriteButton({_id, }) {
         <Button
         variant='contained'
         onClick={favorite ? handleUnfavoritePlatform : handleFavoritePlatform}
-        sx={{
+        sx={{...sx,
             width: 120,
-            position: 'absolute',
-            right: 0,
-            top: 0,
             backgroundColor: favorite ? 'grey.200' : 'primary.main',
             boxShadow: 'none',
             height: 28,
