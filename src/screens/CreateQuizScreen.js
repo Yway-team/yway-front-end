@@ -114,6 +114,24 @@ export default function CreateQuizScreen({draft, edit}) {
 
     useEffect(() => console.log(`Rendered CreateQuizScreen in ${(Date.now() - start)} milliseconds.`));
 
+    useEffect(() => () => {
+        let quizDetails = quizDetailsVar();
+        let details = {...quizDetails};
+        details.platformName = '';
+        details.title = '';
+        details.description = '';
+        details.tags = [];
+        details.bannerImgData = '';
+        details.thumbnailImgData = '';
+        details.timeToAnswer = 10;
+        details.shuffleAnswers = false;
+        details.shuffleQuestions = false;
+        details.color = '#ff5a1d';
+        quizDetailsVar(details);
+
+        questionsVar([]);
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const questions = questionsVar();
