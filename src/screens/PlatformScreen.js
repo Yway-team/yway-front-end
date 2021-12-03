@@ -117,7 +117,7 @@ export default function PlatformScreen() {
                         <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
                             <SettingsIcon sx={{ color: "white" }} />
                         </Button>
-                        <FavoriteButton _id={platformSummary._id} title={platformName} sx={{ position: "absolute", right: "50px", bottom: "10px" }}/>
+                        {platformSummary?<FavoriteButton _id={platformSummary._id} title={platformName} sx={{ position: "absolute", right: "50px", bottom: "10px" }}/>:<></>}
                     </Box>
                     <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
