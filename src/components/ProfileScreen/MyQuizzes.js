@@ -12,13 +12,18 @@ export default function MyQuizzes({ userId, isOwn, username }) {
 
     return (
         <Grid container direction='column' sx={{ display: 'flex', justifyContent: 'center', width: '100%', py: 2 }}>
-            <Grid container justifyContent='flex-start' pl={3} >
-                <CommonTitle title={`${isOwn ? 'MY ' : (username.toUpperCase() + '\'S ' || '')}QUIZZES`} />
-            </Grid>
-            <Grid container justifyContent='flex-start' mb={1}>
-                {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} refetch={refetch} />) : null}
-            </Grid>
-            {quizzes.length == 0 ? <Typography pl={3}> {`There is no quiz yet.`} </Typography> : null}
+            {quizzes ?
+                <>
+                    <Grid container justifyContent='flex-start' pl={3} >
+                        <CommonTitle title={`${isOwn ? 'MY ' : (username.toUpperCase() + '\'S ' || '')}QUIZZES`} />
+                    </Grid>
+                    <Grid container justifyContent='flex-start' mb={1}>
+                        {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} refetch={refetch} />) : null}
+                    </Grid>
+                    {quizzes.length == 0 ? <Typography pl={3}> {`There is no quiz yet.`} </Typography> : null}
+
+                </>
+                : <Typography> {`This user's profile is private.`} </Typography>}
         </Grid >
     );
 }

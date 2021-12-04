@@ -5,15 +5,15 @@ import ProfilePrivacy from './ProfilePrivacy';
 import ProfileSettings from './ProfileSettings';
 import { Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { Overview, Achievements, Friends, History, MyQuizzes, MyPlatforms, ConfirmationDialog } from '../components';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import {useMutation, useQuery, useReactiveVar} from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
+import {SEND_FRIEND_REQUEST} from "../controllers/graphql/user-mutations";
 
 export default function ProfileScreen() {
-
     const { userId } = useParams();
     const currentUser = useReactiveVar(globalState);
-    const isOwn = (userId === currentUser._id) ? true : false;
+    const isOwn = (userId === currentUser._id);
     const friendStatus = 0;
     const history = useHistory();
     const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
@@ -21,7 +21,7 @@ export default function ProfileScreen() {
     const [privacySettingsOpen, setPrivacySettingsOpen] = useState(false);
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false);
     const [removeFriendOpen, setRemoveFriendOpen] = useState(false);
-
+    const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {variables: {receiverId: userId}});
 
     const handleClickPrivacySettingsOpen = () => {
         setPrivacySettingsOpen(true);
@@ -39,11 +39,11 @@ export default function ProfileScreen() {
 
     const handleChange = (event, newValue) => {
         history.push('/user/' + userId + routes[newValue]);
-
     };
 
-    const handleAddFriend = () => {
-
+    const handleAddFriend = async () => {
+        const {data} = await sendFriendRequest({variables: {receiverId: userId}});
+        // console.log(data);
     }
 
     const handleAcceptFriend = () => {
@@ -92,7 +92,7 @@ export default function ProfileScreen() {
             <Grid container justifyContent='center' alignItems='center'>
                 <Grid flexDirection='column' sx={{ maxWidth: '1050px' }}>
                     <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", }}>
-                        <img alt='cover' src="https://picsum.photos/1000" sx={{ objectFit: 'fill' }} />
+                        <img alt='cover' src={userInfo.bannerImage || 'https://cse416-content.s3.us-east-2.amazonaws.com/profile+cover+photo.png'} sx={{ objectFit: 'fill' }} />
                     </Grid>
                     <Grid item container justifyContent='center' flexDirection='column' alignItems='center'>
                         <Avatar alt="avatar" src={userInfo ? userInfo.avatar : null /*"https://i.pravatar.cc/300"*/}
@@ -175,6 +175,7 @@ export default function ProfileScreen() {
                                             FRIENDS
                                         </Button> : <></>
                                 }
+
 
                             </Grid>
                         }

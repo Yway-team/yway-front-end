@@ -87,8 +87,8 @@ export const EDIT_PROFILE = gql`
 `;
 
 export const SEND_FRIEND_REQUEST = gql`
-    mutation SendFriendRequest($friendId: ID!) {
-        sendFriendRequest(friendId: $friendId)
+    mutation SendFriendRequest($receiverId: ID!) {
+        sendFriendRequest(receiverId: $receiverId)
     }
 `;
 
