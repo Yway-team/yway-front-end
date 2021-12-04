@@ -113,3 +113,32 @@ export const GET_USER_PLATFORMS_INFO = gql`
         }
     }
 `;
+
+export const GET_OVERVIEW = gql`
+    query GetOverView($userId: ID){
+          getUserQuizzesInfo(userId: $userId) {
+            _id
+            bannerImg
+            createdAt
+            description
+            numQuestions
+            ownerAvatar
+            ownerId
+            ownerUsername
+            platformId
+            platformName
+            platformThumbnail
+            rating
+            title
+        }
+          getUserPlatformsInfo(userId: $userId) {
+            _id
+            description
+            favorites
+            numQuizzes
+            thumbnailImg
+            title
+        }
+    }
+
+`;
