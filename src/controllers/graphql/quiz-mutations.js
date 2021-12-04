@@ -67,3 +67,9 @@ export const UPDATE_PUBLISHED_QUIZ = gql`
             }
         }
 `;
+
+export const RATE_QUIZ = gql`
+        mutation RateQuiz($quizId: ID!, $rating: Int!) {
+            rateQuiz(quizId: $quizId, rating: $rating)
+        }
+`;
