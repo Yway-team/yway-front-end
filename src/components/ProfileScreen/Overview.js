@@ -91,8 +91,6 @@ export default function Overview() {
             </Grid>
             {friends.length > 4 ?
                 <ShowMoreButton expand={expandFriends} onClick={toggleExpandFriends} /> : null}
-
-
         </Grid >
     );
 }
