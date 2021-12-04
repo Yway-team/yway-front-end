@@ -101,6 +101,8 @@ export default function Overview({ userId }) {
                     quizzes.map((data) => <QuizCard key={data._id}{...data} />) :
                     quizzes.slice(0, 2).map((data) => <QuizCard key={data._id}{...data} />)}
             </Grid>
+            {quizzes.length > 2 ?
+                <ShowMoreButton expand={expandQuizzes} onClick={toggleExpandQuizzes} /> : null}
             {quizzes.length == 0 ? <Typography> {`There is no quiz yet.`} </Typography> : null}
             <CommonTitle title='PLATFORMS' />
             <Grid container justifyContent='flex-start'>
@@ -108,6 +110,8 @@ export default function Overview({ userId }) {
                     platforms.map((data) => <PlatformCard key={data._id}{...data} />) :
                     platforms.slice(0, 2).map((data) => <PlatformCard key={data._id}{...data} />)}
             </Grid>
+            {quizzes.length > 2 ?
+                <ShowMoreButton expand={expandPlatforms} onClick={toggleExpandPlatforms} /> : null}
             {platforms.length == 0 ? <Typography> {`There is no platform yet.`} </Typography> : null}
             {/* //Achievements section  */}
             {achievements.length === 0 ? null :
