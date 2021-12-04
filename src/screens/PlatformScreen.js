@@ -110,21 +110,28 @@ export default function PlatformScreen() {
 
     return (
         <>
+            {platformSummary ? <Header platformName={platformName}
+                thumbnailImg={platformSummary.thumbnailImg}
+                bannerImg={platformSummary.bannerImg}
+                favorites={platformSummary.favorites}
+                numQuestions={platformSummary.numQuestions}
+                numQuizzes={platformSummary.numQuizzes}
+                description={platformSummary.description}
+                tags={platformSummary.tags}
+                color={platformSummary.color}
+            /> : null}
             <Grid container spacing={0}>
-                <Grid item xs={12} spacing={0}>
-                    <Box style={{position: "relative"}}>
-                        <Header platformName={platformName}/>
-                        <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
+                {/* <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
                             <SettingsIcon sx={{ color: "white" }} />
                         </Button>
-                        {platformSummary?<FavoriteButton _id={platformSummary._id} title={platformName} sx={{ position: "absolute", right: "50px", bottom: "10px" }}/>:<></>}
-                    </Box>
-                    <Box style={{ backgroundColor: "#ededed" }}>
+                        {platformSummary ? <FavoriteButton _id={platformSummary._id} title={platformName} sx={{ position: "absolute", right: "50px", bottom: "10px" }} /> : <></>} */}
+
+                {/* <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
                             <Box style={{ whiteSpace: "nowrap" }}>
-                            <Typography>
-                                {`${platformSummary ? platformSummary.favorites : '?'} Favorites`}
-                            </Typography>
+                                <Typography>
+                                    {`${platformSummary ? platformSummary.favorites : '?'} Favorites`}
+                                </Typography>
                             </Box>
                             <Box style={{ whiteSpace: "nowrap" }}>
                                 <Typography>
@@ -137,14 +144,14 @@ export default function PlatformScreen() {
                                 </Typography>
                             </Box>
                         </Stack>
-                    </Box>
-                    <Box style={{ minHeight: "30px", margin: "30px" }}>
+                    </Box> */}
+                {/* <Box style={{ minHeight: "30px", margin: "30px" }}>
                         <Typography>
                             {platformSummary ? platformSummary.description : ""}
                         </Typography>
-                    </Box>
-                </Grid>
-                <Grid item container xs={9} spacing={0}>
+                    </Box> */}
+
+                <Grid item container xs={8.7} spacing={0} mt='1rem'>
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
@@ -156,10 +163,11 @@ export default function PlatformScreen() {
                             </Box>
                         )}
                 </Grid>
-                <Grid item xs={3} sx={{ marginTop: "2rem" }} spacing={0}>
+                <Grid item xs={3.2} sx={{ marginTop: "2rem" }} spacing={0} >
                     <MiniLeaderboard width="310px" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                 </Grid>
             </Grid>
+
         </>
     )
 }

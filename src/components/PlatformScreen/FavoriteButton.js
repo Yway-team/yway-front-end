@@ -4,7 +4,7 @@ import { FAVORITE_PLATFORM, UNFAVORITE_PLATFORM } from '../../controllers/graphq
 import { useMutation, useReactiveVar } from '@apollo/client';
 import { globalState } from '../../state/UserState';
 
-export default function FavoriteButton({_id, sx, title}) {
+export default function FavoriteButton({ _id, sx, title }) {
     const [favoritePlatform] = useMutation(FAVORITE_PLATFORM);
     const [unfavoritePlatform] = useMutation(UNFAVORITE_PLATFORM);
     const favoritesList = useReactiveVar(globalState).favorites || [];
@@ -41,22 +41,22 @@ export default function FavoriteButton({_id, sx, title}) {
 
     return (
         <Button
-        variant='contained'
-        onClick={favorite ? handleUnfavoritePlatform : handleFavoritePlatform}
-        sx={{...sx,
-            width: 120,
-            backgroundColor: favorite ? 'grey.200' : 'primary.main',
-            boxShadow: 'none',
-            height: 28,
-            px: 2,
-            m: 1,
-            color: favorite ? 'grey.500' : 'common.white',
-            "&:hover": {
+            variant='contained'
+            onClick={favorite ? handleUnfavoritePlatform : handleFavoritePlatform}
+            sx={{
+                ...sx,
+                width: 120,
+                backgroundColor: favorite ? 'grey.200' : 'primary.main',
                 boxShadow: 'none',
-                backgroundColor: 'primary.light',
-                color: 'primary.main',
-            }
-        }}
-    > {favorite ? 'FAVORITED' : 'FAVORITE'}</Button>
-)
+                height: 28,
+                px: 2,
+                color: favorite ? 'grey.500' : 'common.white',
+                "&:hover": {
+                    boxShadow: 'none',
+                    backgroundColor: 'primary.light',
+                    color: 'primary.main',
+                }
+            }}
+        > {favorite ? 'FAVORITED' : 'FAVORITE'}</Button>
+    )
 }
