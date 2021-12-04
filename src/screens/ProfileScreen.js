@@ -92,7 +92,7 @@ export default function ProfileScreen() {
             <Grid container justifyContent='center' alignItems='center'>
                 <Grid flexDirection='column' sx={{ maxWidth: '1050px' }}>
                     <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", }}>
-                        <img alt='cover' src="https://picsum.photos/1000" sx={{ objectFit: 'fill' }} />
+                        <img alt='cover' src={userInfo.bannerImage || 'https://cse416-content.s3.us-east-2.amazonaws.com/profile+cover+photo.png'} sx={{ objectFit: 'fill' }} />
                     </Grid>
                     <Grid item container justifyContent='center' flexDirection='column' alignItems='center'>
                         <Avatar alt="avatar" src={userInfo ? userInfo.avatar : null /*"https://i.pravatar.cc/300"*/}
