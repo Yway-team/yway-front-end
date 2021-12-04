@@ -2,8 +2,8 @@ import React, {Fragment, useEffect, useState} from "react";
 import {Button, Grid, Stack} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import {makeVar, useLazyQuery, useMutation} from "@apollo/client";
-import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT} from "../controllers/graphql/quiz-mutations";
+import {makeVar, useLazyQuery, useMutation, useReactiveVar} from "@apollo/client";
+import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT, UPDATE_PUBLISHED_QUIZ} from "../controllers/graphql/quiz-mutations";
 import {v4 as uuidv4} from 'uuid';
 import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestionCardList";
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
@@ -11,6 +11,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import {globalState} from "../state/UserState";
 import {GET_QUIZ_EDIT_INFO} from "../controllers/graphql/quiz-queries";
 import {GET_DRAFT} from "../controllers/graphql/user-queries";
+import { loggedInChanged } from "../state/UserState";
 
 
 export const questionsVar = makeVar([]);
@@ -41,9 +42,11 @@ export default function CreateQuizScreen({draft, edit}) {
 
     const start = Date.now();
     const history = useHistory();
+    const shouldUpdate = useReactiveVar(loggedInChanged)
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
-    const [getQuizEditInfo] = useLazyQuery(GET_QUIZ_EDIT_INFO);
+    const [updatePublishedQuiz] = useMutation(UPDATE_PUBLISHED_QUIZ);
+    const [getQuizEditInfo, { data, refetch, loading }] = useLazyQuery(GET_QUIZ_EDIT_INFO);
     const [getDraft] = useLazyQuery(GET_DRAFT);
     const [_, setQuestions] = useState(questionsVar());
     const [numQuestions, setNumQuestions] = useState(questionsVar().length);
@@ -83,28 +86,35 @@ export default function CreateQuizScreen({draft, edit}) {
         });
         setGotQuizInfo(true);
     }
-    if (edit && !gotQuizInfo) {
-        const {quizId} = params;
-        //fetch quiz details here and set it in questionVar and quizDetailsVar
-        getQuizEditInfo({variables: {quizId: quizId}}).then(({data}) => {
-            if (data) quizInfo = data.getQuizEditInfo;
-            // quizInfo = data.getQuizEditInfo;
-            let quizDetails = quizDetailsVar();
-            let details = {...quizDetails};
-            // details.platformName = quizInfo.platformName;
-            details.title = quizInfo.title;
-            details.description = quizInfo.description;
-            details.tags = quizInfo.tags ? quizInfo.tags : [];
-            details.bannerImgData = quizInfo.bannerImg;
-            details.thumbnailImgData = quizInfo.thumbnailImg;
-            // details.timeToAnswer = quizInfo.timeToAnswer;
-            // details.shuffleAnswers = quizInfo.shuffleAnswers;
-            // details.shuffleQuestions = quizInfo.shuffleQuestions;
-            details.color = quizInfo.color;
-            quizDetailsVar(details);
-            // quizDetailsVar(quizInfo);
-        });
+
+    if (edit && (shouldUpdate || !gotQuizInfo) && data?.getQuizEditInfo) {
+        quizInfo = data.getQuizEditInfo;
+        // quizInfo = data.getQuizEditInfo;
+        let quizDetails = quizDetailsVar();
+        let details = {...quizDetails};
+        // details.platformName = quizInfo.platformName;
+        details.title = quizInfo.title;
+        details.description = quizInfo.description;
+        details.tags = quizInfo.tags ? quizInfo.tags : [];
+        details.bannerImg = quizInfo.bannerImg;
+        details.thumbnailImg = quizInfo.thumbnailImg;
+        // details.timeToAnswer = quizInfo.timeToAnswer;
+        // details.shuffleAnswers = quizInfo.shuffleAnswers;
+        // details.shuffleQuestions = quizInfo.shuffleQuestions;
+        details.color = quizInfo.color;
+        quizDetailsVar(details);
+        loggedInChanged(false);
         setGotQuizInfo(true);
+    } else if (!gotQuizInfo && data) {
+        setGotQuizInfo(true);
+    }
+
+    if (edit && ((shouldUpdate && !loading) || (!gotQuizInfo && !loading))) {
+        const {quizId} = params;
+        if (!gotQuizInfo) console.log('getQuizEditInfo...');
+        else console.log('refetch...');
+        if (!gotQuizInfo) getQuizEditInfo({variables: {quizId: quizId}});
+        else refetch();
     }
 
 
@@ -190,6 +200,28 @@ export default function CreateQuizScreen({draft, edit}) {
         history.push('/drafts');
     }
 
+    const handleSaveChanges = async e => {
+        e.preventDefault();
+        const quizDetails = quizDetailsVar();
+        console.log(quizDetails);
+        const { quizId } = params;
+        await updatePublishedQuiz({
+            variables: {
+                quizDetails: {
+                    _id: quizId,
+                    bannerImg: quizDetails.bannerImg,
+                    bannerImgData: quizDetails.bannerImgData,
+                    color: quizDetails.color,
+                    description: quizDetails.description,
+                    tags: quizDetails.tags,
+                    thumbnailImg: quizDetails.thumbnailImg,
+                    thumbnailImgData: quizDetails.thumbnailImgData,
+                    title: quizDetails.title
+                }
+            }
+        });
+    }
+
     const handleDeleteQuestion = async questionIndex => {
         let questions = questionsVar();
         questionsVar(questions.filter((_, i) => i !== questionIndex));
@@ -267,10 +299,10 @@ export default function CreateQuizScreen({draft, edit}) {
             <ConfirmationDialog
                 open={publishConfirmOpen}
                 handleClose={togglePublishConfirmOpen}
-                title='PUBLISH YOUR QUIZ'
-                content={`Are you sure you want to publish this quiz to the platform "${quizDetailsVar().platformName}"? Once you publish this quiz, its questions can't be edited.`}
-                yesText='PUBLISH'
-                yesCallback={handleSubmit}
+                title={edit ? 'UPDATE YOUR QUIZ' : 'PUBLISH YOUR QUIZ'}
+                content={edit ? 'Would you like to save your changes to this published quiz?' : `Are you sure you want to publish this quiz to the platform "${quizDetailsVar().platformName}"? Once you publish this quiz, its questions can't be edited.`}
+                yesText={edit ? 'SAVE' : 'PUBLISH'}
+                yesCallback={edit ? handleSaveChanges : handleSubmit}
                 noText='CANCEL'
                 noCallback={togglePublishConfirmOpen}
             />

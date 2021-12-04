@@ -53,3 +53,17 @@ export const DELETE_QUIZ = gql`
             deleteQuiz(quizId: $quizId)
         }
 `;
+
+export const UPDATE_PUBLISHED_QUIZ = gql`
+        mutation UpdatePublishedQuiz($quizDetails: EditQuizInput!) {
+            updatePublishedQuiz(quizDetails: $quizDetails) {
+                _id
+                bannerImg
+                color
+                description
+                tags
+                thumbnailImg
+                title
+            }
+        }
+`;
