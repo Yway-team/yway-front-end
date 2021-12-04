@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import { Grid, Typography } from '@mui/material';
-import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard, FriendCard } from '..';
+import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard, FriendCard, QuizCard, PlatformCard } from '..';
 import { TungstenRounded, Bolt } from '@mui/icons-material';
 export default function Overview() {
     //Overview tab display this component in Profile Screen
+
+    const [expandQuizzes, setExpandQuizzes] = useState(false);
+    function toggleExpandQuizzes() {
+        setExpandQuizzes(!expandQuizzes);
+    }
+    const [expandPlatforms, setExpandPlatforms] = useState(false);
+    function toggleExpandPlatforms() {
+        setExpandPlatforms(!expandPlatforms);
+    }
     const [expandAchievements, setExpandAchievements] = useState(false);
     function toggleExpandAchievements() {
         setExpandAchievements(!expandAchievements);
@@ -18,8 +27,16 @@ export default function Overview() {
     function toggleExpandFriends() {
         setExpandFriends(!expandFriends);
     }
+
+    let creatorPoints = '';
+    let playPoints = '';
+    let quizzes = [];
+    let platforms = [];
+    let achievements = [];
+    let history = [];
+    let friends = [];
     return (
-        <Grid container direction='column' sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', py: 7 }}>
+        <Grid container direction='column' sx={{ display: 'flex', justifyContent: 'center', width: '100%', py: 7 }}>
             <Grid container direction='row' justifyContent='space-evenly' sx={{ width: '100%', px: 20 }}>
                 <Grid xs={4} item container direction='column' justifyContent='center' alignItems='center' spacing={1}
                     sx={{ height: 100, backgroundColor: 'primary.light', borderRadius: '12px 12px 12px 12px' }}>
@@ -38,7 +55,7 @@ export default function Overview() {
                             fontWeight: '700',
                             fontSize: 24,
                             color: 'primary.main'
-                        }}>1243</Typography>
+                        }}>{creatorPoints}</Typography>
                         <TungstenRounded sx={{ fill: '#ff5a1d', fontSize: 24, ml: 1 }} /></Grid>
                 </Grid>
                 <Grid xs={4} item container direction='column' justifyContent='center' alignItems='center' spacing={1}
@@ -58,39 +75,61 @@ export default function Overview() {
                             fontWeight: '700',
                             fontSize: 24,
                             color: 'primary.main'
-                        }}>1243</Typography>
+                        }}>{playPoints}</Typography>
                         <Bolt sx={{ fill: '#ff5a1d', fontSize: 24, ml: 1 }} /></Grid>
                 </Grid>
             </Grid >
-
-            {/* //Achievements section  */}
-            <CommonTitle title='ACHIEVEMENTS' />
+            <CommonTitle title='QUIZZES' />
             <Grid container justifyContent='flex-start'>
-                {expandAchievements ?
-                    achievements.map((data) => <AchievementCard key={data._id}{...data} />) :
-                    achievements.slice(0, 2).map((data) => <AchievementCard key={data._id}{...data} />)}
+                {expandQuizzes ?
+                    quizzes.map((data) => <QuizCard key={data._id}{...data} />) :
+                    quizzes.slice(0, 2).map((data) => <QuizCard key={data._id}{...data} />)}
             </Grid>
-            {achievements.length > 2 ?
-                <ShowMoreButton expand={expandAchievements} onClick={toggleExpandAchievements} /> : null}
-
+            {quizzes.length == 0 ? <Typography> {`There is no quiz yet.`} </Typography> : null}
+            <CommonTitle title='PLATFORMS' />
+            <Grid container justifyContent='flex-start'>
+                {expandPlatforms ?
+                    platforms.map((data) => <PlatformCard key={data._id}{...data} />) :
+                    platforms.slice(0, 2).map((data) => <PlatformCard key={data._id}{...data} />)}
+            </Grid>
+            {platforms.length == 0 ? <Typography> {`There is no platform yet.`} </Typography> : null}
+            {/* //Achievements section  */}
+            {achievements.length === 0 ? null :
+                <>
+                    <CommonTitle title='ACHIEVEMENTS' />
+                    <Grid container justifyContent='flex-start'>
+                        {expandAchievements ?
+                            achievements.map((data) => <AchievementCard key={data._id}{...data} />) :
+                            achievements.slice(0, 2).map((data) => <AchievementCard key={data._id}{...data} />)}
+                    </Grid>
+                    {achievements.length > 2 ?
+                        <ShowMoreButton expand={expandAchievements} onClick={toggleExpandAchievements} /> : null}
+                </>
+            }
             {/* history section */}
-            <CommonTitle title='HISTORY' />
-            <Grid container justifyContent='flex-start' mb={1}>
-                {expandHistory ?
-                    history.map((data) => <HistoryCard key={data._id}{...data} />) :
-                    history.slice(0, 2).map((data) => <HistoryCard key={data._id}{...data} />)}
-            </Grid>
-            {history.length > 2 ?
-                <ShowMoreButton expand={expandHistory} onClick={toggleExpandHistory} /> : null}
+            {history.length === 0 ? null :
+                <>
+                    <CommonTitle title='HISTORY' />
+                    <Grid container justifyContent='flex-start' mb={1}>
+                        {expandHistory ?
+                            history.map((data) => <HistoryCard key={data._id}{...data} />) :
+                            history.slice(0, 2).map((data) => <HistoryCard key={data._id}{...data} />)}
+                    </Grid>
+                    {history.length > 2 ?
+                        <ShowMoreButton expand={expandHistory} onClick={toggleExpandHistory} /> : null}
+                </>}
+            {friends.length == 0 ? null :
+                <>
+                    <CommonTitle title='FRIENDS' />
+                    <Grid container justifyContent='flex-start' mb={1}>
+                        {expandFriends ?
+                            friends.map((data) => <FriendCard key={data._id}{...data} />) :
+                            friends.slice(0, 4).map((data) => <FriendCard key={data._id}{...data} />)}
+                    </Grid>
+                    {friends.length > 4 ?
+                        <ShowMoreButton expand={expandFriends} onClick={toggleExpandFriends} /> : null}
+                </>}
 
-            <CommonTitle title='FRIENDS' />
-            <Grid container justifyContent='flex-start' mb={1}>
-                {expandFriends ?
-                    friends.map((data) => <FriendCard key={data._id}{...data} />) :
-                    friends.slice(0, 4).map((data) => <FriendCard key={data._id}{...data} />)}
-            </Grid>
-            {friends.length > 4 ?
-                <ShowMoreButton expand={expandFriends} onClick={toggleExpandFriends} /> : null}
         </Grid >
     );
 }

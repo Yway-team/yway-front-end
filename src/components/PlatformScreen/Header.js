@@ -5,7 +5,7 @@ import FavoriteButton from './FavoriteButton';
 import { ReactComponent as LogoIcon } from '../../images/logoIconColorless.svg';
 import { Settings, FavoriteRounded, HelpOutlineOutlined } from '@mui/icons-material';
 import { useParams, useHistory } from 'react-router-dom';
-
+import { globalLoggedIn } from '../../state/UserState';
 
 const defaultImages = {
     thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
@@ -27,6 +27,9 @@ export default function Header({
 
     const history = useHistory()
     color = color === '' || !color ? '#ff5a1d' : color;
+   
+    const loggedIn = globalLoggedIn()
+
     return (
 
 
@@ -87,7 +90,9 @@ export default function Header({
                                 >
                                     Settings
                                 </Button>}
-                            <FavoriteButton _id={id} title={platformName}/>
+                                {loggedIn&&
+                                <FavoriteButton _id={id} title={platformName}/>
+                                }
                             </Stack>            
                         </Stack>
                         <Stack direction='row' justifyContent='flex-start' alignItems='center' flexGrow={1} mt={1} spacing={0} >

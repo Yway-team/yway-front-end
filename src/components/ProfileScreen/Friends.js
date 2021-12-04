@@ -8,7 +8,11 @@ export default function Friends({ userId }) {
     const theme = useTheme();
     return (
         <Grid container direction='column'
-            sx={{ display: 'flex', justifyContent: 'center', width: '100%', py: 2, pl: 3 }}>
+            sx={{
+                display: 'flex', justifyContent: 'center', width: '100%', py: 2, pl: 3, [`&:focus-within`]: {
+                    '& svg': { fill: theme.palette.primary.main }
+                }
+            }}>
             <Paper
                 elevation={0}
                 component="form"
@@ -16,11 +20,11 @@ export default function Friends({ userId }) {
                     px: 2,
                     display: 'flex',
                     alignItems: 'center',
-
                     width: '100%',
                     height: '36px',
                     maxWidth: '500px',
-                    background: theme.palette.grey[200]
+                    background: theme.palette.grey[200],
+
                 }}
             >
                 <InputBase
