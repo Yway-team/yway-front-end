@@ -21,7 +21,7 @@ export default function ProfileScreen() {
     const [privacySettingsOpen, setPrivacySettingsOpen] = useState(false);
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false);
     const [removeFriendOpen, setRemoveFriendOpen] = useState(false);
-    const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {variables: {friendId: userId}});
+    const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {variables: {receiverId: userId}});
 
     const handleClickPrivacySettingsOpen = () => {
         setPrivacySettingsOpen(true);
@@ -42,7 +42,8 @@ export default function ProfileScreen() {
     };
 
     const handleAddFriend = async () => {
-        const {data} = await sendFriendRequest({variables: {friendId: userId}});
+        const {data} = await sendFriendRequest({variables: {receiverId: userId}});
+        // console.log(data);
     }
 
     const handleAcceptFriend = () => {

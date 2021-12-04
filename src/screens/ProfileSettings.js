@@ -65,7 +65,7 @@ export default function ProfileSettings(props) {
                        onChange={e => setBio(e.target.value)}>
             </TextField>
             <ImageUpload label={avatarImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
-            <ImageUpload label={bannerImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
+            {/*<ImageUpload label={bannerImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>*/}
             <Stack direction={"row"} spacing={2}>
                 <Button variant={"contained"} onClick={handleUpdateProfile}>CONFIRM</Button>
                 <Button variant={"outlined"} onClick={props.handleClose}>CANCEL</Button>
