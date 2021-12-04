@@ -3,15 +3,20 @@ import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt, Visibility, East } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
 import { useCallback, useEffect, useState } from 'react';
-import { useQuery, useLazyQuery } from '@apollo/client';
-import { GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST, GET_QUIZ_INFO } from '../controllers/graphql/quiz-queries';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST } from '../controllers/graphql/quiz-queries';
+import { INCREMENT_PLAY_POINTS } from '../controllers/graphql/user-mutations';
+import { RATE_QUIZ } from '../controllers/graphql/quiz-mutations';
 import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
+
 
 export default function TakeQuizScreen({ draftId }) {
     const history = useHistory();
     const { quizId } = useParams();
     const { data } = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, { variables: { quizId: quizId } });
+    const [incrementPlayPoints] = useMutation(INCREMENT_PLAY_POINTS);
+    const [rateQuiz] = useMutation(RATE_QUIZ);
 
 
     let color = '#ff5a1d';
@@ -141,12 +146,12 @@ export default function TakeQuizScreen({ draftId }) {
         }
     }
 
-    const handleAnswer = (correct) => {
+    const handleAnswer = async (correct) => {
         if (correct) {
-            console.log('handling answer');
             setPlayPoints(playPoints + 10);
         }
     }
+
 
 
     const handleTimerOn = useCallback(() => {
@@ -164,7 +169,17 @@ export default function TakeQuizScreen({ draftId }) {
         setEnter(enterValue);
     });
 
-    const handleFinishSubmit = () => {
+    const handleFinishSubmit = async () => {
+        if (userRating > 0) {
+            rateQuiz({ variables: { quizId: quizId, rating: userRating } });
+
+        }
+        let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
+        console.log('new play points');
+        console.log(data.incrementPlayPoints);
+        let newUserData = { ...user };
+        newUserData.playPoints = data.incrementPlayPoints;
+        globalState(newUserData);
         history.push('/highlights');
     }
 
@@ -275,7 +290,7 @@ export default function TakeQuizScreen({ draftId }) {
                     <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%', mt: 5, backgroundColor: color + '25', py: 5 }}>
                         <Stack direction='row' ml={'60pt'} alignItems='center'>
                             <Typography sx={{ fontSize: 24, color: 'common.black', fontWeight: 700, }}> You earned</Typography>
-                            <Typography sx={{ fontSize: 28, color: color, fontWeight: 700, ml: 5 }}>  {playPoints} </Typography>
+                            <Typography sx={{ fontSize: 28, color: color, fontWeight: 700, ml: 5 }}>  {playPoints - initPlayPoint} </Typography>
                             <Bolt sx={{ fontSize: 30, fill: color }} />
                         </Stack>
 
@@ -283,7 +298,7 @@ export default function TakeQuizScreen({ draftId }) {
                             {/* <Typography textAlign='center' sx={{ fontSize: 17, color: 'common.black', fontWeight: 700 }}> Your Streak </Typography> */}
                             <Avatar sx={{ height: 60, width: 60, mt: 2, marginRight: 15, background: color || 'grey', color: 'white', alignItems: 'center' }}>
                                 <Typography fontSize={18} fontWeight={600}>
-                                    {(playPoints / 10).toString() + ' / ' + (questionList ? questionList.length : 0).toString()}
+                                    {((playPoints - initPlayPoint) / 10).toString() + ' / ' + (questionList ? questionList.length : 0).toString()}
                                 </Typography>
                             </Avatar>
                         </Stack>
@@ -308,7 +323,6 @@ export default function TakeQuizScreen({ draftId }) {
                             </Stack>
                         </Stack>
                         <Button endIcon={<East />}
-                            disabled={userRating === 0}
                             onClick={handleFinishSubmit}
                             sx={{
                                 color: color || 'common.black',
@@ -324,8 +338,6 @@ export default function TakeQuizScreen({ draftId }) {
                     </Stack>
 
                 </Stack>
-
-
             </Dialog>
         </>);
 }
