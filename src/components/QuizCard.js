@@ -14,7 +14,7 @@ import {
     MenuItem,
     Typography
 } from '@mui/material';
-import { DeleteOutlined, EditOutlined, LocalConvenienceStoreOutlined, LocalOfferOutlined, MoreVertRounded } from '@mui/icons-material';
+import { DeleteOutlined, EditOutlined, LocalOfferOutlined, MoreVertRounded } from '@mui/icons-material';
 import logoIcon from '../images/logoIcon.svg';
 import { useState } from 'react';
 import TimeAgoFromNow from './TimeAgoFromNow';
@@ -173,14 +173,16 @@ function QuizCard({
                                     ml: 1,
                                     fontWeight: 500,
                                     color: 'grey.600'
-                                }}> {draft ? 'No rating yet' : rating}</Typography>
+                                }}> {draft || rating === 0 ? 'No rating yet' : Number(Number.parseFloat(rating).toFixed(2))} </Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
                                     sx={{ fontSize: 14, ml: 1, fontWeight: 500, color: 'grey.600', textAlign: 'right' }}>
                                     <TimeAgoFromNow dateIn={createdAt || updatedAt} /> </Typography>
                             </Grid>
+
                             <Grid item container xs={6} alignItems='center'>
+
                                 <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
                                 <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '120px' }}>
                                     <Typography noWrap sx={{
@@ -190,6 +192,7 @@ function QuizCard({
                                         color: 'grey.600'
                                     }}> {draft ? 'You' : ownerUsername}</Typography>
                                 </Box>
+
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Avatar alt="creator-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
@@ -269,24 +272,39 @@ function QuizCard({
                                     <TimeAgoFromNow dateIn={draft ? updatedAt : createdAt} /></Typography>
                             </Grid>
                             <Grid item container xs={6} alignItems='center'>
-                                <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{
-                                    fontSize: 14,
-                                    ml: 1,
-                                    fontWeight: 500,
-                                    color: 'grey.600'
-                                }}> {draft ? 'You' : ownerUsername} </Typography>
+                                <Button sx={{ px: 0 }}
+                                    onClick={() => {
+                                        if (!draft) {
+                                            history.push(`/user/${ownerId}`);
+                                        }
+                                    }}
+                                >
+                                    <Avatar alt="creator-avatar" src={ownerAvatar} sx={{ height: 14, width: 14 }} />
+                                    <Typography sx={{
+                                        fontSize: 14,
+                                        ml: 1,
+                                        fontWeight: 500,
+                                        color: 'grey.600'
+                                    }}> {draft ? 'You' : ownerUsername} </Typography>
+                                </Button>
                             </Grid>
                             <Grid item container xs={6} alignItems='center' justifyContent='flex-end'>
-                                <Avatar alt="platform-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
-                                <Typography sx={{
-                                    fontSize: 14,
-                                    ml: 1,
-                                    fontWeight: 500,
-                                    color: 'grey.600',
-                                    textAlign: 'right'
-                                }}> {platformName} </Typography>
-
+                                <Button sx={{ px: 0 }}
+                                    onClick={() => {
+                                        if (!draft) {
+                                            history.push(`/platform/${platformName}`);
+                                        }
+                                    }}
+                                >
+                                    <Avatar alt="platform-avatar" src={platformThumbnail} sx={{ height: 14, width: 14 }} />
+                                    <Typography sx={{
+                                        fontSize: 14,
+                                        ml: 1,
+                                        fontWeight: 500,
+                                        color: 'grey.600',
+                                        textAlign: 'right'
+                                    }}> {platformName} </Typography>
+                                </Button>
                             </Grid>
 
                             {draft ? null : <Button
@@ -310,8 +328,6 @@ function QuizCard({
                                 }
                                 }
                             > BEGIN QUIZ</Button>}
-
-
                         </Grid>
 
                         <Menu
@@ -360,12 +376,12 @@ function QuizCard({
                                 {menuTypography(draft ? 'Edit Draft' : 'Edit Quiz')}
                             </MenuItem>
 
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <LocalOfferOutlined />
-                                </ListItemIcon>
-                                {menuTypography('Edit Tags')}
-                            </MenuItem>
+                            {/*<MenuItem>*/}
+                            {/*    <ListItemIcon>*/}
+                            {/*        <LocalOfferOutlined />*/}
+                            {/*    </ListItemIcon>*/}
+                            {/*    {menuTypography('Edit Tags')}*/}
+                            {/*</MenuItem>*/}
 
                             <MenuItem onClick={draft ? handleDeleteDraft : handleDeleteQuiz}>
                                 <ListItemIcon>

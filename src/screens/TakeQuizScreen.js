@@ -283,8 +283,8 @@ export default function TakeQuizScreen({ draftId }) {
                         <Stack direction='row'>
                             <Logo fill={color} style={{ height: 20, width: 20, marginRight: 10 }} />
                             <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, mr: 5 }}> {rating} </Typography>
-                            <Visibility style={{ height: 20, width: 20, marginRight: 10, fill: color }} />
-                            <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, }}> {attempted} </Typography>
+                            {/* <Visibility style={{ height: 20, width: 20, marginRight: 10, fill: color }} />
+                            <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, }}> {attempted} </Typography> */}
                         </Stack>
                     </Stack>
                     <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%', mt: 5, backgroundColor: color + '25', py: 5 }}>
