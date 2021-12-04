@@ -100,10 +100,8 @@ export default function PlatformSettings() {
         console.log("show effectiveSettings")
         console.log(effectiveSettings)
         const packedSettings = {
-            // bannerImgData: effectiveSettings.bannerImgData,
-            // thumbnailImgData: effectiveSettings.thumbnailImgData,
-            bannerImgData: null,
-            thumbnailImgData: null,
+            bannerImg: effectiveSettings.bannerImgData,
+            thumbnailImg: effectiveSettings.thumbnailImgData,
             color: effectiveSettings.color,
             description: effectiveSettings.description,
             minCreatorPoints: effectiveSettings.minCreatorPoints,
