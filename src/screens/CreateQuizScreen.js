@@ -1,20 +1,20 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {Button, Grid, Stack} from "@mui/material";
-import {CommonTitle, ConfirmationDialog} from "../components";
+import React, { Fragment, useEffect, useState } from "react";
+import { Button, Grid, Stack } from "@mui/material";
+import { CommonTitle, ConfirmationDialog } from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import {makeVar, useLazyQuery, useMutation, useReactiveVar} from "@apollo/client";
+import { makeVar, useLazyQuery, useMutation, useReactiveVar } from "@apollo/client";
 import {
     CREATE_AND_PUBLISH_QUIZ,
     SAVE_QUIZ_AS_DRAFT,
     UPDATE_PUBLISHED_QUIZ
 } from "../controllers/graphql/quiz-mutations";
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestionCardList";
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
-import {useHistory, useParams} from 'react-router-dom';
-import {globalState, loggedInChanged} from "../state/UserState";
-import {GET_QUIZ_EDIT_INFO} from "../controllers/graphql/quiz-queries";
-import {GET_DRAFT} from "../controllers/graphql/user-queries";
+import { useHistory, useParams } from 'react-router-dom';
+import { globalState, loggedInChanged } from "../state/UserState";
+import { GET_QUIZ_EDIT_INFO } from "../controllers/graphql/quiz-queries";
+import { GET_DRAFT } from "../controllers/graphql/user-queries";
 
 
 export const questionsVar = makeVar([]);
@@ -32,7 +32,7 @@ export const quizDetailsVar = makeVar({
     // todo: color, tags, images
 });
 
-export default function CreateQuizScreen({draft, edit}) {
+export default function CreateQuizScreen({ draft, edit }) {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
     // const classes = useStyles();
@@ -49,7 +49,7 @@ export default function CreateQuizScreen({draft, edit}) {
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
     const [updatePublishedQuiz] = useMutation(UPDATE_PUBLISHED_QUIZ);
-    const [getQuizEditInfo, {data, refetch, loading}] = useLazyQuery(GET_QUIZ_EDIT_INFO);
+    const [getQuizEditInfo, { data, refetch, loading }] = useLazyQuery(GET_QUIZ_EDIT_INFO);
     const [getDraft] = useLazyQuery(GET_DRAFT);
     const [_, setQuestions] = useState(questionsVar());
     const [numQuestions, setNumQuestions] = useState(questionsVar().length);
@@ -60,12 +60,12 @@ export default function CreateQuizScreen({draft, edit}) {
     let quizInfo;
 
     if (draft && !gotQuizInfo) {
-        const {draftId} = params;
-        getDraft({variables: {draftId: draftId}}).then(({data}) => {
+        const { draftId } = params;
+        getDraft({ variables: { draftId: draftId } }).then(({ data }) => {
             quizInfo = data.getDraft;
             console.log(quizInfo);
             let quizDetails = quizDetailsVar();
-            let details = {...quizDetails};
+            let details = { ...quizDetails };
             details.platformName = quizInfo.platformName;
             details.title = quizInfo.title;
             details.description = quizInfo.description;
@@ -94,7 +94,7 @@ export default function CreateQuizScreen({draft, edit}) {
         quizInfo = data.getQuizEditInfo;
         // quizInfo = data.getQuizEditInfo;
         let quizDetails = quizDetailsVar();
-        let details = {...quizDetails};
+        let details = { ...quizDetails };
         // details.platformName = quizInfo.platformName;
         details.title = quizInfo.title;
         details.description = quizInfo.description;
@@ -113,10 +113,10 @@ export default function CreateQuizScreen({draft, edit}) {
     }
 
     if (edit && ((shouldUpdate && !loading) || (!gotQuizInfo && !loading))) {
-        const {quizId} = params;
+        const { quizId } = params;
         if (!gotQuizInfo) console.log('getQuizEditInfo...');
         else console.log('refetch...');
-        if (!gotQuizInfo) getQuizEditInfo({variables: {quizId: quizId}});
+        if (!gotQuizInfo) getQuizEditInfo({ variables: { quizId: quizId } });
         else refetch();
     }
 
@@ -129,7 +129,7 @@ export default function CreateQuizScreen({draft, edit}) {
 
     useEffect(() => () => {
         let quizDetails = quizDetailsVar();
-        let details = {...quizDetails};
+        let details = { ...quizDetails };
         details.platformName = '';
         details.title = '';
         details.description = '';
@@ -153,7 +153,7 @@ export default function CreateQuizScreen({draft, edit}) {
         const quizDetails = quizDetailsVar();
         questions.forEach(question => delete question.id);
         console.log(quizDetails);
-        const {draftId} = params;
+        const { draftId } = params;
         const quizObj = {
             _id: draftId,
             questions: questions,
@@ -171,7 +171,7 @@ export default function CreateQuizScreen({draft, edit}) {
             tags: quizDetails.tags
             /* other optional props */
         };
-        await createAndPublishQuiz({variables: {quiz: quizObj}});
+        await createAndPublishQuiz({ variables: { quiz: quizObj } });
         history.push(`/user/${globalState()._id}/quizzes`);
     };
 
@@ -201,7 +201,7 @@ export default function CreateQuizScreen({draft, edit}) {
         // if (draftId) {
         //     draftObj._id = draftId;
         // }
-        await saveQuizAsDraft({variables: {draft: draftObj}});
+        await saveQuizAsDraft({ variables: { draft: draftObj } });
         history.push('/drafts');
     }
 
@@ -209,7 +209,7 @@ export default function CreateQuizScreen({draft, edit}) {
         e.preventDefault();
         const quizDetails = quizDetailsVar();
         console.log(quizDetails);
-        const {quizId} = params;
+        const { quizId } = params;
         await updatePublishedQuiz({
             variables: {
                 quizDetails: {
@@ -258,42 +258,42 @@ export default function CreateQuizScreen({draft, edit}) {
 
     return (
         <>
-            <Grid container direction="column" sx={{p: 2, pl: 10, width: 700}}>
+            <Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
                 <Grid item>
-                    <CommonTitle title={edit ? 'EDIT QUIZ' : 'CREATE QUIZ'}/>
+                    <CommonTitle title={edit ? 'EDIT QUIZ' : 'CREATE QUIZ'} />
                 </Grid>
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                    <Grid container item direction="column" sx={{py: 2}} spacing={2}>
+                    <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
                         <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions}
-                                         handleUpdateNumQuestions={handleUpdateNumQuestions} edit={edit}/>
-                        {!edit ? <><CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion}/>
-                            <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon/>}
-                                    sx={{alignSelf: "flex-start"}}
-                                    onClick={() => {
-                                        let questions = questionsVar();
-                                        questions.push({
-                                            id: uuidv4(),
-                                            description: '',
-                                            answerOptions: ['', ''],
-                                            correctAnswerIndex: -1
-                                        });
-                                        questionsVar(questions);
-                                        setNumQuestions(numQuestions + 1);
-                                        setQuestions([...questionsVar()]);
-                                        setUpdateNumQuestions(!updateNumQuestions);
-                                    }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button></> : <Fragment/>}
+                            handleUpdateNumQuestions={handleUpdateNumQuestions} edit={edit} />
+                        {!edit ? <><CreateQuestionCardList handleDeleteQuestion={handleDeleteQuestion} />
+                            <Button variant={"outlined"} endIcon={<AddCircleOutlinedIcon />}
+                                sx={{ alignSelf: "flex-start" }}
+                                onClick={() => {
+                                    let questions = questionsVar();
+                                    questions.push({
+                                        id: uuidv4(),
+                                        description: '',
+                                        answerOptions: ['', ''],
+                                        correctAnswerIndex: -1
+                                    });
+                                    questionsVar(questions);
+                                    setNumQuestions(numQuestions + 1);
+                                    setQuestions([...questionsVar()]);
+                                    setUpdateNumQuestions(!updateNumQuestions);
+                                }} style={{ marginLeft: 16, marginTop: 20 }}>Add Question</Button></> : <Fragment />}
 
-                        <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40, width: 700}}
-                               justifyContent='space-between'>
+                        <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }}
+                            justifyContent='space-between'>
                             {edit ? <> <Stack direction='row' spacing={2}>
                                 <Button variant={"contained"} onClick={togglePublishConfirmOpen}>SAVE CHANGES</Button>
                                 <Button variant={"contained"} onClick={e => {
                                     history.push(`/user/${globalState()._id}/quizzes`);
                                 }
                                 }>CANCEL</Button></Stack></> : <><Button
-                                variant={"outlined"} style={{marginRight: 150}} onClick={e => {
-                                history.push("/drafts");
-                            }}>{draft ? "CANCEL" : "DISCARD"}</Button>
+                                    variant={"outlined"} style={{ marginRight: 150 }} onClick={e => {
+                                        history.push("/drafts");
+                                    }}>{draft ? "CANCEL" : "DISCARD"}</Button>
                                 <Stack direction='row' spacing={2}>
                                     <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
                                     <Button variant={"contained"} onClick={togglePublishConfirmOpen}>PUBLISH</Button>

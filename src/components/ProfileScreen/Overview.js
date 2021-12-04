@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard, FriendCard, QuizCard, PlatformCard } from '..';
 import { TungstenRounded, Bolt } from '@mui/icons-material';
-export default function Overview() {
+import { GET_PROFILE_OVERVIEW } from '../../controllers/graphql/user-queries';
+import { useQuery } from '@apollo/client';
+export default function Overview({ userId }) {
     //Overview tab display this component in Profile Screen
 
     const [expandQuizzes, setExpandQuizzes] = useState(false);
@@ -35,6 +37,20 @@ export default function Overview() {
     let achievements = [];
     let history = [];
     let friends = [];
+    let { data } = useQuery(GET_PROFILE_OVERVIEW, { variables: { userId: userId } })
+    if (data) {
+        console.log('overview data');
+        let overView = data.getProfileOverview;
+        creatorPoints = overView.creatorPoints;
+        playPoints = overView.playPoints;
+        quizzes = overView.quizzesInfo;
+        platforms = overView.platformsInfo;
+        achievements = overView.achievements;
+        friends = overView.friendsInfo;
+        history = overView.history;
+        console.log(overView);
+
+    }
     return (
         <Grid container direction='column' sx={{ display: 'flex', justifyContent: 'center', width: '100%', py: 7 }}>
             <Grid container direction='row' justifyContent='space-evenly' sx={{ width: '100%', px: 20 }}>
