@@ -99,13 +99,11 @@ export default function PlatformScreen() {
     const { data: platformData, refetch, error, loading } = usePrivilegedQuery(GET_PLATFORM_SUMMARY, { variables: { title: platformName } });
 
     let platformSummary;
+    let authorized = false;
     if (platformData) {
         console.log(platformData)
         platformSummary = platformData.getPlatformSummary;
-    }
-
-    const gotoPlatformSettings = () => {
-        history.push(`/platformSettings/${platformName}`)
+        authorized = platformData.getPlatformSummary.moderator
     }
 
     return (
@@ -120,6 +118,7 @@ export default function PlatformScreen() {
                 tags={platformSummary.tags}
                 color={platformSummary.color}
                 id={platformSummary._id}
+                authorized={authorized}
             /> : null}
             <Grid container spacing={0}>
                 {/* <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
@@ -156,7 +155,7 @@ export default function PlatformScreen() {
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <ModeratorQuizCard key={data._id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
+                                <ModeratorQuizCard authorized={authorized} key={data._id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
                             <Box sx={{ marginTop: "100px", marginLeft: "100px" }} key={1}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display

@@ -17,6 +17,7 @@ export default function ModeratorQuizCard(props) {
     const handleClose = () => {
       setAnchorEl(null);
     };
+    const {authorized} = props
 
     const handleRemoveQuizFromPlatform = () => {
         removeQuizFromPlatform().then(props.refetch);
@@ -26,6 +27,7 @@ export default function ModeratorQuizCard(props) {
     return (
         <Box sx={{position: "relative"}} key={props._id}>
             <QuizCard {...props}/>
+            {authorized&&
             <Button
                 id="basic-button"
                 aria-controls="basic-menu"
@@ -35,7 +37,7 @@ export default function ModeratorQuizCard(props) {
                 sx={{ position: "absolute", top: "25px", right: "10px" }}
             >
                 <SettingsIcon sx={{ color: "white" }} />
-            </Button>
+            </Button>}
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}

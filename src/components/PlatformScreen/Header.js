@@ -22,6 +22,7 @@ export default function Header({
     description,
     tags,
     id,
+    authorized,
     color }) {
 
     const history = useHistory()
@@ -80,13 +81,14 @@ export default function Header({
                                 {platformName}
                             </Typography>
                             <Stack direction='row' alignItems='center' mr={5}>
+                                {authorized&&
                                 <Button variant="text" startIcon={<Settings />} sx={{ mr: 4 }}
                                 onClick={()=>history.push(`/platformSettings/${platformName}`)}
                                 >
                                     Settings
-                                </Button>
-                                <FavoriteButton _id={id} title={platformName}/>
-                            </Stack>
+                                </Button>}
+                            <FavoriteButton _id={id} title={platformName}/>
+                            </Stack>            
                         </Stack>
                         <Stack direction='row' justifyContent='flex-start' alignItems='center' flexGrow={1} mt={1} spacing={0} >
                             <FavoriteRounded sx={{ fill: color, height: 12, width: 12 }} />
