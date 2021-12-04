@@ -146,15 +146,9 @@ export default function TakeQuizScreen({ draftId }) {
         }
     }
 
-    async function handleIncrement() {
-        await incrementPlayPoints({ variables: { playPointsIncrement: 10 } });
-    }
-
-
     const handleAnswer = async (correct) => {
         if (correct) {
             setPlayPoints(playPoints + 10);
-            handleIncrement();
         }
     }
 
@@ -177,8 +171,15 @@ export default function TakeQuizScreen({ draftId }) {
 
     const handleFinishSubmit = async () => {
         if (userRating > 0) {
-            rateQuiz({ variables: { quizId: quizId, rating: userRating } })
+            rateQuiz({ variables: { quizId: quizId, rating: userRating } });
+
         }
+        let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
+        console.log('new play points');
+        console.log(data.incrementPlayPoints);
+        let newUserData = { ...user };
+        newUserData.playPoints = data.incrementPlayPoints;
+        globalState(newUserData);
         history.push('/highlights');
     }
 
@@ -337,8 +338,6 @@ export default function TakeQuizScreen({ draftId }) {
                     </Stack>
 
                 </Stack>
-
-
             </Dialog>
         </>);
 }
