@@ -51,6 +51,7 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
     username: String
   }
   */
+
   const history = useHistory();
 
   const [value, setValue] = React.useState(0);
@@ -58,9 +59,13 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  
-  // leaderboardEntries will be null if the query in PlatformScreen hasn't resolved yet
-  if (leaderboardEntries) console.log(leaderboardEntries);
+ 
+  const sortingFunction = (a,b) => {
+    return b.secondaryScore-a.secondaryScore
+  }
+  if (leaderboardEntries){
+    leaderboardEntries = leaderboardEntries.slice().sort(sortingFunction)
+  }
 
   return (
     <Box sx={{ width: width }}>
