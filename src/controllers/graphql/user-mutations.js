@@ -91,3 +91,9 @@ export const SEND_FRIEND_REQUEST = gql`
         sendFriendRequest(receiverId: $receiverId)
     }
 `;
+
+export const ADD_FRIEND = gql`
+    mutation AddFriend($friendId: ID!) {
+        addFriend(friendId: $friendId)
+    }
+`;
