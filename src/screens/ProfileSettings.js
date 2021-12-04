@@ -5,70 +5,54 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import {Box, TextField} from '@mui/material';
 import {CommonTitle, ImageUpload} from "../components";
-import {UPDATE_BIO, UPDATE_USERNAME} from "../controllers/graphql/user-mutations";
+import {EDIT_PROFILE, UPDATE_BIO, UPDATE_USERNAME} from "../controllers/graphql/user-mutations";
 import {useMutation, useReactiveVar} from "@apollo/client";
 import {globalState} from "../state/UserState";
 
 
 export default function ProfileSettings(props) {
-    let newBio = useReactiveVar(globalState).bio || '';
-    let newUsername = useReactiveVar(globalState).username || '';
     const {userInfo} = props;  // passed from ProfileScreen
     const bannerImgLabel = 'Banner Image';
-    const thumbnailImgLabel = 'Profile Image';
-    const [username, setUsername] = useState(newUsername);
-    const [bio, setBio] = useState(newBio ? newBio : userInfo.bio);
-    const [updateUsername] = useMutation(UPDATE_USERNAME, {variables: {username: newUsername}});
-    const [updateBio] = useMutation(UPDATE_BIO, {variables: {bio: newBio}});
+    const avatarImgLabel = 'Avatar';
+    const [username, setUsername] = useState(userInfo.username);
+    const [bio, setBio] = useState(userInfo.bio);
     const [bannerImgName, setBannerImgName] = useState('');
-    const [bannerImg, setBannerImg] = useState(null);
-    const [profileImgName, setProfileImgName] = useState('');
-    const [profileImg, setProfileImg] = useState(null);
-
-    const handleChangeUsername = async () => {
-        newUsername = username;
-        const {data} = await updateUsername({variables: {username: newUsername}});
-        var newState = {...globalState()};
-        newState.username = data.updateUsername;
-        globalState(newState);
-        window.location.reload(false);
-    }
-
-    const handleChangeBio = async () => {
-        newBio = bio;
-        const {data} = await updateBio({variables: {bio: newBio}});
-        var newState = {...globalState()};
-        newState.bio = data.updateBio;
-        globalState(newState);
-        window.location.reload(false);
-    }
+    const [bannerImgData, setBannerImgData] = useState(null);
+    const [avatarName, setAvatarName] = useState('');
+    const [avatarData, setAvatarData] = useState(null);
+    const [editProfile] = useMutation(EDIT_PROFILE, {variables: {username: username, bio: bio, avatarData: avatarData, bannerImgData: bannerImgData}});
 
     const handleImageUpload = (name, filename, data) => {
         if (name === bannerImgLabel) {
-            setBannerImg(data);
-            setBannerImg(filename);
-        } else if (name === thumbnailImgLabel) {
-            setProfileImg(data);
-            setProfileImg(filename);
+            setBannerImgData(data);
+            setBannerImgName(filename);
+        } else if (name === avatarImgLabel) {
+            setAvatarData(data);
+            setAvatarName(filename);
         } else {
-            console.error(`ProfileSettings.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+            console.error(`ProfileSettings.handleImageUpload: argument 'name' must be one of '${bannerImgLabel}' or '${avatarImgLabel}'`)
         }
     };
 
     const handleRemoveImage = (name) => {
         if (name === bannerImgLabel) {
-            setBannerImg(null);
+            setBannerImgData(null);
             setBannerImgName('');
-        } else if (name === thumbnailImgLabel) {
-            setProfileImg(null);
-            setProfileImgName('');
+        } else if (name === avatarImgLabel) {
+            setAvatarData(null);
+            setAvatarName('');
         } else {
-            console.error(`ProfileSettings.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
+            console.error(`ProfileSettings.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${avatarImgLabel}'`)
         }
     }
 
-    const handleUpdateImageConfirm = () => {
-
+    const handleUpdateProfile = async () => {
+        console.log(username);
+        console.log(bio);
+        console.log(avatarData);
+            const {data} = await editProfile({variables: {username: username, bio: bio, avatarData: avatarData, bannerImgData: bannerImgData}});
+            props.handleClose();
+            window.location.reload(false);
     }
 
     return (
@@ -77,19 +61,13 @@ export default function ProfileSettings(props) {
             <TextField label={"Username"} value={username} variant={"standard"}
                        onChange={e => setUsername(e.target.value)} fullWidth>
             </TextField>
-            <Box>
-                <Button variant="contained" onClick={handleChangeUsername}>CHANGE USERNAME</Button>
-            </Box>
             <TextField label={"Edit Bio"} value={bio} variant={"outlined"} fullWidth multiline
                        onChange={e => setBio(e.target.value)}>
             </TextField>
-            <Box>
-                <Button variant="contained" onClick={handleChangeBio}>CONFIRM</Button>
-            </Box>
+            <ImageUpload label={avatarImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
             <ImageUpload label={bannerImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
-            <ImageUpload label={thumbnailImgLabel} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
             <Stack direction={"row"} spacing={2}>
-                <Button variant={"contained"} onClick={handleUpdateImageConfirm}>CONFIRM</Button>
+                <Button variant={"contained"} onClick={handleUpdateProfile}>CONFIRM</Button>
                 <Button variant={"outlined"} onClick={props.handleClose}>CANCEL</Button>
             </Stack>
         </Stack>

@@ -70,8 +70,8 @@ export default function CreateQuizScreen({draft, edit}) {
             details.title = quizInfo.title;
             details.description = quizInfo.description;
             details.tags = quizInfo.tags ? quizInfo.tags : [];
-            // details.bannerImgData = quizInfo.bannerImg;
-            // details.thumbnailImgData = quizInfo.thumbnailImg;
+            details.bannerImg = quizInfo.bannerImg;
+            details.thumbnailImg = quizInfo.thumbnailImg;
             details.timeToAnswer = quizInfo.timeToAnswer;
             details.shuffleAnswers = quizInfo.shuffleAnswers;
             details.shuffleQuestions = quizInfo.shuffleQuestions;
