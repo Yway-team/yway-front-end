@@ -88,7 +88,7 @@ export default function CreateQuizScreen({draft, edit}) {
         //fetch quiz details here and set it in questionVar and quizDetailsVar
         getQuizEditInfo({variables: {quizId: quizId}}).then(({data}) => {
             if (data) quizInfo = data.getQuizEditInfo;
-            quizInfo = data.getQuizEditInfo;
+            // quizInfo = data.getQuizEditInfo;
             let quizDetails = quizDetailsVar();
             let details = {...quizDetails};
             // details.platformName = quizInfo.platformName;
@@ -113,6 +113,24 @@ export default function CreateQuizScreen({draft, edit}) {
     };
 
     useEffect(() => console.log(`Rendered CreateQuizScreen in ${(Date.now() - start)} milliseconds.`));
+
+    useEffect(() => () => {
+        let quizDetails = quizDetailsVar();
+        let details = {...quizDetails};
+        details.platformName = '';
+        details.title = '';
+        details.description = '';
+        details.tags = [];
+        details.bannerImgData = '';
+        details.thumbnailImgData = '';
+        details.timeToAnswer = 10;
+        details.shuffleAnswers = false;
+        details.shuffleQuestions = false;
+        details.color = '#ff5a1d';
+        quizDetailsVar(details);
+
+        questionsVar([]);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

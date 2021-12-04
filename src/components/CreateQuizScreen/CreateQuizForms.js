@@ -44,12 +44,12 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         const newQuizDetails = {...quizDetails};
         if (name === bannerImgLabel) {
             newQuizDetails.bannerImgData = '';
-            newQuizDetails.bannerImgName = '';
+            newQuizDetails.bannerImgName = null;
             console.log(newQuizDetails);
             quizDetailsVar(newQuizDetails);
         } else if (name === thumbnailImgLabel) {
             newQuizDetails.thumbnailImgData = '';
-            newQuizDetails.thumbnailImgName = '';
+            newQuizDetails.thumbnailImgName = null;
             quizDetailsVar(newQuizDetails);
         } else {
             console.error(`CreateQuizForms.handleRemoveImage: argument 'name' must be one of '${bannerImgLabel}' or '${thumbnailImgLabel}'`)
