@@ -55,6 +55,26 @@ export const GET_QUIZ_HIGHLIGHTS = gql`
     }
 `;
 
+export const GET_TOP_QUIZZES = gql`
+    query GetTopQuizzes($howMany: Int!) {
+        getTopQuizzes(howMany: $howMany) {
+            _id
+            bannerImg
+            createdAt
+            description
+            numQuestions
+            ownerAvatar
+            ownerId
+            ownerUsername
+            platformId
+            platformName
+            platformThumbnail
+            rating
+            title
+        }
+    }
+`;
+
 export const GET_QUESTION_LIST = gql`
     query GetQuestionList($quizId: ID!) {
         getQuestionList(quizId: $quizId)

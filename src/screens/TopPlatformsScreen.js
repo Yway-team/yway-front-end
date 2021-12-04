@@ -1,15 +1,15 @@
 import { Grid } from '@mui/material';
 import { PlatformCard, CommonTitle } from "../components";
 import { useQuery } from '@apollo/client';
-import { GET_PLATFORM_HIGHLIGHTS } from '../controllers/graphql/platform-queries';
+import { GET_TOP_PLATFORMS } from '../controllers/graphql/platform-queries';
 
 
 
 export default function TopPlatformsScreen() {
-    const { data: platformData } = useQuery(GET_PLATFORM_HIGHLIGHTS, { variables: { howMany: 20 } });
+    const { data: platformData } = useQuery(GET_TOP_PLATFORMS, { variables: { howMany: 20 } });
     let platforms = null;
     if (platformData) {
-        platforms = platformData.getPlatformHighlights;
+        platforms = platformData.getTopPlatforms;
     }
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>

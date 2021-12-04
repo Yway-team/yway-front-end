@@ -23,7 +23,7 @@ export default function HighlightsScreen() {
             <Grid container justifyContent='flex-start'>
                 {platforms ? platforms.map((data) => <Grid key={data._id} item ><PlatformCard {...data} /> </Grid>) : null}
             </Grid>
-            <CommonTitle title='TOP QUIZZES' />
+            <CommonTitle title='NEW QUIZZES' />
             <Grid container justifyContent='flex-start'>
                 {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} refetch={refetchQuizzes} />) : null}
             </Grid>

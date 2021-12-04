@@ -1,14 +1,14 @@
 import { Grid } from '@mui/material';
 import { QuizCard, CommonTitle } from "../components";
 import { useQuery } from '@apollo/client';
-import { GET_QUIZ_HIGHLIGHTS } from '../controllers/graphql/quiz-queries';
+import { GET_TOP_QUIZZES } from '../controllers/graphql/quiz-queries';
 
 
 export default function TopQuizzesScreen() {
-    const { data: quizData, refetch } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 20 } });
+    const { data: quizData, refetch } = useQuery(GET_TOP_QUIZZES, { variables: { howMany: 20 } });
     let quizzes = null;
     if (quizData) {
-        quizzes = quizData.getQuizHighlights;
+        quizzes = quizData.getTopQuizzes;
     }
     return (
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>

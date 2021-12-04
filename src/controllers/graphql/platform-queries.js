@@ -13,6 +13,19 @@ export const GET_PLATFORM_HIGHLIGHTS = gql`
     }
 `;
 
+export const GET_TOP_PLATFORMS = gql`
+    query GetTopPlatforms($howMany: Int!) {
+        getTopPlatforms(howMany: $howMany) {
+            _id
+            description
+            favorites
+            numQuizzes
+            thumbnailImg
+            title
+        }
+    }
+`;
+
 export const GET_PLATFORM_SUMMARY = gql`
     query GetPlatformSummary($title: String!) {
         getPlatformSummary(title: $title) {
