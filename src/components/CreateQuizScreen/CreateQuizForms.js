@@ -118,8 +118,7 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
                          /*savedImg={quizDetails.bannerImg}*/ />
         </Grid>
         {/*<Grid item>*/}
-        {/*    <ImageUpload onUpload={handleImageUpload} label={thumbnailImgLabel} onRemove={handleRemoveImage}*/}
-        {/*                 /*savedImg={quizDetails.thumbnailImg}*/ />*/}
+        {/*    <ImageUpload onUpload={handleImageUpload} label={thumbnailImgLabel} onRemove={handleRemoveImage}/>*/}
         {/*</Grid>*/}
         <Grid item marginTop={4}>
             <FormLabel style={{
