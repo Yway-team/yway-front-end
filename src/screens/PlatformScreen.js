@@ -121,6 +121,7 @@ export default function PlatformScreen() {
                 id={platformSummary._id}
                 authorized={authorized}
             /> : null}
+            {platformSummary&&
             <Grid container spacing={0}>
                 {/* <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
                             <SettingsIcon sx={{ color: "white" }} />
@@ -167,7 +168,7 @@ export default function PlatformScreen() {
                 <Grid item xs={3.2} sx={{ marginTop: "2rem" }}>
                     <MiniLeaderboard width="310px" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                 </Grid>
-            </Grid>
+            </Grid>}
 
         </>
     )

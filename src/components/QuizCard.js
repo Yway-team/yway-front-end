@@ -376,12 +376,12 @@ function QuizCard({
                                 {menuTypography(draft ? 'Edit Draft' : 'Edit Quiz')}
                             </MenuItem>
 
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <LocalOfferOutlined />
-                                </ListItemIcon>
-                                {menuTypography('Edit Tags')}
-                            </MenuItem>
+                            {/*<MenuItem>*/}
+                            {/*    <ListItemIcon>*/}
+                            {/*        <LocalOfferOutlined />*/}
+                            {/*    </ListItemIcon>*/}
+                            {/*    {menuTypography('Edit Tags')}*/}
+                            {/*</MenuItem>*/}
 
                             <MenuItem onClick={draft ? handleDeleteDraft : handleDeleteQuiz}>
                                 <ListItemIcon>
