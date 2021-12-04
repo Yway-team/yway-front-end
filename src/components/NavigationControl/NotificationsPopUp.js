@@ -9,12 +9,15 @@ import {
 import NotificationsIcon from "@mui/icons-material/NotificationsOutlined";
 import { useState } from 'react';
 import NotificationCard from "../NotificationCard";
+import { globalState } from "../../state/UserState";
+import { useReactiveVar } from '@apollo/client';
 
 
 function NotificationsPopUp() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const [read, setRead] = useState(false);
+    const user = useReactiveVar(globalState);
 
     const handleClickOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -26,8 +29,9 @@ function NotificationsPopUp() {
     const handleClose = () => {
         setAnchorEl(null);
     }
+    let notifications = user.notifications;
 
-    const numberOfNotifications = notifications.length;
+    const numberOfNotifications = notifications ? notifications.length : 0;
 
 
     return (
@@ -37,7 +41,7 @@ function NotificationsPopUp() {
                     onClick={handleClickOpen} >
                     <NotificationsIcon sx={{ width: 25, height: 25 }} />
                 </IconButton>
-                {!read ?
+                {!read && numberOfNotifications != 0 ?
                     <Avatar sx={{ position: 'absolute', top: 2, right: -1, height: 20, width: 20, backgroundColor: 'primary.main' }}>
                         <Typography fontSize={14}>
                             {numberOfNotifications}
@@ -105,43 +109,43 @@ function NotificationsPopUp() {
 
 }
 
-const notifications = [
-    {
-        _id: 0,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-        type: 'friendRequest',
-        createdAt: Date.now()
-    },
-    {
-        _id: 1,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-        type: 'friendRequest',
-        createdAt: Date.now()
-    },
-    {
-        _id: 2,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-        type: 'friendRequest',
-        createdAt: Date.now()
-    },
-    {
-        _id: 3,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-        type: 'friendRequest',
-        createdAt: Date.now()
-    },
-    {
-        _id: 4,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-        type: 'friendRequest',
-        createdAt: Date.now()
-    },
+// const notifications = [
+//     {
+//         _id: 0,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//         type: 'friendRequest',
+//         createdAt: Date.now()
+//     },
+//     {
+//         _id: 1,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//         type: 'friendRequest',
+//         createdAt: Date.now()
+//     },
+//     {
+//         _id: 2,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//         type: 'friendRequest',
+//         createdAt: Date.now()
+//     },
+//     {
+//         _id: 3,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//         type: 'friendRequest',
+//         createdAt: Date.now()
+//     },
+//     {
+//         _id: 4,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//         type: 'friendRequest',
+//         createdAt: Date.now()
+//     },
 
-]
+// ]
 
 export default NotificationsPopUp;
