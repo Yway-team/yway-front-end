@@ -3,15 +3,18 @@ import {Button, Grid, Stack} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useLazyQuery, useMutation, useReactiveVar} from "@apollo/client";
-import {CREATE_AND_PUBLISH_QUIZ, SAVE_QUIZ_AS_DRAFT, UPDATE_PUBLISHED_QUIZ} from "../controllers/graphql/quiz-mutations";
+import {
+    CREATE_AND_PUBLISH_QUIZ,
+    SAVE_QUIZ_AS_DRAFT,
+    UPDATE_PUBLISHED_QUIZ
+} from "../controllers/graphql/quiz-mutations";
 import {v4 as uuidv4} from 'uuid';
 import CreateQuestionCardList from "../components/CreateQuizScreen/CreateQuestionCardList";
 import CreateQuizForms from "../components/CreateQuizScreen/CreateQuizForms";
 import {useHistory, useParams} from 'react-router-dom';
-import {globalState} from "../state/UserState";
+import {globalState, loggedInChanged} from "../state/UserState";
 import {GET_QUIZ_EDIT_INFO} from "../controllers/graphql/quiz-queries";
 import {GET_DRAFT} from "../controllers/graphql/user-queries";
-import { loggedInChanged } from "../state/UserState";
 
 
 export const questionsVar = makeVar([]);
@@ -46,7 +49,7 @@ export default function CreateQuizScreen({draft, edit}) {
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
     const [updatePublishedQuiz] = useMutation(UPDATE_PUBLISHED_QUIZ);
-    const [getQuizEditInfo, { data, refetch, loading }] = useLazyQuery(GET_QUIZ_EDIT_INFO);
+    const [getQuizEditInfo, {data, refetch, loading}] = useLazyQuery(GET_QUIZ_EDIT_INFO);
     const [getDraft] = useLazyQuery(GET_DRAFT);
     const [_, setQuestions] = useState(questionsVar());
     const [numQuestions, setNumQuestions] = useState(questionsVar().length);
@@ -67,8 +70,8 @@ export default function CreateQuizScreen({draft, edit}) {
             details.title = quizInfo.title;
             details.description = quizInfo.description;
             details.tags = quizInfo.tags ? quizInfo.tags : [];
-            details.bannerImgData = quizInfo.bannerImg;
-            details.thumbnailImgData = quizInfo.thumbnailImg;
+            // details.bannerImgData = quizInfo.bannerImg;
+            // details.thumbnailImgData = quizInfo.thumbnailImg;
             details.timeToAnswer = quizInfo.timeToAnswer;
             details.shuffleAnswers = quizInfo.shuffleAnswers;
             details.shuffleQuestions = quizInfo.shuffleQuestions;
@@ -131,8 +134,8 @@ export default function CreateQuizScreen({draft, edit}) {
         details.title = '';
         details.description = '';
         details.tags = [];
-        details.bannerImgData = '';
-        details.thumbnailImgData = '';
+        details.bannerImgData = null;
+        details.thumbnailImgData = null;
         details.timeToAnswer = 10;
         details.shuffleAnswers = false;
         details.shuffleQuestions = false;
@@ -140,6 +143,8 @@ export default function CreateQuizScreen({draft, edit}) {
         quizDetailsVar(details);
 
         questionsVar([]);
+
+        setNumQuestions(0);
     }, []);
 
     const handleSubmit = async (e) => {
@@ -204,7 +209,7 @@ export default function CreateQuizScreen({draft, edit}) {
         e.preventDefault();
         const quizDetails = quizDetailsVar();
         console.log(quizDetails);
-        const { quizId } = params;
+        const {quizId} = params;
         await updatePublishedQuiz({
             variables: {
                 quizDetails: {
@@ -220,6 +225,7 @@ export default function CreateQuizScreen({draft, edit}) {
                 }
             }
         });
+        history.push(`/user/${globalState()._id}/quizzes`);
     }
 
     const handleDeleteQuestion = async questionIndex => {
@@ -254,7 +260,7 @@ export default function CreateQuizScreen({draft, edit}) {
         <>
             <Grid container direction="column" sx={{p: 2, pl: 10, width: 700}}>
                 <Grid item>
-                    {edit ? <CommonTitle title='EDIT QUIZ'/> : <CommonTitle title='CREATE QUIZ'/>}
+                    <CommonTitle title={edit ? 'EDIT QUIZ' : 'CREATE QUIZ'}/>
                 </Grid>
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                     <Grid container item direction="column" sx={{py: 2}} spacing={2}>

@@ -8,7 +8,7 @@ import {quizDetailsVar} from "../screens/CreateQuizScreen";
 
 export default function ImageUpload({label, onUpload, onRemove, savedImg}) {
     const [imageName, setImageName] = useState('');
-    const [image, setImage] = useState(savedImg ? savedImg : '');
+    const [image, setImage] = useState(savedImg ? savedImg : null);
 
     const handleImageUpload = (e) => {
         const compress = new Compress();
