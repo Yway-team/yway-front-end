@@ -24,7 +24,8 @@ import {
     PlatformScreen,
     PlatformSettings,
     SearchResultsScreen,
-    FullLeaderboard
+    FullLeaderboard,
+    NoMatch
 } from './screens';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavigationControl from './components/NavigationControl/NavigationControl'
@@ -168,6 +169,9 @@ export default function App() {
                             </Route>
                             <Route exact path="/search/:query/:filter">
                                 <SearchResultsScreen />
+                            </Route>
+                            <Route path="*">
+                                <NoMatch />
                             </Route>
                             {/* <Route exact path="/user/:userId/overview">
                                 <ProfileScreen tab={0} />
