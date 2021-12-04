@@ -119,6 +119,7 @@ export default function PlatformScreen() {
                 description={platformSummary.description}
                 tags={platformSummary.tags}
                 color={platformSummary.color}
+                id={platformSummary._id}
             /> : null}
             <Grid container spacing={0}>
                 {/* <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
@@ -155,15 +156,15 @@ export default function PlatformScreen() {
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
-                                <ModeratorQuizCard key={data.id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
-                            <Box sx={{ marginTop: "100px", marginLeft: "100px" }}>
+                                <ModeratorQuizCard key={data._id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
+                            <Box sx={{ marginTop: "100px", marginLeft: "100px" }} key={1}>
                                 <Typography sx={{ width: 250 }}>
                                     No Quizzes to Display
                                 </Typography>
                             </Box>
                         )}
                 </Grid>
-                <Grid item xs={3.2} sx={{ marginTop: "2rem" }} spacing={0} >
+                <Grid item xs={3.2} sx={{ marginTop: "2rem" }}>
                     <MiniLeaderboard width="310px" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                 </Grid>
             </Grid>

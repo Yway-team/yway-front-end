@@ -24,7 +24,7 @@ export default function ModeratorQuizCard(props) {
     }
   
     return (
-        <Box sx={{position: "relative"}}>
+        <Box sx={{position: "relative"}} key={props._id}>
             <QuizCard {...props}/>
             <Button
                 id="basic-button"
@@ -45,7 +45,6 @@ export default function ModeratorQuizCard(props) {
                 'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>View Quiz Details</MenuItem>
                 <MenuItem onClick={handleRemoveQuizFromPlatform}>Remove Quiz</MenuItem>
             </Menu>
         </Box>

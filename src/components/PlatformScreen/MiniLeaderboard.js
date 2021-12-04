@@ -70,10 +70,8 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
         </Typography>
       </Box>
       <Box sx={{paddingLeft: "5%"}}>
-        <Button onClick={()=>history.push(`/leaderboard/${platformName}`)}>
-          <Typography sx={{fontSize:"15px", color: "blue"}}>
+        <Button onClick={()=>history.push(`/leaderboard/${platformName}`)} sx={{fontSize:"15px", color: "blue"}}>
             View Full Leaderboard &gt;&gt;
-          </Typography>
         </Button>
       </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -86,7 +84,7 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
       </Box>
       <TabPanel value={value} index={0}>
         <Grid container sx={{width}} spacing={2}>
-          {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <MiniLeaderboardRow avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
+          {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <MiniLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
         </Grid>
       </TabPanel>
       <TabPanel value={value} index={1}>

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 export default function MiniLeaderboardRow({avatar, score, username, position}) {
     return (
         <>
-            <Grid item xs={1}>
+            {/* <Grid item xs={1}>
                 <Typography sx={{fontWeight:"bold"}}>    
                     {position+1}
                 </Typography>
@@ -23,6 +23,19 @@ export default function MiniLeaderboardRow({avatar, score, username, position}) 
                 <Typography sx={{color:"lightgray"}}>
                     {score} pts
                 </Typography>
+            </Grid> */}
+
+            <Grid item xs={1} sx={{fontWeight: "bold"}}>
+                    {position+1}
+            </Grid>
+            <Grid item xs={1}>
+                <img style={{height: "20px"}} src={avatar}/>
+            </Grid>
+            <Grid item xs={6}>
+                    {username}
+            </Grid>
+            <Grid item xs={4} sx={{color: "lightgray"}}>
+                    {score} pts
             </Grid>
         </>
     )

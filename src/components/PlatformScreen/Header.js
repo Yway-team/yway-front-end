@@ -4,6 +4,7 @@ import { ReactComponent as Decor } from '../../images/platformDecor.svg';
 import FavoriteButton from './FavoriteButton';
 import { ReactComponent as LogoIcon } from '../../images/logoIconColorless.svg';
 import { Settings, FavoriteRounded, HelpOutlineOutlined } from '@mui/icons-material';
+import { useParams, useHistory } from 'react-router-dom';
 
 
 const defaultImages = {
@@ -20,7 +21,10 @@ export default function Header({
     numQuizzes,
     description,
     tags,
+    id,
     color }) {
+
+    const history = useHistory()
     color = color === '' || !color ? '#ff5a1d' : color;
     return (
 
@@ -77,10 +81,11 @@ export default function Header({
                             </Typography>
                             <Stack direction='row' alignItems='center' mr={5}>
                                 <Button variant="text" startIcon={<Settings />} sx={{ mr: 4 }}
+                                onClick={()=>history.push(`/platformSettings/${platformName}`)}
                                 >
                                     Settings
                                 </Button>
-                                <FavoriteButton />
+                                <FavoriteButton _id={id} title={platformName}/>
                             </Stack>
                         </Stack>
                         <Stack direction='row' justifyContent='flex-start' alignItems='center' flexGrow={1} mt={1} spacing={0} >
