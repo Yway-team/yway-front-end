@@ -114,31 +114,52 @@ export const GET_USER_PLATFORMS_INFO = gql`
     }
 `;
 
-export const GET_OVERVIEW = gql`
-    query GetOverView($userId: ID){
-          getUserQuizzesInfo(userId: $userId) {
-            _id
-            bannerImg
-            createdAt
-            description
-            numQuestions
-            ownerAvatar
-            ownerId
-            ownerUsername
-            platformId
-            platformName
-            platformThumbnail
-            rating
-            title
-        }
-          getUserPlatformsInfo(userId: $userId) {
-            _id
-            description
-            favorites
-            numQuizzes
-            thumbnailImg
-            title
+export const GET_PROFILE_OVERVIEW = gql`
+    query GetProfileOverview($userId: ID!) {
+        getProfileOverview(userId: $userId) {
+            creatorPoints
+            playPoints
+            achievements {
+                createdAt
+                creatorPointValue
+                description
+                playPointValue
+                type
+            }
+            friendsInfo {
+                _id
+                avatar
+                username
+            }
+            history {
+                createdAt
+                description
+                type
+            }
+            platformsInfo {
+                _id
+                description
+                favorites
+                numQuizzes
+                thumbnailImg
+                title
+            }
+            quizzesInfo {
+                _id
+                bannerImg
+                color
+                createdAt
+                description
+                numQuestions
+                ownerAvatar
+                ownerId
+                ownerUsername
+                platformId
+                platformName
+                platformThumbnail
+                rating
+                title
+            }
         }
     }
-
 `;
