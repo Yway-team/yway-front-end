@@ -34,7 +34,7 @@ import ListItem, { listItemClasses } from "@mui/material/ListItem";
 import { ShowMoreButton } from '../';
 import { useHistory } from 'react-router-dom';
 import { styled, useTheme } from '@mui/material/styles';
-import { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { LOGIN } from '../../controllers/graphql/user-mutations.js';
 import { useMutation } from '@apollo/client';
@@ -133,6 +133,12 @@ function NavigationControl(props) {
             }),
         }),
     );
+
+    const mainView = useMemo(()=>{
+        return (<Main open={open}>
+            {props.switch}
+        </Main>)
+    }, [open])
 
     const title = (title) =>
         <Typography sx={{
@@ -336,9 +342,7 @@ function NavigationControl(props) {
                     </List>
                 </Box>
             </Drawer>
-            <Main open={open}>
-                {props.switch}
-            </Main>
+            {mainView}
         </Fragment >
     );
 }
