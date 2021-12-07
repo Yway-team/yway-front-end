@@ -22,7 +22,6 @@ export default function ImageUpload({label, onUpload, onRemove, savedImg}) {
                 resize: true, // defaults to true, set false if you do not want to resize the image width and height
                 rotate: false, // See the rotation section below
             }).then((data) => {
-                console.log(data[0]);
                 const reader = new FileReader();
                 setImageName(file.name);
                 reader.addEventListener('load', () => {
