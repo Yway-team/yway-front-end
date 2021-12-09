@@ -7,7 +7,7 @@ import { SEARCH } from '../controllers/graphql/feed-queries';
 
 
 export default function SearchResultsScreen() {
-    const { query } = useParams();
+    const query = decodeURIComponent(useParams().query);
     const filter = useReactiveVar(filterState);
     const history = useHistory();
     const filterLists = [
@@ -57,9 +57,9 @@ export default function SearchResultsScreen() {
                 <>
                     <CommonTitle title='PLATFORMS' />
                     <Grid container justifyContent='flex-start'>
-                        {platforms.length != 0 ?
+                        {platforms.length ?
                             platforms.map((data) => <Grid key={data._id} item ><PlatformCard {...data} /> </Grid>)
-                            : <Typography> {`There is no related platforms for " ${query} "`} </Typography>
+                            : <Typography> {`There are no relevant platforms matching "${query}"`} </Typography>
                         }
                     </Grid>
                 </>
@@ -70,10 +70,10 @@ export default function SearchResultsScreen() {
                 <>
                     <CommonTitle title='QUIZZES' />
                     <Grid container justifyContent='flex-start'>
-                        {quizzes.length != 0 ?
+                        {quizzes.length ?
 
                             quizzes.map((data) => <Grid key={data._id} item ><QuizCard {...data} refetch={refetch} /> </Grid>)
-                            : <Typography> {`There is no related quizzes for " ${query} "`} </Typography>
+                            : <Typography> {`There are no relevant quizzes matching "${query}"`} </Typography>
 
                         }
                     </Grid>
@@ -85,9 +85,9 @@ export default function SearchResultsScreen() {
                 <>
                     <CommonTitle title='PEOPLE' />
                     <Grid container justifyContent='flex-start'>
-                        {users.length != 0 ?
+                        {users.length ?
                             users.map((data) => <Grid key={data._id} item ><FriendCard {...data} /> </Grid>)
-                            : <Typography> {`There is no user with username " ${query} "`} </Typography>
+                            : <Typography> {`There are no users with usernames matching "${query}"`} </Typography>
 
                         }
                     </Grid>

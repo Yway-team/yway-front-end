@@ -34,7 +34,7 @@ export default function SearchBar({ theme }) {
 
     function handleSearch() {
         if (query !== '')
-            history.push(`/search/${query}/${filter}`);
+            history.push(`/search/${encodeURIComponent(query)}/${filter}`);
     }
     return (
         <Paper
