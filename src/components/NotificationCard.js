@@ -19,7 +19,7 @@ export default function NotificationCard({ _id, type, name, avatar, createdAt })
                         imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }} />
                     <Stack direction={"column"} spacing={2}>
                         {
-                            type === 'friendRequest' ?
+                            type === 'friend request' ?
                                 <Typography>
                                     <span style={{ fontSize: 'Montserret', fontWeight: '600' }} >  {name}   </span> sent you a friend request.
                                 </Typography> : null
