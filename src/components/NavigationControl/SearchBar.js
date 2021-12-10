@@ -1,19 +1,19 @@
 import { Paper, InputBase, IconButton } from '@mui/material';
 import { SearchRounded } from '@mui/icons-material';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation, useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { useReactiveVar } from '@apollo/client';
-import { filterState } from '../../state/UserState';
 
 export default function SearchBar({ theme }) {
     //this component will handle rebounce of key strokes so that the API will make only when the user stops typing
     const history = useHistory();
-    const [query, setQuery] = useState("");
-    let filter = useReactiveVar(filterState);
+    const searchParams = new URLSearchParams(useLocation().search);
+    let [queryString, filter] = [searchParams.get('query'), searchParams.get('filter')];
+    if (queryString) queryString = decodeURIComponent(queryString);
+    const [query, setQuery] = useState(queryString || '');
 
     useEffect(() => {
         console.log(query);
-        const timeOutId = setTimeout(() => handleSearch(), 500);
+        const timeOutId = setTimeout(() => handleSearch(), 100);
         return () => clearTimeout(timeOutId);
     }, [query]);
 
@@ -33,8 +33,7 @@ export default function SearchBar({ theme }) {
     }, []);
 
     function handleSearch() {
-        if (query !== '')
-            history.push(`/search/${encodeURIComponent(query)}/${filter}`);
+        if (query) history.push(`/search?query=${encodeURIComponent(query)}&filter=${filter}`);
     }
     return (
         <Paper

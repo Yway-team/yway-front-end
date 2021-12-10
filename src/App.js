@@ -166,7 +166,7 @@ export default function App() {
                                     :
                                     <Redirect to="/highlights" />}
                             </Route>
-                            <Route exact path="/search/:query/:filter">
+                            <Route path="/search">
                                 <SearchResultsScreen />
                             </Route>
                             <Route path="*">
