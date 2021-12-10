@@ -1,22 +1,20 @@
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Grid, Button, Typography } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle, FriendCard } from "../components";
-import { useHistory, useParams } from 'react-router';
-import { filterState } from '../state/UserState';
+import { useHistory, useLocation } from 'react-router';
 import { SEARCH } from '../controllers/graphql/feed-queries';
 
 
 export default function SearchResultsScreen() {
-    const query = decodeURIComponent(useParams().query);
-    const filter = useReactiveVar(filterState);
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
+    let [query, filter] = [searchParams.get('query'), searchParams.get('filter')];
+    
     const history = useHistory();
-    const filterLists = [
-        ['all', 'All'],
-        ['platforms', 'Platforms'],
-        ['quizzes', 'Quizzes'],
-        ['people', 'People'],
-        // ['tags', 'Tags'],
-    ];
+    const filters = ['all', 'platforms', 'quizzes', 'people'/*, 'tags'*/];
+    if (!query && search) history.replace('/search');
+    else if (!filters.includes(filter)) history.replace(`/search?query=${query}&filter=all`);
+    query = decodeURIComponent(query);
     let platforms = [];
     let quizzes = [];
     let users = [];
@@ -26,16 +24,16 @@ export default function SearchResultsScreen() {
         platforms = data.search.platforms;
         quizzes = data.search.quizzes;
         users = data.search.users;
-
     }
 
     return (
+        !query && !filter ? null :
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', py: 2, pl: 10 }}>
             <Grid container justifyContent='flex-start'>
-                {filterLists.map((currFilter, index) => {
+                {filters.map(filterBy => {
                     return (<Button
                         variant='contained'
-                        disabled={currFilter[0] === filter}
+                        disabled={filterBy === filter}
                         sx={{
                             marginRight: 2,
                             backgroundColor: 'grey.200',
@@ -46,10 +44,9 @@ export default function SearchResultsScreen() {
                             }
                         }}
                         onClick={() => {
-                            filterState(currFilter[0])
-                            history.push(`/search/${query}/${filterState()}`)
+                            history.push(`/search?query=${query}&filter=${filterBy}`)
                         }}
-                    > {currFilter[1]} </Button>);
+                    > {filterBy[0].toUpperCase() + filterBy.slice(1)} </Button>);
                 }
                 )}
             </Grid>
@@ -58,7 +55,7 @@ export default function SearchResultsScreen() {
                     <CommonTitle title='PLATFORMS' />
                     <Grid container justifyContent='flex-start'>
                         {platforms.length ?
-                            platforms.map((data) => <Grid key={data._id} item ><PlatformCard {...data} /> </Grid>)
+                            platforms.map(data => <Grid key={data._id} item ><PlatformCard {...data} /> </Grid>)
                             : <Typography> {`There are no relevant platforms matching "${query}"`} </Typography>
                         }
                     </Grid>
@@ -78,7 +75,7 @@ export default function SearchResultsScreen() {
                         }
                     </Grid>
                 </>
-                : <></>
+                : null
             }
 
             {filter === 'all' || filter === 'people' ?
@@ -92,7 +89,7 @@ export default function SearchResultsScreen() {
                         }
                     </Grid>
                 </>
-                : <></>
+                : null
             }
         </Grid >
     );
