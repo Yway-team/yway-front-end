@@ -72,15 +72,27 @@ export default function PlatformSettings() {
     }
 
     // IMAGE UPLOAD MANAGEMENT
-    const handleImageUpload = (name, data) => {
+    // const handleImageUpload = (name, data) => {
+    //     setEffectiveSettings(prev=>{
+    //         const mapNameToVar = {
+    //             "Banner Image": "bannerImg",
+    //             "Thumbnail Image": "thumbnailImg"
+    //         }
+    //         return {...prev, [`${mapNameToVar[name]}Name`]: name, [`${mapNameToVar[name]}Data`]: data}
+    //     })
+    // }
+    const handleImageUpload = (name, filename, data) => {
         setEffectiveSettings(prev=>{
             const mapNameToVar = {
                 "Banner Image": "bannerImg",
                 "Thumbnail Image": "thumbnailImg"
             }
-            return {...prev, [`${mapNameToVar[name]}Name`]: name, [`${mapNameToVar[name]}Data`]: data}
+            const newState = {[`${mapNameToVar[name]}Name`]: filename, [`${mapNameToVar[name]}Data`]: data}
+            console.log(newState)
+
+            return {...prev, ...newState}
         })
-    }
+    };
 
     // Color Picker functions
     const handleSetColor = (color) => {
@@ -100,8 +112,8 @@ export default function PlatformSettings() {
         console.log("show effectiveSettings")
         console.log(effectiveSettings)
         const packedSettings = {
-            bannerImg: effectiveSettings.bannerImgData,
-            thumbnailImg: effectiveSettings.thumbnailImgData,
+            bannerImgData: effectiveSettings.bannerImgData,
+            thumbnailImgData: effectiveSettings.thumbnailImgData,
             color: effectiveSettings.color,
             description: effectiveSettings.description,
             minCreatorPoints: effectiveSettings.minCreatorPoints,
