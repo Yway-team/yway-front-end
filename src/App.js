@@ -130,7 +130,7 @@ export default function App() {
                                 <CreateQuizScreen />
                             </Route>
                             <Route exact path="/quiz/edit/:quizId">
-                                <CreateQuizScreen edit={true}/>
+                                <CreateQuizScreen edit={true} />
                             </Route>
                             <Route exact path="/quiz/take/:quizId">
                                 <TakeQuizScreen />
@@ -166,7 +166,7 @@ export default function App() {
                                     :
                                     <Redirect to="/highlights" />}
                             </Route>
-                            <Route exact path="/search/:query/:filter">
+                            <Route path="/search">
                                 <SearchResultsScreen />
                             </Route>
                             <Route path="*">

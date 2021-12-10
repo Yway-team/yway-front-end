@@ -11,6 +11,3 @@ export const globalState = makeVar(emptyUserState);
 export const globalLoggedIn = makeVar(false);
 
 export const loggedInChanged = makeVar(false);
-
-export const filterState = makeVar('all');
-
