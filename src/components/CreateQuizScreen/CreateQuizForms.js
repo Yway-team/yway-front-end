@@ -237,12 +237,12 @@ function PlatformSearchTextField({ defaultValue,
     const [options, setOptions] = React.useState([]);
     const [query, setQuery] = useState(value);
 
+    const { data, refetch } = useQuery(SEARCH_PLATFORM_TITLES, { skip: true });
 
-    const { data } = useQuery(SEARCH_PLATFORM_TITLES, { variables: { searchString: 'yway' } });
+
     if (data) {
-        console.log();
+        console.log(data);
     }
-
 
     React.useEffect(() => {
         let active = true;
@@ -252,10 +252,14 @@ function PlatformSearchTextField({ defaultValue,
             return undefined;
         }
 
+        refetch({ searchString: query });
+
         let timeOutId;
         (async () => {
             timeOutId = setTimeout(() => {
                 console.log('search is called');
+                refetch({ searchString: query });
+
             }, 200);
             if (active) {
                 setOptions([...topFilms]);
@@ -273,6 +277,10 @@ function PlatformSearchTextField({ defaultValue,
             setOptions([]);
         }
     }, [open]);
+    React.useEffect(() => {
+        console.log(data);
+    }, [data]);
+
 
     return (
         <Stack direction={'row'} alignItems={'baseline'}>
