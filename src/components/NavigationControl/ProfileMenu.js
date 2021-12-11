@@ -21,7 +21,7 @@ import { useReactiveVar } from "@apollo/client";
 import { useHistory } from 'react-router-dom';
 
 
-function ProfileMenu() {
+function ProfileMenu({ client }) {
     const user = useReactiveVar(globalState);
     const history = useHistory()
     const [anchorEl, setAnchorEl] = useState(null);
@@ -39,6 +39,7 @@ function ProfileMenu() {
             _id: ""
         });
         loggedInChanged(true);
+        client.resetStore();
         history.replace('/');
         console.log(`Logged out`);
     }

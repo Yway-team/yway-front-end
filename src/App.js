@@ -112,7 +112,7 @@ export default function App() {
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
                 <Router>
-                    <NavigationControl
+                    <NavigationControl client={client}
                         switch={<Switch>
                             <Route exact path="/">
                                 <Redirect to="/highlights" />

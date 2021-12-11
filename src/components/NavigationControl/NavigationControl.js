@@ -212,7 +212,7 @@ function NavigationControl(props) {
                         </Grid>
                         <Grid container item xs={3} justifyContent='flex-end' alignItems='center'>
                             {loggedIn ?
-                                <><NotificationsPopUp /> <ProfileMenu /></>
+                                <><NotificationsPopUp /> <ProfileMenu client={props.client} /></>
                                 : <GoogleLogin
                                     clientId={process.env.REACT_APP_CLIENT_ID}
                                     isSignedIn={true}
