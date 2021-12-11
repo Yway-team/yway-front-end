@@ -3,10 +3,16 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { Avatar, CardActionArea, Stack } from '@mui/material';
 import TimeAgoFromNow from './TimeAgoFromNow';
+import { useHistory } from 'react-router-dom';
 
 export default function NotificationCard({ _id, type, name, icon, createdAt }) {
+    const history = useHistory();
     return (
-        <Card sx={{ maxWidth: 400, boxShadow: 0 }}>
+        <Card sx={{ maxWidth: 400, boxShadow: 0 }} onClick={() => {
+            if (type === 'friend request') {
+                history.push(`user/${_id}`);
+            }
+        }}>
             <CardActionArea>
                 <Stack direction={"row"} spacing={1} padding={2}>
                     <Avatar alt="icon" src={icon}
