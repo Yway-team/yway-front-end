@@ -114,6 +114,23 @@ export const GET_USER_PLATFORMS_INFO = gql`
     }
 `;
 
+export const GET_USER_FRIENDS_INFO = gql`
+    query GetUserFriendsInfo($userId: ID!) {
+        getUserFriendsInfo(userId: $userId) {
+            friendRequestsInfo {
+                _id
+                avatar
+                username
+            }
+            friendsInfo {
+                _id
+                avatar
+                username
+            }
+        }
+    }
+`;
+
 export const GET_PROFILE_OVERVIEW = gql`
     query GetProfileOverview($userId: ID!) {
         getProfileOverview(userId: $userId) {
