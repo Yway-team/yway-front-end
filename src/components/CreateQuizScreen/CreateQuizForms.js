@@ -239,9 +239,11 @@ function PlatformSearchTextField({ defaultValue,
         }
 
         const timeOutId = setTimeout(async () => {
-            if (called) await refetch({ searchString: query });
-            else await searchPlatformTitles({ variables: { searchString: query } });
-            if (data) setOptions([...data.searchPlatformTitles]);
+            if (query) {
+                if (called) await refetch({ searchString: query });
+                else await searchPlatformTitles({ variables: { searchString: query } });
+                if (data) setOptions([...data.searchPlatformTitles]);
+            }
         }, 200);
 
         return () => {
@@ -267,14 +269,14 @@ function PlatformSearchTextField({ defaultValue,
                 onOpen={() => {
                     setOpen(true);
                 }}
-                onClose={() => {
+                onClose={e => {
                     setOpen(false);
                 }}
-                onChange={e => {
+                onChange={(_, value) => {
                     const details = { ...quizDetailsVar() };
-                    details.platformName = options[e.target.value];
+                    details.platformName = value;
                     quizDetailsVar(details);
-                    setQuery(options[e.target.value]);
+                    setQuery(value);
                 }}
                 isOptionEqualToValue={(option, value) => option === value}
                 // getOptionLabel={(option) => option.title}
