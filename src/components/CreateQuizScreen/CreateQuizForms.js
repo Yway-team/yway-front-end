@@ -157,9 +157,12 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
                             value={quizDetails.timeToAnswer}
                             error={!formErrors.timeToAnswerValid} helperText={formErrors.errorMsgs.timeToAnswer}
                             onChange={e => {
-                                let details = {...quizDetails};
-                                details.timeToAnswer = Number(e.target.value);
-                                quizDetailsVar(details);
+                                const value = Number(e.target.value);
+                                if (value >= 1) {
+                                    let details = {...quizDetails};
+                                    details.timeToAnswer = Number(e.target.value);
+                                    quizDetailsVar(details);
+                                }
                             }
                             }
                             onBlur={e => {
