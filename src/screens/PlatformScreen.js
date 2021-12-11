@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Grid, Stack, Avatar, Box, Button, CircularProgress } from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
@@ -10,6 +10,8 @@ import { Typography } from "@mui/material";
 import Header from '../components/PlatformScreen/Header';
 import ModeratorQuizCard from '../components/PlatformScreen/ModeratorQuizCard';
 import FavoriteButton from '../components/PlatformScreen/FavoriteButton';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 /*const quizzes = [
     {
@@ -107,6 +109,13 @@ export default function PlatformScreen() {
         authorized = platformData.getPlatformSummary.moderator
     }
 
+
+    // Collapse and Expand the Mini Leaderboard
+    const [open, setOpen] = useState(true)
+    const toggleOpen = () => {
+        setOpen(prev=>!prev)
+    }
+
     return (
         <>
             {platformSummary ? <Header platformName={platformName}
@@ -153,7 +162,7 @@ export default function PlatformScreen() {
                         </Typography>
                     </Box> */}
 
-                <Grid item container xs={8.7} spacing={0} mt='1rem'>
+                <Grid item container xs={open?8.7:11} spacing={0} mt='1rem'>
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
@@ -165,8 +174,13 @@ export default function PlatformScreen() {
                             </Box>
                         )}
                 </Grid>
-                <Grid item xs={3.2} sx={{ marginTop: "2rem" }}>
-                    <MiniLeaderboard width="310px" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
+                <Grid item xs={open?3.3:1} sx={{ marginTop: "2rem" }}>
+                    <Button onClick={toggleOpen}>
+                        {open?<KeyboardArrowRightIcon/>:<KeyboardArrowLeftIcon/>}
+                    </Button>
+                    <Box sx={{display: open?"block": "none"}}>
+                        <MiniLeaderboard width="auto" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null}/>
+                    </Box>
                 </Grid>
             </Grid>}
 
