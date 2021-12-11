@@ -31,7 +31,7 @@ function NotificationsPopUp() {
 
     const handleClose = async () => {
         setAnchorEl(null);
-        const { data } = await setReadNotis({ variables: { time: notifications[notifications.length - 1].createdAt.toString() } });
+        const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt.toString() } });
         let dataToAdd = { ...user };
         dataToAdd.notifications = data.setReadNotifications;
         globalState(dataToAdd);
