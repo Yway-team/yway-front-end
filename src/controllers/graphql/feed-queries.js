@@ -36,3 +36,9 @@ export const SEARCH = gql`
         }
     }
 `;
+
+export const SEARCH_PLATFORM_TITLES = gql`
+    query SearchPlatformTitles($searchString: String!) {
+        searchPlatformTitles(searchString: $searchString)
+    }
+`;
