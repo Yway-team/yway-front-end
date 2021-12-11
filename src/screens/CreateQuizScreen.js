@@ -306,7 +306,7 @@ export default function CreateQuizScreen({ draft, edit }) {
         }
     }
 
-    function validate() {
+    function validateCreateQuiz() {
         let notValid = false;
         let details = quizDetailsVar();
         let errors = { ...formErrorsVar() };
@@ -361,6 +361,25 @@ export default function CreateQuizScreen({ draft, edit }) {
         return !notValid;
     }
 
+    function validateEditQuiz(){
+        let notValid = false;
+        let details = quizDetailsVar();
+        let errors = { ...formErrorsVar() };
+        if (details.title.length === 0) {
+            if (errors.titleValid === true) {
+                errors.titleValid = false;
+                errors.errorMsgs.title = "Title cannot be empty.";
+                notValid = true;
+            }
+        } else if (errors.titleValid === false) {
+            errors.titleValid = true;
+            errors.errorMsgs.title = "";
+        }
+        formErrorsVar(errors);
+        setFormError(notValid);
+        return !notValid;
+    }
+
     function decodeHtml(html) {
         let txt = document.createElement("textarea");
         txt.innerHTML = html;
@@ -401,7 +420,9 @@ export default function CreateQuizScreen({ draft, edit }) {
                         <Stack direction={"row"} spacing={2} style={{ marginLeft: 16, paddingTop: 40, width: 700 }}
                             justifyContent='space-between'>
                             {edit ? <> <Stack direction='row' spacing={2}>
-                                <Button variant={"contained"} onClick={togglePublishConfirmOpen}>SAVE CHANGES</Button>
+                                <Button variant={"contained"} onClick={()=>{
+                                    const valid = validateEditQuiz();
+                                    if (valid) togglePublishConfirmOpen()}}>SAVE CHANGES</Button>
                                 <Button variant={"contained"} onClick={e => {
                                     history.push(`/user/${globalState()._id}/quizzes`);
                                 }
@@ -412,7 +433,7 @@ export default function CreateQuizScreen({ draft, edit }) {
                                 <Stack direction='row' spacing={2}>
                                     <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
                                     <Button variant={"contained"} onClick={() => {
-                                        const valid = validate();
+                                        const valid = validateCreateQuiz();
                                         if (valid) togglePublishConfirmOpen();
                                     }}>PUBLISH</Button>
                                 </Stack></>}
