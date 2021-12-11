@@ -10,7 +10,7 @@ export default function NotificationCard({ _id, type, name, icon, createdAt }) {
     return (
         <Card sx={{ maxWidth: 400, boxShadow: 0 }} onClick={() => {
             if (type === 'friend request') {
-                history.push(`user/${_id}`);
+                history.push(`/user/${_id}`);
             }
         }}>
             <CardActionArea>
