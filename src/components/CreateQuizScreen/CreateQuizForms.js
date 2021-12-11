@@ -42,7 +42,6 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
         if (name === bannerImgLabel) {
             newQuizDetails.bannerImgData = data;
             newQuizDetails.bannerImgName = filename;
-            console.log(newQuizDetails);
             quizDetailsVar(newQuizDetails);
         } else if (name === thumbnailImgLabel) {
             newQuizDetails.thumbnailImgData = data;
@@ -238,17 +237,18 @@ function PlatformSearchTextField({ defaultValue,
             return undefined;
         }
 
-        const timeOutId = setTimeout(async () => {
+        // const timeOutId = setTimeout(
+        (async () => {
             if (query) {
                 if (called) await refetch({ searchString: query });
                 else await searchPlatformTitles({ variables: { searchString: query } });
                 if (data) setOptions([...data.searchPlatformTitles]);
             }
-        }, 200);
+        })();
 
-        return () => {
-            clearTimeout(timeOutId);
-        };
+        // return () => {
+
+        // };
     }, [query]);
 
     useEffect(() => {

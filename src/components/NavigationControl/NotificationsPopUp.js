@@ -44,11 +44,11 @@ function NotificationsPopUp() {
     let readNotis = [];
     let unreadNotis = [];
 
-    const numberOfNotifications = notifications ? notifications.length : 0;
 
     if (notifications) {
         unreadNotis = notifications.filter((noti) => noti.unread);
         readNotis = notifications.filter((noti) => !noti.unread);
+
     }
 
 
@@ -60,10 +60,10 @@ function NotificationsPopUp() {
                         onClick={handleClickOpen} >
                         <NotificationsIcon sx={{ width: 25, height: 25 }} />
                     </IconButton>
-                    {!read && numberOfNotifications !== 0 ?
+                    {!read && unreadNotis.length !== 0 ?
                         <Avatar sx={{ position: 'absolute', top: 2, right: -1, height: 20, width: 20, backgroundColor: 'primary.main' }}>
                             <Typography fontSize={14}>
-                                {numberOfNotifications}
+                                {unreadNotis.length}
                             </Typography>
                         </Avatar> : null
                     }
@@ -72,7 +72,7 @@ function NotificationsPopUp() {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
-                    onClick={() => {}}
+                    onClick={() => { }}
                     PaperProps={{
                         elevation: 0,
                         sx: {
