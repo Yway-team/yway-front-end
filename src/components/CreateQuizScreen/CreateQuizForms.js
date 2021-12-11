@@ -145,7 +145,7 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
         </Grid>
         {!edit ? <><Grid item> <LabelTextField label={"Number of Questions"}
             value={numQuestionsText}
-            error={formErrors.numQuestionsValid}
+            error={!formErrors.numQuestionsValid}
             helperText={formErrors.errorMsgs.numQuestions}
             onChange={e => {
                 const value = Number(e.target.value);
