@@ -96,7 +96,7 @@ function NavigationControl(props) {
     const handleLogin = async (response) => {
         const authResponse = response.getAuthResponse();
         const idToken = authResponse.id_token;
-        const { data } = (await login({ variables: { idToken: idToken } }));
+        const { data } = await login({ variables: { idToken: idToken } });
         if (data) {
             globalLoggedIn(true);
             globalState(
@@ -104,6 +104,7 @@ function NavigationControl(props) {
             );
             loggedInChanged(true);
         }
+        props.client.resetStore();
     }
 
     useEffect(() => {
