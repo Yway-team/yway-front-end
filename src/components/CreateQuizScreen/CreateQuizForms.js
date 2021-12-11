@@ -10,12 +10,12 @@ import {
     Typography
 } from "@mui/material";
 import { formErrorsVar, quizDetailsVar } from "../../screens/CreateQuizScreen";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { ColorPicker, ImageUpload, LabelTextField } from "..";
 import TagsInput from "../TagsInput";
 import Stack from "@mui/material/Stack";
 import { SEARCH_PLATFORM_TITLES } from "../../controllers/graphql/feed-queries";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 
 export default function CreateQuizForms({ numQuestions, updateNumQuestions, handleUpdateNumQuestions, edit }) {
     const quizDetails = useReactiveVar(quizDetailsVar);
@@ -233,54 +233,32 @@ function PlatformSearchTextField({ defaultValue,
     multiline,
     placeholder
 }) {
-    const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState([]);
+    const [open, setOpen] = useState(false);
+    const [options, setOptions] = useState([]);
     const [query, setQuery] = useState(value);
+    const [searchPlatformTitles, { data, called, refetch }] = useLazyQuery(SEARCH_PLATFORM_TITLES, { variables: { searchString: query } });
 
-    const { data, refetch } = useQuery(SEARCH_PLATFORM_TITLES, { skip: true });
-
-
-    if (data) {
-        console.log(data);
-    }
-
-    React.useEffect(() => {
-        let active = true;
-
-
+    useEffect(() => {
         if (query === '') {
             return undefined;
         }
 
-        refetch({ searchString: query });
-
-        let timeOutId;
-        (async () => {
-            timeOutId = setTimeout(() => {
-                console.log('search is called');
-                refetch({ searchString: query });
-
-            }, 200);
-            if (active) {
-                setOptions([...topFilms]);
-            }
-        })()
+        const timeOutId = setTimeout(async () => {
+            if (called) await searchPlatformTitles({ variables: { searchString: query } });
+            else await refetch({ searchString: query });
+            if (data) setOptions([...data.searchPlatformTitles]);
+        }, 200);
 
         return () => {
-            active = false;
             clearTimeout(timeOutId);
         };
     }, [query]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!open) {
             setOptions([]);
         }
     }, [open]);
-    React.useEffect(() => {
-        console.log(data);
-    }, [data]);
-
 
     return (
         <Stack direction={'row'} alignItems={'baseline'}>
@@ -298,13 +276,13 @@ function PlatformSearchTextField({ defaultValue,
                     setOpen(false);
                 }}
                 isOptionEqualToValue={(option, value) => option.title === value.title}
-                getOptionLabel={(option) => option.title}
+                // getOptionLabel={(option) => option.title}
                 options={options}
                 renderInput={(params) => (
                     <TextField {...params} defaultValue={defaultValue} value={value}
-                        onChange={(value) => {
+                        onChange={e => {
                             // onChange(value);
-                            setQuery(value);
+                            setQuery(e.target.value);
                         }}
                         placeholder={placeholder}
                         onBlur={onBlur}
