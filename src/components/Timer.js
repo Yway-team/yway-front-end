@@ -6,6 +6,7 @@ export default function Timer({timeLeft, handleTimeOut, timerOnOff}) {
     var timeLimit = 20 * 1000;
 
     useEffect(() => {
+        console.log("enter use effect")
         var timer;
         if (timerOnOff) {
             timer = setInterval(() => {
