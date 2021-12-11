@@ -32,7 +32,7 @@ function NotificationsPopUp() {
     const handleClose = async () => {
         setAnchorEl(null);
         if (unreadNotis.length > 0) {
-            const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt.toString() } });
+            const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
             let dataToAdd = { ...user };
             dataToAdd.notifications = data.setReadNotifications;
             globalState(dataToAdd);
@@ -71,7 +71,7 @@ function NotificationsPopUp() {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
-                    onClick={handleClose}
+                    onClick={() => {}}
                     PaperProps={{
                         elevation: 0,
                         sx: {
