@@ -1,10 +1,9 @@
 import React, {useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, Typography} from "@mui/material";
 import {ColorPicker, CommonTitle, ConfirmationDialog, ImageUpload, LabelTextField} from "../components";
-import {useMutation} from "@apollo/client";
+import {makeVar, useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
-import {quizDetailsVar} from "./CreateQuizScreen";
 
 export default function CreatePlatformScreen() {
     const [createPlatform] = useMutation(CREATE_PLATFORM);
@@ -22,6 +21,12 @@ export default function CreatePlatformScreen() {
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const bannerImgLabel = 'Banner Image';
     const thumbnailImgLabel = 'Thumbnail Image';
+    const [titleValid, setTitleValid] = useState(true);
+    const [titleErrorMsg, setTitleErrorMsg] = useState('');
+    // const platformErrorVar = makeVar({
+    //     titleValid: true,
+    //     errorMsgs: {title: ''}
+    // });
 
     const handleImageUpload = (name, filename, data) => {
         if (name === bannerImgLabel) {
@@ -66,6 +71,21 @@ export default function CreatePlatformScreen() {
     }
     const onNewTagChange = (tag) => {
         setNewTag(tag);
+    }
+
+    function validate() {
+        if (platformName.length === 0) {
+            // let platformErrors = platformErrorVar();
+            // platformErrors.titleValid = false;
+            // platformErrors.errorMsgs.title = "Platform name cannot be empty.";
+            // platformErrorVar(platformErrors);
+            setTitleValid(false);
+            setTitleErrorMsg('Platform name cannot be empty.');
+            return false;
+        }
+        setTitleValid(true);
+        setTitleErrorMsg('');
+        return true;
     }
 
     const handleSubmit = async (e) => {
@@ -113,6 +133,8 @@ export default function CreatePlatformScreen() {
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Platform Name"} value={platformName}
+                                        error={!titleValid}
+                                        helperText={titleErrorMsg}
                                         onChange={e => setPlatformName(e.target.value)}/>
                     </Grid>
                     <Grid item>
@@ -157,8 +179,13 @@ export default function CreatePlatformScreen() {
                                 Minimum number of creator points to submit a quiz
                             </Typography>
                             <TextField variant={"standard"} value={minCreatorPts}
-                                       onChange={e => setMinCreatorPts(Number(e.target.value))}
-                                       style={{width: 60}} type={"number"}>
+                                       onChange={e => {
+                                           const value = Number(e.target.value);
+                                           if (value >= 0) {
+                                               setMinCreatorPts(value)
+                                           }
+                                       }
+                                       } style={{width: 60}} type={"number"}>
                             </TextField>
                         </Stack>
                     </Grid>
@@ -175,7 +202,10 @@ export default function CreatePlatformScreen() {
                         />
                     </Grid>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>
-                        <Button variant={"contained"} onClick={togglePublishConfirmOpen}>CREATE</Button>
+                        <Button variant={"contained"} onClick={() => {
+                            const valid = validate();
+                            if (valid) togglePublishConfirmOpen();
+                        }}>CREATE</Button>
                         <Button variant={"outlined"} onClick={handleCancel}>CANCEL</Button>
                     </Stack>
                 </Grid>
