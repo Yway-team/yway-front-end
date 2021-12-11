@@ -96,12 +96,7 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
         </Grid>
 
         <Grid item>
-            {!edit ? <PlatformSearchTextField label={"Platform"} value={quizDetails.platformName}
-                onChange={e => {
-                    let details = { ...quizDetails };
-                    details.platformName = e.target.value;
-                    quizDetailsVar(details);
-                }} /> : <Fragment />}
+            {!edit ? <PlatformSearchTextField label={"Platform"} value={quizDetails.platformName} /> : <Fragment />}
 
         </Grid>
 
@@ -244,8 +239,8 @@ function PlatformSearchTextField({ defaultValue,
         }
 
         const timeOutId = setTimeout(async () => {
-            if (called) await searchPlatformTitles({ variables: { searchString: query } });
-            else await refetch({ searchString: query });
+            if (called) await refetch({ searchString: query });
+            else await searchPlatformTitles({ variables: { searchString: query } });
             if (data) setOptions([...data.searchPlatformTitles]);
         }, 200);
 
@@ -275,13 +270,21 @@ function PlatformSearchTextField({ defaultValue,
                 onClose={() => {
                     setOpen(false);
                 }}
-                isOptionEqualToValue={(option, value) => option.title === value.title}
+                onChange={e => {
+                    const details = { ...quizDetailsVar() };
+                    details.platformName = options[e.target.value];
+                    quizDetailsVar(details);
+                    setQuery(options[e.target.value]);
+                }}
+                isOptionEqualToValue={(option, value) => option === value}
                 // getOptionLabel={(option) => option.title}
                 options={options}
                 renderInput={(params) => (
                     <TextField {...params} defaultValue={defaultValue} value={value}
                         onChange={e => {
-                            // onChange(value);
+                            const details = { ...quizDetailsVar() };
+                            details.platformName = e.target.value;
+                            quizDetailsVar(details);
                             setQuery(e.target.value);
                         }}
                         placeholder={placeholder}
