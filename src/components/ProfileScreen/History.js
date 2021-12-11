@@ -12,7 +12,7 @@ export default function History({ userId }) {
             <Grid container justifyContent='flex-start' mb={1}>
 
                 {history.map((data) => <HistoryCard key={data._id}{...data} />)}
-                {history.length == 0 ? <Typography> {`There is no history yet.`} </Typography> : null}
+                {history.length === 0 ? <Typography> {`No history.`} </Typography> : null}
             </Grid>
         </Grid >
     );

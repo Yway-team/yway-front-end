@@ -20,7 +20,7 @@ export default function MyQuizzes({ userId, isOwn, username }) {
                     <Grid container justifyContent='flex-start' mb={1}>
                         {quizzes ? quizzes.map((data) => <QuizCard key={data._id} {...data} refetch={refetch} />) : null}
                     </Grid>
-                    {quizzes.length == 0 ? <Typography pl={3}> {`There is no quiz yet.`} </Typography> : null}
+                    {quizzes.length === 0 ? <Typography pl={3}> {`You have no quizzes.`} </Typography> : null}
 
                 </>
                 : <Typography> {`This user's profile is private.`} </Typography>}

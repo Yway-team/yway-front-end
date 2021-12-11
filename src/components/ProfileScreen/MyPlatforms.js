@@ -20,7 +20,7 @@ export default function MyPlatforms({ userId, isOwn, username }) {
                     <Grid container justifyContent='flex-start' mb={1}>
                         {platforms ? platforms.map((data) => <PlatformCard key={data._id} {...data} />) : null}
                     </Grid>
-                    {platforms.length == 0 ? <Typography pl={3}> {`There is no platform yet.`} </Typography> : null}
+                    {platforms.length === 0 ? <Typography pl={3}> {`You have no platforms.`} </Typography> : null}
                 </> : <Typography> {`This user's profile is private.`} </Typography>}
         </Grid >
     );

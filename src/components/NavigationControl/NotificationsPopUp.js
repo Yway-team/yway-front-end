@@ -60,7 +60,7 @@ function NotificationsPopUp() {
                         onClick={handleClickOpen} >
                         <NotificationsIcon sx={{ width: 25, height: 25 }} />
                     </IconButton>
-                    {!read && numberOfNotifications != 0 ?
+                    {!read && numberOfNotifications !== 0 ?
                         <Avatar sx={{ position: 'absolute', top: 2, right: -1, height: 20, width: 20, backgroundColor: 'primary.main' }}>
                             <Typography fontSize={14}>
                                 {numberOfNotifications}
@@ -135,13 +135,13 @@ function NotificationsPopUp() {
                                     my: 3,
                                     ml: 3
                                 }
-                                }> There is no new notification yet. </Typography >  </Grid > : null
+                                }>You have no new notifications.</Typography >  </Grid > : null
                         }
                         {unreadNotis.map((data) =>
                             <NotificationCard key={data._id}{...data} />
 
                         )}
-                        {readNotis.length != 0 ? <Grid sx={{ width: '100%' }}>
+                        {readNotis.length !== 0 ? <Grid sx={{ width: '100%' }}>
                             <Typography sx={{
                                 fontWeight: '700',
                                 fontSize: 16,
