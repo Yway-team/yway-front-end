@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, Grid, Stack, Typography} from "@mui/material";
+import {Button, Dialog, DialogContentText, Grid, Stack, Typography} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useLazyQuery, useMutation, useReactiveVar} from "@apollo/client";
@@ -33,10 +33,11 @@ export const quizDetailsVar = makeVar({
 });
 
 export const formErrorsVar = makeVar({
+    platformValid: true,
     titleValid: true,
     numQuestionsValid: true,
     timeToAnswerValid: true,
-    errorMsgs: {title: '', numQuestions: '', timeToAnswer: ''}
+    errorMsgs: {platform: '', title: '', numQuestions: '', timeToAnswer: ''}
 });
 
 export default function CreateQuizScreen({draft, edit}) {
@@ -66,6 +67,12 @@ export default function CreateQuizScreen({draft, edit}) {
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const params = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     let quizInfo;
 
     if (draft && !gotQuizInfo) {
@@ -93,8 +100,8 @@ export default function CreateQuizScreen({draft, edit}) {
             delete uiParentCleaned.__typename;
             uiParentCleaned.forEach(element => delete element.__typename);
             questionsVar(uiParentCleaned);
-            setNumQuestions(quizInfo.questions.length);
             setQuestions([...questionsVar()]);
+            setNumQuestions(questionsVar().length);
         });
         setGotQuizInfo(true);
     }
@@ -193,8 +200,16 @@ export default function CreateQuizScreen({draft, edit}) {
         quizDetailsVar(details);
 
         questionsVar([]);
-
         setNumQuestions(0);
+
+        let formErrors = {
+            platformValid: true,
+            titleValid: true,
+            numQuestionsValid: true,
+            timeToAnswerValid: true,
+            errorMsgs: {platform: '', title: '', numQuestions: '', timeToAnswer: ''}
+        };
+        formErrorsVar(formErrors);
     }, []);
 
     const handleSubmit = async (e) => {
@@ -311,6 +326,16 @@ export default function CreateQuizScreen({draft, edit}) {
         let details = quizDetailsVar();
         let errors = {...formErrorsVar()};
         let questions = questionsVar();
+        if (details.platformName === null || details.platformName.length === 0) {
+            if (errors.platformValid === true) {
+                errors.platformValid = false;
+                errors.errorMsgs.platform = "Platform cannot be empty.";
+            }
+            notValid = true;
+        } else if (errors.titleValid === false) {
+            errors.platformValid = true;
+            errors.errorMsgs.platform = "";
+        }
         if (details.title.length === 0) {
             if (errors.titleValid === true) {
                 errors.titleValid = false;
@@ -403,16 +428,22 @@ export default function CreateQuizScreen({draft, edit}) {
                                     sx={{alignSelf: "flex-start"}}
                                     onClick={() => {
                                         let questions = questionsVar();
-                                        questions.push({
-                                            id: uuidv4(),
-                                            description: '',
-                                            answerOptions: ['', ''],
-                                            correctAnswerIndex: 0
-                                        });
-                                        questionsVar(questions);
-                                        setNumQuestions(numQuestions + 1);
-                                        setQuestions([...questionsVar()]);
-                                        setUpdateNumQuestions(!updateNumQuestions);
+                                        if(questions.length < 100){
+                                            questions.push({
+                                                id: uuidv4(),
+                                                description: '',
+                                                answerOptions: ['', ''],
+                                                correctAnswerIndex: 0
+                                            });
+                                            questionsVar(questions);
+                                            setNumQuestions(numQuestions + 1);
+                                            setQuestions([...questionsVar()]);
+                                            setUpdateNumQuestions(!updateNumQuestions);
+                                        }
+                                        else{
+                                            setOpen(true);
+                                        }
+
                                     }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button></> : <Fragment/>}
                         {errorQuestions.length > 0 ? <Grid item>
                             <Typography sx={{fontWeight: 'bold'}} style={{color: 'red'}}>Missing info in
@@ -454,6 +485,12 @@ export default function CreateQuizScreen({draft, edit}) {
                 noText='CANCEL'
                 noCallback={togglePublishConfirmOpen}
             />
+            <Dialog open={open}
+                    onClose={handleClose}>
+                <DialogContentText id="alert-dialog-title" sx={{padding: 4}}>
+                    Quizzes can only have a maximum of 100 questions.
+                </DialogContentText>
+            </Dialog>
         </>
     )
 }
