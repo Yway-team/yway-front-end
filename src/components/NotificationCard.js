@@ -8,7 +8,7 @@ export default function NotificationCard({ _id, type, name, icon, createdAt }) {
     return (
         <Card sx={{ maxWidth: 400, boxShadow: 0 }}>
             <CardActionArea>
-                <Stack direction={"row"} spacing={2} padding={2}>
+                <Stack direction={"row"} spacing={1} padding={2}>
                     <Avatar alt="icon" src={icon}
                         sx={{
                             height: 60,
@@ -17,7 +17,7 @@ export default function NotificationCard({ _id, type, name, icon, createdAt }) {
                             borderColor: 'common.white'
                         }}
                         imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }} />
-                    <Stack direction={"column"} spacing={2}>
+                    <Stack direction={"column"} spacing={1}>
                         {
                             type === 'friend request' ?
                                 <Typography>
