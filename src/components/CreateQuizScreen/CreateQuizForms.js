@@ -14,6 +14,8 @@ import React, { Fragment, useState } from "react";
 import { ColorPicker, ImageUpload, LabelTextField } from "..";
 import TagsInput from "../TagsInput";
 import Stack from "@mui/material/Stack";
+import { SEARCH_PLATFORM_TITLES } from "../../controllers/graphql/feed-queries";
+import { useQuery } from "@apollo/client";
 
 export default function CreateQuizForms({ numQuestions, updateNumQuestions, handleUpdateNumQuestions, edit }) {
     const quizDetails = useReactiveVar(quizDetailsVar);
@@ -102,7 +104,7 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
                 }} /> : <Fragment />}
 
         </Grid>
-        <Asynchronous />
+
         <Grid item>
             <LabelTextField label={"Quiz Title"} value={quizDetails.title} error={!formErrors.titleValid}
                 helperText={formErrors.errorMsgs.title}
@@ -219,58 +221,9 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
     </>);
 }
 
-// function PlatformSearchTextField({
-//     defaultValue,
-//     value,
-//     onBlur,
-//     label,
-//     onChange,
-//     variant,
-//     type,
-//     multiline,
-//     placeholder
-// }) {
-//     const [open, setOpen] = useState(false);
-//     return (
-//         <>
-//             <Stack direction={'row'} alignItems={'baseline'}>
-//                 <Typography sx={{ width: 250 }}>
-//                     {label}
-//                 </Typography>
-//                 <Autocomplete
-//                     id="asynchronous-demo"
-//                     sx={{ width: 300 }}
-//                     open={open}
-//                     onOpen={() => {
-//                         setOpen(true);
-//                     }}
-//                     onClose={() => {
-//                         setOpen(false);
-//                     }}
-//                     renderInput={(params) => (
-//                         <TextField defaultValue={defaultValue} value={value} onChange={onChange} placeholder={placeholder}
-//                             onBlur={onBlur}
-//                             // onClick={handleClick}
-//                             variant={variant || 'standard'}
-//                             style={{ width: 450 }} type={type || 'text'} multiline={multiline || false}>
-//                         </TextField>
-//                     )
-//                     }
-//                 />
-//             </Stack>
 
-//         </>
-//     )
-// }
 
-function sleep(delay = 0) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
-}
-
-function PlatformSearchTextField({
-    defaultValue,
+function PlatformSearchTextField({ defaultValue,
     value,
     onBlur,
     label,
@@ -280,51 +233,15 @@ function PlatformSearchTextField({
     multiline,
     placeholder
 }) {
-    const [open, setOpen] = useState(false);
-    return (
-        <>
-            <Stack direction={'row'} alignItems={'baseline'}>
-                <Typography sx={{ width: 250 }}>
-                    {label}
-                </Typography>
-                <Autocomplete
-                    id="asynchronous-demo"
-                    sx={{ width: 300 }}
-                    open={open}
-                    onOpen={() => {
-                        setOpen(true);
-                    }}
-                    onClose={() => {
-                        setOpen(false);
-                    }}
-                    renderInput={(params) => (
-                        <TextField defaultValue={defaultValue} value={value} onChange={onChange}
-                            placeholder={placeholder}
-                            onBlur={onBlur}
-                            // onClick={handleClick}
-                            variant={variant || 'standard'}
-                            style={{ width: 450 }} type={type || 'text'} multiline={multiline || false}>
-                        </TextField>
-                    )
-                    }
-                />
-            </Stack>
-
-        </>
-    )
-}
-
-function sleep(delay = 0) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, delay);
-    });
-}
-
-function Asynchronous() {
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const [query, setQuery] = useState(value);
 
+
+    const { data } = useQuery(SEARCH_PLATFORM_TITLES, { variables: { searchString: 'yway' } });
+    if (data) {
+        console.log();
+    }
 
 
     React.useEffect(() => {
@@ -345,14 +262,6 @@ function Asynchronous() {
             }
         })()
 
-
-        // const timeOutId = setTimeout( () => {
-        //     console.log('search is CallEnd');
-        //     if (active) {
-        //         setOptions([...topFilms]);
-        //     }
-        // }, 100);
-
         return () => {
             active = false;
             clearTimeout(timeOutId);
@@ -366,36 +275,37 @@ function Asynchronous() {
     }, [open]);
 
     return (
-        <Autocomplete
-            id="asynchronous-demo"
-            sx={{ width: 300 }}
-            open={open}
-            onOpen={() => {
-                setOpen(true);
-            }}
-            onClose={() => {
-                setOpen(false);
-            }}
-            isOptionEqualToValue={(option, value) => option.title === value.title}
-            getOptionLabel={(option) => option.title}
-            options={options}
-            loading={loading}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Asynchronous"
-                    InputProps={{
-                        ...params.InputProps,
-                        endAdornment: (
-                            <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                {params.InputProps.endAdornment}
-                            </React.Fragment>
-                        ),
-                    }}
-                />
-            )}
-        />
+        <Stack direction={'row'} alignItems={'baseline'}>
+            <Typography sx={{ width: 250 }}>
+                {label}
+            </Typography>
+            <Autocomplete
+                id="platform search"
+                sx={{ width: 300 }}
+                open={open}
+                onOpen={() => {
+                    setOpen(true);
+                }}
+                onClose={() => {
+                    setOpen(false);
+                }}
+                isOptionEqualToValue={(option, value) => option.title === value.title}
+                getOptionLabel={(option) => option.title}
+                options={options}
+                renderInput={(params) => (
+                    <TextField {...params} defaultValue={defaultValue} value={value}
+                        onChange={(value) => {
+                            // onChange(value);
+                            setQuery(value);
+                        }}
+                        placeholder={placeholder}
+                        onBlur={onBlur}
+                        variant={variant || 'standard'}
+                        style={{ width: 450 }} type={type || 'text'} multiline={multiline || false}>
+                    </TextField>
+                )}
+            />
+        </Stack>
     );
 }
 
