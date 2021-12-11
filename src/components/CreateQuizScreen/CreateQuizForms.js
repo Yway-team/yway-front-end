@@ -289,9 +289,9 @@ function PlatformSearchTextField({ defaultValue,
                                helperText={helperText || ''}
                                error={error || false}
                         onChange={e => {
-                            const details = { ...quizDetailsVar() };
-                            details.platformName = e.target.value;
-                            quizDetailsVar(details);
+                            // const details = { ...quizDetailsVar() };
+                            // details.platformName = e.target.value;
+                            // quizDetailsVar(details);
                             setQuery(e.target.value);
                         }}
                         placeholder={placeholder}

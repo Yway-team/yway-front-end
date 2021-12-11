@@ -320,10 +320,7 @@ export default function CreateQuizScreen({draft, edit}) {
         let details = quizDetailsVar();
         let errors = {...formErrorsVar()};
         let questions = questionsVar();
-        console.log(details.platformName)
-        console.log(typeof details.platformName)
-
-        if (typeof details.platformName === undefined) {
+        if (details.platformName === null || details.platformName.length === 0) {
             if (errors.platformValid === true) {
                 errors.platformValid = false;
                 errors.errorMsgs.platform = "Platform cannot be empty.";
