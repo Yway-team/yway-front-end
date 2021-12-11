@@ -104,30 +104,12 @@ export default function FullLeaderboard() {
           </Typography>
         </Box>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Top" sx={{fontSize:"12px", minWidth: `${20/2}px`}} {...a11yProps(0)} />
-              <Tab label="Rising" sx={{fontSize:"12px", minWidth: `${20/2}px`}} {...a11yProps(1)} />
-              <Tab label="Past Week" sx={{fontSize:"12px"}} {...a11yProps(2)} />
-              <Tab label="Past Month" sx={{fontSize:"12px"}} {...a11yProps(3)} />
-            </Tabs>
-          </Box>
-        <TabPanel value={value} index={0}>
+        </Box>
+        <Typography>
           <Grid container justifyContent="center" spacing={2}>
-            {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <FullLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
-          </Grid>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Nobody has played any quizzes yet!
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Nobody has played any quizzes yet!
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          Nobody has played any quizzes yet!
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          Nobody has played any quizzes yet!
-        </TabPanel>
+          {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <FullLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
+        </Grid>
+        </Typography>
       </Box>}
     </>
   );
