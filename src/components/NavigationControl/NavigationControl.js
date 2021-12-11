@@ -134,11 +134,15 @@ function NavigationControl(props) {
         }),
     );
 
-    const mainView = useMemo(()=>{
-        return (<Main open={open}>
-            {props.switch}
-        </Main>)
-    }, [open])
+    // const mainView =
+    // useMemo(
+    // () => {
+    //     return (<Main open={open}>
+    //         {props.switch}
+    //     </Main>)
+    // }
+    // , [open]
+    // )
 
     const title = (title) =>
         <Typography sx={{
@@ -342,7 +346,9 @@ function NavigationControl(props) {
                     </List>
                 </Box>
             </Drawer>
-            {mainView}
+            <Main open={open}>
+                {props.switch}
+            </Main>
         </Fragment >
     );
 }

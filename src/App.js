@@ -130,7 +130,7 @@ export default function App() {
                                 <CreateQuizScreen />
                             </Route>
                             <Route exact path="/quiz/edit/:quizId">
-                                <CreateQuizScreen edit={true}/>
+                                <CreateQuizScreen edit={true} />
                             </Route>
                             <Route exact path="/quiz/take/:quizId">
                                 <TakeQuizScreen />

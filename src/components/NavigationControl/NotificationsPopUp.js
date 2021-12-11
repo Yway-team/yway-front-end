@@ -33,6 +33,10 @@ function NotificationsPopUp() {
 
     const numberOfNotifications = notifications ? notifications.length : 0;
 
+    if (notifications) {
+        console.log(notifications);
+    }
+
 
     return (
         notifications ?
