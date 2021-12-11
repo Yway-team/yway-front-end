@@ -100,3 +100,16 @@ export const ADD_FRIEND = gql`
         addFriend(friendId: $friendId)
     }
 `;
+
+export const SET_READ_NOTIFICATIONS = gql`
+    mutation SetReadNotifications($time: String) {
+        setReadNotifications(time: $time) {
+            _id
+            createdAt
+            icon
+            name
+            type
+            unread
+        }
+    }
+`;
