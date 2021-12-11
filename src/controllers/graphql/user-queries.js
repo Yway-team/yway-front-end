@@ -22,6 +22,7 @@ export const GET_USER_INFO = gql`
             playPoints
             creatorPoints
             moderator
+            friendStatus
             friends
             quizzes
             platforms
