@@ -21,7 +21,7 @@ export default function ProfileScreen() {
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false);
     // const [acceptFriendRequestOpen, setAcceptFriendRequestOpen] = useState(false);
     // const [declineFriendRequestOpen, setDeclineFriendRequestOpen] = useState(false);
-    const [cancelFriendRequestOpen, setCancelFriendRequestOpen] = useState(false);
+    // const [acceptFriendRequestOpen, setAcceptFriendRequestOpen] = useState(false);
     const [removeFriendOpen, setRemoveFriendOpen] = useState(false);
     const { loading, error, data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
     const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
@@ -66,11 +66,11 @@ export default function ProfileScreen() {
         sendFriendRequest({ variables: { receiverId: userId } });
     }
 
-    const handleAcceptFriend = () => {
+    const handleAcceptFriend = async () => {
         acceptFriendRequest({ variables: { senderId: userId } });
     }
 
-    const handleDeclineFriend = () => {
+    const handleDeclineFriend = async () => {
         declineFriendRequest({ variables: { senderId: userId } });
     }
 
@@ -182,7 +182,7 @@ export default function ProfileScreen() {
                                 }
                                 {
                                     userInfo.friendStatus === 'sent' ?
-                                        <Button variant="contained" startIcon={<Check />} onClick={() => { setCancelFriendRequestOpen(true) }}>
+                                        <Button variant="contained" disabled={true} startIcon={<Check />} >
                                             FRIEND REQUEST SENT
                                         </Button> : <></>
                                 }
@@ -248,16 +248,16 @@ export default function ProfileScreen() {
                 noText='CANCEL'
                 noCallback={() => { setRemoveFriendOpen(false); }}
             />
-            <ConfirmationDialog
-                open={cancelFriendRequestOpen}
-                handleClose={() => { setCancelFriendRequestOpen(false); }}
-                title='REMOVE FRIEND REQUEST'
-                content={`Are you sure you want to remove your friend request to this user? `}
+            {/* <ConfirmationDialog
+                open={acceptFriendRequestOpen}
+                handleClose={() => { setAcceptFriendRequestOpen(false); }}
+                title='ACCEPT FRIEND REQUEST'
+                content={`Are you sure you want to accept this friend request? `}
                 yesText='REMOVE FRIEND REQUEST'
                 yesCallback={handleCancelFriendRequest}
                 noText='CANCEL'
-                noCallback={() => { setCancelFriendRequestOpen(false); }}
-            />
+                noCallback={() => { setAcceptFriendRequestOpen(false); }}
+            /> */}
         </>
     )
 }

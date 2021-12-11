@@ -31,12 +31,27 @@ function NotificationsPopUp() {
     };
 
     const handleClose = async () => {
+        console.log('handleClose is called');
         setAnchorEl(null);
         if (unreadNotis.length > 0) {
             const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
             let dataToAdd = { ...user };
             dataToAdd.notifications = data.setReadNotifications;
             globalState(dataToAdd);
+        }
+
+    }
+
+    const handleClick = async (event) => {
+        console.log('handleClick is called');
+        if (event.currentTarget) {
+            setAnchorEl(null);
+            if (unreadNotis.length > 0) {
+                const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
+                let dataToAdd = { ...user };
+                dataToAdd.notifications = data.setReadNotifications;
+                globalState(dataToAdd);
+            }
         }
 
     }
@@ -72,7 +87,7 @@ function NotificationsPopUp() {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
-                    onClick={() => { }}
+                    onClick={handleClick}
                     PaperProps={{
                         elevation: 0,
                         sx: {
