@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, Typography} from "@mui/material";
 import {ColorPicker, CommonTitle, ConfirmationDialog, ImageUpload, LabelTextField} from "../components";
-import {makeVar, useMutation} from "@apollo/client";
+import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
 
@@ -75,17 +75,14 @@ export default function CreatePlatformScreen() {
 
     function validate() {
         if (platformName.length === 0) {
-            // let platformErrors = platformErrorVar();
-            // platformErrors.titleValid = false;
-            // platformErrors.errorMsgs.title = "Platform name cannot be empty.";
-            // platformErrorVar(platformErrors);
             setTitleValid(false);
             setTitleErrorMsg('Platform name cannot be empty.');
             return false;
+        } else {
+            setTitleValid(true);
+            setTitleErrorMsg('');
+            return true;
         }
-        setTitleValid(true);
-        setTitleErrorMsg('');
-        return true;
     }
 
     const handleSubmit = async (e) => {
@@ -198,7 +195,7 @@ export default function CreatePlatformScreen() {
                             width: 450,
                             justifyContent: "space-between"
                         }} control={<Checkbox value={onlyModSubmissions}
-                                              onChange={e => setOnlyModSubmissions(e.target.value.checked)}/>}
+                                              onChange={e => setOnlyModSubmissions(e.target.checked)}/>}
                         />
                     </Grid>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>

@@ -13,7 +13,8 @@ function LabelTextField({
                             multiline,
                             placeholder,
                             error,
-                            helperText
+                            helperText,
+                            disabled
                         }) {
     return (
         <Stack direction={'row'} alignItems={'baseline'}>
@@ -25,6 +26,7 @@ function LabelTextField({
                        variant={variant || 'standard'}
                        error={error || false}
                        helperText={helperText || ''}
+                       disabled={disabled || false}
                        style={{width: 450}} type={type || 'text'} multiline={multiline || false}>
             </TextField>
         </Stack>

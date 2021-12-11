@@ -1,27 +1,48 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Button, Dialog, Divider, Grid, Tab, Tabs, Typography } from '@mui/material';
+import { Avatar, Box, Button, Dialog, Divider, Grid, Tab, Tabs, Typography, CircularProgress } from '@mui/material';
 import { Edit, Settings, PersonAddAlt1Outlined, Add, Remove, Check } from '@mui/icons-material';
 import ProfilePrivacy from './ProfilePrivacy';
 import ProfileSettings from './ProfileSettings';
 import { Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { Overview, Achievements, Friends, History, MyQuizzes, MyPlatforms, ConfirmationDialog } from '../components';
-import {useMutation, useQuery, useReactiveVar} from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
-import {SEND_FRIEND_REQUEST} from "../controllers/graphql/user-mutations";
+import { SEND_FRIEND_REQUEST, ACCEPT_FRIEND_REQUEST, DECLINE_FRIEND_REQUEST } from "../controllers/graphql/user-mutations";
 
 export default function ProfileScreen() {
     const { userId } = useParams();
     const currentUser = useReactiveVar(globalState);
     const isOwn = (userId === currentUser._id);
-    const friendStatus = 0;
     const history = useHistory();
     const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
     const tab = findTab();
     const [privacySettingsOpen, setPrivacySettingsOpen] = useState(false);
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false);
+    // const [acceptFriendRequestOpen, setAcceptFriendRequestOpen] = useState(false);
+    // const [declineFriendRequestOpen, setDeclineFriendRequestOpen] = useState(false);
+    const [cancelFriendRequestOpen, setCancelFriendRequestOpen] = useState(false);
     const [removeFriendOpen, setRemoveFriendOpen] = useState(false);
-    const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, {variables: {receiverId: userId}});
+    const { loading, error, data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
+    const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
+    const [acceptFriendRequest] = useMutation(ACCEPT_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
+    const [declineFriendRequest] = useMutation(DECLINE_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
+    let userInfo = null;
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+        );
+    }
+
+    if (error)
+        return `Error! ${error}`;
+
+    if (data) {
+        userInfo = data.getUserInfo;
+        console.log('friend status ' + userInfo.friendStatus);
+    }
 
     const handleClickPrivacySettingsOpen = () => {
         setPrivacySettingsOpen(true);
@@ -42,19 +63,22 @@ export default function ProfileScreen() {
     };
 
     const handleAddFriend = async () => {
-        const {data} = await sendFriendRequest({variables: {receiverId: userId}});
-        // console.log(data);
+        sendFriendRequest({ variables: { receiverId: userId } });
     }
 
     const handleAcceptFriend = () => {
-
+        acceptFriendRequest({ variables: { senderId: userId } });
     }
 
     const handleDeclineFriend = () => {
-
+        declineFriendRequest({ variables: { senderId: userId } });
     }
 
     const handleRemoveFriend = () => {
+
+    }
+
+    const handleCancelFriendRequest = () => {
 
     }
 
@@ -69,23 +93,10 @@ export default function ProfileScreen() {
     }
 
 
-    useEffect(() => {
-        console.log('Profile Screen mounted');
-    }, []);
 
 
-    const { loading, error, data } = useQuery(GET_USER_INFO, { variables: { userId: userId } });
-    let userInfo = null;
-    if (loading) {
-        return ('loading');
-    }
 
-    if (error)
-        return `Error! ${error}`;
 
-    if (data) {
-        userInfo = data.getUserInfo;
-    }
 
     return (
         <>
@@ -153,13 +164,13 @@ export default function ProfileScreen() {
                         </Grid> :
                             <Grid item>
                                 {
-                                    friendStatus === 0 ?
+                                    userInfo.friendStatus === 'none' ?
                                         <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
                                             ADD FRIEND
                                         </Button> : <></>
                                 }
                                 {
-                                    friendStatus === 1 ?
+                                    userInfo.friendStatus === 'received' ?
                                         <>
                                             <Button variant="contained" startIcon={<Add />} onClick={handleAcceptFriend}>
                                                 ACCEPT
@@ -170,11 +181,18 @@ export default function ProfileScreen() {
                                         </> : <></>
                                 }
                                 {
-                                    friendStatus === 2 ?
+                                    userInfo.friendStatus === 'sent' ?
+                                        <Button variant="contained" startIcon={<Check />} onClick={() => { setCancelFriendRequestOpen(true) }}>
+                                            FRIEND REQUEST SENT
+                                        </Button> : <></>
+                                }
+                                {
+                                    userInfo.friendStatus === 'friend' ?
                                         <Button variant="contained" startIcon={<Check />} onClick={() => { setRemoveFriendOpen(true) }}>
                                             FRIENDS
                                         </Button> : <></>
                                 }
+
 
 
                             </Grid>
@@ -229,6 +247,16 @@ export default function ProfileScreen() {
                 yesCallback={handleRemoveFriend}
                 noText='CANCEL'
                 noCallback={() => { setRemoveFriendOpen(false); }}
+            />
+            <ConfirmationDialog
+                open={cancelFriendRequestOpen}
+                handleClose={() => { setCancelFriendRequestOpen(false); }}
+                title='REMOVE FRIEND REQUEST'
+                content={`Are you sure you want to remove your friend request to this user? `}
+                yesText='REMOVE FRIEND REQUEST'
+                yesCallback={handleCancelFriendRequest}
+                noText='CANCEL'
+                noCallback={() => { setCancelFriendRequestOpen(false); }}
             />
         </>
     )
