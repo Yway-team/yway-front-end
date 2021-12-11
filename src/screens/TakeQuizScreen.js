@@ -35,7 +35,8 @@ export default function TakeQuizScreen({ draftId }) {
     const [open, setOpen] = useState(false);
     const [userRating, setUserRating] = useState(0);
 
-    const [timerOnOff, setTimerOnOff] = useState(false);
+    // const [timerOnOff, setTimerOnOff] = useState(false);
+    const timerOnOff = useRef(true)
     var timeLimit = 20 * 1000;
     const timeLeft = useRef(timeLimit)
 
@@ -130,12 +131,14 @@ export default function TakeQuizScreen({ draftId }) {
     const handleTimerOn = useCallback(() => {
         console.log('timer is on');
         timeLeft.current = timeLimit
-        setTimerOnOff(true);
+        // setTimerOnOff(true);
+        timerOnOff.current = true        
     }, [timeLimit]);
 
     const handleTimerOff = useCallback(() => {
         console.log('timer is now off');
-        setTimerOnOff(false);
+        // setTimerOnOff(false);
+        timerOnOff.current = false
     }, []);
 
     const handleEnter = useCallback((enterValue) => {
@@ -214,7 +217,7 @@ export default function TakeQuizScreen({ draftId }) {
                     color: { color },
                     mt: '10%'
                 }}>
-                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff}/>
+                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current}/>
                 </Stack>
 
             </Stack >
