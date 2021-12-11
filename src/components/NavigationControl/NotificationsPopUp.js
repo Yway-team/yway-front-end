@@ -31,10 +31,13 @@ function NotificationsPopUp() {
 
     const handleClose = async () => {
         setAnchorEl(null);
-        const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt.toString() } });
-        let dataToAdd = { ...user };
-        dataToAdd.notifications = data.setReadNotifications;
-        globalState(dataToAdd);
+        if (unreadNotis.length > 0) {
+            const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt.toString() } });
+            let dataToAdd = { ...user };
+            dataToAdd.notifications = data.setReadNotifications;
+            globalState(dataToAdd);
+        }
+
     }
     let notifications = user.notifications;
     let readNotis = [];
@@ -45,9 +48,6 @@ function NotificationsPopUp() {
     if (notifications) {
         unreadNotis = notifications.filter((noti) => noti.unread);
         readNotis = notifications.filter((noti) => !noti.unread);
-        console.log(unreadNotis);
-        console.log(readNotis);
-        console.log(notifications[0].createdAt);
     }
 
 
@@ -66,7 +66,6 @@ function NotificationsPopUp() {
                             </Typography>
                         </Avatar> : null
                     }
-
                 </Box>
                 <Menu
                     anchorEl={anchorEl}
@@ -126,10 +125,22 @@ function NotificationsPopUp() {
                             }
                             }> NOTIFICATIONS </Typography >
                         </Grid >
+                        {
+                            unreadNotis.length === 0 ? <Grid sx={{ width: '100%' }}>
+                                <Typography sx={{
+                                    fontWeight: '600',
+                                    fontSize: 14,
+                                    color: 'grey.500',
+                                    my: 3,
+                                    ml: 3
+                                }
+                                }> There is no new notification yet. </Typography >  </Grid > : null
+                        }
                         {unreadNotis.map((data) =>
                             <NotificationCard key={data._id}{...data} />
 
-                        )} {readNotis.length != 0 ? <Grid sx={{ width: '100%' }}>
+                        )}
+                        {readNotis.length != 0 ? <Grid sx={{ width: '100%' }}>
                             <Typography sx={{
                                 fontWeight: '700',
                                 fontSize: 16,
