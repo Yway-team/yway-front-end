@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, Grid, Stack} from "@mui/material";
+import {Button, Grid, Stack, Typography} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useLazyQuery, useMutation, useReactiveVar} from "@apollo/client";
@@ -32,6 +32,13 @@ export const quizDetailsVar = makeVar({
     // todo: color, tags, images
 });
 
+export const formErrorsVar = makeVar({
+    titleValid: true,
+    numQuestionsValid: true,
+    timeToAnswerValid: true,
+    errorMsgs: {title: '', numQuestions: '', timeToAnswer: ''}
+});
+
 export default function CreateQuizScreen({draft, edit}) {
     // NOTE: this screen gets quite slow when the number of questions is very high - try with 1000 questions and you'll see what I mean.
     // Can we improve performance (maybe by finding a way not to use the O(n) map and filter methods)?
@@ -46,6 +53,8 @@ export default function CreateQuizScreen({draft, edit}) {
     const start = Date.now();
     const history = useHistory();
     const shouldUpdate = useReactiveVar(loggedInChanged)
+    const [errorQuestions, setErrorQuestions] = useState([]);
+    const [formError, setFormError] = useState(false);
     const [createAndPublishQuiz] = useMutation(CREATE_AND_PUBLISH_QUIZ);
     const [saveQuizAsDraft] = useMutation(SAVE_QUIZ_AS_DRAFT);
     const [updatePublishedQuiz] = useMutation(UPDATE_PUBLISHED_QUIZ);
@@ -285,7 +294,7 @@ export default function CreateQuizScreen({draft, edit}) {
                     id: uuidv4(),
                     description: '',
                     answerOptions: ['', ''],
-                    correctAnswerIndex: -1
+                    correctAnswerIndex: 0
                 }
             })]);
             setNumQuestions(newNumQuestions);
@@ -295,6 +304,61 @@ export default function CreateQuizScreen({draft, edit}) {
             setNumQuestions(newNumQuestions);
             setQuestions([...questionsVar()]);
         }
+    }
+
+    function validate() {
+        let notValid = false;
+        let details = quizDetailsVar();
+        let errors = {...formErrorsVar()};
+        let questions = questionsVar();
+        if (details.title.length === 0) {
+            if (errors.titleValid === true) {
+                errors.titleValid = false;
+                errors.errorMsgs.title = "Title cannot be empty.";
+                notValid = true;
+            }
+        } else if (errors.titleValid === false) {
+            errors.titleValid = true;
+            errors.errorMsgs.title = "";
+        }
+        if (numQuestions === 0) {
+            if (errors.numQuestionsValid === true) {
+                errors.numQuestionsValid = false;
+                errors.errorMsgs.numQuestions = "Must have at least 1 question.";
+                notValid = true;
+            }
+        } else if (errors.numQuestionsValid === false) {
+            errors.numQuestionsValid = true;
+            errors.errorMsgs.numQuestions = "";
+        }
+        if (details.timeToAnswer > 3600) {
+            if (errors.timeToAnswerValid === true) {
+                errors.timeToAnswerValid = false;
+                errors.errorMsgs.timeToAnswer = "Must be less than 3600 (1 hour).";
+                notValid = true;
+            }
+        } else if (errors.timeToAnswerValid === false) {
+            errors.timeToAnswerValid = true;
+            errors.errorMsgs.timeToAnswer = "";
+        }
+        let errorqs = [];
+        questions.forEach((question, index) => {
+                if (question.description.length === 0 || question.answerOptions.length < 2) {
+                    errorqs.push(index + 1);
+                    notValid = true;
+                }
+                question.answerOptions.forEach(answer => {
+                    if (answer.length === 0 && !errorqs.includes(index + 1)) {
+                        errorqs.push(index + 1);
+                        notValid = true;
+                    }
+                })
+            }
+        )
+        formErrorsVar(errors);
+        setErrorQuestions(errorqs);
+        setFormError(notValid);
+        return !notValid;
     }
 
     function decodeHtml(html) {
@@ -322,14 +386,18 @@ export default function CreateQuizScreen({draft, edit}) {
                                             id: uuidv4(),
                                             description: '',
                                             answerOptions: ['', ''],
-                                            correctAnswerIndex: -1
+                                            correctAnswerIndex: 0
                                         });
                                         questionsVar(questions);
                                         setNumQuestions(numQuestions + 1);
                                         setQuestions([...questionsVar()]);
                                         setUpdateNumQuestions(!updateNumQuestions);
                                     }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button></> : <Fragment/>}
-
+                        {errorQuestions.length > 0 ? <Grid item>
+                            <Typography sx={{fontWeight: 'bold'}} style={{color: 'red'}}>Missing info in
+                                question(s): {errorQuestions.toString()}. Question and answer options cannot be
+                                empty. Each question must have at least 2 answer options.</Typography>
+                        </Grid> : null}
                         <Stack direction={"row"} spacing={2} style={{marginLeft: 16, paddingTop: 40, width: 700}}
                                justifyContent='space-between'>
                             {edit ? <> <Stack direction='row' spacing={2}>
@@ -343,7 +411,10 @@ export default function CreateQuizScreen({draft, edit}) {
                             }}>{draft ? "CANCEL" : "DISCARD"}</Button>
                                 <Stack direction='row' spacing={2}>
                                     <Button variant={"contained"} onClick={handleSaveAsDraft}>SAVE AS DRAFT</Button>
-                                    <Button variant={"contained"} onClick={togglePublishConfirmOpen}>PUBLISH</Button>
+                                    <Button variant={"contained"} onClick={() => {
+                                        const valid = validate();
+                                        if (valid) togglePublishConfirmOpen();
+                                    }}>PUBLISH</Button>
                                 </Stack></>}
                         </Stack>
                     </Grid>
