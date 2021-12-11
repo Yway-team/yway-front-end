@@ -33,10 +33,11 @@ export const quizDetailsVar = makeVar({
 });
 
 export const formErrorsVar = makeVar({
+    platformValid: true,
     titleValid: true,
     numQuestionsValid: true,
     timeToAnswerValid: true,
-    errorMsgs: {title: '', numQuestions: '', timeToAnswer: ''}
+    errorMsgs: {platform: '', title: '', numQuestions: '', timeToAnswer: ''}
 });
 
 export default function CreateQuizScreen({draft, edit}) {
@@ -93,8 +94,8 @@ export default function CreateQuizScreen({draft, edit}) {
             delete uiParentCleaned.__typename;
             uiParentCleaned.forEach(element => delete element.__typename);
             questionsVar(uiParentCleaned);
-            setNumQuestions(quizInfo.questions.length);
             setQuestions([...questionsVar()]);
+            setNumQuestions(questionsVar().length);
         });
         setGotQuizInfo(true);
     }
@@ -193,8 +194,16 @@ export default function CreateQuizScreen({draft, edit}) {
         quizDetailsVar(details);
 
         questionsVar([]);
-
         setNumQuestions(0);
+
+        let formErrors = {
+            platformValid: true,
+            titleValid: true,
+            numQuestionsValid: true,
+            timeToAnswerValid: true,
+            errorMsgs: {platform: '', title: '', numQuestions: '', timeToAnswer: ''}
+        };
+        formErrorsVar(formErrors);
     }, []);
 
     const handleSubmit = async (e) => {
@@ -311,6 +320,19 @@ export default function CreateQuizScreen({draft, edit}) {
         let details = quizDetailsVar();
         let errors = {...formErrorsVar()};
         let questions = questionsVar();
+        console.log(details.platformName)
+        console.log(typeof details.platformName)
+
+        if (typeof details.platformName === undefined) {
+            if (errors.platformValid === true) {
+                errors.platformValid = false;
+                errors.errorMsgs.platform = "Platform cannot be empty.";
+            }
+            notValid = true;
+        } else if (errors.titleValid === false) {
+            errors.platformValid = true;
+            errors.errorMsgs.platform = "";
+        }
         if (details.title.length === 0) {
             if (errors.titleValid === true) {
                 errors.titleValid = false;
