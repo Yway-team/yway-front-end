@@ -4,8 +4,11 @@ import {ColorPicker, CommonTitle, ConfirmationDialog, ImageUpload, LabelTextFiel
 import {useMutation} from "@apollo/client";
 import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
+import {globalState} from "../state/UserState";
+import {useHistory} from "react-router-dom";
 
 export default function CreatePlatformScreen() {
+    const history = useHistory();
     const [createPlatform] = useMutation(CREATE_PLATFORM);
     const [platformName, setPlatformName] = useState('');
     const [platformDescription, setPlatformDescription] = useState('');
@@ -86,6 +89,7 @@ export default function CreatePlatformScreen() {
     }
 
     const handleSubmit = async (e) => {
+        togglePublishConfirmOpen();
         e.preventDefault();
         console.log('banner', bannerImg);
         console.log('thumbnail', thumbnailImg);
@@ -105,6 +109,12 @@ export default function CreatePlatformScreen() {
         if (data) {
             const platformId = data.createPlatform;
             console.log(`Platform ID: ${platformId}`);
+            if (platformId === 'name taken') {
+                setTitleValid(false);
+                setTitleErrorMsg('Platform name is taken. Choose another name.');
+            } else {
+                history.push(`/user/${globalState()._id}/platforms`);
+            }
         }
     };
 
