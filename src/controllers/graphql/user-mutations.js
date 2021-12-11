@@ -13,9 +13,12 @@ export const LOGIN = gql`
             }
             googleId
             notifications {
-                description
-                type
+                _id
                 createdAt
+                icon
+                name
+                type
+                unread
             }
             playPoints
             username
