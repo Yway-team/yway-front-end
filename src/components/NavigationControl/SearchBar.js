@@ -1,6 +1,6 @@
 import { Paper, InputBase, IconButton } from '@mui/material';
 import { SearchRounded } from '@mui/icons-material';
-import { useHistory, useLocation, useParams } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { useEffect, useState } from 'react';
 
 export default function SearchBar({ theme }) {

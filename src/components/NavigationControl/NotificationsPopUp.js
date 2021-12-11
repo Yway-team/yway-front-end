@@ -22,6 +22,7 @@ function NotificationsPopUp() {
     const [read, setRead] = useState(false);
     const user = useReactiveVar(globalState);
     const [setReadNotis] = useMutation(SET_READ_NOTIFICATIONS);
+
     const handleClickOpen = (event) => {
         setAnchorEl(event.currentTarget);
         if (!read) {

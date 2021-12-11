@@ -1,24 +1,42 @@
-import {Grid, IconButton, InputBase, Paper, Typography} from "@mui/material";
-import {CommonTitle, FriendCard} from '..';
+import { Grid, IconButton, InputBase, Paper, Typography, CircularProgress } from "@mui/material";
+import { CommonTitle, FriendCard } from '..';
 import NotificationCard from "../NotificationCard";
-import {SearchRounded} from "@mui/icons-material";
-import {useTheme} from "@mui/material/styles";
-import {useState} from "react";
-import {globalState} from "../../state/UserState";
-
-export default function Friends({userId}) {
+import { SearchRounded } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
+import { useState } from "react";
+import { globalState } from "../../state/UserState";
+import { GET_USER_FRIENDS_INFO } from '../../controllers/graphql/user-queries';
+import { useQuery } from "@apollo/client";
+export default function Friends({ userId }) {
     const theme = useTheme();
     const [friendRequests, setFriendRequests] = useState([]);
     const [friends, setFriends] = useState([]);
-    console.log(globalState());
+
+    const { data, loading } = useQuery(GET_USER_FRIENDS_INFO, { variables: { userId: userId } })
+
+
+    if (loading) {
+
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+
+        );
+    }
+
+    if (data) {
+        console.log(data);
+    }
+
 
     return (
         <Grid container direction='column'
-              sx={{
-                  display: 'flex', justifyContent: 'center', width: '100%', py: 2, pl: 3, [`&:focus-within`]: {
-                      '& svg': {fill: theme.palette.primary.main}
-                  }
-              }}>
+            sx={{
+                display: 'flex', justifyContent: 'center', width: '100%', py: 2, pl: 3, [`&:focus-within`]: {
+                    '& svg': { fill: theme.palette.primary.main }
+                }
+            }}>
             <Paper
                 elevation={0}
                 component="form"
@@ -38,21 +56,21 @@ export default function Friends({userId}) {
                         ml: 1, flex: 1, fontSize: 14, fontWeight: 500,
                     }}
                     placeholder="Enter username"
-                    inputProps={{'aria-label': 'search Yway'}}
+                    inputProps={{ 'aria-label': 'search Yway' }}
                 />
-                <IconButton type="submit" sx={{p: '3px'}} aria-label="search">
-                    <SearchRounded sx={{fill: theme.palette.grey['500']}}/>
+                <IconButton type="submit" sx={{ p: '3px' }} aria-label="search">
+                    <SearchRounded sx={{ fill: theme.palette.grey['500'] }} />
                 </IconButton>
             </Paper>
 
-            <CommonTitle title='FRIEND REQUESTS'/>
+            <CommonTitle title='FRIEND REQUESTS' />
             <Grid container justifyContent='flex-start' mb={1}>
                 {friendRequests.length === 0 ?
                     <Typography>No friend requests</Typography> : friendRequests.map((data) => <NotificationCard
                         key={data._id}{...data} />)}
 
             </Grid>
-            <CommonTitle title='FRIENDS'/>
+            <CommonTitle title='FRIENDS' />
             <Grid container justifyContent='flex-start' mb={1}>
                 {friends.length === 0 ? <Typography>No friends</Typography> : friends.map((data) => <FriendCard
                     key={data._id}{...data} />)}
