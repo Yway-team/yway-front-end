@@ -95,18 +95,19 @@ export default function FullLeaderboard() {
             /> : null}
     {platformSummary&&
       <Box sx={{ width: "80%", mt: "100px", ml: "50px", minHeight: "600px"}}>
-        <Box sx={{paddingLeft: "5%"}}>
-          <Button sx={{fontSize:"20px", color:"blue"}} onClick={returnToPlatform}>
-            &lt;&lt;Return to Platform
-          </Button>
-          <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
-            Leaderboard
-          </Typography>
-        </Box>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        </Box>
+        <Button sx={{fontSize:"20px", color:"blue"}} onClick={returnToPlatform}>
+          &lt;&lt;Return to Platform
+        </Button>
+        <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
+          Leaderboard
+        </Typography>
         <Typography>
           <Grid container justifyContent="center" spacing={2}>
+          <Grid item container xs={12} spacing={0} sx={{borderBottom: "1px solid lightgray"}}>
+            <Grid item xs={1}>#</Grid>
+            <Grid item xs={7}>User</Grid>
+            <Grid item xs={2} sx={{position:"relative", left:"10px"}}>Score</Grid>
+          </Grid>
           {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <FullLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
         </Grid>
         </Typography>
