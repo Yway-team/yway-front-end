@@ -2,14 +2,14 @@ import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Dia
 import { ReactComponent as Background } from '../images/blop.svg';
 import { Bolt, Visibility, East } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST } from '../controllers/graphql/quiz-queries';
 import { INCREMENT_PLAY_POINTS } from '../controllers/graphql/user-mutations';
 import { RATE_QUIZ } from '../controllers/graphql/quiz-mutations';
 import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
-
+import Timer from '../components/Timer';
 
 export default function TakeQuizScreen({ draftId }) {
     const history = useHistory();
@@ -17,7 +17,6 @@ export default function TakeQuizScreen({ draftId }) {
     const { data } = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, { variables: { quizId: quizId } });
     const [incrementPlayPoints] = useMutation(INCREMENT_PLAY_POINTS);
     const [rateQuiz] = useMutation(RATE_QUIZ);
-
 
     let color = '#ff5a1d';
     let platformName = 'No platform';
@@ -36,11 +35,9 @@ export default function TakeQuizScreen({ draftId }) {
     const [open, setOpen] = useState(false);
     const [userRating, setUserRating] = useState(0);
 
-
-
-    var timeLimit = 20 * 1000;
-    const [timeProgress, setTimeProgress] = useState(timeLimit);
     const [timerOnOff, setTimerOnOff] = useState(false);
+    var timeLimit = 20 * 1000;
+    const timeLeft = useRef(timeLimit)
 
     let questionList = [];
 
@@ -58,27 +55,6 @@ export default function TakeQuizScreen({ draftId }) {
         rating = quiz.rating;
         platformThumbnail = quiz.platformThumbnail;
     }
-
-
-    useEffect(() => {
-        var timer;
-        if (timerOnOff) {
-            timer = setInterval(() => {
-                setTimeProgress((oldProgress) => {
-                    if (oldProgress <= 0) {
-                        console.log('Time is up');
-                        handleTimeOut();
-                        return timeLimit;
-                    }
-                    return oldProgress - 1000;
-                }
-                );
-            }, 1000);
-        }
-        return () => {
-            clearInterval(timer);
-        };
-    }, [timerOnOff, timeLimit]);
 
     useEffect(() => {
         console.log('take question page render');
@@ -123,7 +99,6 @@ export default function TakeQuizScreen({ draftId }) {
     const handleFinished = () => {
         console.log('all indexes are now done');
         handleTimerOff();
-        setTimeProgress(0);
         setEnter(false);
         setOpen(true);
     };
@@ -152,11 +127,9 @@ export default function TakeQuizScreen({ draftId }) {
         }
     }
 
-
-
     const handleTimerOn = useCallback(() => {
         console.log('timer is on');
-        setTimeProgress(timeLimit);
+        timeLeft.current = timeLimit
         setTimerOnOff(true);
     }, [timeLimit]);
 
@@ -182,8 +155,6 @@ export default function TakeQuizScreen({ draftId }) {
         globalState(newUserData);
         history.push('/highlights');
     }
-
-
 
 
     return (
@@ -243,12 +214,7 @@ export default function TakeQuizScreen({ draftId }) {
                     color: { color },
                     mt: '10%'
                 }}>
-                    <LinearProgress variant="determinate" value={Math.round((timeProgress / timeLimit) * 100)} color='inherit' sx={{
-                        height: 12,
-                        [`& .MuiLinearProgress-bar`]: {
-                            borderRadius: 2,
-                        },
-                    }} />
+                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff}/>
                 </Stack>
 
             </Stack >
