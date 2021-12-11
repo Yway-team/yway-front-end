@@ -73,6 +73,12 @@ export const UNFAVORITE_PLATFORM = gql`
     }
 `;
 
+export const INCREMENT_CREATOR_POINTS = gql`
+    mutation IncrementCreatorPoints($creatorPointsIncrement: Int!) {
+        incrementCreatorPoints(creatorPointsIncrement: $creatorPointsIncrement)
+    }
+`;
+
 export const INCREMENT_PLAY_POINTS = gql`
     mutation IncrementPlayPoints($playPointsIncrement: Int!) {
         incrementPlayPoints(playPointsIncrement: $playPointsIncrement)
