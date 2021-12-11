@@ -176,7 +176,7 @@ export default function PlatformScreen() {
                 </Grid>
                 <Grid item xs={open?3.3:1} sx={{ marginTop: "2rem" }}>
                     <Button onClick={toggleOpen}>
-                        {open?<KeyboardArrowRightIcon/>:<KeyboardArrowLeftIcon/>}
+                        {open?<><KeyboardArrowRightIcon/>Collapse</>:<KeyboardArrowLeftIcon/>}
                     </Button>
                     <Box sx={{display: open?"block": "none"}}>
                         <MiniLeaderboard width="auto" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null}/>
