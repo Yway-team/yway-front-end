@@ -95,9 +95,15 @@ export const SEND_FRIEND_REQUEST = gql`
     }
 `;
 
-export const ADD_FRIEND = gql`
-    mutation AddFriend($friendId: ID!) {
-        addFriend(friendId: $friendId)
+export const ACCEPT_FRIEND_REQUEST = gql`
+    mutation AcceptFriendRequest($senderId: ID!) {
+        acceptFriendRequest(senderId: $senderId)
+    }
+`;
+
+export const DECLINE_FRIEND_REQUEST = gql`
+    mutation DeclineFriendRequest($senderId: ID!) {
+        declineFriendRequest(senderId: $senderId)
     }
 `;
 
