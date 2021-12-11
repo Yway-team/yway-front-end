@@ -4,13 +4,15 @@ import {
     Typography,
     Menu,
     Box,
-    Avatar
+    Avatar,
+    Grid
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/NotificationsOutlined";
 import { useState } from 'react';
 import NotificationCard from "../NotificationCard";
 import { globalState } from "../../state/UserState";
 import { useReactiveVar } from '@apollo/client';
+import { CommonTitle } from '../../components';
 
 
 function NotificationsPopUp() {
@@ -30,11 +32,17 @@ function NotificationsPopUp() {
         setAnchorEl(null);
     }
     let notifications = user.notifications;
+    let readNotis = [];
+    let unreadNotis = [];
 
     const numberOfNotifications = notifications ? notifications.length : 0;
 
     if (notifications) {
-        console.log(notifications);
+        unreadNotis = notifications.filter((noti) => noti.unread);
+        readNotis = notifications.filter((noti) => !noti.unread);
+        console.log(unreadNotis);
+        console.log(readNotis);
+        console.log(user.updateAt);
     }
 
 
@@ -103,10 +111,29 @@ function NotificationsPopUp() {
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
 
                     <List>
+                        <Grid sx={{ width: '100%' }}>
+                            <Typography sx={{
+                                fontWeight: '700',
+                                fontSize: 16,
+                                color: 'primary.main',
+                                my: 1,
+                                ml: 3
+                            }
+                            }> NOTIFICATIONS </Typography >
+                        </Grid >
                         {notifications.map((data) =>
                             <NotificationCard key={data._id}{...data} />
 
-                        )}
+                        )} {readNotis.length != 0 ? <Grid sx={{ width: '100%' }}>
+                            <Typography sx={{
+                                fontWeight: '700',
+                                fontSize: 16,
+                                color: 'commmon.black',
+                                my: 1,
+                                ml: 3
+                            }
+                            }> Older </Typography >  </Grid > : null}
+
                     </List>
                 </Menu>
 

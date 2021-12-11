@@ -24,7 +24,7 @@ export default function NotificationCard({ _id, type, name, icon, createdAt }) {
                                     <span style={{ fontSize: 'Montserrat', fontWeight: '600' }} >  {name}   </span> sent you a friend request.
                                 </Typography> : null
                         }
-                        <Typography sx={{ fontSize: 12, fontWeight: 600, color: 'primary.main', textAlign: 'left', mt: 2 }}> <TimeAgoFromNow dateIn={createdAt} /> </Typography>
+                        <Typography sx={{ fontSize: 12, fontWeight: 600, color: 'primary.main', textAlign: 'left', mt: 1 }}><TimeAgoFromNow dateIn={createdAt} /> </Typography>
                     </Stack>
                 </Stack>
             </CardActionArea>
