@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, Grid, Stack, Typography} from "@mui/material";
+import {Button, Dialog, DialogContentText, Grid, Stack, Typography} from "@mui/material";
 import {CommonTitle, ConfirmationDialog} from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import {makeVar, useLazyQuery, useMutation, useReactiveVar} from "@apollo/client";
@@ -67,6 +67,12 @@ export default function CreateQuizScreen({draft, edit}) {
     const [publishConfirmOpen, setPublishConfirmOpen] = useState(false);
     const params = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     let quizInfo;
 
     if (draft && !gotQuizInfo) {
@@ -422,16 +428,22 @@ export default function CreateQuizScreen({draft, edit}) {
                                     sx={{alignSelf: "flex-start"}}
                                     onClick={() => {
                                         let questions = questionsVar();
-                                        questions.push({
-                                            id: uuidv4(),
-                                            description: '',
-                                            answerOptions: ['', ''],
-                                            correctAnswerIndex: 0
-                                        });
-                                        questionsVar(questions);
-                                        setNumQuestions(numQuestions + 1);
-                                        setQuestions([...questionsVar()]);
-                                        setUpdateNumQuestions(!updateNumQuestions);
+                                        if(questions.length < 100){
+                                            questions.push({
+                                                id: uuidv4(),
+                                                description: '',
+                                                answerOptions: ['', ''],
+                                                correctAnswerIndex: 0
+                                            });
+                                            questionsVar(questions);
+                                            setNumQuestions(numQuestions + 1);
+                                            setQuestions([...questionsVar()]);
+                                            setUpdateNumQuestions(!updateNumQuestions);
+                                        }
+                                        else{
+                                            setOpen(true);
+                                        }
+
                                     }} style={{marginLeft: 16, marginTop: 20}}>Add Question</Button></> : <Fragment/>}
                         {errorQuestions.length > 0 ? <Grid item>
                             <Typography sx={{fontWeight: 'bold'}} style={{color: 'red'}}>Missing info in
@@ -473,6 +485,12 @@ export default function CreateQuizScreen({draft, edit}) {
                 noText='CANCEL'
                 noCallback={togglePublishConfirmOpen}
             />
+            <Dialog open={open}
+                    onClose={handleClose}>
+                <DialogContentText id="alert-dialog-title" sx={{padding: 4}}>
+                    Quizzes can only have a maximum of 100 questions.
+                </DialogContentText>
+            </Dialog>
         </>
     )
 }
