@@ -195,7 +195,7 @@ export default function CreatePlatformScreen() {
                             width: 450,
                             justifyContent: "space-between"
                         }} control={<Checkbox value={onlyModSubmissions}
-                                              onChange={e => setOnlyModSubmissions(e.target.value.checked)}/>}
+                                              onChange={e => setOnlyModSubmissions(e.target.checked)}/>}
                         />
                     </Grid>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>
