@@ -12,7 +12,8 @@ import { useState } from 'react';
 import NotificationCard from "../NotificationCard";
 import { globalState } from "../../state/UserState";
 import { useReactiveVar } from '@apollo/client';
-import { CommonTitle } from '../../components';
+import { useMutation } from "@apollo/client";
+import { SET_READ_NOTIFICATIONS } from '../../controllers/graphql/user-mutations';
 
 
 function NotificationsPopUp() {
@@ -20,7 +21,7 @@ function NotificationsPopUp() {
     const open = Boolean(anchorEl);
     const [read, setRead] = useState(false);
     const user = useReactiveVar(globalState);
-
+    const [setReadNotis] = useMutation(SET_READ_NOTIFICATIONS);
     const handleClickOpen = (event) => {
         setAnchorEl(event.currentTarget);
         if (!read) {
@@ -28,8 +29,12 @@ function NotificationsPopUp() {
         }
     };
 
-    const handleClose = () => {
+    const handleClose = async () => {
         setAnchorEl(null);
+        const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt.toString() } });
+        let dataToAdd = { ...user };
+        dataToAdd.notifications = data.setReadNotifications;
+        globalState(dataToAdd);
     }
     let notifications = user.notifications;
     let readNotis = [];
@@ -42,7 +47,7 @@ function NotificationsPopUp() {
         readNotis = notifications.filter((noti) => !noti.unread);
         console.log(unreadNotis);
         console.log(readNotis);
-        console.log(user.updateAt);
+        console.log(notifications[0].createdAt);
     }
 
 
@@ -121,7 +126,7 @@ function NotificationsPopUp() {
                             }
                             }> NOTIFICATIONS </Typography >
                         </Grid >
-                        {notifications.map((data) =>
+                        {unreadNotis.map((data) =>
                             <NotificationCard key={data._id}{...data} />
 
                         )} {readNotis.length != 0 ? <Grid sx={{ width: '100%' }}>
@@ -133,6 +138,8 @@ function NotificationsPopUp() {
                                 ml: 3
                             }
                             }> Older </Typography >  </Grid > : null}
+                        {readNotis.map((data) =>
+                            <NotificationCard key={data._id}{...data} />)}
 
                     </List>
                 </Menu>

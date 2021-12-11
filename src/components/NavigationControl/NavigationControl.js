@@ -97,8 +97,6 @@ function NavigationControl(props) {
         const authResponse = response.getAuthResponse();
         const idToken = authResponse.id_token;
         const { data } = (await login({ variables: { idToken: idToken } }));
-        const timePair = { updateAt: Date.now() };
-        data.login = { ...data.login, ...timePair };
         if (data) {
             globalLoggedIn(true);
             globalState(

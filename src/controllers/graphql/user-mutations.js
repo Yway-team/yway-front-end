@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const LOGIN = gql`
     mutation Login($idToken: String!) {
@@ -102,7 +102,7 @@ export const ADD_FRIEND = gql`
 `;
 
 export const SET_READ_NOTIFICATIONS = gql`
-    mutation SetReadNotifications($time: String) {
+    mutation SetReadNotifications($time: String!) {
         setReadNotifications(time: $time) {
             _id
             createdAt
