@@ -10,13 +10,13 @@ export default function Timer({timeLeft, handleTimeOut, timerOnOff}) {
         var timer;
         if (timerOnOff) {
             timer = setInterval(() => {
-                timeLeft.current -= 1000
+                timeLeft.current -= 100
                 if (timeLeft.current <= 0){
                     console.log('Time is up');
                     handleTimeOut();
                 }
                 setTimeProgress(prev=>prev+1)
-            }, 1000);
+            }, 100);
         }
         return () => {
             clearInterval(timer);
