@@ -67,7 +67,7 @@ export default function Overview({ userId }) {
                                 textAlign: 'center',
                                 width: '100%',
                             }
-                            }> Creator Points</Typography >
+                            }>Creator Points</Typography >
                         </Grid>
                         <Grid container item alignItems='center' justifyContent='center'>
                             <Typography sx={{
@@ -87,7 +87,7 @@ export default function Overview({ userId }) {
                                 textAlign: 'center',
                                 width: '100%',
                             }
-                            }> Play Points</Typography >
+                            }>Play Points</Typography >
                         </Grid>
                         <Grid container item alignItems='center' justifyContent='center'>
                             <Typography sx={{
@@ -106,7 +106,7 @@ export default function Overview({ userId }) {
                 </Grid>
                 {quizzes.length > 2 ?
                     <ShowMoreButton expand={expandQuizzes} onClick={toggleExpandQuizzes} /> : null}
-                {quizzes.length == 0 ? <Typography> {`There is no quiz yet.`} </Typography> : null}
+                {quizzes.length === 0 ? <Typography> {`You have no quizzes yet.`} </Typography> : null}
                 <CommonTitle title='PLATFORMS' />
                 <Grid container justifyContent='flex-start'>
                     {expandPlatforms ?
@@ -115,7 +115,7 @@ export default function Overview({ userId }) {
                 </Grid>
                 {quizzes.length > 2 ?
                     <ShowMoreButton expand={expandPlatforms} onClick={toggleExpandPlatforms} /> : null}
-                {platforms.length == 0 ? <Typography> {`There is no platform yet.`} </Typography> : null}
+                {platforms.length === 0 ? <Typography> {`You have no platforms.`} </Typography> : null}
                 {/* //Achievements section  */}
                 {achievements.length === 0 ? null :
                     <>
@@ -141,7 +141,7 @@ export default function Overview({ userId }) {
                         {history.length > 2 ?
                             <ShowMoreButton expand={expandHistory} onClick={toggleExpandHistory} /> : null}
                     </>}
-                {friends.length == 0 ? null :
+                {friends.length === 0 ? null :
                     <>
                         <CommonTitle title='FRIENDS' />
                         <Grid container justifyContent='flex-start' mb={1}>

@@ -8,7 +8,7 @@ export default function Achievements() {
             <Grid container justifyContent='flex-start' mb={1}>
                 {achievements.map((data) => <AchievementCard key={data._id}{...data} />)}
             </Grid>
-            {achievements.length == 0 ? <Typography> {`There is no achievement yet.`} </Typography> : null}
+            {achievements.length === 0 ? <Typography> {`You've earned no achievements.`} </Typography> : null}
         </Grid >
     );
 }
