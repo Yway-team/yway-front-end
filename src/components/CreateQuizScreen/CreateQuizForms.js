@@ -9,7 +9,7 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import { formErrorsVar, quizDetailsVar } from "../../screens/CreateQuizScreen";
+import {formErrorsVar, questionsVar, quizDetailsVar} from "../../screens/CreateQuizScreen";
 import React, { Fragment, useState, useEffect } from "react";
 import { ColorPicker, ImageUpload, LabelTextField } from "..";
 import TagsInput from "../TagsInput";
@@ -20,7 +20,7 @@ import { useLazyQuery } from "@apollo/client";
 export default function CreateQuizForms({ numQuestions, updateNumQuestions, handleUpdateNumQuestions, edit }) {
     const quizDetails = useReactiveVar(quizDetailsVar);
     const formErrors = useReactiveVar(formErrorsVar);
-    const [numQuestionsText, setNumQuestionsText] = useState(numQuestions);
+    const [numQuestionsText, setNumQuestionsText] = useState(questionsVar().length);
     const [previousUpdateNumQuestions, setPreviousUpdateNumQuestions] = useState(updateNumQuestions);
     const bannerImgLabel = 'Banner Image';
     const thumbnailImgLabel = 'Thumbnail Image';
@@ -42,7 +42,6 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
         if (name === bannerImgLabel) {
             newQuizDetails.bannerImgData = data;
             newQuizDetails.bannerImgName = filename;
-            console.log(newQuizDetails);
             quizDetailsVar(newQuizDetails);
         } else if (name === thumbnailImgLabel) {
             newQuizDetails.thumbnailImgData = data;
@@ -96,7 +95,7 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
         </Grid>
 
         <Grid item>
-            {!edit ? <PlatformSearchTextField label={"Platform"} value={quizDetails.platformName} /> : <Fragment />}
+            {!edit ? <PlatformSearchTextField label={"Platform"} value={quizDetails.platformName} error={!formErrors.platformValid} helperText={formErrors.errorMsgs.platform}/> : <Fragment />}
 
         </Grid>
 
@@ -139,9 +138,10 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
             </FormLabel>
         </Grid>
         {!edit ? <><Grid item> <LabelTextField label={"Number of Questions"}
-            value={numQuestionsText}
+            value={questionsVar().length}
             error={!formErrors.numQuestionsValid}
             helperText={formErrors.errorMsgs.numQuestions}
+                                               disabled={true}
             onChange={e => {
                 const value = Number(e.target.value);
                 if (value >= 0 && value <= MAX_QUESTIONS) {
@@ -226,7 +226,9 @@ function PlatformSearchTextField({ defaultValue,
     variant,
     type,
     multiline,
-    placeholder
+    placeholder,
+    error,
+    helperText
 }) {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
@@ -238,17 +240,18 @@ function PlatformSearchTextField({ defaultValue,
             return undefined;
         }
 
-        const timeOutId = setTimeout(async () => {
+        // const timeOutId = setTimeout(
+        (async () => {
             if (query) {
                 if (called) await refetch({ searchString: query });
                 else await searchPlatformTitles({ variables: { searchString: query } });
                 if (data) setOptions([...data.searchPlatformTitles]);
             }
-        }, 200);
+        })();
 
-        return () => {
-            clearTimeout(timeOutId);
-        };
+        // return () => {
+
+        // };
     }, [query]);
 
     useEffect(() => {
@@ -283,10 +286,12 @@ function PlatformSearchTextField({ defaultValue,
                 options={options}
                 renderInput={(params) => (
                     <TextField {...params} defaultValue={defaultValue} value={value}
+                               helperText={helperText || ''}
+                               error={error || false}
                         onChange={e => {
-                            const details = { ...quizDetailsVar() };
-                            details.platformName = e.target.value;
-                            quizDetailsVar(details);
+                            // const details = { ...quizDetailsVar() };
+                            // details.platformName = e.target.value;
+                            // quizDetailsVar(details);
                             setQuery(e.target.value);
                         }}
                         placeholder={placeholder}

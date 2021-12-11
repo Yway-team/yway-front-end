@@ -31,6 +31,7 @@ function NotificationsPopUp() {
     };
 
     const handleClose = async () => {
+        console.log('handleClose is called');
         setAnchorEl(null);
         if (unreadNotis.length > 0) {
             const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
@@ -40,15 +41,29 @@ function NotificationsPopUp() {
         }
 
     }
+
+    const handleClick = async (event) => {
+        console.log('handleClick is called');
+        if (event.currentTarget) {
+            setAnchorEl(null);
+            if (unreadNotis.length > 0) {
+                const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
+                let dataToAdd = { ...user };
+                dataToAdd.notifications = data.setReadNotifications;
+                globalState(dataToAdd);
+            }
+        }
+
+    }
     let notifications = user.notifications;
     let readNotis = [];
     let unreadNotis = [];
 
-    const numberOfNotifications = notifications ? notifications.length : 0;
 
     if (notifications) {
         unreadNotis = notifications.filter((noti) => noti.unread);
         readNotis = notifications.filter((noti) => !noti.unread);
+
     }
 
 
@@ -60,10 +75,10 @@ function NotificationsPopUp() {
                         onClick={handleClickOpen} >
                         <NotificationsIcon sx={{ width: 25, height: 25 }} />
                     </IconButton>
-                    {!read && numberOfNotifications !== 0 ?
+                    {!read && unreadNotis.length !== 0 ?
                         <Avatar sx={{ position: 'absolute', top: 2, right: -1, height: 20, width: 20, backgroundColor: 'primary.main' }}>
                             <Typography fontSize={14}>
-                                {numberOfNotifications}
+                                {unreadNotis.length}
                             </Typography>
                         </Avatar> : null
                     }
@@ -72,7 +87,7 @@ function NotificationsPopUp() {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
-                    onClick={() => {}}
+                    onClick={handleClick}
                     PaperProps={{
                         elevation: 0,
                         sx: {
