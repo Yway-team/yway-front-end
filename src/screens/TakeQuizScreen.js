@@ -132,7 +132,7 @@ export default function TakeQuizScreen({ draftId }) {
         console.log('timer is on');
         timeLeft.current = timeLimit
         // setTimerOnOff(true);
-        timerOnOff.current = true        
+        timerOnOff.current = true
     }, [timeLimit]);
 
     const handleTimerOff = useCallback(() => {
@@ -215,9 +215,8 @@ export default function TakeQuizScreen({ draftId }) {
                 <Stack sx={{
                     width: '100%',
                     color: { color },
-                    mt: '10%'
                 }}>
-                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current}/>
+                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current} />
                 </Stack>
 
             </Stack >
