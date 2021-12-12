@@ -112,3 +112,9 @@ export const GET_QUIZ_INFO_AND_QUESTION_LIST = gql`
         getQuestionList(quizId: $quizId)
     }
 `;
+
+export const CAN_PUBLISH_TO_PLATFORM = gql`
+    query CanPublishToPlatform($title: String!) {
+        canPublishToPlatform(title: $title)
+    }
+`;
