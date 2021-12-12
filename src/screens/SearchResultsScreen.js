@@ -1,29 +1,40 @@
 import { useQuery } from '@apollo/client';
-import { Grid, Button, Typography } from '@mui/material';
+import { Grid, Button, Typography, Stack } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle, FriendCard } from "../components";
 import { useHistory, useLocation } from 'react-router';
 import { SEARCH } from '../controllers/graphql/feed-queries';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 
 
 export default function SearchResultsScreen() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
-    let [query, filter] = [searchParams.get('query'), searchParams.get('filter')];
+    let [query, filter, page] = [searchParams.get('query'), searchParams.get('filter'), searchParams.get('page')];
+    page = page || 1;
 
     const history = useHistory();
     const filters = ['all', 'platforms', 'quizzes', 'people'/*, 'tags'*/];
     if (!query && search) history.replace('/search');
-    else if (!filters.includes(filter)) history.replace(`/search?query=${query}&filter=all`);
+    else if (!filters.includes(filter)) history.replace(`/search?query=${query}&filter=all&page=1`);
     query = decodeURIComponent(query);
     let platforms = [];
     let quizzes = [];
     let users = [];
-    const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter } });
+    const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter, skip: page - 1 } });
 
     if (data) {
         platforms = data.search.platforms;
         quizzes = data.search.quizzes;
         users = data.search.users;
+    }
+
+    function ShowPagination(workArr) {
+        if (filter === 'all') return <></>;
+        return (
+            <Stack >
+                <ChevronLeft style />
+                <ChevronRight />
+            </Stack>);
     }
 
     return (
@@ -44,7 +55,7 @@ export default function SearchResultsScreen() {
                                 }
                             }}
                             onClick={() => {
-                                history.push(`/search?query=${query}&filter=${filterBy}`)
+                                history.push(`/search?query=${query}&filter=${filterBy}&page=${page}`)
                             }}
                         > {filterBy[0].toUpperCase() + filterBy.slice(1)} </Button>);
                     }
@@ -59,6 +70,7 @@ export default function SearchResultsScreen() {
                                 : <Typography> {`There are no relevant platforms matching "${query}"`} </Typography>
                             }
                         </Grid>
+                        {ShowPagination(platforms)}
                     </>
                     : <></>
                 }
@@ -85,7 +97,6 @@ export default function SearchResultsScreen() {
                             {users.length ?
                                 users.map((data) => <Grid key={data._id} item ><FriendCard {...data} /> </Grid>)
                                 : <Typography> {`There are no users with usernames matching "${query}"`} </Typography>
-
                             }
                         </Grid>
                     </>
