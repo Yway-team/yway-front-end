@@ -30,10 +30,10 @@ function NotificationsPopUp() {
         }
     };
 
-    const handleClose = async () => {
-        console.log('handleClose is called');
+    const handleClose = async (event, reason) => {
         setAnchorEl(null);
         if (unreadNotis.length > 0) {
+            console.log('handleClose is called');
             const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
             let dataToAdd = { ...user };
             dataToAdd.notifications = data.setReadNotifications;
@@ -42,19 +42,6 @@ function NotificationsPopUp() {
 
     }
 
-    const handleClick = async (event) => {
-        console.log('handleClick is called');
-        if (event.currentTarget) {
-            setAnchorEl(null);
-            if (unreadNotis.length > 0) {
-                const { data } = await setReadNotis({ variables: { time: notifications[0].createdAt } });
-                let dataToAdd = { ...user };
-                dataToAdd.notifications = data.setReadNotifications;
-                globalState(dataToAdd);
-            }
-        }
-
-    }
     let notifications = user.notifications;
     let readNotis = [];
     let unreadNotis = [];
@@ -87,7 +74,6 @@ function NotificationsPopUp() {
                     anchorEl={anchorEl}
                     open={open}
                     onClose={handleClose}
-                    onClick={handleClick}
                     PaperProps={{
                         elevation: 0,
                         sx: {
@@ -153,7 +139,7 @@ function NotificationsPopUp() {
                                 }>You have no new notifications.</Typography >  </Grid > : null
                         }
                         {unreadNotis.map((data) =>
-                            <NotificationCard key={data._id}{...data} />
+                            <NotificationCard key={data._id}{...data} handleClose={handleClose} />
 
                         )}
                         {readNotis.length !== 0 ? <Grid sx={{ width: '100%' }}>
@@ -166,7 +152,7 @@ function NotificationsPopUp() {
                             }
                             }> Older </Typography >  </Grid > : null}
                         {readNotis.map((data) =>
-                            <NotificationCard key={data._id}{...data} />)}
+                            <NotificationCard key={data._id}{...data} handleClose={handleClose} />)}
 
                     </List>
                 </Menu>
