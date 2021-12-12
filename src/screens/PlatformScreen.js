@@ -174,7 +174,7 @@ export default function PlatformScreen() {
                             </Box>
                         )}
                 </Grid>
-                <Grid item xs={open?3.3:0.4} sx={{ marginTop: "2rem", backgroundColor:"blue" }}>
+                <Grid item xs={open?3.3:0.4} sx={{ marginTop: "2rem" }}>
                     <Button onClick={toggleOpen}>
                         {open?<><KeyboardArrowRightIcon/>Collapse</>:<KeyboardArrowLeftIcon/>}
                     </Button>
