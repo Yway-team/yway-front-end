@@ -1,8 +1,15 @@
 import { gql } from '@apollo/client';
 
 export const SEARCH = gql`
-    query Search($searchString: String!, $filter: String) {
-        search(searchString: $searchString, filter: $filter) {
+    query Search($searchString: String!, $filter: String, $skip: SkipInput) {
+        # if skip or any property of skip is not provided, assume no skip
+        # the values of skip properties are skip amounts
+        # input SkipInput {
+        #     platforms: Int
+        #     quizzes: Int
+        #     people: Int
+        # }
+        search(searchString: $searchString, filter: $filter, skip: $skip) {
             platforms {
                 _id
                 description
