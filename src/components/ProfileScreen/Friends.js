@@ -10,7 +10,7 @@ import { useQuery } from "@apollo/client";
 export default function Friends({ userId, isOwn }) {
     const theme = useTheme();
     let friends = [];
-    let friendRequests = []
+    let friendRequests = [];
 
     const { data, loading } = useQuery(GET_USER_FRIENDS_INFO, { variables: { userId: userId } })
 
@@ -68,7 +68,7 @@ export default function Friends({ userId, isOwn }) {
                 <Grid container justifyContent='flex-start' mb={1}>
                     {friendRequests.length === 0 ?
                         <Typography>No friend requests</Typography> : friendRequests.map((data) => <NotificationCard
-                            key={data._id}{...data} />)}
+                            key={data._id} _id={data._id} icon={data.avatar} name={data.username} type='friend request small' />)}
 
                 </Grid>
             </> : null

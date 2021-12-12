@@ -15,6 +15,7 @@ export const GET_QUIZ_INFO = gql`
             platformName
             platformThumbnail
             rating
+            timeToAnswer
             title
         }
     }
