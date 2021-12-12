@@ -162,7 +162,7 @@ export default function PlatformScreen() {
                         </Typography>
                     </Box> */}
 
-                <Grid item container xs={open?8.7:11} spacing={0} mt='1rem'>
+                <Grid item container xs={open?8.7:11.6} spacing={0} mt='1rem'>
                     {platformSummary &&
                         (platformSummary.quizzesInfo.length ?
                             platformSummary.quizzesInfo.map((data) =>
@@ -174,7 +174,7 @@ export default function PlatformScreen() {
                             </Box>
                         )}
                 </Grid>
-                <Grid item xs={open?3.3:1} sx={{ marginTop: "2rem" }}>
+                <Grid item xs={open?3.3:0.4} sx={{ marginTop: "2rem" }}>
                     <Button onClick={toggleOpen}>
                         {open?<><KeyboardArrowRightIcon/>Collapse</>:<KeyboardArrowLeftIcon/>}
                     </Button>

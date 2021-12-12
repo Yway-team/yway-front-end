@@ -24,10 +24,17 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
     //     console.log(data.canPublishToPlatform);
     // }
 
-
     if (updateNumQuestions !== previousUpdateNumQuestions) {
         setNumQuestionsText(numQuestions);
         setPreviousUpdateNumQuestions(!previousUpdateNumQuestions);
+    }
+
+    const handleShowCanPublishError = canPublish => {
+        if(formErrors.canPublishValid !== canPublish){
+            let errors = {...formErrors};
+            errors.canPublishValid = canPublish;
+            formErrorsVar(errors);
+        }
     }
 
     const handleSetColor = (color) => {
@@ -94,12 +101,15 @@ export default function CreateQuizForms({numQuestions, updateNumQuestions, handl
         </Grid>
 
         <Grid item>
-            {!edit ? <PlatformSearchTextField label={"Platform"} value={quizDetails.platformName}
-                                              error={!formErrors.platformValid}
-                                              helperText={formErrors.errorMsgs.platform}/> : <Fragment/>}
+            {!edit ? <><PlatformSearchTextField label={"Platform"} value={quizDetails.platformName}
+                                                error={!formErrors.platformValid}
+                                                helperText={formErrors.errorMsgs.platform}
+                                                setCanPublish={handleShowCanPublishError}/> {!formErrors.canPublishValid ?
+                <Typography
+                    sx={{fontWeight: 'bold', paddingY: 2, paddingLeft: 32}} style={{color: 'red'}}>You are not allowed
+                    to publish quizzes to this platform.</Typography> : null}</> : <Fragment/>}
 
         </Grid>
-
         <Grid item>
             <LabelTextField label={"Quiz Title"} value={quizDetails.title} error={!formErrors.titleValid}
                             helperText={formErrors.errorMsgs.title}
@@ -229,7 +239,8 @@ function PlatformSearchTextField({
                                      multiline,
                                      placeholder,
                                      error,
-                                     helperText
+                                     helperText,
+                                     setCanPublish
                                  }) {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState([]);
@@ -245,8 +256,8 @@ function PlatformSearchTextField({
         refetch: canPublishRefetch,
         called: canPublishCalled
     }] = useLazyQuery(CAN_PUBLISH_TO_PLATFORM, {variables: {title: platformName}});
-    if(canPublish){
-        console.log(canPublish.canPublishToPlatform);
+    if (canPublish) {
+        setCanPublish(canPublish.canPublishToPlatform)
     }
     const validate_can_publish_to_platform = async platformName => {
         if (platformName === null) {
@@ -316,9 +327,6 @@ function PlatformSearchTextField({
                                helperText={helperText || ''}
                                error={error || false}
                                onChange={e => {
-                                   // const details = { ...quizDetailsVar() };
-                                   // details.platformName = e.target.value;
-                                   // quizDetailsVar(details);
                                    setQuery(e.target.value);
                                }}
                                placeholder={placeholder}

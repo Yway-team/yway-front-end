@@ -37,6 +37,7 @@ export const formErrorsVar = makeVar({
     titleValid: true,
     numQuestionsValid: true,
     timeToAnswerValid: true,
+    canPublishValid: true,
     errorMsgs: {platform: '', title: '', numQuestions: '', timeToAnswer: ''}
 });
 
@@ -207,6 +208,7 @@ export default function CreateQuizScreen({draft, edit}) {
             titleValid: true,
             numQuestionsValid: true,
             timeToAnswerValid: true,
+            canPublishValid: true,
             errorMsgs: {platform: '', title: '', numQuestions: '', timeToAnswer: ''}
         };
         formErrorsVar(formErrors);
@@ -326,13 +328,16 @@ export default function CreateQuizScreen({draft, edit}) {
         let details = quizDetailsVar();
         let errors = {...formErrorsVar()};
         let questions = questionsVar();
+        if(!errors.canPublishValid){
+            notValid = true;
+        }
         if (details.platformName === null || details.platformName.length === 0) {
             if (errors.platformValid === true) {
                 errors.platformValid = false;
                 errors.errorMsgs.platform = "Platform cannot be empty.";
             }
             notValid = true;
-        } else if (errors.titleValid === false) {
+        } else if (errors.platformValid === false) {
             errors.platformValid = true;
             errors.errorMsgs.platform = "";
         }
