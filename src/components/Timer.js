@@ -21,7 +21,7 @@ export default function Timer({timeLeft, handleTimeOut, timerOnOff}) {
         return () => {
             clearInterval(timer);
         };
-    }, []);
+    }, [handleTimeOut, timerOnOff]);
 
     return (
         <LinearProgress variant="determinate" value={Math.round((timeLeft.current / timeLimit) * 100)} color='inherit' sx={{
