@@ -1,8 +1,9 @@
 import { useQuery } from '@apollo/client';
-import { Grid, Button, Typography } from '@mui/material';
+import { Grid, Button, Typography, Stack } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle, FriendCard } from "../components";
 import { useHistory, useLocation } from 'react-router';
 import { SEARCH } from '../controllers/graphql/feed-queries';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 
 
 export default function SearchResultsScreen() {
@@ -25,6 +26,15 @@ export default function SearchResultsScreen() {
         platforms = data.search.platforms;
         quizzes = data.search.quizzes;
         users = data.search.users;
+    }
+
+    function ShowPagination(workArr) {
+        if (filter === 'all') return <></>;
+        return (
+            <Stack >
+                <ChevronLeft style />
+                <ChevronRight />
+            </Stack>);
     }
 
     return (
@@ -60,6 +70,7 @@ export default function SearchResultsScreen() {
                                 : <Typography> {`There are no relevant platforms matching "${query}"`} </Typography>
                             }
                         </Grid>
+                        {ShowPagination(platforms)}
                     </>
                     : <></>
                 }
