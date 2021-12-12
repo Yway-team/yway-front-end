@@ -12,6 +12,7 @@ import {UPDATE_PLATFORM_SETTINGS} from '../controllers/graphql/platform-mutation
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import {useHistory} from 'react-router';
 import LoadedModal from '../components/PlatformScreen/LoadedModal'
+import CircularProgress from '@mui/material/CircularProgress';
 
 let defaultImages = {
     thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
@@ -25,11 +26,13 @@ export default function PlatformSettings() {
 
     const [updatePlatformSettings] = useMutation(UPDATE_PLATFORM_SETTINGS);
     // Platform Settings Data Fetching
+    // Loading management
     const {data: platformSettingsData} = usePrivilegedQuery(GET_PLATFORM_SETTINGS, {variables: {title: platformName}});
+    const [loading, setLoading] = useState(true)
 
     console.log(platformName)
     console.log(platformSettingsData)
-    let [effectiveSettings, setEffectiveSettings] = useState({
+    const [effectiveSettings, setEffectiveSettings] = useState({
         bannerImgData: null,
         thumbnailImgData: null,
         title: platformName,
@@ -41,6 +44,7 @@ export default function PlatformSettings() {
         console.log("updated platformSettings")
         console.log(platformSettingsData.getPlatformSettings)
         setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
+        setLoading(false)
     }
 
     // TAG MANAGEMENT
@@ -185,6 +189,10 @@ export default function PlatformSettings() {
                 }}>
                 </Box>
             </div>
+            {loading?
+            <Box sx={{marginLeft: "50%", marginTop:"100px"}}>
+                <CircularProgress/>
+            </Box>:
             <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem", minHeight: "700px"}} spacing={4}>
                 <Stack spacing={2}>
                     <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
@@ -282,7 +290,7 @@ export default function PlatformSettings() {
                                 onClick={() => history.push(`/platform/${platformName}`)}>CANCEL</Button>
                     </Stack>
                 </Stack>
-            </Stack>
+            </Stack>}
             <ConfirmationDialog
                 open={publishConfirmOpen}
                 handleClose={() => setPublishConfirmOpen(prev => !prev)}
