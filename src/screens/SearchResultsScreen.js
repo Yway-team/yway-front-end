@@ -11,6 +11,7 @@ export default function SearchResultsScreen() {
     const searchParams = new URLSearchParams(search);
     let [query, filter, page] = [searchParams.get('query'), searchParams.get('filter'), searchParams.get('page')];
     page = page || 1;
+    page = parseInt(page);
 
     const history = useHistory();
     const filters = ['all', 'platforms', 'quizzes', 'people'/*, 'tags'*/];
@@ -21,6 +22,7 @@ export default function SearchResultsScreen() {
     let quizzes = [];
     let users = [];
     const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter, skip: page - 1 } });
+    let fetchCount = 30;
 
     if (data) {
         platforms = data.search.platforms;
@@ -29,11 +31,21 @@ export default function SearchResultsScreen() {
     }
 
     function ShowPagination(workArr) {
-        if (filter === 'all') return <></>;
+        if (filter === 'all' || workArr.length === 0) return <></>;
+        let disablePrev = page === 1;
+        let disableNext = workArr.length < fetchCount;
         return (
-            <Stack >
-                <ChevronLeft style />
-                <ChevronRight />
+            <Stack direction='row' justifyContent='flex-start' alignItems='center' sx={{ width: '100%', my: 1 }} >
+                <Button disabled={disablePrev} sx={{ fontWeight: 600, mr: 40 }} startIcon={<ChevronLeft />}
+                    onClick={() => {
+                        history.push(`/search?query=${query}&filter=${filter}&page=${page - 1}`);
+                    }}
+                > Previous </Button>
+                <Button disabled={disableNext} sx={{ fontWeight: 600 }} endIcon={<ChevronRight />}
+                    onClick={() => {
+                        history.push(`/search?query=${query}&filter=${filter}&page=${page + 1}`);
+                    }}
+                > Next </Button>
             </Stack>);
     }
 
@@ -86,6 +98,7 @@ export default function SearchResultsScreen() {
 
                             }
                         </Grid>
+                        {ShowPagination(quizzes)}
                     </>
                     : null
                 }
@@ -98,6 +111,7 @@ export default function SearchResultsScreen() {
                                 users.map((data) => <Grid key={data._id} item ><FriendCard {...data} /> </Grid>)
                                 : <Typography> {`There are no users with usernames matching "${query}"`} </Typography>
                             }
+                            {ShowPagination(users)}
                         </Grid>
                     </>
                     : null
