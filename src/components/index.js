@@ -21,3 +21,4 @@ export { default as ShowMoreButton } from './ShowMoreButton';
 export { default as ColorPicker } from './ColorPicker';
 export { default as ImageUpload } from './ImageUpload';
 export { default as ConfirmationDialog } from './ConfirmationDialog';
+export { default as AchievementPopUp } from './AchievementPopUp';

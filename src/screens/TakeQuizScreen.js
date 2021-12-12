@@ -115,12 +115,12 @@ export default function TakeQuizScreen({ draftId }) {
     function handleTimeOut() {
         console.log("timed out")
         console.log(index)
-        if (index+1 >= questionList.length) {
+        if (index + 1 >= questionList.length) {
             console.log("reached the end")
             handleTimerOff();
             handleFinished();
         }
-        setIndex(prev=>prev+1);
+        setIndex(prev => prev + 1);
         timeLeft.current = timeLimit
     }
 
@@ -164,7 +164,7 @@ export default function TakeQuizScreen({ draftId }) {
 
     return (
         <>
-            <Stack direction="column" justifyContent='space-between' alignItems='center' height={window.innerHeight - 64} >
+            <Stack direction="column" justifyContent='space-between' alignItems='center' sx={{ height: window.innerHeight - 64 }} >
                 <Stack direction='row' justifyContent='space-between' sx={{ width: '100%' }}>
                     <Stack pl={7} pt={3} direction='row'>
                         <Avatar src={platformThumbnail} alt='platform avatar' sx={{
@@ -201,6 +201,7 @@ export default function TakeQuizScreen({ draftId }) {
                         </Stack>
                     </Grid>
                 </Stack>
+
                 {questionList && index < questionList.length ?
                     <Question
                         enter={enter}
@@ -367,7 +368,7 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
 
 
         return (
-            <Grid item xs={5} mr={2} >
+            <Grid item xs={5} mr={2} md={5} >
                 <ButtonBase
                     onClick={() => { handleClick(index, correct) }}
                     disableRipple
@@ -376,9 +377,9 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
                         minHeight: 50,
                         backgroundColor: showFeedback ? feedbackColor : 'grey.400',
                         borderRadius: '5pt',
-                        "&:hover": {
-                            backgroundColor: showFeedback ? feedbackColor : color,
-                        }
+                        // "&:hover": {
+                        //     backgroundColor: showFeedback ? feedbackColor : color,
+                        // }
                     }}>
                     <Stack direction='row'
                         justifyContent='flex-start'
@@ -409,13 +410,13 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
     return (
 
         <Stack>
-            <Slide in={enter} direction='right' appear={false} timeout={{ exit: 700 }}
+            <Slide in={enter} direction='right' appear={false} timeout={{ exit: 900 }}
                 onExited={() => {
                     setEnter(true);
                     handleNextQuestion();
                 }}>
-                <Stack sx={{ width: '100%', mr: 10 }} >
-                    <Stack alignItems='center' direction='row'>
+                <Stack sx={{ minWidth: '100%', pb: 5 }}  >
+                    <Stack alignItems='center' direction='row' alignItems='center'>
                         <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26, fontWeight: 600 }}> {index + 1}</Avatar>
                         <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question?.description || null}</Typography>
                     </Stack>
