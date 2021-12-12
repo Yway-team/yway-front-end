@@ -222,7 +222,7 @@ export default function ProfileScreen() {
                                 <History userId={userId} />
                             </Route>
                             <Route exact path={`/user/:userId/friends`}>
-                                <Friends userId={userId} />
+                                <Friends userId={userId} isOwn={isOwn} />
                             </Route>
                         </Switch>
                     </Box>
