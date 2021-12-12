@@ -142,12 +142,12 @@ function ProfileMenu({ client }) {
                     </ListItemIcon>
                     {menuTypography('Achievements')}
                 </MenuItem>
-                <MenuItem onClick={() => {
+                {/*<MenuItem onClick={() => {
                     history.push(`/user/${user._id}/history`);}}>
                     <ListItemIcon>
                         <HistoryIcon />
                     </ListItemIcon> {menuTypography('History')}
-                </MenuItem>
+                </MenuItem>*/}
                 <Divider sx={{ background: '#FF5A1D' }} />
                 <GoogleLogout
                     clientId={process.env.REACT_APP_CLIENT_ID}
