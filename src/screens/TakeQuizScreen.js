@@ -219,7 +219,7 @@ export default function TakeQuizScreen({ draftId }) {
                     width: '100%',
                     color: { color },
                 }}>
-                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current} />
+                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current} timeLimit={timeLimit}/>
                 </Stack>
 
             </Stack >
