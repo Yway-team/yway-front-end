@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Dialog, Button } from '@mui/material';
 
-export default function Timer({timeLeft, handleTimeOut, timerOnOff}) {
+export default function Timer({timeLeft, handleTimeOut, timerOnOff, timeLimit}) {
     const [timeProgress, setTimeProgress] = useState(0);
-    var timeLimit = 20 * 1000;
 
     useEffect(() => {
         console.log("enter use effect")
