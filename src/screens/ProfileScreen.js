@@ -149,7 +149,7 @@ export default function ProfileScreen() {
                             <Tab label="Achievements" {...a11yProps(1)} />
                             <Tab label={`${isOwn ? 'My ' : ''}Quizzes`}{...a11yProps(2)} />
                             <Tab label={`${isOwn ? 'My ' : ''}Platforms`} {...a11yProps(3)} />
-                            <Tab label="History"{...a11yProps(4)} />
+                            {/*<Tab label="History"{...a11yProps(4)} />*/}
                             <Tab label="Friends" {...a11yProps(5)} />
 
                         </Tabs>
