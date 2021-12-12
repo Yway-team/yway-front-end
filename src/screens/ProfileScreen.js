@@ -15,7 +15,9 @@ export default function ProfileScreen() {
     const currentUser = useReactiveVar(globalState);
     const isOwn = (userId === currentUser._id);
     const history = useHistory();
-    const routes = ['/overview', '/achievements', '/quizzes', '/platforms', '/history', '/friends'];
+    const routes = ['/overview', '/achievements', '/quizzes', '/platforms',
+        // '/history'
+        '/friends'];
     const tab = findTab();
     const [privacySettingsOpen, setPrivacySettingsOpen] = useState(false);
     const [profileSettingsOpen, setProfileSettingsOpen] = useState(false);

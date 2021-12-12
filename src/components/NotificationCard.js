@@ -5,11 +5,13 @@ import { Avatar, CardActionArea, Stack } from '@mui/material';
 import TimeAgoFromNow from './TimeAgoFromNow';
 import { useHistory } from 'react-router-dom';
 
-export default function NotificationCard({ _id, type, name, icon, createdAt }) {
+export default function NotificationCard({ _id, type, name, icon, createdAt, handleClose }) {
+    handleClose = handleClose ? handleClose : () => { };
     const history = useHistory();
     return (
         <Card sx={{ maxWidth: 400, boxShadow: 0 }} onClick={() => {
             if (type === 'friend request') {
+                handleClose();
                 history.push(`/user/${_id}`);
             }
         }}>
