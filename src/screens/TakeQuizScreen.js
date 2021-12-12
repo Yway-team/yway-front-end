@@ -113,13 +113,15 @@ export default function TakeQuizScreen({ draftId }) {
     };
 
     function handleTimeOut() {
-        var newIndex = index + 1;
-        setIndex(newIndex);
-        handleTimerOff();
-
-        if (newIndex > questionList.length - 1) {
+        console.log("timed out")
+        console.log(index)
+        if (index+1 >= questionList.length) {
+            console.log("reached the end")
+            handleTimerOff();
             handleFinished();
         }
+        setIndex(prev=>prev+1);
+        timeLeft.current = timeLimit
     }
 
     const handleAnswer = async (correct) => {

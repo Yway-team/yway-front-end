@@ -233,38 +233,38 @@ export default function PlatformSettings() {
                 </Stack>
 
                 <Stack spacing={2}>
-                    {/*<FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>*/}
-                    {/*    Quiz Rules*/}
-                    {/*</FormLabel>*/}
-                    {/*<Stack direction={'row'} alignItems={'baseline'} spacing={2}>*/}
-                    {/*    <Typography sx={{width: 404}}>*/}
-                    {/*        Minimum number of creator points to submit a quiz*/}
-                    {/*    </Typography>*/}
-                    {/*    <TextField variant={"standard"} value={effectiveSettings.minCreatorPoints}*/}
-                    {/*               onChange={(e) => {*/}
-                    {/*                   const value = Number(e.target.value);*/}
-                    {/*                   if (value >= 0) {*/}
-                    {/*                       setEffectiveSettings(prev => {*/}
-                    {/*                           return {...prev, minCreatorPoints: value}*/}
-                    {/*                       })*/}
-                    {/*                   }*/}
-                    {/*               }*/}
-                    {/*               } style={{width: 60}} type={"number"}>*/}
-                    {/*    </TextField>*/}
-                    {/*</Stack>*/}
-                    {/*<FormControlLabel label="Only allow current moderators to submit quizzes"*/}
-                    {/*                  labelPlacement={"start"} style={{*/}
-                    {/*    padding: 0,*/}
-                    {/*    marginLeft: 0,*/}
-                    {/*    width: 450,*/}
-                    {/*    justifyContent: "space-between"*/}
-                    {/*}} control={<Checkbox value={effectiveSettings.onlyModSubmissions}*/}
-                    {/*                      onChange={(e) => {*/}
-                    {/*                          setEffectiveSettings(prev => {*/}
-                    {/*                              return {...prev, onlyModSubmissions: e.target.checked}*/}
-                    {/*                          })*/}
-                    {/*                      }}/>}*/}
-                    {/*/>*/}
+                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                        Quiz Rules
+                    </FormLabel>
+                    <Stack direction={'row'} alignItems={'baseline'} spacing={2}>
+                        <Typography sx={{width: 404}}>
+                            Minimum number of creator points to submit a quiz
+                        </Typography>
+                        <TextField variant={"standard"} value={effectiveSettings.minCreatorPoints}
+                                   onChange={(e) => {
+                                       const value = Number(e.target.value);
+                                       if (value >= 0) {
+                                           setEffectiveSettings(prev => {
+                                               return {...prev, minCreatorPoints: value}
+                                           })
+                                       }
+                                   }
+                                   } style={{width: 60}} type={"number"}>
+                        </TextField>
+                    </Stack>
+                    <FormControlLabel label="Only allow current moderators to submit quizzes"
+                                      labelPlacement={"start"} style={{
+                        padding: 0,
+                        marginLeft: 0,
+                        width: 450,
+                        justifyContent: "space-between"
+                    }} control={<Checkbox value={effectiveSettings.onlyModSubmissions}
+                                          onChange={(e) => {
+                                              setEffectiveSettings(prev => {
+                                                  return {...prev, onlyModSubmissions: e.target.checked}
+                                              })
+                                          }}/>}
+                    />
                     {/*<LabelTextField label={"Required Creator Points"}*/}
                     {/*                value={effectiveSettings.minCreatorPoints}*/}
                     {/*                onChange={(e) => {*/}
