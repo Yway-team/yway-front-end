@@ -67,7 +67,7 @@ function NavigationControl(props) {
         ['Highlights', <AutoAwesome sx={{ fontSize: 15 }} />, '/highlights'],
         ['Top Platforms', <QuizOutlined sx={{ fontSize: 19 }} />, '/platform'],
         ['Top quizzes', <TrendingUp sx={{ fontSize: 19 }} />, '/quiz'],
-        ['History', <History sx={{ fontSize: 19 }} />, `/user/${user._id}/history`],
+        /*['History', <History sx={{ fontSize: 19 }} />, `/user/${user._id}/history`],*/
     ];
 
     const createTabLists = [
