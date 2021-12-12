@@ -172,42 +172,42 @@ export default function CreatePlatformScreen() {
                         <ImageUpload label={"Thumbnail Image"} onUpload={handleImageUpload}
                                      onRemove={handleRemoveImage}/>
                     </Grid>
-                    {/*<Grid item marginTop={4}>*/}
-                    {/*    <FormLabel style={{*/}
-                    {/*        fontWeight: '700', fontSize: 16, color: 'common.black'*/}
-                    {/*    }}>*/}
-                    {/*        Quiz Rules*/}
-                    {/*    </FormLabel>*/}
-                    {/*</Grid>*/}
-                    {/*<Grid item>*/}
-                    {/*    <Stack direction={'row'} alignItems={'baseline'} spacing={2}>*/}
+                    <Grid item marginTop={4}>
+                        <FormLabel style={{
+                            fontWeight: '700', fontSize: 16, color: 'common.black'
+                        }}>
+                            Quiz Rules
+                        </FormLabel>
+                    </Grid>
+                    <Grid item>
+                        <Stack direction={'row'} alignItems={'baseline'} spacing={2}>
 
-                    {/*        <Typography sx={{width: 404}}>*/}
-                    {/*            Minimum number of creator points to submit a quiz*/}
-                    {/*        </Typography>*/}
-                    {/*        <TextField variant={"standard"} value={minCreatorPts}*/}
-                    {/*                   onChange={e => {*/}
-                    {/*                       const value = Number(e.target.value);*/}
-                    {/*                       if (value >= 0) {*/}
-                    {/*                           setMinCreatorPts(value)*/}
-                    {/*                       }*/}
-                    {/*                   }*/}
-                    {/*                   } style={{width: 60}} type={"number"}>*/}
-                    {/*        </TextField>*/}
-                    {/*    </Stack>*/}
-                    {/*</Grid>*/}
+                            <Typography sx={{width: 404}}>
+                                Minimum number of creator points to submit a quiz
+                            </Typography>
+                            <TextField variant={"standard"} value={minCreatorPts}
+                                       onChange={e => {
+                                           const value = Number(e.target.value);
+                                           if (value >= 0) {
+                                               setMinCreatorPts(value)
+                                           }
+                                       }
+                                       } style={{width: 60}} type={"number"}>
+                            </TextField>
+                        </Stack>
+                    </Grid>
 
-                    {/*<Grid item>*/}
-                    {/*    <FormControlLabel label="Only allow current moderators to submit quizzes"*/}
-                    {/*                      labelPlacement={"start"} style={{*/}
-                    {/*        padding: 0,*/}
-                    {/*        marginLeft: 0,*/}
-                    {/*        width: 450,*/}
-                    {/*        justifyContent: "space-between"*/}
-                    {/*    }} control={<Checkbox value={onlyModSubmissions}*/}
-                    {/*                          onChange={e => setOnlyModSubmissions(e.target.checked)}/>}*/}
-                    {/*    />*/}
-                    {/*</Grid>*/}
+                    <Grid item>
+                        <FormControlLabel label="Only allow current moderators to submit quizzes"
+                                          labelPlacement={"start"} style={{
+                            padding: 0,
+                            marginLeft: 0,
+                            width: 450,
+                            justifyContent: "space-between"
+                        }} control={<Checkbox value={onlyModSubmissions}
+                                              onChange={e => setOnlyModSubmissions(e.target.checked)}/>}
+                        />
+                    </Grid>
                     <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>
                         <Button variant={"contained"} onClick={() => {
                             const valid = validate();

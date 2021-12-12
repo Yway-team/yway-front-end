@@ -31,7 +31,7 @@ export const GET_USER_INFO = gql`
                 description
                 playPointValue
                 createdAt
-                type
+                name
             }
             history {
                 description
@@ -142,7 +142,7 @@ export const GET_PROFILE_OVERVIEW = gql`
                 creatorPointValue
                 description
                 playPointValue
-                type
+                name
             }
             friendsInfo {
                 _id
