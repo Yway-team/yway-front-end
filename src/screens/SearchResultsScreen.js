@@ -8,17 +8,18 @@ import { SEARCH } from '../controllers/graphql/feed-queries';
 export default function SearchResultsScreen() {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
-    let [query, filter] = [searchParams.get('query'), searchParams.get('filter')];
+    let [query, filter, page] = [searchParams.get('query'), searchParams.get('filter'), searchParams.get('page')];
+    page = page || 1;
 
     const history = useHistory();
     const filters = ['all', 'platforms', 'quizzes', 'people'/*, 'tags'*/];
     if (!query && search) history.replace('/search');
-    else if (!filters.includes(filter)) history.replace(`/search?query=${query}&filter=all`);
+    else if (!filters.includes(filter)) history.replace(`/search?query=${query}&filter=all&page=1`);
     query = decodeURIComponent(query);
     let platforms = [];
     let quizzes = [];
     let users = [];
-    const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter } });
+    const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter, skip: page - 1 } });
 
     if (data) {
         platforms = data.search.platforms;
@@ -44,7 +45,7 @@ export default function SearchResultsScreen() {
                                 }
                             }}
                             onClick={() => {
-                                history.push(`/search?query=${query}&filter=${filterBy}`)
+                                history.push(`/search?query=${query}&filter=${filterBy}&page=${page}`)
                             }}
                         > {filterBy[0].toUpperCase() + filterBy.slice(1)} </Button>);
                     }
@@ -85,7 +86,6 @@ export default function SearchResultsScreen() {
                             {users.length ?
                                 users.map((data) => <Grid key={data._id} item ><FriendCard {...data} /> </Grid>)
                                 : <Typography> {`There are no users with usernames matching "${query}"`} </Typography>
-
                             }
                         </Grid>
                     </>

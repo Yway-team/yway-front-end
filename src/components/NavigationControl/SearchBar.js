@@ -33,7 +33,7 @@ export default function SearchBar({ theme }) {
     }, []);
 
     function handleSearch() {
-        if (query) history.push(`/search?query=${encodeURIComponent(query)}&filter=${filter}`);
+        if (query) history.push(`/search?query=${encodeURIComponent(query)}&filter=${filter}&page=1`);
     }
     return (
         <Paper
