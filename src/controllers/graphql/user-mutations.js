@@ -113,6 +113,12 @@ export const DECLINE_FRIEND_REQUEST = gql`
     }
 `;
 
+export const REMOVE_FRIEND = gql`
+    mutation RemoveFriend($friendId: ID!) {
+        removeFriend(friendId: $friendId)
+    }
+`;
+
 export const SET_READ_NOTIFICATIONS = gql`
     mutation SetReadNotifications($time: String!) {
         setReadNotifications(time: $time) {
