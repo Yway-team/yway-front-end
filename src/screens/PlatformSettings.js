@@ -40,11 +40,13 @@ export default function PlatformSettings() {
         updated: false,
         tags: []
     })
-    if (platformSettingsData && platformSettingsData.getPlatformSettings && !effectiveSettings.updated) {
+    if (platformSettingsData && "getPlatformSettings" in platformSettingsData && !effectiveSettings.updated && loading) {
         console.log("updated platformSettings")
         console.log(platformSettingsData.getPlatformSettings)
-        setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
         setLoading(false)
+        if (platformSettingsData.getPlatformSettings){
+            setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
+        }
     }
 
     // TAG MANAGEMENT
@@ -189,11 +191,11 @@ export default function PlatformSettings() {
                 }}>
                 </Box>
             </div>
-            {loading?
-            <Box sx={{marginLeft: "50%", marginTop:"100px"}}>
+            <Box sx={{marginLeft: "50%", marginTop:"100px", display: loading?"":"none"}}>
                 <CircularProgress/>
-            </Box>:
-            <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem", minHeight: "700px"}} spacing={4}>
+            </Box>
+            {platformSettingsData&&platformSettingsData.getPlatformSettings?
+            <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem", minHeight: "700px", display: loading?"none":""}} spacing={4}>
                 <Stack spacing={2}>
                     <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
                         Platform Settings
@@ -290,7 +292,10 @@ export default function PlatformSettings() {
                                 onClick={() => history.push(`/platform/${platformName}`)}>CANCEL</Button>
                     </Stack>
                 </Stack>
-            </Stack>}
+            </Stack>:
+            <Box sx={{marginLeft:"100px", marginTop:"100px",display: loading?"none":""}}>
+                You do not have access to this page.
+            </Box>}
             <ConfirmationDialog
                 open={publishConfirmOpen}
                 handleClose={() => setPublishConfirmOpen(prev => !prev)}
