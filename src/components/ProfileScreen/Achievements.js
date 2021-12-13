@@ -1,7 +1,23 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, CircularProgress } from "@mui/material";
 import { CommonTitle, AchievementCard } from '..';
-export default function Achievements() {
+import { useQuery } from "@apollo/client";
+import { GET_USER_ACHIEVEMENTS } from "../../controllers/graphql/user-queries";
+export default function Achievements({ userId }) {
+    const { data, loading } = useQuery(GET_USER_ACHIEVEMENTS, { variables: { userId: userId } });
     let achievements = [];
+
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+        );
+    }
+    if (data) {
+        console.log(data);
+        achievements = data.getUserAchievements.achievements;
+    }
+
     return (
         <Grid container direction='column' sx={{ display: 'flex', justifyContent: 'center', width: '100%', py: 2, pl: 3 }}>
             {/*{achievements ? <> </>: <Typography> {`This user's profile is private.`} </Typography>} insert body here when ready*/}

@@ -207,7 +207,7 @@ export default function ProfileScreen() {
                                         <Overview userId={userId} isOwn={isOwn} />
                                     </Route>
                                     <Route exact path={`/user/:userId/achievements`}>
-                                        <Achievements />
+                                        <Achievements userId={userId} />
                                     </Route>
                                     <Route exact path={`/user/:userId/quizzes`}>
                                         <MyQuizzes userId={userId} isOwn={isOwn} username={userInfo?.username} />
