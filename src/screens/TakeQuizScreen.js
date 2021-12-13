@@ -5,7 +5,7 @@ import { globalState } from '../state/UserState';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST } from '../controllers/graphql/quiz-queries';
-import { INCREMENT_PLAY_POINTS } from '../controllers/graphql/user-mutations';
+import { INCREMENT_PLAY_POINTS, INCREMENT_STREAK, RESET_STREAK, INCREMENT_NUM_QUIZZES_PLAYED } from '../controllers/graphql/user-mutations';
 import { RATE_QUIZ } from '../controllers/graphql/quiz-mutations';
 import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
@@ -15,6 +15,9 @@ export default function TakeQuizScreen({ draftId }) {
     const history = useHistory();
     const { quizId } = useParams();
     const { data } = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, { variables: { quizId: quizId } });
+    const [incrementStreak] = useMutation(INCREMENT_STREAK);
+    const [resetStreak] = useMutation(RESET_STREAK);
+    const [incrementNumQuizzesPlayed] = useMutation(INCREMENT_NUM_QUIZZES_PLAYED);
     const [incrementPlayPoints] = useMutation(INCREMENT_PLAY_POINTS);
     const [rateQuiz] = useMutation(RATE_QUIZ);
 
@@ -127,6 +130,13 @@ export default function TakeQuizScreen({ draftId }) {
     const handleAnswer = async (correct) => {
         if (correct) {
             setPlayPoints(playPoints + 10);
+            const { data } = await incrementStreak();
+            if (data?.incrementStreak) {
+                const { achievement, streak, playPoints } = data.incrementStreak;
+                console.log(data.incrementStreak);
+            }
+        } else {
+            await resetStreak();
         }
     }
 
@@ -153,6 +163,11 @@ export default function TakeQuizScreen({ draftId }) {
 
         }
         let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
+        const { data: incrementNumQuizzesData } = await incrementNumQuizzesPlayed();
+        if (incrementNumQuizzesData.incrementNumQuizzesPlayed) {
+            const achievement = incrementNumQuizzesData.incrementNumQuizzesPlayed;
+            console.log('EARNED ACHIEVEMENT');  // handle here
+        }
         console.log('new play points');
         console.log(data.incrementPlayPoints);
         let newUserData = { ...user };
