@@ -44,6 +44,7 @@ export default function ProfileScreen() {
 
     if (data) {
         userInfo = data.getUserInfo;
+        console.log(userInfo)
         console.log('friend status ' + userInfo.friendStatus);
     }
 
@@ -136,28 +137,9 @@ export default function ProfileScreen() {
                         </Typography>
                         <Divider flexItem sx={{ mt: 3 }} />
                     </Grid>
-                    <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Tabs
-                            value={tab}
-                            onChange={handleChange}
-                            aria-label="user tabs"
-                            textColor='primary'
-                            indicatorColor='primary'
-                            sx={{
-                                [`& .MuiTab-root`]: {
-                                    fontWeight: 600,
-                                }
-                            }}
-                        >
-                            <Tab label="Overview" {...a11yProps(0)} />
-                            <Tab label="Achievements" {...a11yProps(1)} />
-                            <Tab label={`${isOwn ? 'My ' : ''}Quizzes`}{...a11yProps(2)} />
-                            <Tab label={`${isOwn ? 'My ' : ''}Platforms`} {...a11yProps(3)} />
-                            {/*<Tab label="History"{...a11yProps(4)} />*/}
-                            <Tab label="Friends" {...a11yProps(5)} />
-
-                        </Tabs>
-                        {isOwn ? <Grid item>
+                    <Box container sx={{ justifyContent: 'space-between', alignItems: 'center', position:"relative" }}>
+                        {isOwn ?
+                        <Box item sx={{position:"absolute", right:"0px", top:"0px", zIndex: "10000000"}}>
                             <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
                                 onClick={handleClickPrivacySettingsOpen}>
                                 Settings
@@ -165,8 +147,8 @@ export default function ProfileScreen() {
                             <Button variant="contained" startIcon={<Edit />} onClick={handleClickProfileSettingsOpen}>
                                 Edit Profile
                             </Button>
-                        </Grid> :
-                            <Grid item>
+                        </Box> :
+                            <Box item sx={{position:"absolute", right:"0px", top:"0px", zIndex: "10000000"}}>
                                 {
                                     userInfo.friendStatus === 'none' ?
                                         <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
@@ -196,12 +178,30 @@ export default function ProfileScreen() {
                                             FRIENDS
                                         </Button> : <></>
                                 }
+                            </Box>}
+                    </Box>
+                    {userInfo.privacySettings === "public"?
+                    <>
+                    <Tabs
+                            value={tab}
+                            onChange={handleChange}
+                            aria-label="user tabs"
+                            textColor='primary'
+                            indicatorColor='primary'
+                            sx={{
+                                [`& .MuiTab-root`]: {
+                                    fontWeight: 600,
+                                }
+                            }}
+                        >
+                            <Tab label="Overview" {...a11yProps(0)} />
+                            <Tab label="Achievements" {...a11yProps(1)} />
+                            <Tab label={`${isOwn ? 'My ' : ''}Quizzes`}{...a11yProps(2)} />
+                            <Tab label={`${isOwn ? 'My ' : ''}Platforms`} {...a11yProps(3)} />
+                            {/*<Tab label="History"{...a11yProps(4)} />*/}
+                            <Tab label="Friends" {...a11yProps(5)} />
 
-
-
-                            </Grid>
-                        }
-                    </Grid>
+                        </Tabs>
 
                     <Box>
                         <Switch>
@@ -228,6 +228,8 @@ export default function ProfileScreen() {
                             </Route>
                         </Switch>
                     </Box>
+                    </>:
+                    <Typography sx={{ml:"40%", mt:"100px"}}> {`This user's profile is private.`} </Typography>}
 
                 </Grid>
             </Grid>
