@@ -93,7 +93,7 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     elevation: 0,
-                    boxShadow: 'none',
+                    boxShadow: 'none'
                 },
                 contained: {
                     "&:hover": {

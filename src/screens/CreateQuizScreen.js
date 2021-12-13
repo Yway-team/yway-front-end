@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Dialog, DialogContentText, Grid, Stack, Typography } from "@mui/material";
-import { CommonTitle, ConfirmationDialog, AchievementPopUp } from "../components";
+import { AchievementPopUp, CommonTitle, ConfirmationDialog } from "../components";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { makeVar, useLazyQuery, useMutation, useReactiveVar } from "@apollo/client";
 import {
@@ -247,20 +247,21 @@ export default function CreateQuizScreen({ draft, edit }) {
             const creatorPoints = data.createAndPublishQuiz.creatorPoints;
             let achievement = data.createAndPublishQuiz.achievement;
             console.log(data);
-            let dataToadd = { ...user };
-            dataToadd.creatorPoints = creatorPoints;
-            globalState(dataToadd);
-            setAchievementOpen(true);
-            achievement = {
-                description: 'This is description'
-            }
+
+            // setAchievementOpen(true);
+            // achievement = {
+            //     description: 'This is description'
+            // }
             if (achievement) {
+                // setPublishConfirmOpen(false);
+                achievement = { ...achievement, creatorPoints: creatorPoints };
                 console.log(achievement);
-                setPublishConfirmOpen(false);
                 setAchievement({ ...achievement });
                 setAchievementOpen(true);
-            }
-            else {
+            } else {
+                let dataToadd = { ...user };
+                dataToadd.creatorPoints = creatorPoints;
+                globalState(dataToadd);
                 history.push(`/user/${globalState()._id}/quizzes`);
             }
         }
@@ -478,8 +479,7 @@ export default function CreateQuizScreen({ draft, edit }) {
                                         setNumQuestions(numQuestions + 1);
                                         setQuestions([...questionsVar()]);
                                         setUpdateNumQuestions(!updateNumQuestions);
-                                    }
-                                    else {
+                                    } else {
                                         setOpen(true);
                                     }
 
@@ -536,7 +536,17 @@ export default function CreateQuizScreen({ draft, edit }) {
                 handleClose={() => {
                     setAchievement(null);
                     setAchievementOpen(false);
+                    let dataToadd = { ...user };
+                    dataToadd.creatorPoints = achievement.creatorPoints;
+                    globalState(dataToadd);
                     history.push(`/user/${globalState()._id}/quizzes`);
+                }}
+                beforeCheckItOut={() => {
+                    setAchievement(null);
+                    setAchievementOpen(false);
+                    let dataToadd = { ...user };
+                    dataToadd.creatorPoints = achievement.creatorPoints;
+                    globalState(dataToadd);
                 }}
                 icon={achievement ? achievement.icon : null}
                 description={achievement ? achievement.description : null}

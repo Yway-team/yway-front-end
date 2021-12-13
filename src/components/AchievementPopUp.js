@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { globalState } from '../state/UserState';
 import { useReactiveVar } from '@apollo/client';
 
-export default function AchievementPopUp({ icon, name, description, open, handleClose }) {
+export default function AchievementPopUp({ icon, name, description, open, handleClose, beforeCheckItOut }) {
     const history = useHistory();
     const user = useReactiveVar(globalState);
     return (
@@ -16,7 +16,10 @@ export default function AchievementPopUp({ icon, name, description, open, handle
                 <Typography sx={{ fontSize: 20, fontWeight: 700, color: 'primary.main' }}> {name}</Typography>
                 <Typography textAlign='center' sx={{ fontSize: 14, fontWeight: 500, color: 'grey.500', mt: 1 }}> {description}   </Typography>
                 <Button variant='contained' sx={{ mt: 7 }}
-                    onClick={() => { history.push(`/user/${user._id}/achievements`) }}
+                    onClick={() => {
+                        beforeCheckItOut();
+                        history.push(`/user/${user._id}/achievements`);
+                    }}
                 > CHECK IT OUT</Button>
             </Stack>
         </Dialog >);

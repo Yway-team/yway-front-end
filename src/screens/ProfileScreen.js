@@ -98,11 +98,6 @@ export default function ProfileScreen() {
     }
 
 
-
-
-
-
-
     return (
         <>
             <Grid container justifyContent='center' alignItems='center'>
@@ -137,18 +132,18 @@ export default function ProfileScreen() {
                         </Typography>
                         <Divider flexItem sx={{ mt: 3 }} />
                     </Grid>
-                    <Box container sx={{ justifyContent: 'space-between', alignItems: 'center', position:"relative" }}>
+                    <Box container sx={{ justifyContent: 'space-between', alignItems: 'center', position: "relative" }}>
                         {isOwn ?
-                        <Box item sx={{position:"absolute", right:"0px", top:"0px", zIndex: "10000000"}}>
-                            <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
-                                onClick={handleClickPrivacySettingsOpen}>
-                                Settings
-                            </Button>
-                            <Button variant="contained" startIcon={<Edit />} onClick={handleClickProfileSettingsOpen}>
-                                Edit Profile
-                            </Button>
-                        </Box> :
-                            <Box item sx={{position:"absolute", right:"0px", top:"0px", zIndex: "10000000"}}>
+                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2" }}>
+                                <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
+                                    onClick={handleClickPrivacySettingsOpen}>
+                                    Settings
+                                </Button>
+                                <Button variant="contained" startIcon={<Edit />} onClick={handleClickProfileSettingsOpen}>
+                                    Edit Profile
+                                </Button>
+                            </Box> :
+                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2" }}>
                                 {
                                     userInfo.friendStatus === 'none' ?
                                         <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
@@ -180,56 +175,56 @@ export default function ProfileScreen() {
                                 }
                             </Box>}
                     </Box>
-                    {userInfo.privacySettings === "public" || isOwn?
-                    <>
-                    <Tabs
-                            value={tab}
-                            onChange={handleChange}
-                            aria-label="user tabs"
-                            textColor='primary'
-                            indicatorColor='primary'
-                            sx={{
-                                [`& .MuiTab-root`]: {
-                                    fontWeight: 600,
-                                }
-                            }}
-                        >
-                            <Tab label="Overview" {...a11yProps(0)} />
-                            <Tab label="Achievements" {...a11yProps(1)} />
-                            <Tab label={`${isOwn ? 'My ' : ''}Quizzes`}{...a11yProps(2)} />
-                            <Tab label={`${isOwn ? 'My ' : ''}Platforms`} {...a11yProps(3)} />
-                            {/*<Tab label="History"{...a11yProps(4)} />*/}
-                            <Tab label="Friends" {...a11yProps(5)} />
+                    {userInfo.privacySettings === "public" || isOwn ?
+                        <>
+                            <Tabs
+                                value={tab}
+                                onChange={handleChange}
+                                aria-label="user tabs"
+                                textColor='primary'
+                                indicatorColor='primary'
+                                sx={{
+                                    [`& .MuiTab-root`]: {
+                                        fontWeight: 600,
+                                    }
+                                }}
+                            >
+                                <Tab label="Overview" {...a11yProps(0)} />
+                                <Tab label="Achievements" {...a11yProps(1)} />
+                                <Tab label={`${isOwn ? 'My ' : ''}Quizzes`}{...a11yProps(2)} />
+                                <Tab label={`${isOwn ? 'My ' : ''}Platforms`} {...a11yProps(3)} />
+                                {/*<Tab label="History"{...a11yProps(4)} />*/}
+                                <Tab label="Friends" {...a11yProps(5)} />
 
-                        </Tabs>
+                            </Tabs>
 
-                    <Box>
-                        <Switch>
-                            <Route exact path='/user/:userId'>
-                                <Overview userId={userId} isOwn={isOwn} />
-                            </Route>
-                            <Route path={`/user/:userId/overview`}>
-                                <Overview userId={userId} isOwn={isOwn} />
-                            </Route>
-                            <Route exact path={`/user/:userId/achievements`}>
-                                <Achievements />
-                            </Route>
-                            <Route exact path={`/user/:userId/quizzes`}>
-                                <MyQuizzes userId={userId} isOwn={isOwn} username={userInfo?.username} />
-                            </Route>
-                            <Route exact path={`/user/:userId/platforms`}>
-                                <MyPlatforms userId={userId} isOwn={isOwn} username={userInfo?.username} />
-                            </Route>
-                            <Route exact path={`/user/:userId/history`}>
-                                <History userId={userId} />
-                            </Route>
-                            <Route exact path={`/user/:userId/friends`}>
-                                <Friends userId={userId} isOwn={isOwn} />
-                            </Route>
-                        </Switch>
-                    </Box>
-                    </>:
-                    <Typography sx={{ml:"40%", mt:"100px"}}> {`This user's profile is private.`} </Typography>}
+                            <Box>
+                                <Switch>
+                                    <Route exact path='/user/:userId'>
+                                        <Overview userId={userId} isOwn={isOwn} />
+                                    </Route>
+                                    <Route path={`/user/:userId/overview`}>
+                                        <Overview userId={userId} isOwn={isOwn} />
+                                    </Route>
+                                    <Route exact path={`/user/:userId/achievements`}>
+                                        <Achievements />
+                                    </Route>
+                                    <Route exact path={`/user/:userId/quizzes`}>
+                                        <MyQuizzes userId={userId} isOwn={isOwn} username={userInfo?.username} />
+                                    </Route>
+                                    <Route exact path={`/user/:userId/platforms`}>
+                                        <MyPlatforms userId={userId} isOwn={isOwn} username={userInfo?.username} />
+                                    </Route>
+                                    <Route exact path={`/user/:userId/history`}>
+                                        <History userId={userId} />
+                                    </Route>
+                                    <Route exact path={`/user/:userId/friends`}>
+                                        <Friends userId={userId} isOwn={isOwn} />
+                                    </Route>
+                                </Switch>
+                            </Box>
+                        </> :
+                        <Typography sx={{ ml: "40%", mt: "100px" }}> {`This user's profile is private.`} </Typography>}
 
                 </Grid>
             </Grid>
