@@ -252,11 +252,15 @@ export default function CreateQuizScreen({ draft, edit }) {
             dataToadd.creatorPoints = creatorPoints;
             globalState(dataToadd);
             if (achievement) {
+                console.log(achievement);
                 setAchievement(achievement);
+            }
+            else {
+                history.push(`/user/${globalState()._id}/quizzes`);
             }
         }
 
-        // history.push(`/user/${globalState()._id}/quizzes`);
+
     };
 
     const handleSaveAsDraft = async (e) => {
@@ -523,7 +527,7 @@ export default function CreateQuizScreen({ draft, edit }) {
             </Dialog>
             <AchievementPopUp
                 open={openAchievementPopUp}
-                handleClose={() => { setAchievement(null) }}
+                handleClose={() => { setAchievement(null); history.push(`/user/${globalState()._id}/quizzes`); }}
                 icon={achievement ? achievement.icon : null}
                 description={achievement ? achievement.description : null}
                 name={achievement ? achievement.name : null}
