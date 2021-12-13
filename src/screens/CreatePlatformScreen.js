@@ -1,11 +1,11 @@
-import React, {useState} from "react";
-import {Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, Typography} from "@mui/material";
-import {ColorPicker, CommonTitle, ConfirmationDialog, ImageUpload, LabelTextField} from "../components";
-import {useMutation} from "@apollo/client";
-import {CREATE_PLATFORM} from "../controllers/graphql/platform-mutations";
+import React, { useState } from "react";
+import { Button, Checkbox, FormControlLabel, FormLabel, Grid, Stack, TextField, Typography } from "@mui/material";
+import { ColorPicker, CommonTitle, ConfirmationDialog, ImageUpload, LabelTextField } from "../components";
+import { useMutation } from "@apollo/client";
+import { CREATE_PLATFORM } from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
-import {globalState} from "../state/UserState";
-import {useHistory} from "react-router-dom";
+import { globalState } from "../state/UserState";
+import { useHistory } from "react-router-dom";
 
 export default function CreatePlatformScreen() {
     const history = useHistory();
@@ -105,7 +105,7 @@ export default function CreatePlatformScreen() {
             thumbnailImgData: thumbnailImg,
             thumbnailImgName: thumbnailImgName
         };
-        const {data} = await createPlatform({variables: {platform: platformObj}});
+        const { data } = await createPlatform({ variables: { platform: platformObj } });
         if (data) {
             const platformId = data.createPlatform;
             console.log(`Platform ID: ${platformId}`);
@@ -127,31 +127,31 @@ export default function CreatePlatformScreen() {
     }
 
     return (
-        <><Grid container direction="column" sx={{p: 2, pl: 10, width: 700}}>
+        <><Grid container direction="column" sx={{ p: 2, pl: 10, width: 700 }}>
             <Grid item>
-                <CommonTitle title='CREATE PLATFORM'/>
+                <CommonTitle title='CREATE PLATFORM' />
             </Grid>
             <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <Grid container item direction="column" sx={{py: 2}} spacing={2}>
+                <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
                     <Grid item>
-                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                        <FormLabel style={{ fontWeight: '700', fontSize: 16, color: 'common.black' }}>
                             Platform Details
                         </FormLabel>
                     </Grid>
                     <Grid item>
                         <LabelTextField label={"Platform Name"} value={platformName}
-                                        error={!titleValid}
-                                        helperText={titleErrorMsg}
-                                        onChange={e => setPlatformName(e.target.value)}/>
+                            error={!titleValid}
+                            helperText={titleErrorMsg}
+                            onChange={e => setPlatformName(e.target.value)} />
                     </Grid>
                     <Grid item>
                         <LabelTextField name="description" label={"Description (optional)"} value={platformDescription}
-                                        onChange={e => setPlatformDescription(e.target.value)} multiline={true}
-                                        variant={"outlined"}/>
+                            onChange={e => setPlatformDescription(e.target.value)} multiline={true}
+                            variant={"outlined"} />
                     </Grid>
                     <Grid item>
                         <TagsInput tags={tags} handleAddTag={handleAddTag} handleDeleteTag={handleDeleteTag}
-                                   newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}>
+                            newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}>
                         </TagsInput>
                     </Grid>
                     <Grid item marginTop={4}>
@@ -163,14 +163,14 @@ export default function CreatePlatformScreen() {
                     </Grid>
                     <Grid item>
                         <ColorPicker label={"Background Color"} colorState={platformColor}
-                                     onChangeComplete={(color) => handleSetColor(color)}/>
+                            onChangeComplete={(color) => handleSetColor(color)} />
                     </Grid>
                     <Grid item>
-                        <ImageUpload label={"Banner Image"} onUpload={handleImageUpload} onRemove={handleRemoveImage}/>
+                        <ImageUpload label={"Banner Image"} onUpload={handleImageUpload} onRemove={handleRemoveImage} />
                     </Grid>
                     <Grid item>
                         <ImageUpload label={"Thumbnail Image"} onUpload={handleImageUpload}
-                                     onRemove={handleRemoveImage}/>
+                            onRemove={handleRemoveImage} />
                     </Grid>
                     <Grid item marginTop={4}>
                         <FormLabel style={{
@@ -182,33 +182,33 @@ export default function CreatePlatformScreen() {
                     <Grid item>
                         <Stack direction={'row'} alignItems={'baseline'} spacing={2}>
 
-                            <Typography sx={{width: 404}}>
+                            <Typography sx={{ width: 404 }}>
                                 Minimum number of creator points to submit a quiz
                             </Typography>
                             <TextField variant={"standard"} value={minCreatorPts}
-                                       onChange={e => {
-                                           const value = Number(e.target.value);
-                                           if (value >= 0) {
-                                               setMinCreatorPts(value)
-                                           }
-                                       }
-                                       } style={{width: 60}} type={"number"}>
+                                onChange={e => {
+                                    const value = Number(e.target.value);
+                                    if (value >= 0) {
+                                        setMinCreatorPts(value)
+                                    }
+                                }
+                                } style={{ width: 60 }} type={"number"}>
                             </TextField>
                         </Stack>
                     </Grid>
 
                     <Grid item>
                         <FormControlLabel label="Only allow current moderators to submit quizzes"
-                                          labelPlacement={"start"} style={{
-                            padding: 0,
-                            marginLeft: 0,
-                            width: 450,
-                            justifyContent: "space-between"
-                        }} control={<Checkbox value={onlyModSubmissions}
-                                              onChange={e => setOnlyModSubmissions(e.target.checked)}/>}
+                            labelPlacement={"start"} style={{
+                                padding: 0,
+                                marginLeft: 0,
+                                width: 450,
+                                justifyContent: "space-between"
+                            }} control={<Checkbox value={onlyModSubmissions}
+                                onChange={e => setOnlyModSubmissions(e.target.checked)} />}
                         />
                     </Grid>
-                    <Stack direction={"row"} spacing={2} style={{marginLeft: 16}}>
+                    <Stack direction={"row"} spacing={2} style={{ marginLeft: 16 }}>
                         <Button variant={"contained"} onClick={() => {
                             const valid = validate();
                             if (valid) togglePublishConfirmOpen();

@@ -54,6 +54,7 @@ export default function CreateQuizScreen({ draft, edit }) {
 
     const start = Date.now();
     const history = useHistory();
+    const user = useReactiveVar(globalState);
     const shouldUpdate = useReactiveVar(loggedInChanged)
     const [errorQuestions, setErrorQuestions] = useState([]);
     const [formError, setFormError] = useState(false);
@@ -69,7 +70,9 @@ export default function CreateQuizScreen({ draft, edit }) {
     const params = useParams();
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
     const [open, setOpen] = useState(false);
-    const [achievementOpen, setAchievementOpen] = useState(false);
+    const [achievement, setAchievement] = useState(null);
+    const openAchievementPopUp = Boolean(achievement);
+
 
     const handleClose = () => {
         setOpen(false);
@@ -239,8 +242,21 @@ export default function CreateQuizScreen({ draft, edit }) {
             tags: quizDetails.tags
             /* other optional props */
         };
-        await createAndPublishQuiz({ variables: { quiz: quizObj } });
-        history.push(`/user/${globalState()._id}/quizzes`);
+        const { data } = await createAndPublishQuiz({ variables: { quiz: quizObj } });
+        if (data) {
+            console.log(data);
+            const creatorPoints = data.createAndPublishQuiz.creatorPoints;
+            const achievement = data.createAndPublishQuiz.achievement;
+            console.log(data);
+            let dataToadd = { ...user };
+            dataToadd.creatorPoints = creatorPoints;
+            globalState(dataToadd);
+            if (achievement) {
+                setAchievement(achievement);
+            }
+        }
+
+        // history.push(`/user/${globalState()._id}/quizzes`);
     };
 
     const handleSaveAsDraft = async (e) => {
@@ -426,13 +442,13 @@ export default function CreateQuizScreen({ draft, edit }) {
                 <Grid item>
                     <CommonTitle title={edit ? 'EDIT QUIZ' : 'CREATE QUIZ'} />
                 </Grid>
-                <Button variant='contained'
+                {/* <Button variant='contained'
                     onClick={() => {
                         console.log('achievement open clicked');
-                        setAchievementOpen(true);
+                        setAchievement(true);
                     }}>
 
-                    open achievements </Button>
+                    open achievements </Button> */}
                 <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                     <Grid container item direction="column" sx={{ py: 2 }} spacing={2}>
                         <CreateQuizForms numQuestions={numQuestions} updateNumQuestions={updateNumQuestions}
@@ -506,11 +522,11 @@ export default function CreateQuizScreen({ draft, edit }) {
                 </DialogContentText>
             </Dialog>
             <AchievementPopUp
-                open={achievementOpen}
-                handleClose={() => { setAchievementOpen(false) }}
-                icon={"https://i.pravatar.cc/300"}
-                description={'This is really nice and hard to get achievements. You have earned 100 points of creator points'}
-                name='Really Awesome Achievement'
+                open={openAchievementPopUp}
+                handleClose={() => { setAchievement(null) }}
+                icon={achievement ? achievement.icon : null}
+                description={achievement ? achievement.description : null}
+                name={achievement ? achievement.name : null}
             />
         </>
     )
