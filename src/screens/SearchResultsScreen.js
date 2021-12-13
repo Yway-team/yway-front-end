@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Grid, Button, Typography, Stack } from '@mui/material';
+import { Grid, Button, Typography, Stack, CircularProgress } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle, FriendCard } from "../components";
 import { useHistory, useLocation } from 'react-router';
 import { SEARCH } from '../controllers/graphql/feed-queries';
@@ -21,13 +21,21 @@ export default function SearchResultsScreen() {
     let platforms = [];
     let quizzes = [];
     let users = [];
-    const { data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter, skip: 30 * (page - 1) } });  // 30 is the number of items returned per page - todo: handle in back-end
+    const { loading, data, refetch } = useQuery(SEARCH, { variables: { searchString: query, filter: filter, skip: 30 * (page - 1) } });  // 30 is the number of items returned per page - todo: handle in back-end
     let fetchCount = 30;
 
     if (data) {
         platforms = data.search.platforms;
         quizzes = data.search.quizzes;
         users = data.search.users;
+    }
+
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+        );
     }
 
     function ShowPagination(workArr) {

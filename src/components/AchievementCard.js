@@ -22,13 +22,14 @@ import LinesEllipsis from 'react-lines-ellipsis';
 
 
 
-function AchievementCard({ name, description, icon, lastEarned }) {
-
+function AchievementCard({ name, description, icon, lastEarned, count }) {
+    count = count || 1;
     return (
         <Card sx={{ maxWidth: 500, elevation: 0, boxShadow: 'none', height: 120, my: 2, position: 'relative' }}>
             <Grid container direction='row' justifyContent='center' alignItems='center' p={2} >
-                <Grid item xs={2} container>
+                <Grid item xs={2} container sx={{ position: 'relative' }}>
                     <Avatar alt="creator-avatar" src={icon} sx={{ height: 80, width: 80 }} />
+                    {count > 1 ? <Avatar alt="creator-avatar" sx={{ height: 20, width: 20, position: 'absolute', backgroundColor: 'primary.main', bottom: 0 }} > <Typography> {count} </Typography></Avatar> : null}
                 </Grid>
                 <Grid xs={9} item container direction='column' justifyContent='center' alignItems='baseline' sx={{ height: 100, flexWrap: 'none' }} flexGrow={1} ml={4}  >
                     <Grid xs={2} container item direction='row' alignItems='center' justifyContent='space-between'>

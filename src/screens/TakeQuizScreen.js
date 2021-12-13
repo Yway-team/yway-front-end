@@ -174,22 +174,27 @@ export default function TakeQuizScreen({ draftId }) {
     const handleFinishSubmit = async () => {
         if (userRating > 0) {
             rateQuiz({ variables: { quizId: quizId, rating: userRating } });
-
         }
         // let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
         const { data: incrementNumQuizzesData } = await incrementNumQuizzesPlayed();
         if (incrementNumQuizzesData.incrementNumQuizzesPlayed) {
-            const achievement = incrementNumQuizzesData.incrementNumQuizzesPlayed;
-            console.log('EARNED ACHIEVEMENT');  // handle here
+            const achievementIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.achievement;
+            const playPointsIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.achievement;
+            if (achievementIn) {
+                setOpen(false);
+                let achievemenToAdd = { ...achievementIn, playPoints: playPointsIn }
+                setAchievement(achievemenToAdd);
+                console.log('there is achievement')
+                console.log(achievementIn);
+            }
+            else {
+                let newUserData = { ...user };
+                newUserData.playPoints = playPointsIn;
+                globalState(newUserData);
+                history.push(`/platform/${platformName}`);
+            }
         }
-        console.log('new play points');
-        console.log(data.incrementPlayPoints);
-        let newUserData = { ...user };
-        newUserData.playPoints = data.incrementPlayPoints;
-        globalState(newUserData);
-        history.push('/highlights');
     }
-
 
     return (
         <>
@@ -341,11 +346,18 @@ export default function TakeQuizScreen({ draftId }) {
             </Dialog>
             <AchievementPopUp
                 open={achievement != null}
+                sx={{ zIndex: '1000' }}
                 handleClose={() => {
                     setAchievement(null);
                     handleTimerOn();
                 }}
                 beforeCheckItOut={() => {
+                    if (achievement.playPoints) {
+                        let newUserData = { ...user };
+                        newUserData.playPoints = achievement.playPoints;
+                        globalState(newUserData);
+                        history.push(`/platform/${platformName}`);
+                    }
                 }}
                 icon={achievement ? achievement.icon : null}
                 description={achievement ? achievement.description : null}

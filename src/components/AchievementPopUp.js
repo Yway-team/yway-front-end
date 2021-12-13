@@ -15,7 +15,9 @@ export default function AchievementPopUp({ icon, name, description, open, handle
                 <Avatar src={icon} sx={{ height: 100, width: 100, mt: 8, mb: 2 }} />
                 <Typography sx={{ fontSize: 20, fontWeight: 700, color: 'primary.main' }}> {name}</Typography>
                 <Typography textAlign='center' sx={{ fontSize: 14, fontWeight: 500, color: 'grey.500', mt: 1 }}> {description}   </Typography>
-                {streak ? null : <Button variant='contained' sx={{ mt: 7 }}
+                {streak ? <Button variant='contained' sx={{ mt: 7 }}
+                    onClick={handleClose}
+                > CONTINUE</Button> : <Button variant='contained' sx={{ mt: 7 }}
                     onClick={() => {
                         beforeCheckItOut();
                         history.push(`/user/${user._id}/achievements`);
