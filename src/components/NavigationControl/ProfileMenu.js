@@ -99,7 +99,9 @@ function ProfileMenu({ client }) {
                 }}
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}>
-                <MenuItem sx={{ my: 1, py: 5 }}>
+                <MenuItem sx={{ my: 1, py: 5 }} onClick={() => {
+                    history.push('/user');
+                }} >
                     <Avatar sx={{
                         width: 32, height: 32
                     }} src={user.avatar} imgProps={{ style: { borderRadius: '50% ', objectFit: 'fill' } }}></Avatar>
@@ -122,21 +124,24 @@ function ProfileMenu({ client }) {
                     {menuTypography('My platforms')}
                 </MenuItem>
                 <MenuItem onClick={() => {
-                    history.push(`/user/${user._id}/quizzes`);}}>
+                    history.push(`/user/${user._id}/quizzes`);
+                }}>
                     <ListItemIcon>
                         <DynamicFormIcon />
                     </ListItemIcon>
                     {menuTypography('My quizzes')}
                 </MenuItem>
                 <MenuItem onClick={() => {
-                    history.push(`/user/${user._id}/friends`);}}>
+                    history.push(`/user/${user._id}/friends`);
+                }}>
                     <ListItemIcon>
                         <PersonAdd />
                     </ListItemIcon>
                     {menuTypography('Friends')}
                 </MenuItem>
                 <MenuItem onClick={() => {
-                    history.push(`/user/${user._id}/achievements`);}}>
+                    history.push(`/user/${user._id}/achievements`);
+                }}>
                     <ListItemIcon>
                         <EmojiEventsIcon />
                     </ListItemIcon>
