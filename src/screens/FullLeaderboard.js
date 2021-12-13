@@ -117,11 +117,11 @@ export default function FullLeaderboard() {
         <Typography>
           <Grid container justifyContent="center" spacing={2}>
           <Grid item container xs={12} spacing={0} sx={{borderBottom: `1px solid ${platformSummary.color}`,fontWeight: 600, pb: 1, mb: 1, mt:2}}>
-            <Grid item xs={1}>#</Grid>
+            <Grid item xs={1}>Rank</Grid>
             <Grid item xs={7}>User</Grid>
-            <Grid item xs={2} sx={{position:"relative", left:"10px"}}>Score</Grid>
+            <Grid item xs={2} sx={{position:"relative", left:"10px"}}>Number of Quizzes</Grid>
           </Grid>
-          {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <FullLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
+          {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <FullLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>No featured creators.</Grid>}
         </Grid>
         </Typography>
       </Box>}

@@ -29,7 +29,7 @@ export default function DraftsScreen() {
         <Grid container direction="column" sx={{ alignItems: 'center', justifyContent: 'center', p: 2, pl: 10, }}>
             <CommonTitle title='DRAFTS' />
             <Grid container justifyContent='flex-start'>
-                {drafts ? drafts.length === 0 ? <Typography> You don't have any draft quiz.
+                {drafts ? drafts.length === 0 ? <Typography> You don't have any drafts.
                 </Typography> : drafts.map((draft) => {
                     return (<QuizCard key={draft._id} {...draft} refetch={refetchDrafts} draft={true} />);
                 }) : null}

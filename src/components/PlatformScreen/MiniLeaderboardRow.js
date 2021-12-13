@@ -14,7 +14,7 @@ export default function MiniLeaderboardRow({ avatar, score, username, position }
                 {username}
             </Grid>
             <Grid item xs={4} sx={{ color: "lightgray" }}>
-                {score} pts
+                {score}
             </Grid>
         </Grid>
     )

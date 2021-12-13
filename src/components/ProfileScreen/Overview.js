@@ -115,7 +115,7 @@ export default function Overview({ userId }) {
                 </Grid>
                 {quizzes.length > 2 ?
                     <ShowMoreButton expand={expandQuizzes} onClick={toggleExpandQuizzes} /> : null}
-                {quizzes.length === 0 ? <Typography> {`You have no quizzes yet.`} </Typography> : null}
+                {quizzes.length === 0 ? <Typography> {`You have no quizzes.`} </Typography> : null}
                 <CommonTitle title='PLATFORMS' />
                 <Grid container justifyContent='flex-start'>
                     {expandPlatforms ?

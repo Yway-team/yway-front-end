@@ -66,7 +66,7 @@ export default function Friends({ userId, isOwn }) {
                 <CommonTitle title='FRIEND REQUESTS' />
                 <Grid container justifyContent='flex-start' mb={1}>
                     {friendRequests.length === 0 ?
-                        <Typography>No friend requests</Typography> : friendRequests.map((data) => <NotificationCard
+                        <Typography>You have no active friend requests.</Typography> : friendRequests.map((data) => <NotificationCard
                             key={data._id} _id={data._id} icon={data.avatar} name={data.username} type='friend request' />)}
 
                 </Grid>
@@ -74,7 +74,7 @@ export default function Friends({ userId, isOwn }) {
             }
                 <CommonTitle title='FRIENDS' />
                 <Grid container justifyContent='flex-start' mb={1}>
-                    {friends.length === 0 ? <Typography>No friends</Typography> : friends.map((data) => <FriendCard
+                    {friends.length === 0 ? <Typography>You have no friends.</Typography> : friends.map((data) => <FriendCard
                         key={data._id}{...data} />)}
 
                 </Grid></> : <Typography> {`This user's profile is private.`} </Typography>}

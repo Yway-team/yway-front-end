@@ -173,7 +173,7 @@ function QuizCard({
                                     ml: 1,
                                     fontWeight: 500,
                                     color: 'grey.600'
-                                }}> {draft || rating === 0 ? 'No rating yet' : Number(Number.parseFloat(rating).toFixed(2))} </Typography>
+                                }}> {draft || rating === 0 ? 'No rating' : Number(Number.parseFloat(rating).toFixed(2))} </Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
@@ -264,7 +264,7 @@ function QuizCard({
                                     ml: 1,
                                     fontWeight: 500,
                                     color: 'grey.600'
-                                }}> {draft ? 'No rating yet' : rating}</Typography>
+                                }}> {draft ? 'No rating' : rating}</Typography>
                             </Grid>
                             <Grid item xs={6} alignItems='center' justifyContent='flex-end'>
                                 <Typography
