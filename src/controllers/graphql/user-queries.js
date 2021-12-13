@@ -18,6 +18,7 @@ export const GET_USER_INFO = gql`
             username
             bio
             avatar
+            bannerImg
             privacySettings
             playPoints
             creatorPoints
