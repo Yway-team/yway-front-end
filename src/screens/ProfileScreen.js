@@ -148,7 +148,7 @@ export default function ProfileScreen() {
                                 Edit Profile
                             </Button>
                         </Box> :
-                            <Box item sx={{position:"absolute", right:"0px", top:"0px"}}>
+                            <Box item sx={{position:"absolute", right:"0px", top:"0px", zIndex: "10000000"}}>
                                 {
                                     userInfo.friendStatus === 'none' ?
                                         <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
