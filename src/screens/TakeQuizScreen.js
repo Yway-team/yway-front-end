@@ -34,6 +34,7 @@ export default function TakeQuizScreen({ draftId }) {
     const user = globalState();
     var initPlayPoint = user.playPoints ? user.playPoints : 0;
     const [playPoints, setPlayPoints] = useState(initPlayPoint);
+    const [correctAnswers, setCorrectAnswers] = useState(0);
     const [index, setIndex] = useState(0);
     const [enter, setEnter] = useState(true);
     const [open, setOpen] = useState(false);
@@ -131,7 +132,9 @@ export default function TakeQuizScreen({ draftId }) {
 
     const handleAnswer = async (correct) => {
         if (correct) {
+
             const { data } = await incrementStreak();
+            setCorrectAnswers(correctAnswers + 1);
             if (data?.incrementStreak) {
                 console.log(data.incrementStreak);
                 const { achievement, streak, playPoints } = data.incrementStreak;
@@ -295,7 +298,7 @@ export default function TakeQuizScreen({ draftId }) {
                             {/* <Typography textAlign='center' sx={{ fontSize: 17, color: 'common.black', fontWeight: 700 }}> Your Streak </Typography> */}
                             <Avatar sx={{ height: 60, width: 60, mt: 2, marginRight: 15, background: color || 'grey', color: 'white', alignItems: 'center' }}>
                                 <Typography fontSize={18} fontWeight={600}>
-                                    {((playPoints - initPlayPoint) / 10).toString() + ' / ' + (questionList ? questionList.length : 0).toString()}
+                                    {correctAnswers + ' / ' + (questionList ? questionList.length : 0).toString()}
                                 </Typography>
                             </Avatar>
                         </Stack>
