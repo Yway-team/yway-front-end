@@ -103,7 +103,7 @@ export default function FullLeaderboard() {
         </Typography>
         <Typography>
           <Grid container justifyContent="center" spacing={2}>
-          <Grid item container xs={12} spacing={0} sx={{borderBottom: "1px solid lightgray"}}>
+          <Grid item container xs={12} spacing={0} sx={{borderBottom: `1px solid ${platformSummary.color}`,fontWeight: 600, pb: 1, mb: 1, mt:2}}>
             <Grid item xs={1}>#</Grid>
             <Grid item xs={7}>User</Grid>
             <Grid item xs={2} sx={{position:"relative", left:"10px"}}>Score</Grid>
