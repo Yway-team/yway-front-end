@@ -1,6 +1,6 @@
-import { Grid, Avatar, Typography, Stack, LinearProgress, ButtonBase, Slide, Dialog, Button } from '@mui/material';
+import { Grid, Avatar, Typography, Stack, ButtonBase, Slide, Dialog, Button } from '@mui/material';
 import { ReactComponent as Background } from '../images/blop.svg';
-import { Bolt, Visibility, East } from '@mui/icons-material';
+import { Bolt, East } from '@mui/icons-material';
 import { globalState } from '../state/UserState';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
@@ -9,6 +9,7 @@ import { INCREMENT_PLAY_POINTS, INCREMENT_STREAK, RESET_STREAK, INCREMENT_NUM_QU
 import { RATE_QUIZ } from '../controllers/graphql/quiz-mutations';
 import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
+import { AchievementPopUp } from '../components';
 import Timer from '../components/Timer';
 
 export default function TakeQuizScreen({ draftId }) {
@@ -37,6 +38,7 @@ export default function TakeQuizScreen({ draftId }) {
     const [enter, setEnter] = useState(true);
     const [open, setOpen] = useState(false);
     const [userRating, setUserRating] = useState(0);
+    const [achievement, setAchievement] = useState(null);
 
     // const [timerOnOff, setTimerOnOff] = useState(false);
     const timerOnOff = useRef(true)
@@ -129,14 +131,23 @@ export default function TakeQuizScreen({ draftId }) {
 
     const handleAnswer = async (correct) => {
         if (correct) {
-            setPlayPoints(playPoints + 10);
             const { data } = await incrementStreak();
             if (data?.incrementStreak) {
-                const { achievement, streak, playPoints } = data.incrementStreak;
                 console.log(data.incrementStreak);
+                const { achievement, streak, playPoints } = data.incrementStreak;
+
+                if (achievement) {
+                    let toAddAchievement = { ...achievement, streak: streak }
+                    handleTimerOff();
+                    setAchievement(toAddAchievement);
+                }
+                setPlayPoints(playPoints);
+                return true;
             }
+            else { return false; }
         } else {
             await resetStreak();
+            return true;
         }
     }
 
@@ -162,7 +173,7 @@ export default function TakeQuizScreen({ draftId }) {
             rateQuiz({ variables: { quizId: quizId, rating: userRating } });
 
         }
-        let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
+        // let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
         const { data: incrementNumQuizzesData } = await incrementNumQuizzesPlayed();
         if (incrementNumQuizzesData.incrementNumQuizzesPlayed) {
             const achievement = incrementNumQuizzesData.incrementNumQuizzesPlayed;
@@ -234,7 +245,7 @@ export default function TakeQuizScreen({ draftId }) {
                     width: '100%',
                     color: { color },
                 }}>
-                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current} timeLimit={timeLimit}/>
+                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current} timeLimit={timeLimit} />
                 </Stack>
 
             </Stack >
@@ -325,6 +336,19 @@ export default function TakeQuizScreen({ draftId }) {
 
                 </Stack>
             </Dialog>
+            <AchievementPopUp
+                open={achievement != null}
+                handleClose={() => {
+                    setAchievement(null);
+                    handleTimerOn();
+                }}
+                beforeCheckItOut={() => {
+                }}
+                icon={achievement ? achievement.icon : null}
+                description={achievement ? achievement.description : null}
+                name={achievement ? achievement.name : null}
+                streak={achievement ? achievement.streak : null}
+            />
         </>);
 }
 
@@ -370,8 +394,8 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
 
     const handleClick = (index, correct) => {
         console.log('clicked');
-        setClicked(index);
-        handleAnswer(correct);
+        // setClicked(index);
+        handleAnswer(correct).then((ret) => { if (ret) setClicked(index) });
     }
 
 
