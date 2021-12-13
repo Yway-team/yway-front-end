@@ -215,7 +215,7 @@ export default function CreatePlatformScreen() {
                     </Grid>
 
                     <Grid item>
-                        <FormControlLabel label="Only allow current moderators to submit quizzes"
+                        <FormControlLabel label="Only you can submit quizzes to this platform"
                             labelPlacement={"start"} style={{
                                 padding: 0,
                                 marginLeft: 0,
