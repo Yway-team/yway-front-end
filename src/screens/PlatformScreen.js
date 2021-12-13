@@ -173,23 +173,27 @@ export default function PlatformScreen() {
                                 </Box>
                             )}
                     </Grid>
-                    <Grid item xs={open ? 3.3 : 0.4} sx={{ marginTop: "2rem", position: 'relative' }}>
-                        <Button onClick={toggleOpen}
+                    <Grid item xs={open ? 3.3 : 0.4} sx={{ marginTop: "2rem" }}>
+                        <Button onClick={toggleOpen} variant='contained'
                             sx={{
-                                position: 'absolute',
-                                left: open ? -80 : null,
-                                right: open ? null : 80,
-                                top: -4, color: platformSummary.color,
-                                width: 20,
+                                // position: 'absolute',
+                                // left: open ? -80 : null,
+                                // right: open ? null : 80,
+                                // top: -4, 
+                                color: 'common.white',
+                                backgroundColor: platformSummary.color,
+                                my: 1,
                                 "&:hover": {
                                     backgroundColor: platformSummary.color + '20',
+                                    color: platformSummary.color,
 
                                 }
                             }}>
                             {open ?
                                 <KeyboardArrowRightIcon />
                                 : <Stack direction='row' alignItems='center'>
-                                    <KeyboardArrowLeftIcon /> <Typography sx={{ fontWeight: 600, fontSize: 16, }}> Leaderboard </Typography>
+                                    <KeyboardArrowLeftIcon />
+                                    {/* <Typography sx={{ fontWeight: 600, fontSize: 16, }}> Leaderboard </Typography> */}
                                 </Stack>
                             }
                         </Button>
