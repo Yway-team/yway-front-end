@@ -180,7 +180,7 @@ export default function TakeQuizScreen({ draftId }) {
         const { data: incrementNumQuizzesData } = await incrementNumQuizzesPlayed();
         if (incrementNumQuizzesData.incrementNumQuizzesPlayed) {
             const achievementIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.achievement;
-            const playPointsIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.achievement;
+            const playPointsIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.playPoints;
             if (achievementIn) {
                 setOpen(false);
                 let achievemenToAdd = { ...achievementIn, playPoints: playPointsIn }
