@@ -12,7 +12,17 @@ export const CREATE_PLATFORM = gql`
         #     tags: [String]
         #     title: String!
         # }
-        createPlatform(platform: $platform)
+        createPlatform(platform: $platform) {
+            achievement {
+                creatorPointValue
+                description
+                icon
+                lastEarned
+                name
+            }
+            creatorPoints
+            platformId
+        }
     }
 `;
 
