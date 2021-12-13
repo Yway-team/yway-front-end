@@ -33,7 +33,7 @@ function AchievementCard({ name, description, icon, lastEarned, count }) {
                 </Grid>
                 <Grid xs={9} item container direction='column' justifyContent='center' alignItems='baseline' sx={{ height: 100, flexWrap: 'none' }} flexGrow={1} ml={4}  >
                     <Grid xs={2} container item direction='row' alignItems='center' justifyContent='space-between'>
-                        <Typography sx={{ fontSize: 16, fontWeight: 600 }}> {name} </Typography>
+                        <Typography textAlign='center' sx={{ fontSize: 16, fontWeight: 600 }}> {name} </Typography>
                     </Grid>
                     <Grid xs={2} item container sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', fontFamily: "'Montserrat', sans-serif", width: 300, height: 40, overFlow: 'hidden', mt: '8px' }}>
                         <LinesEllipsis
