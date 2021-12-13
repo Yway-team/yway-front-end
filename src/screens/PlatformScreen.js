@@ -102,7 +102,6 @@ export default function PlatformScreen() {
 
     let platformSummary;
     let authorized = false;
-    document.title = platformName
     if (platformData) {
         console.log(platformData)
         platformSummary = platformData.getPlatformSummary;
