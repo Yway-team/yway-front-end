@@ -134,7 +134,7 @@ export default function ProfileScreen() {
                     </Grid>
                     <Box container sx={{ justifyContent: 'space-between', alignItems: 'center', position: "relative" }}>
                         {isOwn ?
-                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2" }}>
+                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2", mt: 1 }}>
                                 <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
                                     onClick={handleClickPrivacySettingsOpen}>
                                     Settings
@@ -143,7 +143,7 @@ export default function ProfileScreen() {
                                     Edit Profile
                                 </Button>
                             </Box> :
-                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2" }}>
+                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2", mt: 1 }}>
                                 {
                                     userInfo.friendStatus === 'none' ?
                                         <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
