@@ -81,6 +81,7 @@ export default function ProfileScreen() {
     const handleRemoveFriend = async () => {
         console.log('handle remove friend');
         removeFriend({ variables: { friendId: userId } });
+        setRemoveFriendOpen(false)
     }
 
     const handleCancelFriendRequest = () => {
