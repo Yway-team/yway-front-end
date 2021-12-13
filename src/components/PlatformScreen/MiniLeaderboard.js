@@ -59,35 +59,35 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
- 
-  const sortingFunction = (a,b) => {
-    return b.secondaryScore-a.secondaryScore
+
+  const sortingFunction = (a, b) => {
+    return b.secondaryScore - a.secondaryScore
   }
-  if (leaderboardEntries){
+  if (leaderboardEntries) {
     leaderboardEntries = leaderboardEntries.slice().sort(sortingFunction)
   }
 
   return (
     <Box sx={{ width: width }}>
       <Box>
-        <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
-          Leaderboards
+        <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+          Leaderboard
         </Typography>
       </Box>
       <Box>
-        <Button onClick={()=>history.push(`/leaderboard/${platformName}`)} sx={{fontSize:"15px", color: "blue", paddingLeft: "0px"}}>
-            View Full Leaderboard &gt;&gt;
+        <Button onClick={() => history.push(`/leaderboard/${platformName}`)} sx={{ fontSize: "15px", color: "blue", paddingLeft: "0px" }}>
+          View Full Leaderboard &gt;&gt;
         </Button>
       </Box>
       <Typography>
-      <Grid container sx={{width}} spacing={2}>
-        <Grid item container xs={12} spacing={0} sx={{borderBottom: "1px solid lightgray"}}>
-          <Grid item xs={1}>#</Grid>
-          <Grid item xs={7}>User</Grid>
-          <Grid item xs={2} sx={{position:"relative", left:"10px"}}>Score</Grid>
+        <Grid container sx={{ width }} spacing={2}>
+          <Grid item container xs={12} spacing={0} sx={{ borderBottom: "1px solid lightgray" }}>
+            <Grid item xs={1}>#</Grid>
+            <Grid item xs={7}>User</Grid>
+            <Grid item xs={2} sx={{ position: "relative", left: "10px" }}>Score</Grid>
+          </Grid>
+          {leaderboardEntries ? leaderboardEntries.map((leaderBoardEntry, i) => { if (i < 10) { return <MiniLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i} /> } }) : <Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
         </Grid>
-        {leaderboardEntries?leaderboardEntries.map((leaderBoardEntry,i)=>{if (i < 10) {return <MiniLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i}/>}}):<Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
-      </Grid>
       </Typography>
     </Box>
   );
