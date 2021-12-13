@@ -175,7 +175,7 @@ export default function ProfileScreen() {
                                 }
                             </Box>}
                     </Box>
-                    {userInfo.privacySettings === "public" || isOwn ?
+                    {userInfo.privacySettings === "public" || userInfo.friendStatus === "friend" || isOwn ?
                         <>
                             <Tabs
                                 value={tab}
