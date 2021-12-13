@@ -139,7 +139,7 @@ export default function ProfileScreen() {
                     </Grid>
                     <Box container sx={{ justifyContent: 'space-between', alignItems: 'center', position:"relative" }}>
                         {isOwn ?
-                        <Box item sx={{position:"absolute", right:"0px", top:"0px"}}>
+                        <Box item sx={{position:"absolute", right:"0px", top:"0px", zIndex: "10000000"}}>
                             <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
                                 onClick={handleClickPrivacySettingsOpen}>
                                 Settings
