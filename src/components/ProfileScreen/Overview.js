@@ -20,10 +20,10 @@ export default function Overview({ userId }) {
         setExpandAchievements(!expandAchievements);
     }
 
-    const [expandHistory, setExpandHistory] = useState(false);
-    function toggleExpandHistory() {
-        setExpandHistory(!expandHistory);
-    }
+    // const [expandHistory, setExpandHistory] = useState(false);
+    // function toggleExpandHistory() {
+    //     setExpandHistory(!expandHistory);
+    // }
 
     const [expandFriends, setExpandFriends] = useState(false);
     function toggleExpandFriends() {
@@ -35,7 +35,7 @@ export default function Overview({ userId }) {
     let quizzes = [];
     let platforms = [];
     let achievements = [];
-    let history = [];
+    // let history = [];
     let friends = [];
     let overView;
     let { data } = useQuery(GET_PROFILE_OVERVIEW, { variables: { userId: userId } })
@@ -49,10 +49,11 @@ export default function Overview({ userId }) {
             platforms = overView.platformsInfo;
             achievements = overView.achievements;
             friends = overView.friendsInfo;
-            history = overView.history;
+            // history = overView.history;
             console.log(overView);
         }
     }
+
     return (
         <Grid container direction='column' sx={{ display: 'flex', justifyContent: 'center', width: '100%', py: 2 }}>
             {overView ? <>
@@ -130,7 +131,7 @@ export default function Overview({ userId }) {
                     </>
                 }
                 {/* history section */}
-                {history.length === 0 ? null :
+                {/*history.length === 0 ? null :
                     <>
                         <CommonTitle title='HISTORY' />
                         <Grid container justifyContent='flex-start' mb={1}>
@@ -140,7 +141,7 @@ export default function Overview({ userId }) {
                         </Grid>
                         {history.length > 2 ?
                             <ShowMoreButton expand={expandHistory} onClick={toggleExpandHistory} /> : null}
-                    </>}
+                    </>*/}
                 {friends.length === 0 ? null :
                     <>
                         <CommonTitle title='FRIENDS' />
@@ -161,115 +162,115 @@ export default function Overview({ userId }) {
 }
 
 
-const achievements = [
-    {
-        _id: 1,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'Some Achievements',
-        description: 'There is a space for everybody. This is an offipage of this company',
-        timestamp: Date.now()
-    },
-    {
-        _id: 2,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'Some Achievements',
-        description: 'There is a space for everybody. This is an offic gsdgfdsfgsdfgdsgfpage of this company',
-        timestamp: Date.now()
-    },
-    {
-        _id: 3,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'Some Achievements',
-        description: 'There is a space for everybody. This is an officifas gsdgfds fgsdfgdsgfpage of this company',
-        timestamp: Date.now()
-    },
-    {
-        _id: 4,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'Some Achievements',
-        description: 'There is a space for everybody. This is an offic gsdgfdsfgsdf gdsgfpage of this company',
-        timestamp: Date.now()
-    }
-];
+// const achievements = [
+//     {
+//         _id: 1,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'Some Achievements',
+//         description: 'There is a space for everybody. This is an offipage of this company',
+//         timestamp: Date.now()
+//     },
+//     {
+//         _id: 2,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'Some Achievements',
+//         description: 'There is a space for everybody. This is an offic gsdgfdsfgsdfgdsgfpage of this company',
+//         timestamp: Date.now()
+//     },
+//     {
+//         _id: 3,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'Some Achievements',
+//         description: 'There is a space for everybody. This is an officifas gsdgfds fgsdfgdsgfpage of this company',
+//         timestamp: Date.now()
+//     },
+//     {
+//         _id: 4,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'Some Achievements',
+//         description: 'There is a space for everybody. This is an offic gsdgfdsfgsdf gdsgfpage of this company',
+//         timestamp: Date.now()
+//     }
+// ];
 
-const history = [
-    {
-        _id: 1,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        first: 'Attemped the quiz of this long and difficult ',
-        link: 'some link',
-        second: ' and scored this much. ',
-        type: 'quiz',
-        timestamp: Date.now()
-    },
-    {
-        _id: 2,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        first: 'Attemped the quiz of this long and difficult ',
-        link: 'some link',
-        second: ' and scored this much. ',
-        type: 'quiz',
-        timestamp: Date.now()
-    },
-    {
-        _id: 3,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        first: 'Attemped the quiz of this long and difficult ',
-        link: 'some link',
-        second: ' and scored this much. ',
-        type: 'quiz',
-        timestamp: Date.now()
-    },
-    {
-        _id: 4,
-        image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        first: 'Attemped the quiz of this long and difficult ',
-        link: 'some link',
-        second: ' and scored this much. ',
-        type: 'quiz',
-        timestamp: Date.now()
-    }
-];
+// const history = [
+//     {
+//         _id: 1,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         first: 'Attemped the quiz of this long and difficult ',
+//         link: 'some link',
+//         second: ' and scored this much. ',
+//         type: 'quiz',
+//         timestamp: Date.now()
+//     },
+//     {
+//         _id: 2,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         first: 'Attemped the quiz of this long and difficult ',
+//         link: 'some link',
+//         second: ' and scored this much. ',
+//         type: 'quiz',
+//         timestamp: Date.now()
+//     },
+//     {
+//         _id: 3,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         first: 'Attemped the quiz of this long and difficult ',
+//         link: 'some link',
+//         second: ' and scored this much. ',
+//         type: 'quiz',
+//         timestamp: Date.now()
+//     },
+//     {
+//         _id: 4,
+//         image: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         first: 'Attemped the quiz of this long and difficult ',
+//         link: 'some link',
+//         second: ' and scored this much. ',
+//         type: 'quiz',
+//         timestamp: Date.now()
+//     }
+// ];
 
-const friends = [
-    {
-        _id: 1,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 2,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 3,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 4,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 5,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 6,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 7,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    },
-    {
-        _id: 8,
-        avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
-        name: 'SoekindoGName123',
-    }
-]
+// const friends = [
+//     {
+//         _id: 1,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 2,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 3,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 4,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 5,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 6,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 7,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     },
+//     {
+//         _id: 8,
+//         avatar: "https://images.pexels.com/photos/858115/pexels-photo-858115.jpeg",
+//         name: 'SoekindoGName123',
+//     }
+// ]
