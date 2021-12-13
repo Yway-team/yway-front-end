@@ -71,7 +71,6 @@ export default function CreateQuizScreen({ draft, edit }) {
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
     const [open, setOpen] = useState(false);
     const [achievement, setAchievement] = useState(null);
-    const openAchievementPopUp = Boolean(achievement);
 
 
     const handleClose = () => {
@@ -526,7 +525,7 @@ export default function CreateQuizScreen({ draft, edit }) {
                 </DialogContentText>
             </Dialog>
             <AchievementPopUp
-                open={openAchievementPopUp}
+                open={achievement != null}
                 handleClose={() => { setAchievement(null); history.push(`/user/${globalState()._id}/quizzes`); }}
                 icon={achievement ? achievement.icon : null}
                 description={achievement ? achievement.description : null}
