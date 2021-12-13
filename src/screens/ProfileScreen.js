@@ -175,7 +175,7 @@ export default function ProfileScreen() {
                                 }
                             </Box>}
                     </Box>
-                    {userInfo.privacySettings === "public" || isOwn ?
+                    {userInfo.privacySettings === "public" || userInfo.friendStatus === "friend" || isOwn ?
                         <>
                             <Tabs
                                 value={tab}
@@ -245,7 +245,10 @@ export default function ProfileScreen() {
                 title='REMOVE FRIEND'
                 content={`Are you sure you want to remove this friend? `}
                 yesText='REMOVE FRIEND'
-                yesCallback={() => { handleRemoveFriend(); }}
+                yesCallback={() => {
+                    setRemoveFriendOpen(false);
+                    handleRemoveFriend();
+                }}
                 noText='CANCEL'
                 noCallback={() => { setRemoveFriendOpen(false); }}
             />

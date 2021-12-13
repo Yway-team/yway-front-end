@@ -23,9 +23,9 @@ export default function Achievements({ userId }) {
             {/*{achievements ? <> </>: <Typography> {`This user's profile is private.`} </Typography>} insert body here when ready*/}
             <CommonTitle title='ACHIEVEMENTS' />
             <Grid container justifyContent='flex-start' mb={1}>
-                {achievements.map((data) => <AchievementCard key={data._id}{...data} />)}
+                {achievements ? achievements.map((data) => <AchievementCard key={data._id}{...data} />) : null}
             </Grid>
-            {achievements.length === 0 ? <Typography> {`You've earned no achievements.`} </Typography> : null}
+            {achievements && achievements.length === 0 ? <Typography> {`You've earned no achievements.`} </Typography> : null}
         </Grid >
     );
 }
