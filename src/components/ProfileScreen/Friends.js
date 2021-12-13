@@ -78,7 +78,6 @@ export default function Friends({ userId, isOwn }) {
                         key={data._id}{...data} />)}
 
                 </Grid></> : <Typography> {`This user's profile is private.`} </Typography>}
-
         </Grid>
     );
 }
