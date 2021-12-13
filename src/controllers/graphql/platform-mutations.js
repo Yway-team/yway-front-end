@@ -26,6 +26,12 @@ export const CREATE_PLATFORM = gql`
     }
 `;
 
+export const DELETE_PLATFORM = gql`
+    mutation DeletePlatform($title: String!) {
+        deletePlatform(title: $title)
+    }
+`;
+
 export const UPDATE_PLATFORM_SETTINGS = gql`
     mutation UpdatePlatformSettings($platformSettings: PlatformSettingsInput!) {
         updatePlatformSettings(platformSettings: $platformSettings) {
