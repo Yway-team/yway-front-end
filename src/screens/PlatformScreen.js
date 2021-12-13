@@ -174,14 +174,27 @@ export default function PlatformScreen() {
                             )}
                     </Grid>
                     <Grid item xs={open ? 3.3 : 0.4} sx={{ marginTop: "2rem", position: 'relative' }}>
-                        <Button onClick={toggleOpen} sx={{ position: 'absolute', left: -80, top: -4 }}>
+                        <Button onClick={toggleOpen}
+                            sx={{
+                                position: 'absolute',
+                                left: open ? -80 : null,
+                                right: open ? null : 80,
+                                top: -4, color: platformSummary.color,
+                                width: 20,
+                                "&:hover": {
+                                    backgroundColor: platformSummary.color + '20',
+
+                                }
+                            }}>
                             {open ?
                                 <KeyboardArrowRightIcon />
-                                : <KeyboardArrowLeftIcon />
+                                : <Stack direction='row' alignItems='center'>
+                                    <KeyboardArrowLeftIcon /> <Typography sx={{ fontWeight: 600, fontSize: 16, }}> Leaderboard </Typography>
+                                </Stack>
                             }
                         </Button>
                         <Box sx={{ display: open ? "block" : "none" }}>
-                            <MiniLeaderboard width="auto" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
+                            <MiniLeaderboard width="auto" platformName={platformName} color={platformSummary.color} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                         </Box>
                     </Grid>
                 </Grid>}
