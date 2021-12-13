@@ -25,8 +25,8 @@ export default function Friends({ userId, isOwn }) {
 
     if (data) {
         console.log(data);
-        friends = data.getUserFriendsInfo.friendsInfo;
-        friendRequests = data.getUserFriendsInfo.friendRequestsInfo;
+        friends = data.getUserFriendsInfo.friendsInfo?data.getUserFriendsInfo.friendsInfo:[];
+        friendRequests = data.getUserFriendsInfo.friendRequestsInfo?data.getUserFriendsInfo.friendsInfo:[];
     }
 
 
