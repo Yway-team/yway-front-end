@@ -27,10 +27,11 @@ export const GET_USER_INFO = gql`
             quizzes
             platforms
             achievements {
+                count
+                lastEarned
                 creatorPointValue
                 description
-                playPointValue
-                createdAt
+                icon
                 name
             }
             history {
@@ -138,10 +139,11 @@ export const GET_PROFILE_OVERVIEW = gql`
             creatorPoints
             playPoints
             achievements {
-                createdAt
+                count
+                lastEarned
                 creatorPointValue
                 description
-                playPointValue
+                icon
                 name
             }
             friendsInfo {
