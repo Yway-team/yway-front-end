@@ -107,12 +107,14 @@ export default function CreatePlatformScreen() {
         };
         const { data } = await createPlatform({ variables: { platform: platformObj } });
         if (data) {
-            const platformId = data.createPlatform;
+            const platformId = data.createPlatform.platformId;
             console.log(`Platform ID: ${platformId}`);
             if (platformId === 'name taken') {
                 setTitleValid(false);
                 setTitleErrorMsg('Platform name is taken. Choose another name.');
             } else {
+                const achievement = data.createPlatform.achievement;  // null if no achievement earned
+                const creatorPoints = data.createPlatform.creatorPoints;
                 history.push(`/user/${globalState()._id}/platforms`);
             }
         }
