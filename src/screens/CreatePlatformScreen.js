@@ -6,9 +6,12 @@ import { CREATE_PLATFORM } from "../controllers/graphql/platform-mutations";
 import TagsInput from "../components/TagsInput";
 import { globalState } from "../state/UserState";
 import { useHistory } from "react-router-dom";
+import { useReactiveVar } from "@apollo/client";
+import { AchievementPopUp } from "../components";
 
 export default function CreatePlatformScreen() {
     const history = useHistory();
+    const user = useReactiveVar(globalState);
     const [createPlatform] = useMutation(CREATE_PLATFORM);
     const [platformName, setPlatformName] = useState('');
     const [platformDescription, setPlatformDescription] = useState('');
@@ -26,6 +29,7 @@ export default function CreatePlatformScreen() {
     const thumbnailImgLabel = 'Thumbnail Image';
     const [titleValid, setTitleValid] = useState(true);
     const [titleErrorMsg, setTitleErrorMsg] = useState('');
+    const [achievement, setAchievement] = useState(null);
     // const platformErrorVar = makeVar({
     //     titleValid: true,
     //     errorMsgs: {title: ''}
@@ -113,9 +117,20 @@ export default function CreatePlatformScreen() {
                 setTitleValid(false);
                 setTitleErrorMsg('Platform name is taken. Choose another name.');
             } else {
-                const achievement = data.createPlatform.achievement;  // null if no achievement earned
+                const achievementIn = data.createPlatform.achievement;  // null if no achievement earned
                 const creatorPoints = data.createPlatform.creatorPoints;
-                history.push(`/user/${globalState()._id}/platforms`);
+                if (achievementIn) {
+                    achievement = { ...achievement, creatorPoints: creatorPoints };
+                    console.log(achievement);
+                    setAchievement({ ...achievement });
+                }
+                else {
+                    let dataToadd = { ...user };
+                    dataToadd.creatorPoints = achievement.creatorPoints;
+                    globalState(dataToadd);
+                    history.push(`/user/${globalState()._id}/platforms`);
+                }
+
             }
         }
     };
@@ -229,6 +244,25 @@ export default function CreatePlatformScreen() {
                 yesCallback={handleSubmit}
                 noText='CANCEL'
                 noCallback={togglePublishConfirmOpen}
+            />
+            <AchievementPopUp
+                open={achievement != null}
+                handleClose={() => {
+                    setAchievement(null);
+                    let dataToadd = { ...user };
+                    dataToadd.creatorPoints = achievement.creatorPoints;
+                    globalState(dataToadd);
+                    history.push(`/user/${globalState()._id}/platforms`);
+                }}
+                beforeCheckItOut={() => {
+                    setAchievement(null);
+                    let dataToadd = { ...user };
+                    dataToadd.creatorPoints = achievement.creatorPoints;
+                    globalState(dataToadd);
+                }}
+                icon={achievement ? achievement.icon : null}
+                description={achievement ? achievement.description : null}
+                name={achievement ? achievement.name : null}
             />
         </>
     )
