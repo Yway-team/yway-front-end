@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { globalState } from '../state/UserState';
 import { useReactiveVar } from '@apollo/client';
 
-export default function AchievementPopUp({ icon, name, description, open, handleClose, checkItOut }) {
+export default function AchievementPopUp({ icon, name, description, open, handleClose }) {
     const history = useHistory();
     const user = useReactiveVar(globalState);
     return (
