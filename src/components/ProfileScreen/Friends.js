@@ -68,7 +68,7 @@ export default function Friends({ userId, isOwn }) {
                 <Grid container justifyContent='flex-start' mb={1}>
                     {friendRequests.length === 0 ?
                         <Typography>No friend requests</Typography> : friendRequests.map((data) => <NotificationCard
-                            key={data._id} _id={data._id} icon={data.avatar} name={data.username} type='friend request small' />)}
+                            key={data._id} _id={data._id} icon={data.avatar} name={data.username} type='friend request' />)}
 
                 </Grid>
             </> : null
