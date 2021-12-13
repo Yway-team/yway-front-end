@@ -15,7 +15,7 @@ export default function Achievements({ userId }) {
     }
     if (data) {
         console.log(data);
-        achievements = data.getUserAchievements.achievements;
+        achievements = data.getUserAchievements;
     }
 
     return (
