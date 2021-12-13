@@ -27,14 +27,6 @@ export const GET_USER_INFO = gql`
             friends
             quizzes
             platforms
-            achievements {
-                count
-                lastEarned
-                creatorPointValue
-                description
-                icon
-                name
-            }
             history {
                 description
                 createdAt

@@ -15,7 +15,6 @@ export const GET_QUIZ_INFO = gql`
             platformName
             platformThumbnail
             rating
-            timeToAnswer
             title
         }
     }
@@ -108,6 +107,7 @@ export const GET_QUIZ_INFO_AND_QUESTION_LIST = gql`
             platformName
             platformThumbnail
             rating
+            timeToAnswer
             title
         }
         getQuestionList(quizId: $quizId)
