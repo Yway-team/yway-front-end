@@ -27,7 +27,7 @@ export default function Header({
 
     const history = useHistory()
     color = color === '' || !color ? '#ff5a1d' : color;
-   
+
     const loggedIn = globalLoggedIn()
 
     return (
@@ -84,24 +84,24 @@ export default function Header({
                                 {platformName}
                             </Typography>
                             <Stack direction='row' alignItems='center' mr={5}>
-                                {authorized&&
-                                <Button variant="text" startIcon={<Settings />} sx={{ mr: 4 }}
-                                onClick={()=>history.push(`/platformSettings/${platformName}`)}
-                                >
-                                    Settings
-                                </Button>}
-                                {loggedIn&&
-                                <FavoriteButton _id={id} title={platformName}/>
+                                {authorized &&
+                                    <Button variant="text" startIcon={<Settings />} sx={{ mr: 4 }}
+                                        onClick={() => history.push(`/platformSettings/${platformName}`)}
+                                    >
+                                        Settings
+                                    </Button>}
+                                {loggedIn &&
+                                    <FavoriteButton _id={id} title={platformName} />
                                 }
-                            </Stack>            
+                            </Stack>
                         </Stack>
                         <Stack direction='row' justifyContent='flex-start' alignItems='center' flexGrow={1} mt={1} spacing={0} >
                             <FavoriteRounded sx={{ fill: color, height: 12, width: 12 }} />
                             <Typography sx={{ fontSize: 15, ml: 1, fontWeight: 500, color: 'grey.600' }}> {favorites} favorites</Typography>
                             <LogoIcon fill={color} style={{ height: 12, width: 12, marginLeft: 40 }} />
                             <Typography sx={{ fontSize: 15, ml: 1, fontWeight: 500, color: 'grey.600' }}> {numQuizzes} quizzes</Typography>
-                            <HelpOutlineOutlined style={{ height: 15, width: 15, marginLeft: 40, fill: color }} />
-                            <Typography sx={{ fontSize: 15, ml: 1, fontWeight: 500, color: 'grey.600' }}> {numQuestions} questions</Typography>
+                            {/* <HelpOutlineOutlined style={{ height: 15, width: 15, marginLeft: 40, fill: color }} />
+                            <Typography sx={{ fontSize: 15, ml: 1, fontWeight: 500, color: 'grey.600' }}> {numQuestions} questions</Typography> */}
                         </Stack>
                         <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', mt: 1 }}> {description} </Typography>
                     </Stack>

@@ -173,15 +173,32 @@ export default function PlatformScreen() {
                                 </Box>
                             )}
                     </Grid>
-                    <Grid item xs={open ? 3.3 : 0.4} sx={{ marginTop: "2rem", position: 'relative' }}>
-                        <Button onClick={toggleOpen} sx={{ position: 'absolute', left: -80, top: -4 }}>
+                    <Grid item xs={open ? 3.3 : 0.4} sx={{ marginTop: "2rem" }}>
+                        <Button onClick={toggleOpen} variant='contained'
+                            sx={{
+                                // position: 'absolute',
+                                // left: open ? -80 : null,
+                                // right: open ? null : 80,
+                                // top: -4, 
+                                color: 'common.white',
+                                backgroundColor: platformSummary.color,
+                                my: 1,
+                                "&:hover": {
+                                    backgroundColor: platformSummary.color + '20',
+                                    color: platformSummary.color,
+
+                                }
+                            }}>
                             {open ?
                                 <KeyboardArrowRightIcon />
-                                : <KeyboardArrowLeftIcon />
+                                : <Stack direction='row' alignItems='center'>
+                                    <KeyboardArrowLeftIcon />
+                                    {/* <Typography sx={{ fontWeight: 600, fontSize: 16, }}> Leaderboard </Typography> */}
+                                </Stack>
                             }
                         </Button>
                         <Box sx={{ display: open ? "block" : "none" }}>
-                            <MiniLeaderboard width="auto" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
+                            <MiniLeaderboard width="auto" platformName={platformName} color={platformSummary.color} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
                         </Box>
                     </Grid>
                 </Grid>}

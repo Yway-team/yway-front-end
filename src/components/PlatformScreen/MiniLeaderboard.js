@@ -1,10 +1,8 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Stack } from '@mui/material';
 import { useHistory } from 'react-router';
 import MiniLeaderboardRow from './MiniLeaderboardRow';
 
@@ -41,7 +39,7 @@ function a11yProps(index) {
   };
 }
 
-export default function MiniLeaderboard({ width, platformName, leaderboardEntries }) {
+export default function MiniLeaderboard({ width, platformName, leaderboardEntries, color }) {
   /*
   leaderboardEntries {
     userId: ID
@@ -69,19 +67,28 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
 
   return (
     <Box sx={{ width: width }}>
-      <Box>
-        <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+      <Stack justifyContent='space-between' direction='row' alignItems='center' mb={3}>
+        <Typography sx={{ fontSize: "20px", fontWeight: "bold", color: 'common.black' }}>
           Leaderboard
         </Typography>
-      </Box>
-      <Box>
-        <Button onClick={() => history.push(`/leaderboard/${platformName}`)} sx={{ fontSize: "15px", color: "blue", paddingLeft: "0px" }}>
-          View Full Leaderboard &gt;&gt;
+        <Button
+          onClick={() => history.push(`/leaderboard/${platformName}`)}
+          sx={{
+            color: color,
+            px: 1,
+            py: 0,
+            mr: 4,
+            "&:hover": {
+              backgroundColor: color + '20',
+              color: color
+            }
+          }}>
+          View Full
         </Button>
-      </Box>
+      </Stack>
       <Typography>
         <Grid container sx={{ width }} spacing={2}>
-          <Grid item container xs={12} spacing={0} sx={{ borderBottom: "1px solid lightgray" }}>
+          <Grid item container xs={12} spacing={0} sx={{ borderBottom: "2px solid lightgray", borderColor: color, fontSize: 14, fontWeight: 600, pb: 1, mb: 1 }}>
             <Grid item xs={1}>#</Grid>
             <Grid item xs={7}>User</Grid>
             <Grid item xs={2} sx={{ position: "relative", left: "10px" }}>Score</Grid>
@@ -89,6 +96,6 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
           {leaderboardEntries ? leaderboardEntries.map((leaderBoardEntry, i) => { if (i < 10) { return <MiniLeaderboardRow key={i} avatar={leaderBoardEntry.avatar} score={leaderBoardEntry.secondaryScore} username={leaderBoardEntry.username} position={i} /> } }) : <Grid item xs={12}>Nobody has played any quizzes yet!</Grid>}
         </Grid>
       </Typography>
-    </Box>
+    </Box >
   );
 }
