@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, CircularProgress } from '@mui/material';
 import { PlatformCard, CommonTitle } from "../components";
 import { useQuery } from '@apollo/client';
 import { GET_TOP_PLATFORMS } from '../controllers/graphql/platform-queries';
@@ -6,8 +6,16 @@ import { GET_TOP_PLATFORMS } from '../controllers/graphql/platform-queries';
 
 
 export default function TopPlatformsScreen() {
-    const { data: platformData } = useQuery(GET_TOP_PLATFORMS, { variables: { howMany: 20 } });
+    const { data: platformData, loading } = useQuery(GET_TOP_PLATFORMS, { variables: { howMany: 20 } });
     let platforms = null;
+
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '60vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+        );
+    }
     if (platformData) {
         platforms = platformData.getTopPlatforms;
     }
