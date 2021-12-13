@@ -239,7 +239,8 @@ export default function CreateQuizScreen({ draft, edit }) {
             tags: quizDetails.tags
             /* other optional props */
         };
-        await createAndPublishQuiz({ variables: { quiz: quizObj } });
+        const { data } = await createAndPublishQuiz({ variables: { quiz: quizObj } });
+        if (data) console.log(data.createAndPublishQuiz);  // extract creatorPoints and achievement (may be undefined) here
         history.push(`/user/${globalState()._id}/quizzes`);
     };
 
