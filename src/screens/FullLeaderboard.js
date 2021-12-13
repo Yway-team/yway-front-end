@@ -99,7 +99,7 @@ export default function FullLeaderboard() {
           &lt;&lt;Return to Platform
         </Button>
         <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
-          Leaderboard
+          Featured Creators
         </Typography>
         <Typography>
           <Grid container justifyContent="center" spacing={2}>
