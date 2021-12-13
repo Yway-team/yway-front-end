@@ -35,7 +35,7 @@ import { setContext } from '@apollo/client/link/context';
 const link = process.env.REACT_APP_NODE_ENV === "development" ? 'http://localhost:4000/graphql' : "https://api.yway.app/graphql";
 
 const httpLink = createHttpLink({
-    uri: link
+    uri: "https://api.yway.app/graphql"
 });
 
 const authLink = setContext(() => {

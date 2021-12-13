@@ -61,6 +61,7 @@ export default function TakeQuizScreen({ draftId }) {
         platformName = quiz.platformName;
         rating = quiz.rating;
         platformThumbnail = quiz.platformThumbnail;
+        timeLimit = quiz.timeToAnswer * 1000;
     }
 
     useEffect(() => {
