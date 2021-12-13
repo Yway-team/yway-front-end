@@ -20,7 +20,6 @@ export default function Friends({ userId, isOwn }) {
             <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
                 <CircularProgress variant='indeterminate' color='primary' />
             </Grid>
-
         );
     }
 
