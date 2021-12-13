@@ -71,6 +71,7 @@ export default function CreateQuizScreen({ draft, edit }) {
     const [gotQuizInfo, setGotQuizInfo] = useState(false);
     const [open, setOpen] = useState(false);
     const [achievement, setAchievement] = useState(null);
+    const [achievementOpen, setAchievementOpen] = useState(false);
 
 
     const handleClose = () => {
@@ -243,16 +244,18 @@ export default function CreateQuizScreen({ draft, edit }) {
         };
         const { data } = await createAndPublishQuiz({ variables: { quiz: quizObj } });
         if (data) {
-            console.log(data);
             const creatorPoints = data.createAndPublishQuiz.creatorPoints;
             const achievement = data.createAndPublishQuiz.achievement;
             console.log(data);
             let dataToadd = { ...user };
             dataToadd.creatorPoints = creatorPoints;
             globalState(dataToadd);
+            setAchievementOpen(true);
             if (achievement) {
                 console.log(achievement);
-                setAchievement(achievement);
+                publishConfirmOpen(false);
+                setAchievement({ ...achievement });
+                setAchievementOpen(true);
             }
             else {
                 history.push(`/user/${globalState()._id}/quizzes`);
@@ -525,8 +528,12 @@ export default function CreateQuizScreen({ draft, edit }) {
                 </DialogContentText>
             </Dialog>
             <AchievementPopUp
-                open={achievement != null}
-                handleClose={() => { setAchievement(null); history.push(`/user/${globalState()._id}/quizzes`); }}
+                open={achievementOpen}
+                handleClose={() => {
+                    setAchievement(null);
+                    setAchievementOpen(false);
+                    history.push(`/user/${globalState()._id}/quizzes`);
+                }}
                 icon={achievement ? achievement.icon : null}
                 description={achievement ? achievement.description : null}
                 name={achievement ? achievement.name : null}
