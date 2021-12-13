@@ -11,6 +11,7 @@ import { useParams, useHistory } from 'react-router';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import { GET_PLATFORM_SUMMARY } from '../controllers/graphql/platform-queries';
 import FullLeaderboardRow from '../components/PlatformScreen/FullLeaderboardRow';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -94,9 +95,21 @@ export default function FullLeaderboard() {
                 authorized={authorized}
             /> : null}
     {platformSummary&&
-      <Box sx={{ width: "80%", mt: "100px", ml: "50px", minHeight: "600px"}}>
-        <Button sx={{fontSize:"20px", color:"blue"}} onClick={returnToPlatform}>
-          &lt;&lt;Return to Platform
+      <Box sx={{ width: "80%", mt: "10px", ml: "50px", minHeight: "600px"}}>
+        <Button
+          onClick={returnToPlatform}
+          sx={{
+            color: platformSummary.color,
+            py: 1,
+            "&:hover": {
+              backgroundColor: platformSummary.color + '20',
+              color: platformSummary.color
+            },
+            fontSize: "20px",
+            ml:"-40px"
+          }}>
+            <KeyboardArrowLeftIcon/>
+          Return to Platform
         </Button>
         <Typography sx={{fontSize:"20px", fontWeight: "bold"}}>
           Featured Creators
