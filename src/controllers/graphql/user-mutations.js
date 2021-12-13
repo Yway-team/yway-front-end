@@ -89,6 +89,7 @@ export const EDIT_PROFILE = gql`
     mutation EditProfile($username: String!, $bio: String, $bannerImgData: String, $avatarData: String) {
         editProfile(username: $username, bio: $bio, bannerImgData: $bannerImgData, avatarData: $avatarData) {
             username
+            bannerImg
             bio
             avatar
         }

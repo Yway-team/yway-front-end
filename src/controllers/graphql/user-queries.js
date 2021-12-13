@@ -18,6 +18,7 @@ export const GET_USER_INFO = gql`
             username
             bio
             avatar
+            bannerImg
             privacySettings
             playPoints
             creatorPoints
@@ -180,6 +181,20 @@ export const GET_PROFILE_OVERVIEW = gql`
                 rating
                 title
             }
+        }
+    }
+`;
+
+export const GET_USER_ACHIEVEMENTS = gql`
+    query GetUserAchievements($userId: ID!) {
+        getUserAchievements(userId: $userId) {
+            count
+            creatorPointValue
+            description
+            icon
+            lastEarned
+            name
+            playPointValue
         }
     }
 `;
