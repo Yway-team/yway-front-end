@@ -103,7 +103,7 @@ export default function ProfileScreen() {
         <>
             <Grid container justifyContent='center' alignItems='center'>
                 <Grid flexDirection='column' sx={{ maxWidth: '1050px' }}>
-                    <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", }}>
+                    <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", width:"1000px", minWidth:"1000px"}}>
                         <img alt='cover' src={userInfo.bannerImg || 'https://cse416-content.s3.us-east-2.amazonaws.com/profile+cover+photo.png'} sx={{ objectFit: 'fill' }} />
                     </Grid>
                     <Grid item container justifyContent='center' flexDirection='column' alignItems='center'>
@@ -135,7 +135,7 @@ export default function ProfileScreen() {
                     </Grid>
                     <Box container sx={{ justifyContent: 'space-between', alignItems: 'center', position: "relative" }}>
                         {isOwn ?
-                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2" }}>
+                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2", mt: 1 }}>
                                 <Button variant="text" startIcon={<Settings />} sx={{ mr: 1 }}
                                     onClick={handleClickPrivacySettingsOpen}>
                                     Settings
@@ -144,7 +144,7 @@ export default function ProfileScreen() {
                                     Edit Profile
                                 </Button>
                             </Box> :
-                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2" }}>
+                            <Box item sx={{ position: "absolute", right: "0px", top: "0px", zIndex: "2", mt: 1 }}>
                                 {
                                     userInfo.friendStatus === 'none' ?
                                         <Button variant="contained" startIcon={<PersonAddAlt1Outlined />} onClick={handleAddFriend}>
@@ -246,7 +246,10 @@ export default function ProfileScreen() {
                 title='REMOVE FRIEND'
                 content={`Are you sure you want to remove this friend? `}
                 yesText='REMOVE FRIEND'
-                yesCallback={() => { handleRemoveFriend(); }}
+                yesCallback={() => {
+                    setRemoveFriendOpen(false);
+                    handleRemoveFriend();
+                }}
                 noText='CANCEL'
                 noCallback={() => { setRemoveFriendOpen(false); }}
             />
