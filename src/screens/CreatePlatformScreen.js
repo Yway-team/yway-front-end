@@ -119,14 +119,14 @@ export default function CreatePlatformScreen() {
             } else {
                 const achievementIn = data.createPlatform.achievement;  // null if no achievement earned
                 const creatorPoints = data.createPlatform.creatorPoints;
+                console.log(data.createPlatform);
                 if (achievementIn) {
-                    achievement = { ...achievement, creatorPoints: creatorPoints };
-                    console.log(achievement);
-                    setAchievement({ ...achievement });
+                    const achievementToAdd = { ...achievementIn, creatorPoints: creatorPoints };
+                    setAchievement(achievementToAdd);
                 }
                 else {
                     let dataToadd = { ...user };
-                    dataToadd.creatorPoints = achievement.creatorPoints;
+                    dataToadd.creatorPoints = creatorPoints;
                     globalState(dataToadd);
                     history.push(`/user/${globalState()._id}/platforms`);
                 }
