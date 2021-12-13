@@ -1,6 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box';
-import { Stack, Grid } from '@mui/material';
+import { Stack, Grid, Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 
 export default function FullLeaderboardRow({avatar, score, username, position}) {
@@ -9,8 +9,8 @@ export default function FullLeaderboardRow({avatar, score, username, position}) 
             <Grid item xs={1} sx={{fontWeight: "bold"}}>
                     {position+1}
             </Grid>
-            <Grid item xs={1}>
-                <img style={{height: "20px"}} src={avatar}/>
+            <Grid item xs={1} sx={{mt:"-5px"}}>
+                <Avatar sx={{ height: 30, width: 30, }} src={avatar} />
             </Grid>
             <Grid item xs={6}>
                     {username}
