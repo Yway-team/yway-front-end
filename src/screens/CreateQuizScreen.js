@@ -245,15 +245,18 @@ export default function CreateQuizScreen({ draft, edit }) {
         const { data } = await createAndPublishQuiz({ variables: { quiz: quizObj } });
         if (data) {
             const creatorPoints = data.createAndPublishQuiz.creatorPoints;
-            const achievement = data.createAndPublishQuiz.achievement;
+            let achievement = data.createAndPublishQuiz.achievement;
             console.log(data);
             let dataToadd = { ...user };
             dataToadd.creatorPoints = creatorPoints;
             globalState(dataToadd);
             setAchievementOpen(true);
+            achievement = {
+                description: 'This is description'
+            }
             if (achievement) {
                 console.log(achievement);
-                publishConfirmOpen(false);
+                setPublishConfirmOpen(false);
                 setAchievement({ ...achievement });
                 setAchievementOpen(true);
             }
@@ -521,7 +524,8 @@ export default function CreateQuizScreen({ draft, edit }) {
                 noText='CANCEL'
                 noCallback={togglePublishConfirmOpen}
             />
-            <Dialog open={open}
+            <Dialog
+                open={open}
                 onClose={handleClose}>
                 <DialogContentText id="alert-dialog-title" sx={{ padding: 4 }}>
                     Quizzes can only have a maximum of 100 questions.
