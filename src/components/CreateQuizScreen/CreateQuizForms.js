@@ -102,6 +102,7 @@ export default function CreateQuizForms({ numQuestions, updateNumQuestions, hand
 
         <Grid item>
             {!edit ? <><PlatformSearchTextField label={"Platform"} value={quizDetails.platformName}
+                defaultValue={quizDetails.platformName}
                 error={!formErrors.platformValid}
                 helperText={formErrors.errorMsgs.platform}
                 setCanPublish={handleShowCanPublishError} /> {!formErrors.canPublishValid ?
@@ -301,6 +302,7 @@ function PlatformSearchTextField({
                 {label}
             </Typography>
             <Autocomplete
+                value={value}
                 id="platform search"
                 sx={{ width: 300 }}
                 open={open}
