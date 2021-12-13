@@ -184,3 +184,17 @@ export const GET_PROFILE_OVERVIEW = gql`
         }
     }
 `;
+
+export const GET_USER_ACHIEVEMENTS = gql`
+    query GetUserAchievements($userId: ID!) {
+        getUserAchievements(userId: $userId) {
+            count
+            creatorPointValue
+            description
+            icon
+            lastEarned
+            name
+            playPointValue
+        }
+    }
+`;
