@@ -8,7 +8,7 @@ import { Overview, Achievements, Friends, History, MyQuizzes, MyPlatforms, Confi
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { GET_USER_INFO } from '../controllers/graphql/user-queries';
 import { globalState } from "../state/UserState";
-import { SEND_FRIEND_REQUEST, ACCEPT_FRIEND_REQUEST, DECLINE_FRIEND_REQUEST } from "../controllers/graphql/user-mutations";
+import { SEND_FRIEND_REQUEST, ACCEPT_FRIEND_REQUEST, DECLINE_FRIEND_REQUEST, REMOVE_FRIEND } from "../controllers/graphql/user-mutations";
 
 export default function ProfileScreen() {
     const { userId } = useParams();
@@ -29,6 +29,7 @@ export default function ProfileScreen() {
     const [sendFriendRequest] = useMutation(SEND_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
     const [acceptFriendRequest] = useMutation(ACCEPT_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
     const [declineFriendRequest] = useMutation(DECLINE_FRIEND_REQUEST, { variables: { receiverId: userId }, refetchQueries: [GET_USER_INFO] });
+    const [removeFriend] = useMutation(REMOVE_FRIEND, { variables: { friendId: userId }, refetchQueries: [GET_USER_INFO] });
     let userInfo = null;
     if (loading) {
         return (
@@ -76,8 +77,9 @@ export default function ProfileScreen() {
         declineFriendRequest({ variables: { senderId: userId } });
     }
 
-    const handleRemoveFriend = () => {
-
+    const handleRemoveFriend = async () => {
+        console.log('handle remove friend');
+        removeFriend({ variables: { friendId: userId } });
     }
 
     const handleCancelFriendRequest = () => {
@@ -246,7 +248,7 @@ export default function ProfileScreen() {
                 title='REMOVE FRIEND'
                 content={`Are you sure you want to remove this friend? `}
                 yesText='REMOVE FRIEND'
-                yesCallback={handleRemoveFriend}
+                yesCallback={() => { handleRemoveFriend(); }}
                 noText='CANCEL'
                 noCallback={() => { setRemoveFriendOpen(false); }}
             />

@@ -25,7 +25,7 @@ export default function NotificationCard({ _id, type, name, icon, createdAt, han
                             borderColor: 'common.white'
                         }}
                         imgProps={{ style: { borderRadius: '50%', objectFit: 'fill' } }} />
-                    <Stack direction={"column"} spacing={1}>
+                    <Stack direction={"column"} spacing={1} justifyContent='center'>
                         {
                             type === 'friend request' ?
                                 <Typography>

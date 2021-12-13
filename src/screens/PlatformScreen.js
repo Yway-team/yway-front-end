@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Grid, Stack, Avatar, Box, Button, CircularProgress } from '@mui/material'
 import MiniLeaderboard from '../components/PlatformScreen/MiniLeaderboard'
 import { QuizCard } from '../components';
@@ -112,7 +112,7 @@ export default function PlatformScreen() {
     // Collapse and Expand the Mini Leaderboard
     const [open, setOpen] = useState(true)
     const toggleOpen = () => {
-        setOpen(prev=>!prev)
+        setOpen(prev => !prev)
     }
 
     return (
@@ -129,14 +129,14 @@ export default function PlatformScreen() {
                 id={platformSummary._id}
                 authorized={authorized}
             /> : null}
-            {platformSummary&&
-            <Grid container spacing={0}>
-                {/* <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
+            {platformSummary &&
+                <Grid container spacing={0}>
+                    {/* <Button sx={{ position: "absolute", right: "10px", bottom: "10px" }} onClick={gotoPlatformSettings} >
                             <SettingsIcon sx={{ color: "white" }} />
                         </Button>
                         {platformSummary ? <FavoriteButton _id={platformSummary._id} title={platformName} sx={{ position: "absolute", right: "50px", bottom: "10px" }} /> : <></>} */}
 
-                {/* <Box style={{ backgroundColor: "#ededed" }}>
+                    {/* <Box style={{ backgroundColor: "#ededed" }}>
                         <Stack sx={{ padding: "2rem", marginLeft: "35%" }} direction="row" spacing={5}>
                             <Box style={{ whiteSpace: "nowrap" }}>
                                 <Typography>
@@ -155,33 +155,36 @@ export default function PlatformScreen() {
                             </Box>
                         </Stack>
                     </Box> */}
-                {/* <Box style={{ minHeight: "30px", margin: "30px" }}>
+                    {/* <Box style={{ minHeight: "30px", margin: "30px" }}>
                         <Typography>
                             {platformSummary ? platformSummary.description : ""}
                         </Typography>
                     </Box> */}
 
-                <Grid item container xs={open?8.7:11.6} spacing={0} mt='1rem'>
-                    {platformSummary &&
-                        (platformSummary.quizzesInfo.length ?
-                            platformSummary.quizzesInfo.map((data) =>
-                                <ModeratorQuizCard authorized={authorized} key={data._id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
-                            <Box sx={{ marginTop: "100px", marginLeft: "100px" }} key={1}>
-                                <Typography sx={{ width: 250 }}>
-                                    No Quizzes to Display
-                                </Typography>
-                            </Box>
-                        )}
-                </Grid>
-                <Grid item xs={open?3.3:0.4} sx={{ marginTop: "2rem" }}>
-                    <Button onClick={toggleOpen}>
-                        {open?<><KeyboardArrowRightIcon/>Collapse</>:<KeyboardArrowLeftIcon/>}
-                    </Button>
-                    <Box sx={{display: open?"block": "none"}}>
-                        <MiniLeaderboard width="auto" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null}/>
-                    </Box>
-                </Grid>
-            </Grid>}
+                    <Grid item container xs={open ? 8.7 : 11.6} spacing={0} mt='1rem'>
+                        {platformSummary &&
+                            (platformSummary.quizzesInfo.length ?
+                                platformSummary.quizzesInfo.map((data) =>
+                                    <ModeratorQuizCard authorized={authorized} key={data._id} {...data} platformId={platformSummary._id} refetch={refetch} />) :
+                                <Box sx={{ marginTop: "100px", marginLeft: "100px" }} key={1}>
+                                    <Typography sx={{ width: 250 }}>
+                                        No Quizzes to Display
+                                    </Typography>
+                                </Box>
+                            )}
+                    </Grid>
+                    <Grid item xs={open ? 3.3 : 0.4} sx={{ marginTop: "2rem", position: 'relative' }}>
+                        <Button onClick={toggleOpen} sx={{ position: 'absolute', left: -80, top: -4 }}>
+                            {open ?
+                                <KeyboardArrowRightIcon />
+                                : <KeyboardArrowLeftIcon />
+                            }
+                        </Button>
+                        <Box sx={{ display: open ? "block" : "none" }}>
+                            <MiniLeaderboard width="auto" platformName={platformName} leaderboardEntries={platformSummary ? platformSummary.leaderboardEntries : null} />
+                        </Box>
+                    </Grid>
+                </Grid>}
 
         </>
     )
