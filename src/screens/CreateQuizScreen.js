@@ -258,8 +258,7 @@ export default function CreateQuizScreen({ draft, edit }) {
                 setAchievementOpen(true);
             }
             else {
-
-                // history.push(`/user/${globalState()._id}/quizzes`);
+                history.push(`/user/${globalState()._id}/quizzes`);
             }
         }
 
