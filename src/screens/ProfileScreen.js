@@ -180,7 +180,7 @@ export default function ProfileScreen() {
                                 }
                             </Box>}
                     </Box>
-                    {userInfo.privacySettings === "public"?
+                    {userInfo.privacySettings === "public" || isOwn?
                     <>
                     <Tabs
                             value={tab}
