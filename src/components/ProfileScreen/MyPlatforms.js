@@ -1,13 +1,22 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, CircularProgress } from '@mui/material';
 import { CommonTitle, PlatformCard } from '..';
 import { GET_USER_PLATFORMS_INFO } from '../../controllers/graphql/user-queries';
 import usePrivilegedQuery from '../../hooks/usePrivilegedQuery';
 
 export default function MyPlatforms({ userId, isOwn, username }) {
-    const { data: platformData } = usePrivilegedQuery(GET_USER_PLATFORMS_INFO, { variables: { userId: userId } });
+    const { data: platformData, loading } = usePrivilegedQuery(GET_USER_PLATFORMS_INFO, { variables: { userId: userId } });
     let platforms = [];
     if (platformData) {
         platforms = platformData.getUserPlatformsInfo;
+    }
+
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+
+        );
     }
 
     return (

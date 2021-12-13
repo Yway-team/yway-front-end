@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Grid } from '@mui/material';
+import { Grid, CircularProgress } from '@mui/material';
 import { QuizCard, PlatformCard, CommonTitle } from "../components";
 import { GET_QUIZ_HIGHLIGHTS } from '../controllers/graphql/quiz-queries';
 import { GET_PLATFORM_HIGHLIGHTS } from '../controllers/graphql/platform-queries';
@@ -8,9 +8,18 @@ import { GET_PLATFORM_HIGHLIGHTS } from '../controllers/graphql/platform-queries
 
 export default function HighlightsScreen() {
     const { data: quizData, refetch: refetchQuizzes } = useQuery(GET_QUIZ_HIGHLIGHTS, { variables: { howMany: 10 } });
-    const { data: platformData } = useQuery(GET_PLATFORM_HIGHLIGHTS, { variables: { howMany: 10 } });
+    const { data: platformData, loading } = useQuery(GET_PLATFORM_HIGHLIGHTS, { variables: { howMany: 10 } });
     let quizzes = null;
     let platforms = null;
+
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '60vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+        );
+    }
+
     if (quizData) {
         quizzes = quizData.getQuizHighlights;
     }

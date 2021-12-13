@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Grid, Typography } from '@mui/material';
-import { CommonTitle, AchievementCard, ShowMoreButton, HistoryCard, FriendCard, QuizCard, PlatformCard } from '..';
+import { Grid, Typography, CircularProgress } from '@mui/material';
+import { CommonTitle, AchievementCard, ShowMoreButton, FriendCard, QuizCard, PlatformCard } from '..';
 import { TungstenRounded, Bolt } from '@mui/icons-material';
 import { GET_PROFILE_OVERVIEW } from '../../controllers/graphql/user-queries';
 import { useQuery } from '@apollo/client';
@@ -38,7 +38,15 @@ export default function Overview({ userId }) {
     // let history = [];
     let friends = [];
     let overView;
-    let { data } = useQuery(GET_PROFILE_OVERVIEW, { variables: { userId: userId } })
+    let { data, loading } = useQuery(GET_PROFILE_OVERVIEW, { variables: { userId: userId } })
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+
+        );
+    }
     if (data) {
         console.log('overview data');
         overView = data.getProfileOverview;
@@ -114,7 +122,7 @@ export default function Overview({ userId }) {
                         platforms.map((data) => <PlatformCard key={data._id}{...data} />) :
                         platforms.slice(0, 2).map((data) => <PlatformCard key={data._id}{...data} />)}
                 </Grid>
-                {quizzes.length > 2 ?
+                {platforms.length > 2 ?
                     <ShowMoreButton expand={expandPlatforms} onClick={toggleExpandPlatforms} /> : null}
                 {platforms.length === 0 ? <Typography> {`You have no platforms.`} </Typography> : null}
                 {/* //Achievements section  */}

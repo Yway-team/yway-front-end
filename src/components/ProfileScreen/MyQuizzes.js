@@ -1,11 +1,19 @@
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, CircularProgress } from '@mui/material';
 import { CommonTitle, QuizCard } from '..';
 import { GET_USER_QUIZZES_INFO } from '../../controllers/graphql/user-queries';
 import usePrivilegedQuery from '../../hooks/usePrivilegedQuery';
 
 export default function MyQuizzes({ userId, isOwn, username }) {
-    const { data: quizData, refetch } = usePrivilegedQuery(GET_USER_QUIZZES_INFO, { variables: { userId: userId } });
+    const { data: quizData, refetch, loading } = usePrivilegedQuery(GET_USER_QUIZZES_INFO, { variables: { userId: userId } });
     let quizzes = [];
+    if (loading) {
+        return (
+            <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
+                <CircularProgress variant='indeterminate' color='primary' />
+            </Grid>
+
+        );
+    }
     if (quizData) {
         quizzes = quizData.getUserQuizzesInfo;
     }

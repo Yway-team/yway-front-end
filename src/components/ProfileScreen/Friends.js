@@ -20,14 +20,13 @@ export default function Friends({ userId, isOwn }) {
             <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
                 <CircularProgress variant='indeterminate' color='primary' />
             </Grid>
-
         );
     }
 
     if (data) {
         console.log(data);
-        friends = data.getUserFriendsInfo.friendsInfo;
-        friendRequests = data.getUserFriendsInfo.friendRequestsInfo;
+        friends = data.getUserFriendsInfo.friendsInfo ? data.getUserFriendsInfo.friendsInfo : [];
+        friendRequests = data.getUserFriendsInfo.friendRequestsInfo ? data.getUserFriendsInfo.friendsInfo : [];
     }
 
 
@@ -39,7 +38,7 @@ export default function Friends({ userId, isOwn }) {
                 }
             }}>
             {friends ? <>{isOwn ? <>
-                <Paper
+                {/* <Paper
                     elevation={0}
                     component="form"
                     sx={{
@@ -63,7 +62,7 @@ export default function Friends({ userId, isOwn }) {
                     <IconButton type="submit" sx={{ p: '3px' }} aria-label="search">
                         <SearchRounded sx={{ fill: theme.palette.grey['500'] }} />
                     </IconButton>
-                </Paper>
+                </Paper> */}
                 <CommonTitle title='FRIEND REQUESTS' />
                 <Grid container justifyContent='flex-start' mb={1}>
                     {friendRequests.length === 0 ?
