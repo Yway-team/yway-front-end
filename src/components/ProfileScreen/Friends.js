@@ -20,7 +20,6 @@ export default function Friends({ userId, isOwn }) {
             <Grid container justifyContent='center' alignItems='center' sx={{ height: '40vh', width: '100%' }}>
                 <CircularProgress variant='indeterminate' color='primary' />
             </Grid>
-
         );
     }
 
@@ -38,7 +37,7 @@ export default function Friends({ userId, isOwn }) {
                     '& svg': { fill: theme.palette.primary.main }
                 }
             }}>
-            {isOwn ? <>
+            {friends ? <>{isOwn ? <>
                 <Paper
                     elevation={0}
                     component="form"
@@ -73,12 +72,13 @@ export default function Friends({ userId, isOwn }) {
                 </Grid>
             </> : null
             }
-            <CommonTitle title='FRIENDS' />
-            <Grid container justifyContent='flex-start' mb={1}>
-                {friends.length === 0 ? <Typography>No friends</Typography> : friends.map((data) => <FriendCard
-                    key={data._id}{...data} />)}
+                <CommonTitle title='FRIENDS' />
+                <Grid container justifyContent='flex-start' mb={1}>
+                    {friends.length === 0 ? <Typography>No friends</Typography> : friends.map((data) => <FriendCard
+                        key={data._id}{...data} />)}
 
-            </Grid>
+                </Grid></> : <Typography> {`This user's profile is private.`} </Typography>}
+
         </Grid>
     );
 }
