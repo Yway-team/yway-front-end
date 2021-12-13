@@ -45,7 +45,7 @@ export default function ProfileScreen() {
     if (data) {
         userInfo = data.getUserInfo;
         console.log(userInfo)
-        console.log('friend status ' + userInfo.friendStatus);
+        // console.log('friend status ' + userInfo.friendStatus);
     }
 
     const handleClickPrivacySettingsOpen = () => {
@@ -103,7 +103,7 @@ export default function ProfileScreen() {
         <>
             <Grid container justifyContent='center' alignItems='center'>
                 <Grid flexDirection='column' sx={{ maxWidth: '1050px' }}>
-                    <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", width:"1000px", minWidth:"1000px"}}>
+                    <Grid container justifyContent='center' sx={{ height: "150px", overflow: "hidden", width: "1000px", minWidth: "1000px" }}>
                         <img alt='cover' src={userInfo.bannerImg || 'https://cse416-content.s3.us-east-2.amazonaws.com/profile+cover+photo.png'} sx={{ objectFit: 'fill' }} />
                     </Grid>
                     <Grid item container justifyContent='center' flexDirection='column' alignItems='center'>
