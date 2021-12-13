@@ -69,7 +69,7 @@ export default function MiniLeaderboard({ width, platformName, leaderboardEntrie
     <Box sx={{ width: width }}>
       <Stack justifyContent='space-between' direction='row' alignItems='center' mb={3}>
         <Typography sx={{ fontSize: "20px", fontWeight: "bold", color: 'common.black' }}>
-          Leaderboard
+        Featured Creators
         </Typography>
         <Button
           onClick={() => history.push(`/leaderboard/${platformName}`)}
