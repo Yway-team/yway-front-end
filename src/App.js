@@ -1,3 +1,4 @@
+import React, {useRef} from "react";
 import {
     ApolloClient,
     InMemoryCache,
@@ -108,6 +109,11 @@ export default function App() {
     const loggedIn = useReactiveVar(globalLoggedIn);
     const user = useReactiveVar(globalState);
     const userId = user?._id;
+
+    // Hacky solution
+    var timeLimit = 20 * 1000;
+    const timeLeft = useRef(timeLimit)
+
     return (
         <ApolloProvider client={client}>
             <ThemeProvider theme={theme}>
@@ -133,7 +139,7 @@ export default function App() {
                                 <CreateQuizScreen edit={true} />
                             </Route>
                             <Route exact path="/quiz/take/:quizId">
-                                <TakeQuizScreen />
+                                <TakeQuizScreen timeLeft={timeLeft}/>
                             </Route>
                             <Route exact path="/platform/create">
                                 <CreatePlatformScreen />
