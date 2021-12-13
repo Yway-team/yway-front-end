@@ -10,8 +10,7 @@ import {
     ListItemIcon,
     Button,
     Grid,
-    Paper,
-    InputBase,
+    ButtonBase,
     ListItemAvatar,
     Avatar
 } from '@mui/material';
@@ -202,7 +201,9 @@ function NavigationControl(props) {
                                         <Menu sx={{ fill: theme.palette.grey['500'] }} />
                                 }
                             </IconButton>
-                            <img src={logo} style={{ height: 36 }} alt={"logo"} />
+                            <ButtonBase onClick={() => history.push('/highlights')}>
+                                <img src={logo} style={{ height: 36 }} alt={"logo"} />
+                            </ButtonBase>
                         </Grid>
                         <Grid container item xs={5} alignItems='center' justifyContent='center' sx={{
                             [`&:focus-within`]: {

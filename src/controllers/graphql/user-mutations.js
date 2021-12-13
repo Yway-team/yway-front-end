@@ -131,3 +131,37 @@ export const SET_READ_NOTIFICATIONS = gql`
         }
     }
 `;
+
+export const INCREMENT_STREAK = gql`
+    mutation IncrementStreak {
+        incrementStreak {
+            playPoints
+            streak
+            achievement {
+                description
+                icon
+                lastEarned
+                name
+                playPointValue
+            }
+        }
+    }
+`;
+
+export const RESET_STREAK = gql`
+    mutation ResetStreak {
+        resetStreak
+    }
+`;
+
+export const INCREMENT_NUM_QUIZZES_PLAYED = gql`
+    mutation IncrementNumQuizzesPlayed {
+        incrementNumQuizzesPlayed {
+            description
+            icon
+            lastEarned
+            name
+            playPointValue
+        }
+    }
+`;

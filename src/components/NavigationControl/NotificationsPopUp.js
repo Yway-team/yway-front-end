@@ -50,7 +50,7 @@ function NotificationsPopUp() {
     if (notifications) {
         unreadNotis = notifications.filter((noti) => noti.unread);
         readNotis = notifications.filter((noti) => !noti.unread);
-
+        console.log(notifications)
     }
 
 

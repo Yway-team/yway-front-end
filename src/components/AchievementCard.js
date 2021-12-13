@@ -15,50 +15,46 @@ import LinesEllipsis from 'react-lines-ellipsis';
 // Achievement {
 //     name: String,
 //         description: String,
-//             image: Binary data,
+//             icon: Binary data,
 //                 playPointValue: Int,
 //                     creatorPointValue: Int
 // }
 
 
 
-function AchievementCard({ name, description, image, createdAt }) {
+function AchievementCard({ name, description, icon, lastEarned }) {
 
     return (
         <Card sx={{ maxWidth: 500, elevation: 0, boxShadow: 'none', height: 120, my: 2, position: 'relative' }}>
-            <CardActionArea >
-                <CardContent >
-                    <Grid container direction='row' justifyContent='flex-start' alignItems='center' >
-                        <Grid item xs={2} container pb={1} >
-                            <Avatar alt="creator-avatar" src={image} sx={{ height: 80, width: 80 }} />
-                        </Grid>
-                        <Grid xs={9} item container direction='column' justifyContent='flex-start' alignItems='baseline' sx={{ height: 100, flexWrap: 'none' }} flexGrow={1} ml={4} >
-                            <Grid xs={2} container item direction='row' alignItems='center' justifyContent='space-between'>
-                                <Typography sx={{ fontSize: 16, fontWeight: 600 }}> {name} </Typography>
-                            </Grid>
-                            <Grid xs={2} item container sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', fontFamily: "'Montserrat', sans-serif", width: 300, height: 40, overFlow: 'hidden', mt: '8px' }}>
-                                <LinesEllipsis
-                                    text={description}
-                                    maxLine='2'
-                                    ellipsis='...'
-                                    trimRight
-                                    basedOn='letters'
-                                    component='p'
-                                />
-                            </Grid>
-                            <Grid xs={2} item>
-                                <Typography sx={{ fontSize: 12, mt: 1, fontWeight: 600, color: 'primary.main', textAlign: 'right' }}> <TimeAgoFromNow dateIn={createdAt} /> </Typography>
-                            </Grid>
+            <Grid container direction='row' justifyContent='center' alignItems='center' p={2} >
+                <Grid item xs={2} container>
+                    <Avatar alt="creator-avatar" src={icon} sx={{ height: 80, width: 80 }} />
+                </Grid>
+                <Grid xs={9} item container direction='column' justifyContent='center' alignItems='baseline' sx={{ height: 100, flexWrap: 'none' }} flexGrow={1} ml={4}  >
+                    <Grid xs={2} container item direction='row' alignItems='center' justifyContent='space-between'>
+                        <Typography sx={{ fontSize: 16, fontWeight: 600 }}> {name} </Typography>
+                    </Grid>
+                    <Grid xs={2} item container sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600', fontFamily: "'Montserrat', sans-serif", width: 300, height: 40, overFlow: 'hidden', mt: '8px' }}>
+                        <LinesEllipsis
+                            text={description}
+                            maxLine='2'
+                            ellipsis='...'
+                            trimRight
+                            basedOn='letters'
+                            component='p'
+                        />
+                    </Grid>
+                    <Grid xs={2} item>
+                        <Typography sx={{ fontSize: 12, mt: 1, fontWeight: 600, color: 'primary.main', textAlign: 'right' }}> <TimeAgoFromNow dateIn={Date.parse(lastEarned)} /> </Typography>
+                    </Grid>
 
-                            {/* <Grid xs={2} sm={5} item container flexDirection='row' justifyContent='flex-start' alignItems='center' flexGrow={1} spacing={0}>
+                    {/* <Grid xs={2} sm={5} item container flexDirection='row' justifyContent='flex-start' alignItems='center' flexGrow={1} spacing={0}>
                                 <Box sx={{ textOverflow: "elipsis", height: 40, width: 400, overflow: 'hidden', mt: '8px' }}> <Typography sx={{ fontSize: 14, fontWeight: 500, color: 'grey.600' }}> {description}</Typography> </Box>
 
 
                             </Grid> */}
-                        </Grid>
-                    </Grid>
-                </CardContent>
-            </CardActionArea>
+                </Grid>
+            </Grid>
             {/* <Button
                 variant='contained'
 
