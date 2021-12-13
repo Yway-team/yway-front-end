@@ -8,11 +8,13 @@ import ImageUpload from '../components/ImageUpload'
 import TagsInput from '../components/TagsInput';
 import {GET_PLATFORM_SETTINGS} from '../controllers/graphql/platform-queries';
 import {useMutation} from '@apollo/client';
-import {UPDATE_PLATFORM_SETTINGS} from '../controllers/graphql/platform-mutations';
+import {DELETE_PLATFORM, UPDATE_PLATFORM_SETTINGS} from '../controllers/graphql/platform-mutations';
 import usePrivilegedQuery from '../hooks/usePrivilegedQuery';
 import {useHistory} from 'react-router';
 import LoadedModal from '../components/PlatformScreen/LoadedModal'
 import CircularProgress from '@mui/material/CircularProgress';
+import {RATE_QUIZ} from "../controllers/graphql/quiz-mutations";
+import {globalState} from "../state/UserState";
 
 let defaultImages = {
     thumbnailImg: "https://cse416-content.s3.us-east-2.amazonaws.com/thumbnail.png",
@@ -44,7 +46,7 @@ export default function PlatformSettings() {
         console.log("updated platformSettings")
         console.log(platformSettingsData.getPlatformSettings)
         setLoading(false)
-        if (platformSettingsData.getPlatformSettings){
+        if (platformSettingsData.getPlatformSettings) {
             setEffectiveSettings({...platformSettingsData.getPlatformSettings, updated: true})
         }
     }
@@ -139,6 +141,14 @@ export default function PlatformSettings() {
     const handleClose = () => {
         setPublishConfirmOpen(false)
     }
+    const [deletePlatform] = useMutation(DELETE_PLATFORM, {variables: {title: platformName}});
+    const [deletePlatformConfirmOpen, setDeletePlatformConfirmOpen] = useState(false);
+    const handleDeletePlatform = async () => {
+        const {data} = await deletePlatform({variables: {title: platformName}});
+        if(data){
+            console.log(data)
+        }
+    }
 
     return (
         <>
@@ -191,111 +201,122 @@ export default function PlatformSettings() {
                 }}>
                 </Box>
             </div>
-            <Box sx={{marginLeft: "50%", marginTop:"100px", display: loading?"":"none"}}>
+            <Box sx={{marginLeft: "50%", marginTop: "100px", display: loading ? "" : "none"}}>
                 <CircularProgress/>
             </Box>
-            {platformSettingsData&&platformSettingsData.getPlatformSettings?
-            <Stack sx={{width: "100%", marginLeft: "4rem", marginTop: "4rem", minHeight: "700px", display: loading?"none":""}} spacing={4}>
-                <Stack spacing={2}>
-                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
-                        Platform Settings
-                    </FormLabel>
-                    <LabelTextField label={"Platform Name"} value={effectiveSettings.title}
-                                    disabled onChange={(e) => {
-                        /*setEffectiveSettings(prev=>{
-                            return {...prev, title: e.target.value}
-                        })*/
-                    }}/>
-                    <LabelTextField label={"Description"} variant={"outlined"} multiline={true}
-                                    value={effectiveSettings.description}
-                                    onChange={(e) => {
-                                        setEffectiveSettings(prev => {
-                                            return {...prev, description: e.target.value}
-                                        })
-                                    }}/>
-                    <Stack direction="row" alignItems="baseline">
-                        {/* <div style={{paddingRight: "10px"}}>
+            {platformSettingsData && platformSettingsData.getPlatformSettings ?
+                <Stack sx={{
+                    width: "100%",
+                    marginLeft: "4rem",
+                    marginTop: "4rem",
+                    minHeight: "700px",
+                    display: loading ? "none" : ""
+                }} spacing={4}>
+                    <Stack spacing={2}>
+                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                            Platform Settings
+                        </FormLabel>
+                        <LabelTextField label={"Platform Name"} value={effectiveSettings.title}
+                                        disabled onChange={(e) => {
+                            /*setEffectiveSettings(prev=>{
+                                return {...prev, title: e.target.value}
+                            })*/
+                        }}/>
+                        <LabelTextField label={"Description"} variant={"outlined"} multiline={true}
+                                        value={effectiveSettings.description}
+                                        onChange={(e) => {
+                                            setEffectiveSettings(prev => {
+                                                return {...prev, description: e.target.value}
+                                            })
+                                        }}/>
+                        <Stack direction="row" alignItems="baseline">
+                            {/* <div style={{paddingRight: "10px"}}>
                         Platform Names
                         </div>
                         <TextField size="small" id="platformName" variant="standard" value={tempPlatformName} onChange={(e)=>setTempPlatformName(e.target.value)}/> */}
+                        </Stack>
+                        <Box sx={{display: 'flex'}}>
+                            <TagsInput tags={effectiveSettings.tags} handleAddTag={handleAddTag}
+                                       handleDeleteTag={handleDeleteTag}
+                                       newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}/>
+                        </Box>
                     </Stack>
-                    <Box sx={{display: 'flex'}}>
-                        <TagsInput tags={effectiveSettings.tags} handleAddTag={handleAddTag}
-                                   handleDeleteTag={handleDeleteTag}
-                                   newTag={newTag} onNewTagChange={e => onNewTagChange(e.target.value)}/>
-                    </Box>
-                </Stack>
 
-                <Stack spacing={2}>
-                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
-                        Platform Style
-                    </FormLabel>
-                    <Box sx={{display: 'flex', alignItems: "center"}}>
-                        <ColorPicker label={"Background Color"} colorState={effectiveSettings.color}
-                                     onChangeComplete={color => handleSetColor(color)}/>
-                    </Box>
-                    <Box sx={{display: 'flex', alignItems: "center"}}>
-                        <ImageUpload onUpload={handleImageUpload} label={"Banner Image"}/>
-                    </Box>
-                    <Box sx={{display: 'flex', alignItems: "center"}}>
-                        <ImageUpload onUpload={handleImageUpload} label={"Thumbnail Image"}/>
-                    </Box>
-                </Stack>
+                    <Stack spacing={2}>
+                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                            Platform Style
+                        </FormLabel>
+                        <Box sx={{display: 'flex', alignItems: "center"}}>
+                            <ColorPicker label={"Background Color"} colorState={effectiveSettings.color}
+                                         onChangeComplete={color => handleSetColor(color)}/>
+                        </Box>
+                        <Box sx={{display: 'flex', alignItems: "center"}}>
+                            <ImageUpload onUpload={handleImageUpload} label={"Banner Image"}/>
+                        </Box>
+                        <Box sx={{display: 'flex', alignItems: "center"}}>
+                            <ImageUpload onUpload={handleImageUpload} label={"Thumbnail Image"}/>
+                        </Box>
+                    </Stack>
 
-                <Stack spacing={2}>
-                    <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
-                        Quiz Rules
-                    </FormLabel>
-                    <Stack direction={'row'} alignItems={'baseline'} spacing={2}>
-                        <Typography sx={{width: 404}}>
-                            Minimum number of creator points to submit a quiz
-                        </Typography>
-                        <TextField variant={"standard"} value={effectiveSettings.minCreatorPoints}
-                                   onChange={(e) => {
-                                       const value = Number(e.target.value);
-                                       if (value >= 0) {
-                                           setEffectiveSettings(prev => {
-                                               return {...prev, minCreatorPoints: value}
-                                           })
+                    <Stack spacing={2}>
+                        <FormLabel style={{fontWeight: '700', fontSize: 16, color: 'common.black'}}>
+                            Quiz Rules
+                        </FormLabel>
+                        <Stack direction={'row'} alignItems={'baseline'} spacing={2}>
+                            <Typography sx={{width: 404}}>
+                                Minimum number of creator points to submit a quiz
+                            </Typography>
+                            <TextField variant={"standard"} value={effectiveSettings.minCreatorPoints}
+                                       onChange={(e) => {
+                                           const value = Number(e.target.value);
+                                           if (value >= 0) {
+                                               setEffectiveSettings(prev => {
+                                                   return {...prev, minCreatorPoints: value}
+                                               })
+                                           }
                                        }
-                                   }
-                                   } style={{width: 60}} type={"number"}>
-                        </TextField>
+                                       } style={{width: 60}} type={"number"}>
+                            </TextField>
+                        </Stack>
+                        <FormControlLabel label="Only allow current moderators to submit quizzes"
+                                          labelPlacement={"start"} style={{
+                            padding: 0,
+                            marginLeft: 0,
+                            width: 450,
+                            justifyContent: "space-between"
+                        }} control={<Checkbox value={effectiveSettings.onlyModSubmissions}
+                                              onChange={(e) => {
+                                                  setEffectiveSettings(prev => {
+                                                      return {...prev, onlyModSubmissions: e.target.checked}
+                                                  })
+                                              }}/>}
+                        />
+                        {/*<LabelTextField label={"Required Creator Points"}*/}
+                        {/*                value={effectiveSettings.minCreatorPoints}*/}
+                        {/*                onChange={(e) => {*/}
+                        {/*                    setEffectiveSettings(prev => {*/}
+                        {/*                        return {...prev, minCreatorPoints: e.target.value}*/}
+                        {/*                    })*/}
+                        {/*                }}*/}
+                        {/*                type={"number"}/>*/}
+                        {/*<Box sx={{display: 'flex'}}>*/}
+                        {/*    <FormControlLabel control={<Switch/>} label="Only allow current moderators to submit quizzes"/>*/}
+                        {/*</Box>*/}
+                        <Stack direction="row" spacing={3}>
+                            <Button variant="contained" onClick={() => setPublishConfirmOpen(true)}>SAVE
+                                CHANGES</Button>
+                            <Button variant="outlined"
+                                    onClick={() => history.push(`/platform/${platformName}`)}>CANCEL</Button>
+                            <Button
+                                variant={"contained"} style={{marginLeft: 150}} onClick={e => {
+                                setDeletePlatformConfirmOpen(prev => !prev);
+                            }}> DELETE PLATFORM </Button>
+                        </Stack>
                     </Stack>
-                    <FormControlLabel label="Only allow current moderators to submit quizzes"
-                                      labelPlacement={"start"} style={{
-                        padding: 0,
-                        marginLeft: 0,
-                        width: 450,
-                        justifyContent: "space-between"
-                    }} control={<Checkbox value={effectiveSettings.onlyModSubmissions}
-                                          onChange={(e) => {
-                                              setEffectiveSettings(prev => {
-                                                  return {...prev, onlyModSubmissions: e.target.checked}
-                                              })
-                                          }}/>}
-                    />
-                    {/*<LabelTextField label={"Required Creator Points"}*/}
-                    {/*                value={effectiveSettings.minCreatorPoints}*/}
-                    {/*                onChange={(e) => {*/}
-                    {/*                    setEffectiveSettings(prev => {*/}
-                    {/*                        return {...prev, minCreatorPoints: e.target.value}*/}
-                    {/*                    })*/}
-                    {/*                }}*/}
-                    {/*                type={"number"}/>*/}
-                    {/*<Box sx={{display: 'flex'}}>*/}
-                    {/*    <FormControlLabel control={<Switch/>} label="Only allow current moderators to submit quizzes"/>*/}
-                    {/*</Box>*/}
-                    <Stack direction="row" spacing={3}>
-                        <Button variant="contained" onClick={() => setPublishConfirmOpen(true)}>SAVE CHANGES</Button>
-                        <Button variant="outlined"
-                                onClick={() => history.push(`/platform/${platformName}`)}>CANCEL</Button>
-                    </Stack>
-                </Stack>
-            </Stack>:
-            <Box sx={{marginLeft:"100px", marginTop:"100px",display: loading?"none":""}}>
-                You do not have access to this page.
-            </Box>}
+                </Stack> :
+                <Box sx={{marginLeft: "100px", marginTop: "100px", display: loading ? "none" : ""}}>
+                    You do not have access to this page.
+                </Box>}
             <ConfirmationDialog
                 open={publishConfirmOpen}
                 handleClose={() => setPublishConfirmOpen(prev => !prev)}
@@ -305,6 +326,20 @@ export default function PlatformSettings() {
                 yesCallback={handleSubmit}
                 noText='CANCEL'
                 noCallback={() => setPublishConfirmOpen(prev => !prev)}
+            />
+            <ConfirmationDialog
+                open={deletePlatformConfirmOpen}
+                handleClose={() => setDeletePlatformConfirmOpen(prev => !prev)}
+                title='Confirm Platform Deletion'
+                content={`Are you sure you want to delete this platform?`}
+                yesText='CONFIRM'
+                yesCallback={()=>{
+                    handleDeletePlatform();
+                    setDeletePlatformConfirmOpen(prev => !prev);
+                    history.push(`/user/${globalState()._id}/platforms`);
+                }}
+                noText='CANCEL'
+                noCallback={() => setDeletePlatformConfirmOpen(prev => !prev)}
             />
             <LoadedModal
                 open={loadedModalOpen}
