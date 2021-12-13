@@ -133,22 +133,27 @@ export default function TakeQuizScreen({ draftId }) {
 
     const handleAnswer = async (correct) => {
         if (correct) {
+            if (globalState().globalLoggedIn) {
+                const { data } = await incrementStreak();
+                setCorrectAnswers(correctAnswers + 1);
+                if (data?.incrementStreak) {
+                    console.log(data.incrementStreak);
+                    const { achievement, streak, playPoints } = data.incrementStreak;
 
-            const { data } = await incrementStreak();
-            setCorrectAnswers(correctAnswers + 1);
-            if (data?.incrementStreak) {
-                console.log(data.incrementStreak);
-                const { achievement, streak, playPoints } = data.incrementStreak;
-
-                if (achievement) {
-                    let toAddAchievement = { ...achievement, streak: streak }
-                    handleTimerOff();
-                    setAchievement(toAddAchievement);
+                    if (achievement) {
+                        let toAddAchievement = { ...achievement, streak: streak }
+                        handleTimerOff();
+                        setAchievement(toAddAchievement);
+                    }
+                    setPlayPoints(playPoints);
+                    return true;
                 }
-                setPlayPoints(playPoints);
+                else { return false; }
+            } else {
+                setCorrectAnswers(correctAnswers + 1);
                 return true;
             }
-            else { return false; }
+            
         } else {
             await resetStreak();
             return true;
@@ -194,6 +199,8 @@ export default function TakeQuizScreen({ draftId }) {
                 globalState(newUserData);
                 history.push(`/platform/${platformName}`);
             }
+        } else {
+            history.push(`/platform/${platformName}`);
         }
     }
 
