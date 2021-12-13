@@ -11,7 +11,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
 import Timer from '../components/Timer';
 
-export default function TakeQuizScreen({ draftId, timeLeft }) {
+export default function TakeQuizScreen({ draftId }) {
     const history = useHistory();
     const { quizId } = useParams();
     const { data } = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, { variables: { quizId: quizId } });
@@ -38,7 +38,7 @@ export default function TakeQuizScreen({ draftId, timeLeft }) {
     // const [timerOnOff, setTimerOnOff] = useState(false);
     const timerOnOff = useRef(true)
     var timeLimit = 20 * 1000;
-    // const timeLeft = useRef(timeLimit)
+    const timeLeft = useRef(timeLimit)
 
     let questionList = [];
 
@@ -132,6 +132,7 @@ export default function TakeQuizScreen({ draftId, timeLeft }) {
 
     const handleTimerOn = useCallback(() => {
         console.log('timer is on');
+        timeLeft.current = timeLimit
         // setTimerOnOff(true);
         timerOnOff.current = true
     }, [timeLimit]);
