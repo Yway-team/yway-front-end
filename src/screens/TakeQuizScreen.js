@@ -1,21 +1,26 @@
-import { Grid, Avatar, Typography, Stack, ButtonBase, Slide, Dialog, Button } from '@mui/material';
-import { ReactComponent as Background } from '../images/blop.svg';
-import { Bolt, East } from '@mui/icons-material';
-import { globalState } from '../state/UserState';
-import { useCallback, useEffect, useState, useRef } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST } from '../controllers/graphql/quiz-queries';
-import { INCREMENT_PLAY_POINTS, INCREMENT_STREAK, RESET_STREAK, INCREMENT_NUM_QUIZZES_PLAYED } from '../controllers/graphql/user-mutations';
-import { RATE_QUIZ } from '../controllers/graphql/quiz-mutations';
-import { useParams, useHistory } from 'react-router-dom';
-import { ReactComponent as Logo } from '../images/logoIconColorless.svg';
-import { AchievementPopUp } from '../components';
+import {Avatar, Button, ButtonBase, Dialog, Grid, Slide, Stack, Typography} from '@mui/material';
+import {ReactComponent as Background} from '../images/blop.svg';
+import {Bolt, East} from '@mui/icons-material';
+import {globalLoggedIn, globalState} from '../state/UserState';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useMutation, useQuery} from '@apollo/client';
+import {GET_QUESTION_INFO, GET_QUIZ_INFO_AND_QUESTION_LIST} from '../controllers/graphql/quiz-queries';
+import {
+    INCREMENT_NUM_QUIZZES_PLAYED,
+    INCREMENT_PLAY_POINTS,
+    INCREMENT_STREAK,
+    RESET_STREAK
+} from '../controllers/graphql/user-mutations';
+import {RATE_QUIZ} from '../controllers/graphql/quiz-mutations';
+import {useHistory, useParams} from 'react-router-dom';
+import {ReactComponent as Logo} from '../images/logoIconColorless.svg';
+import {AchievementPopUp} from '../components';
 import Timer from '../components/Timer';
 
-export default function TakeQuizScreen({ draftId }) {
+export default function TakeQuizScreen({draftId}) {
     const history = useHistory();
-    const { quizId } = useParams();
-    const { data } = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, { variables: { quizId: quizId } });
+    const {quizId} = useParams();
+    const {data} = useQuery(GET_QUIZ_INFO_AND_QUESTION_LIST, {variables: {quizId: quizId}});
     const [incrementStreak] = useMutation(INCREMENT_STREAK);
     const [resetStreak] = useMutation(RESET_STREAK);
     const [incrementNumQuizzesPlayed] = useMutation(INCREMENT_NUM_QUIZZES_PLAYED);
@@ -133,31 +138,26 @@ export default function TakeQuizScreen({ draftId }) {
 
     const handleAnswer = async (correct) => {
         if (correct) {
-            if (globalState().globalLoggedIn) {
-                const { data } = await incrementStreak();
-                setCorrectAnswers(correctAnswers + 1);
+            if (globalLoggedIn()) {
+                const {data} = await incrementStreak();
                 if (data?.incrementStreak) {
                     console.log(data.incrementStreak);
-                    const { achievement, streak, playPoints } = data.incrementStreak;
-
+                    const {achievement, streak, playPoints} = data.incrementStreak;
                     if (achievement) {
-                        let toAddAchievement = { ...achievement, streak: streak }
+                        let toAddAchievement = {...achievement, streak: streak}
                         handleTimerOff();
                         setAchievement(toAddAchievement);
                     }
                     setPlayPoints(playPoints);
-                    return true;
+                } else {
+                    return false;
                 }
-                else { return false; }
-            } else {
-                setCorrectAnswers(correctAnswers + 1);
-                return true;
             }
-            
+            setCorrectAnswers(correctAnswers + 1);
         } else {
             await resetStreak();
-            return true;
         }
+        return true;
     }
 
     const handleTimerOn = useCallback(() => {
@@ -179,22 +179,21 @@ export default function TakeQuizScreen({ draftId }) {
 
     const handleFinishSubmit = async () => {
         if (userRating > 0) {
-            rateQuiz({ variables: { quizId: quizId, rating: userRating } });
+            rateQuiz({variables: {quizId: quizId, rating: userRating}});
         }
         // let { data } = await incrementPlayPoints({ variables: { playPointsIncrement: playPoints - initPlayPoint } });
-        const { data: incrementNumQuizzesData } = await incrementNumQuizzesPlayed();
+        const {data: incrementNumQuizzesData} = await incrementNumQuizzesPlayed();
         if (incrementNumQuizzesData.incrementNumQuizzesPlayed) {
             const achievementIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.achievement;
             const playPointsIn = incrementNumQuizzesData.incrementNumQuizzesPlayed.playPoints;
             if (achievementIn) {
                 setOpen(false);
-                let achievemenToAdd = { ...achievementIn, playPoints: playPointsIn }
+                let achievemenToAdd = {...achievementIn, playPoints: playPointsIn}
                 setAchievement(achievemenToAdd);
                 console.log('there is achievement')
                 console.log(achievementIn);
-            }
-            else {
-                let newUserData = { ...user };
+            } else {
+                let newUserData = {...user};
                 newUserData.playPoints = playPointsIn;
                 globalState(newUserData);
                 history.push(`/platform/${platformName}`);
@@ -206,40 +205,62 @@ export default function TakeQuizScreen({ draftId }) {
 
     return (
         <>
-            <Stack direction="column" justifyContent='space-between' alignItems='center' sx={{ height: window.innerHeight - 64 }} >
-                <Stack direction='row' justifyContent='space-between' sx={{ width: '100%' }}>
+            <Stack direction="column" justifyContent='space-between' alignItems='center'
+                   sx={{height: window.innerHeight - 64}}>
+                <Stack direction='row' justifyContent='space-between' sx={{width: '100%'}}>
                     <Stack pl={7} pt={3} direction='row'>
                         <Avatar src={platformThumbnail} alt='platform avatar' sx={{
                             width: '30pt',
                             height: '30pt'
-                        }} />
-                        <Stack justifyContent='flex-start' ml={2} >
-                            <Stack direction='row' sx={{ height: '30pt', justifyContent: 'center', alignItems: 'flex-start', mt: '5pt', }}>
-                                <Typography variant='h5' sx={{ color: { color }, flexGrow: 1, fontSize: 16 }}> {(platformName + ':')}  </Typography>
-                                <Typography variant='h5' sx={{ color: 'grey.600', ml: 1, fontSize: 16 }}> {title}  </Typography>
+                        }}/>
+                        <Stack justifyContent='flex-start' ml={2}>
+                            <Stack direction='row' sx={{
+                                height: '30pt',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                mt: '5pt',
+                            }}>
+                                <Typography variant='h5' sx={{
+                                    color: {color},
+                                    flexGrow: 1,
+                                    fontSize: 16
+                                }}> {(platformName + ':')}  </Typography>
+                                <Typography variant='h5'
+                                            sx={{color: 'grey.600', ml: 1, fontSize: 16}}> {title}  </Typography>
                             </Stack>
-                            <Stack direction='row' >
+                            <Stack direction='row'>
                                 <Avatar src={ownerAvatar} alt='platform avatar' sx={{
                                     width: 20,
                                     height: 20,
                                     mr: 1
-                                }} />
-                                <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, }}> {ownerUsername} </Typography>
+                                }}/>
+                                <Typography sx={{
+                                    fontSize: 14,
+                                    color: 'grey.600',
+                                    fontWeight: 600,
+                                }}> {ownerUsername} </Typography>
                             </Stack>
                         </Stack>
                     </Stack>
-                    <Grid container item xs={3} direction='column' sx={{ color: { color }, position: 'relative', width: 350, height: 150, overflow: 'hidden' }}>
-                        <Stack justifyContent='center' sx={{ zIndex: 2, width: 200, position: 'absolute', right: -50, top: 10, pt: 0.5 }}>
-                            <Typography sx={{ color: 'common.white', fontSize: 18, fontWeight: 600 }}> Play Points </Typography>
-                            <Stack direction='row' alignItems='center ' sx={{ mt: 1, ml: 2 }} >
-                                <Typography sx={{ color: 'common.white', fontSize: 24, fontWeight: 600 }}> {playPoints} </Typography>
-                                <Bolt sx={{ fill: 'white', fontSize: 28, ml: 1 }} />
+                    <Grid container item xs={3} direction='column'
+                          sx={{color: {color}, position: 'relative', width: 350, height: 150, overflow: 'hidden'}}>
+                        <Stack justifyContent='center'
+                               sx={{zIndex: 2, width: 200, position: 'absolute', right: -50, top: 10, pt: 0.5}}>
+                            <Typography sx={{color: 'common.white', fontSize: 18, fontWeight: 600}}> Play
+                                Points </Typography>
+                            <Stack direction='row' alignItems='center ' sx={{mt: 1, ml: 2}}>
+                                <Typography sx={{
+                                    color: 'common.white',
+                                    fontSize: 24,
+                                    fontWeight: 600
+                                }}> {playPoints} </Typography>
+                                <Bolt sx={{fill: 'white', fontSize: 28, ml: 1}}/>
                             </Stack>
                         </Stack>
                         <Stack sx={{
                             position: 'absolute', top: -20, right: -65, height: 150,
                         }}>
-                            <Background fill={color} />
+                            <Background fill={color}/>
                         </Stack>
                     </Grid>
                 </Stack>
@@ -259,57 +280,85 @@ export default function TakeQuizScreen({ draftId }) {
 
                 <Stack sx={{
                     width: '100%',
-                    color: { color },
+                    color: {color},
                 }}>
-                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current} timeLimit={timeLimit} />
+                    <Timer timeLeft={timeLeft} handleTimeOut={handleTimeOut} timerOnOff={timerOnOff.current}
+                           timeLimit={timeLimit}/>
                 </Stack>
 
-            </Stack >
+            </Stack>
             <Dialog open={open}
-                aria-labelledby="quiz-details-dialog"
-                sx={{ backgroundColor: 'transparent' }}
-                fullWidth={true}
-                maxWidth='md'>
+                    aria-labelledby="quiz-details-dialog"
+                    sx={{backgroundColor: 'transparent'}}
+                    fullWidth={true}
+                    maxWidth='md'>
 
-                <Stack >
-                    <Stack direction='row' justifyContent='flex-start' p={3} pb={1} pt={5} >
+                <Stack>
+                    <Stack direction='row' justifyContent='flex-start' p={3} pb={1} pt={5}>
                         <Avatar src={platformThumbnail} alt='platform avatar' sx={{
                             width: '30pt',
                             height: '30pt'
-                        }} />
-                        <Stack justifyContent='flex-start' ml={2} >
-                            <Stack direction='row' sx={{ height: '30pt', justifyContent: 'center', alignItems: 'flex-start', mt: '5pt', }}>
-                                <Typography variant='h5' sx={{ color: { color }, flexGrow: 1, fontSize: 16 }}> {(platformName + ':')}  </Typography>
-                                <Typography variant='h5' sx={{ color: 'grey.600', ml: 1, fontSize: 16 }}> {title}  </Typography>
+                        }}/>
+                        <Stack justifyContent='flex-start' ml={2}>
+                            <Stack direction='row' sx={{
+                                height: '30pt',
+                                justifyContent: 'center',
+                                alignItems: 'flex-start',
+                                mt: '5pt',
+                            }}>
+                                <Typography variant='h5' sx={{
+                                    color: {color},
+                                    flexGrow: 1,
+                                    fontSize: 16
+                                }}> {(platformName + ':')}  </Typography>
+                                <Typography variant='h5'
+                                            sx={{color: 'grey.600', ml: 1, fontSize: 16}}> {title}  </Typography>
                             </Stack>
                         </Stack>
                     </Stack>
-                    <Stack direction='row' justifyContent='space-between' sx={{ width: '90%' }}>
+                    <Stack direction='row' justifyContent='space-between' sx={{width: '90%'}}>
                         <Stack direction='row' ml={'60pt'}>
                             <Avatar src={ownerAvatar} alt='platform avatar' sx={{
                                 width: 20,
                                 height: 20,
                                 mr: 1
-                            }} />
-                            <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, }}> {ownerUsername} </Typography>
+                            }}/>
+                            <Typography
+                                sx={{fontSize: 14, color: 'grey.600', fontWeight: 600,}}> {ownerUsername} </Typography>
                         </Stack>
                         <Stack direction='row'>
-                            <Logo fill={color} style={{ height: 20, width: 20, marginRight: 10 }} />
-                            <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, mr: 5 }}> {rating} </Typography>
+                            <Logo fill={color} style={{height: 20, width: 20, marginRight: 10}}/>
+                            <Typography
+                                sx={{fontSize: 14, color: 'grey.600', fontWeight: 600, mr: 5}}> {rating} </Typography>
                             {/* <Visibility style={{ height: 20, width: 20, marginRight: 10, fill: color }} />
                             <Typography sx={{ fontSize: 14, color: 'grey.600', fontWeight: 600, }}> {attempted} </Typography> */}
                         </Stack>
                     </Stack>
-                    <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%', mt: 5, backgroundColor: color + '25', py: 5 }}>
+                    <Stack direction='row' justifyContent='space-between' alignItems='center'
+                           sx={{width: '100%', mt: 5, backgroundColor: color + '25', py: 5}}>
                         <Stack direction='row' ml={'60pt'} alignItems='center'>
-                            <Typography sx={{ fontSize: 24, color: 'common.black', fontWeight: 700, }}> You earned</Typography>
-                            <Typography sx={{ fontSize: 28, color: color, fontWeight: 700, ml: 5 }}>  {playPoints - initPlayPoint} </Typography>
-                            <Bolt sx={{ fontSize: 30, fill: color }} />
+                            <Typography sx={{fontSize: 24, color: 'common.black', fontWeight: 700,}}> You
+                                earned</Typography>
+                            <Typography sx={{
+                                fontSize: 28,
+                                color: color,
+                                fontWeight: 700,
+                                ml: 5
+                            }}>  {playPoints - initPlayPoint} </Typography>
+                            <Bolt sx={{fontSize: 30, fill: color}}/>
                         </Stack>
 
-                        <Stack direction='column' justifyContent='center' >
+                        <Stack direction='column' justifyContent='center'>
                             {/* <Typography textAlign='center' sx={{ fontSize: 17, color: 'common.black', fontWeight: 700 }}> Your Streak </Typography> */}
-                            <Avatar sx={{ height: 60, width: 60, mt: 2, marginRight: 15, background: color || 'grey', color: 'white', alignItems: 'center' }}>
+                            <Avatar sx={{
+                                height: 60,
+                                width: 60,
+                                mt: 2,
+                                marginRight: 15,
+                                background: color || 'grey',
+                                color: 'white',
+                                alignItems: 'center'
+                            }}>
                                 <Typography fontSize={18} fontWeight={600}>
                                     {correctAnswers + ' / ' + (questionList ? questionList.length : 0).toString()}
                                 </Typography>
@@ -317,9 +366,11 @@ export default function TakeQuizScreen({ draftId }) {
                         </Stack>
                     </Stack>
 
-                    <Stack direction='row' justifyContent='space-between' alignItems='flex-end' sx={{ width: '95%', mt: 7, mb: 5 }}>
+                    <Stack direction='row' justifyContent='space-between' alignItems='flex-end'
+                           sx={{width: '95%', mt: 7, mb: 5}}>
                         <Stack direction='column' ml={'50pt'} alignItems='center'>
-                            <Typography sx={{ fontSize: 16, color: 'common.black', fontWeight: 600, }}> How good was the quiz? </Typography>
+                            <Typography sx={{fontSize: 16, color: 'common.black', fontWeight: 600,}}> How good was the
+                                quiz? </Typography>
                             <Stack direction='row' mt={2}>
                                 {(new Array(5).fill(0)).map((element, index) =>
                                     <ButtonBase onClick={() => {
@@ -330,22 +381,23 @@ export default function TakeQuizScreen({ draftId }) {
                                         height: 40,
                                         width: 40
                                     }}>
-                                        <Logo fill={index > userRating - 1 ? '#D1D1D1' : color} style={{ height: 25, width: 25, marginRight: 10 }} />
+                                        <Logo fill={index > userRating - 1 ? '#D1D1D1' : color}
+                                              style={{height: 25, width: 25, marginRight: 10}}/>
                                     </ButtonBase>
                                 )}
                             </Stack>
                         </Stack>
-                        <Button endIcon={<East />}
-                            onClick={handleFinishSubmit}
-                            sx={{
-                                color: color || 'common.black',
-                                px: 2,
-                                fontWeight: 700,
-                                fontSize: 18,
-                                "&:hover": {
-                                    backgroundColor: (color + '10'),
-                                }
-                            }}>
+                        <Button endIcon={<East/>}
+                                onClick={handleFinishSubmit}
+                                sx={{
+                                    color: color || 'common.black',
+                                    px: 2,
+                                    fontWeight: 700,
+                                    fontSize: 18,
+                                    "&:hover": {
+                                        backgroundColor: (color + '10'),
+                                    }
+                                }}>
                             FINISH
                         </Button>
                     </Stack>
@@ -354,14 +406,14 @@ export default function TakeQuizScreen({ draftId }) {
             </Dialog>
             <AchievementPopUp
                 open={achievement != null}
-                sx={{ zIndex: '1000' }}
+                sx={{zIndex: '1000'}}
                 handleClose={() => {
                     setAchievement(null);
                     handleTimerOn();
                 }}
                 beforeCheckItOut={() => {
                     if (achievement.playPoints) {
-                        let newUserData = { ...user };
+                        let newUserData = {...user};
                         newUserData.playPoints = achievement.playPoints;
                         globalState(newUserData);
                         history.push(`/platform/${platformName}`);
@@ -376,9 +428,9 @@ export default function TakeQuizScreen({ draftId }) {
 }
 
 
-function Question({ index, color, questionId, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer }) {
+function Question({index, color, questionId, handleNextQuestion, timerOn, timerOff, enter, setEnter, handleAnswer}) {
     const [clicked, setClicked] = useState(-1);
-    const { data: questionData } = useQuery(GET_QUESTION_INFO, { variables: { questionId: questionId } });
+    const {data: questionData} = useQuery(GET_QUESTION_INFO, {variables: {questionId: questionId}});
 
     let question;
 
@@ -406,33 +458,36 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
     }, [index, timerOff, timerOn]);
 
 
-
     useEffect(() => {
         if (clicked >= 0) {
             console.log('clicked use effect');
             setEnter(false);
-        };
+        }
+        ;
     }, [clicked]);
 
 
     const handleClick = (index, correct) => {
         console.log('clicked');
         // setClicked(index);
-        handleAnswer(correct).then((ret) => { if (ret) setClicked(index) });
+        handleAnswer(correct).then((ret) => {
+            if (ret) setClicked(index)
+        });
     }
 
 
-
-    function Option({ option, index }) {
+    function Option({option, index}) {
         var correct = option === question.correctAnswer;
         var feedbackColor = correct ? '#219653' : '#eb5757';
         var showFeedback = index === clicked;
 
 
         return (
-            <Grid item xs={5} mr={2} md={5} >
+            <Grid item xs={5} mr={2} md={5}>
                 <ButtonBase
-                    onClick={() => { handleClick(index, correct) }}
+                    onClick={() => {
+                        handleClick(index, correct)
+                    }}
                     disableRipple
                     sx={{
                         minWidth: '70%',
@@ -444,48 +499,61 @@ function Question({ index, color, questionId, handleNextQuestion, timerOn, timer
                         // }
                     }}>
                     <Stack direction='row'
-                        justifyContent='flex-start'
-                        alignItems='center'
-                        pl={2}
-                        py={0.5}
-                        sx={{
-                            height: '100%',
-                            minHeight: 50,
-                            width: '95%',
-                            backgroundColor: showFeedback ? '#ffffffd5' : 'grey.200',
-                            ml: '5%',
-                            borderRadius: '0pt 5pt 5pt 0pt',
-                            "&:hover": {
-                                backgroundColor: '#ffffffd5',
-                            }
-                        }}>
+                           justifyContent='flex-start'
+                           alignItems='center'
+                           pl={2}
+                           py={0.5}
+                           sx={{
+                               height: '100%',
+                               minHeight: 50,
+                               width: '95%',
+                               backgroundColor: showFeedback ? '#ffffffd5' : 'grey.200',
+                               ml: '5%',
+                               borderRadius: '0pt 5pt 5pt 0pt',
+                               "&:hover": {
+                                   backgroundColor: '#ffffffd5',
+                               }
+                           }}>
                         <Typography sx={{
                             fontSize: 16,
                             fontWeight: 600,
                         }}>{option}</Typography>
                     </Stack>
                 </ButtonBase>
-            </Grid >
+            </Grid>
         );
     }
 
     return (
 
         <Stack>
-            <Slide in={enter} direction='right' appear={false} timeout={{ exit: 900 }}
-                onExited={() => {
-                    setEnter(true);
-                    handleNextQuestion();
-                }}>
-                <Stack sx={{ minWidth: '100%', pb: 5 }}  >
+            <Slide in={enter} direction='right' appear={false} timeout={{exit: 900}}
+                   onExited={() => {
+                       setEnter(true);
+                       handleNextQuestion();
+                   }}>
+                <Stack sx={{minWidth: '100%', pb: 5}}>
                     <Stack alignItems='center' direction='row' alignItems='center'>
-                        <Avatar sx={{ backgroundColor: color, width: '60pt', height: '60pt', fontSize: 26, fontWeight: 600 }}> {index + 1}</Avatar>
-                        <Typography sx={{ ml: '20pt', fontSize: 20, color: 'primary.black', fontWeight: 600 }}> {question?.description || null}</Typography>
+                        <Avatar sx={{
+                            backgroundColor: color,
+                            width: '60pt',
+                            height: '60pt',
+                            fontSize: 26,
+                            fontWeight: 600
+                        }}> {index + 1}</Avatar>
+                        <Typography sx={{
+                            ml: '20pt',
+                            fontSize: 20,
+                            color: 'primary.black',
+                            fontWeight: 600
+                        }}> {question?.description || null}</Typography>
                     </Stack>
-                    <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start' columnGap={1}>
-                        {question ? question.answerOptions.map((option, index) => <Option option={option} index={index} key={index} />) : null}
+                    <Grid container direction='row' ml='80pt' mt={1} rowSpacing={2} justifyContent='flex-start'
+                          columnGap={1}>
+                        {question ? question.answerOptions.map((option, index) => <Option option={option} index={index}
+                                                                                          key={index}/>) : null}
                     </Grid>
-                </Stack >
+                </Stack>
             </Slide>
         </Stack>
 
